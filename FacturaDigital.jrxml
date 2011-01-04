@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FacturaDigital" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Octavio\\Documents\\CFD\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="noAprobacion" class="java.math.BigInteger">
+		<fieldDescription><![CDATA[noAprobacion]]></fieldDescription>
+	</field>
+	<field name="condicionesDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[condicionesDePago]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.util.Date">
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
+	</field>
+	<field name="noCertificado" class="java.lang.String">
+		<fieldDescription><![CDATA[noCertificado]]></fieldDescription>
+	</field>
+	<field name="tipoDeComprobante" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoDeComprobante]]></fieldDescription>
+	</field>
+	<field name="conceptos" class="mx.bigdata.sat.cfd.schema.Comprobante$Conceptos">
+		<fieldDescription><![CDATA[conceptos]]></fieldDescription>
+	</field>
+	<field name="receptor" class="mx.bigdata.sat.cfd.schema.Comprobante$Receptor">
+		<fieldDescription><![CDATA[receptor]]></fieldDescription>
+	</field>
+	<field name="certificado" class="java.lang.String">
+		<fieldDescription><![CDATA[certificado]]></fieldDescription>
+	</field>
+	<field name="formaDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[formaDePago]]></fieldDescription>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<fieldDescription><![CDATA[folio]]></fieldDescription>
+	</field>
+	<field name="serie" class="java.lang.String">
+		<fieldDescription><![CDATA[serie]]></fieldDescription>
+	</field>
+	<field name="metodoDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[metodoDePago]]></fieldDescription>
+	</field>
+	<field name="subTotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[subTotal]]></fieldDescription>
+	</field>
+	<field name="sello" class="java.lang.String">
+		<fieldDescription><![CDATA[sello]]></fieldDescription>
+	</field>
+	<field name="emisor" class="mx.bigdata.sat.cfd.schema.Comprobante$Emisor">
+		<fieldDescription><![CDATA[emisor]]></fieldDescription>
+	</field>
+	<field name="impuestos" class="mx.bigdata.sat.cfd.schema.Comprobante$Impuestos">
+		<fieldDescription><![CDATA[impuestos]]></fieldDescription>
+	</field>
+	<field name="anoAprobacion" class="java.math.BigInteger">
+		<fieldDescription><![CDATA[anoAprobacion]]></fieldDescription>
+	</field>
+	<field name="total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="cadenaOriginal" class="java.lang.String">
+		<fieldDescription><![CDATA[cadenaOriginal]]></fieldDescription>
+	</field>
+	<field name="descuento" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="77" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="7" y="46" width="414" height="20" forecolor="#FFFFFF" backcolor="#00CCFF"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALUD Y ECONOMÍA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="299" y="3" width="122" height="43" forecolor="#003399"/>
+				<textElement>
+					<font size="30" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[MEDINA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="134" y="3" width="166" height="43" forecolor="#33CCFF"/>
+				<textElement>
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FARMACIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="0" width="128" height="46" forecolor="#FF3366"/>
+				<textElement>
+					<font fontName="Arial Black" size="30" isItalic="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[SÚPER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="453" y="3" width="100" height="18" forecolor="#FFFFFF" backcolor="#00CCFF"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="453" y="21" width="98" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="453" y="39" width="100" height="18" forecolor="#FFFFFF" backcolor="#00CCFF"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Año Aprobación]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="453" y="57" width="100" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$F{anoAprobacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="180" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="453" y="50" width="100" height="18" forecolor="#FFFFFF" backcolor="#00CCFF"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Certificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="1" width="69" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<line>
+				<reportElement x="5" y="10" width="1" height="115"/>
+			</line>
+			<line>
+				<reportElement x="5" y="125" width="189" height="1"/>
+			</line>
+			<line>
+				<reportElement x="6" y="10" width="38" height="1"/>
+			</line>
+			<line>
+				<reportElement x="216" y="11" width="1" height="115"/>
+			</line>
+			<line>
+				<reportElement x="216" y="11" width="38" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="253" y="2" width="77" height="19"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[MATRIZ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="217" y="125" width="189" height="1"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="453" y="10" width="100" height="18" forecolor="#FFFFFF" backcolor="#00CCFF"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[No. de Aprobación]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="453" y="30" width="100" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$F{noAprobacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="453" y="89" width="100" height="18" forecolor="#FFFFFF" backcolor="#00CCFF"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Folio]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="453" y="109" width="100" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{folio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="35" width="192" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{receptor}.getRfc()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="35" width="191" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getRfc()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="453" y="70" width="100" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{noCertificado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="50" width="191" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getDomicilioFiscal().getCalle()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="80" width="191" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getDomicilioFiscal().getColonia()+", CP. "
++$F{emisor}.getDomicilioFiscal().getCodigoPostal()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="95" width="191" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getDomicilioFiscal().getMunicipio()+", "
++$F{emisor}.getDomicilioFiscal().getEstado()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="110" width="191" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getDomicilioFiscal().getPais()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="65" width="191" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["No ext: "
++$F{emisor}.getDomicilioFiscal().getNoExterior()+", No int: "
++$F{emisor}.getDomicilioFiscal().getNoInterior()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="50" width="192" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{receptor}.getDomicilio().getCalle()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="65" width="192" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["No ext: "+$F{receptor}.getDomicilio().getNoExterior()+", No int: "
++$F{receptor}.getDomicilio().getNoInterior()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="80" width="192" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{receptor}.getDomicilio().getColonia()+", CP. "
++$F{receptor}.getDomicilio().getCodigoPostal()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="110" width="192" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{receptor}.getDomicilio().getPais()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="95" width="192" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{receptor}.getDomicilio().getMunicipio()+", "
++$F{receptor}.getDomicilio().getEstado()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="144" width="185" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getNombre()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="144" width="101" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getRfc()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="27" y="128" width="77" height="17"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[SUCURSAL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="14" y="159" width="185" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getExpedidoEn().getMunicipio()+", CP. "
++$F{emisor}.getExpedidoEn().getCodigoPostal()+", "
++$F{emisor}.getExpedidoEn().getEstado()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="159" width="191" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getExpedidoEn().getPais()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="5" y="135" width="1" height="38"/>
+			</line>
+			<line>
+				<reportElement x="5" y="135" width="23" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="14" y="20" width="192" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{receptor}.getNombre()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="20" width="191" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getNombre()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="144" width="253" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getExpedidoEn().getCalle()+
+" No ext: "
++$F{emisor}.getExpedidoEn().getNoExterior()+", No int: "
++$F{emisor}.getExpedidoEn().getNoInterior()+", Col. "
++$F{emisor}.getExpedidoEn().getColonia()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="103" splitType="Stretch">
+			<subreport>
+				<reportElement x="2" y="0" width="551" height="100"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{conceptos}.getConcepto())]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["ConceptosFacturaDigital.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15">
+			<staticText>
+				<reportElement x="2" y="0" width="553" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Este documento es una impresión de un comprobante fiscal digital]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="415" splitType="Immediate">
+			<staticText>
+				<reportElement x="5" y="161" width="100" height="13"/>
+				<textElement/>
+				<text><![CDATA[CadenaOriginal:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="100" width="41" height="13"/>
+				<textElement/>
+				<text><![CDATA[Sello:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="9" y="118" width="531" height="26"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sello}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="9" y="182" width="544" height="6"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cadenaOriginal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="348" y="66" width="100" height="20" forecolor="#FFFFFF" backcolor="#000066"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[ Total]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="448" y="66" width="100" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="348" y="42" width="100" height="20" forecolor="#FFFFFF" backcolor="#000066"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[ Subtotal]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="448" y="42" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="348" y="22" width="100" height="20" forecolor="#FFFFFF" backcolor="#000066"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[ Iva]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="448" y="22" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{impuestos}.getTotalImpuestosTrasladados()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="348" y="3" width="100" height="20" forecolor="#FFFFFF" backcolor="#000066"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[ Descuento]]></text>
+			</staticText>
+			<line>
+				<reportElement x="348" y="63" width="200" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="5" y="174" width="543" height="1"/>
+			</line>
+			<line>
+				<reportElement x="5" y="175" width="1" height="37"/>
+			</line>
+			<line>
+				<reportElement x="5" y="113" width="548" height="1"/>
+			</line>
+			<line>
+				<reportElement x="5" y="113" width="1" height="31"/>
+			</line>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="448" y="2" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{descuento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
