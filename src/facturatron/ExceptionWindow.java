@@ -24,9 +24,10 @@ public class ExceptionWindow extends javax.swing.JFrame {
 
     public static void show(Throwable e) {
         ExceptionWindow ew = new ExceptionWindow();
-        ew.getTxtExcepcion().setText(e.toString());
+        ew.getTxtExcepcion().setText(Misc.getStackTraceString(e));
         ew.setVisible(true);
     }
+
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -41,6 +42,7 @@ public class ExceptionWindow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtExcepcion = new javax.swing.JTextArea();
+        lblTituloError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mensaje de error");
@@ -58,30 +60,31 @@ public class ExceptionWindow extends javax.swing.JFrame {
         txtExcepcion.setRows(5);
         jScrollPane1.setViewportView(txtExcepcion);
 
+        lblTituloError.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblTituloError.setText("Error Desconocido");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(220, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(345, Short.MAX_VALUE)
-                .addComponent(btnCerrar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnCerrar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTituloError, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(lblTituloError)
+                .addGap(9, 9, 9)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCerrar)
                 .addContainerGap())
@@ -110,6 +113,7 @@ public class ExceptionWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnCerrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblTituloError;
     private javax.swing.JTextArea txtExcepcion;
     // End of variables declaration//GEN-END:variables
 
@@ -139,6 +143,13 @@ public class ExceptionWindow extends javax.swing.JFrame {
      */
     public void setTxtExcepcion(javax.swing.JTextArea txtExcepcion) {
         this.txtExcepcion = txtExcepcion;
+    }
+
+    /**
+     * @return the lblTituloError
+     */
+    public javax.swing.JLabel getLblTituloError() {
+        return lblTituloError;
     }
 
 }

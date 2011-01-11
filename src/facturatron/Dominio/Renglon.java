@@ -10,9 +10,11 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import mx.bigdata.sat.cfd.schema.Comprobante.Conceptos.Concepto;
 import mx.bigdata.sat.cfd.schema.ObjectFactory;
+import phesus.facturatron.lib.entities.ConceptoTron;
 
 /**
  *
@@ -67,8 +69,23 @@ public class Renglon extends Model implements Serializable {
         c1.setCantidad(new BigDecimal(getCantidad()).round(mc));
         c1.setDescripcion(getDescripcion());
         c1.setValorUnitario(new BigDecimal(getValorUniario()).round(mc));
-
         return c1;
+    }
+
+    public ConceptoTron toConceptoTron() {
+        Concepto c1 = toConcepto();
+        ConceptoTron ct1 = new ConceptoTron();
+        ct1.setCantidad(c1.getCantidad());
+        ct1.setComplementoConcepto(c1.getComplementoConcepto());
+        ct1.setCuentaPredial(c1.getCuentaPredial());
+        ct1.setDescripcion(c1.getDescripcion());
+        ct1.setImporte(c1.getImporte());
+        ct1.setNoIdentificacion(c1.getNoIdentificacion());
+        ct1.setUnidad(c1.getUnidad());
+        ct1.setValorUnitario(c1.getValorUnitario());
+        ct1.setEtiquetaImpuestos(getTasa0()?"":"im");
+
+        return ct1;
     }
 
     /**

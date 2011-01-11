@@ -5,6 +5,7 @@
 
 package facturatron.facturacion;
 
+import facturatron.Dominio.Factura.Estado;
 import facturatron.MVC.Controller;
 import facturatron.Principal.VisorPdf;
 import facturatron.facturacion.FacturaDao;
@@ -13,9 +14,11 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,19 +29,38 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
     public ListadoControl(){
         setView(new ListadoForm());
         setModel(new ListadoModel());
-        init();
     }
 
     @Override
     public void init() {
-        super.init();
-        getModel().load();
+        try {
+            notifyBusy();
+            super.init();
+            getModel().load();
+        } finally {
+            notifyIdle();
+        }
+    }
+
+    public void btnCancelarFactura() {
+        int row = getView().getTablaListado().getSelectedRow();
+        int id = getModel().getFacturas().get(row).getId();
+        FacturaDao factura = (FacturaDao) getModel().getDao().findBy(id);        
+        
+        String confirmMsg = "¿Realmente quiere cancelar la factura folio "+factura.getFolio()+"?";
+        if(JOptionPane.showConfirmDialog(getView(), confirmMsg) == JOptionPane.YES_OPTION) {
+            try {
+                factura.cancelar();
+                getModel().load();
+                JOptionPane.showMessageDialog(getView(), "Factura cancelada");
+            } catch (SQLException ex) {
+                Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "Error al almacenar factura cancelada", ex);
+            }
+        }
     }
 
     public void btnVerFactura() {
         try {
-            JFrame jf = new JFrame();
-            FacturaControl fc = new FacturaControl();
             int row = getView().getTablaListado().getSelectedRow();
             int id = getModel().getFacturas().get(row).getId();
             FacturaDao factura = (FacturaDao) getModel().getDao().findBy(id);
@@ -62,6 +84,12 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
 
     @Override
     public void asignarEventos() {
+        getView().getBtnCancelarFactura().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnCancelarFactura();
+            }
+        });
         getView().getBtnVerFactura().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {   //se crea una nueva ventana con los datos de la factura seleccionada
@@ -71,13 +99,21 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
         getView().getDesde().addPropertyChangeListener("date", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                getModel().setFechaInicial(new java.sql.Date(getView().getDesde().getDate().getTime()));
+                new Thread() { public void run() {
+                    notifyBusy();
+                    getModel().setFechaInicial(new java.sql.Date(getView().getDesde().getDate().getTime()));
+                    notifyIdle();
+                }}.start();
             }
         });
         getView().getHasta().addPropertyChangeListener("date", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                getModel().setFechaFinal(new java.sql.Date(getView().getHasta().getDate().getTime()));
+                new Thread() { public void run() {
+                    notifyBusy();
+                    getModel().setFechaFinal(new java.sql.Date(getView().getHasta().getDate().getTime()));
+                    notifyIdle();
+                }}.start();
             }
         });
     }
@@ -92,6 +128,5 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
         getView().getHasta().setDate(getModel().getFechaFinal());
         getModel().addObserver(getView());
     }
-
 
 }

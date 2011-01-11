@@ -21,15 +21,15 @@ public class Factura extends Model implements Serializable {
     /**
      * @return the estado
      */
-    public Estado getEstado() {
-        return estado;
+    public Estado getEstadoComprobante() {
+        return estadoComprobante;
     }
 
     /**
      * @param estado the estado to set
      */
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setEstadoComprobante(Estado estado) {
+        this.estadoComprobante = estado;
     }
 
     public enum Estado {CANCELADO, VIGENTE};
@@ -47,7 +47,7 @@ public class Factura extends Model implements Serializable {
     private Double total                 = 0d;
     private Double descuentoTasa0        = 0d;
     private Double descuentoTasa16       = 0d;
-    private Estado estado = Estado.VIGENTE;
+    private Estado estadoComprobante     = Estado.VIGENTE;
 
     private String tipoDeComprobante;
     private Persona emisor               = new Persona();

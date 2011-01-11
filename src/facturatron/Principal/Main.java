@@ -29,10 +29,6 @@ public class Main extends Controller<Model, MainForm> {
         setView(new MainForm());
         getView().setVisible(true);
         init();
-        //InfiniteProgressPanel glasspane = new InfiniteProgressPanel();
-        //getView().setGlassPane(glasspane);
-        //glasspane.start();
-        
     }
 
     @Override
@@ -50,17 +46,21 @@ public class Main extends Controller<Model, MainForm> {
 
     private void facturar() throws Exception {
         FacturaControl fs = new FacturaControl();
+        fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
         ((MainForm)getView()).addTab("Facturar", fs.getView());
     }
 
 
      private void clientes() throws Exception {
         ClienteControl fs = new ClienteControl();
+        fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
         ((MainForm)getView()).addTab("Clientes", fs.getView());
     }
 
      private void facturasEmitidas() throws Exception {
         ListadoControl lc = new ListadoControl();
+        lc.setBusyHandler(new ProgressPanelBusyHandler(getView()));
+        lc.init();
         ((MainForm)getView()).addTab("Facturas Emitidas", lc.getView());
     }
 
@@ -79,11 +79,17 @@ public class Main extends Controller<Model, MainForm> {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    facturar();
-                } catch (Exception ex) {
-                   Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
-                }            }
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {                            
+                           facturar();
+                        } catch (Exception ex) {
+                           Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
+                        } 
+                    }
+                }.start();
+            }
         }
         );
     }
@@ -93,11 +99,14 @@ public class Main extends Controller<Model, MainForm> {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    facturasEmitidas();
-                } catch (Exception ex) {
-                   Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
-                }            }
+                new Thread() { public void run() {
+                    try {
+                        facturasEmitidas();
+                    } catch (Exception ex) {
+                       Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
+                    }
+                }}.start();
+            }
         }
         );
     }

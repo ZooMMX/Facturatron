@@ -106,10 +106,16 @@ public class ClienteControl extends Controller<ClienteDao, ClienteForm> {
 
     @Override
     public void enlazarModeloVista() {
-        ClienteTableModel tabModel = new ClienteTableModel();
-        getView().getTablaCliente().setModel(tabModel);
-        getModel().addObserver(getView());
-        getView().setModelo(getModel());
+        new Thread() {
+            public void run() {
+                notifyBusy();
+                ClienteTableModel tabModel = new ClienteTableModel();
+                getView().getTablaCliente().setModel(tabModel);
+                getModel().addObserver(getView());
+                getView().setModelo(getModel());
+                notifyIdle();
+            }
+        }.start();
     }
 
 }

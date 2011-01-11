@@ -16,7 +16,10 @@ public class CEHandler extends Handler {
 
     @Override
     public void publish(LogRecord record) {
-        ExceptionWindow.show(record.getThrown());
+        ExceptionWindow ew = new ExceptionWindow();
+        ew.getLblTituloError().setText(record.getMessage());
+        ew.getTxtExcepcion().setText(Misc.getStackTraceString(record.getThrown()));
+        ew.setVisible(true);
         record.getThrown().printStackTrace();
     }
 

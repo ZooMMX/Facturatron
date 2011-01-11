@@ -10,6 +10,7 @@ package facturatron;
  * @author mora
  */
 public class UEHandler implements Thread.UncaughtExceptionHandler {
+    @Override
     public void uncaughtException(Thread th, Throwable ex) {
         ExceptionWindow.show(ex);
         ex.printStackTrace();

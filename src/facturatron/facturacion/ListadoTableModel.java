@@ -6,6 +6,7 @@
 package facturatron.facturacion;
 
 import facturatron.Dominio.Factura;
+import facturatron.Dominio.Factura.Estado;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
@@ -20,9 +21,9 @@ public class ListadoTableModel extends AbstractTableModel {
                         "Folio",
                         "RFC",
                         "Receptor",
-                        "Subtotal",
                         "Impuesto",
-                        "Importe"};
+                        "Importe",
+                        "Cancelada"};
     Class[] columnClasses = {
         String.class,
         String.class,
@@ -30,7 +31,7 @@ public class ListadoTableModel extends AbstractTableModel {
         String.class,
         Double.class,
         Double.class,
-        Double.class
+        Boolean.class
     };
     private ArrayList<Factura> data;
     public ListadoTableModel() {
@@ -72,11 +73,11 @@ public class ListadoTableModel extends AbstractTableModel {
             case 3:
                 return fila.getReceptor().getNombre();
             case 4:
-                return fila.getSubtotal();
-            case 5:
                 return fila.getIvaTrasladado();
-            case 6:
+            case 5:
                 return fila.getTotal();
+            case 6:
+                return fila.getEstadoComprobante()==Estado.CANCELADO;
         }
         return null;
     }

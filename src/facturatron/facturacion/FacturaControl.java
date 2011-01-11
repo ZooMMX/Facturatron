@@ -103,22 +103,26 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   }
   public void btnGuardar(){
 
-    getModel().setCertificado("NULO");
-    getModel().setEmisor((new ClienteDao()).findBy(1));
-    getModel().setEmisorSucursal((new ClienteDao()).findBy(2));
-    getModel().setFecha(Calendar.getInstance().getTime());
-    getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
-    getModel().setIvaTrasladado(Double.valueOf(getView().getTxtIva().getText().replaceAll(",", "")));
-    getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
-    getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
-    getModel().setTipoDeComprobante("ingreso");
-    getModel().setVersion("2.0");
-
+    notifyBusy();
     try {
-        getModel().persist();
+        getModel().setCertificado("NULO");
+        getModel().setEmisor((new ClienteDao()).findBy(1));
+        getModel().setEmisorSucursal((new ClienteDao()).findBy(2));
+        getModel().setFecha(Calendar.getInstance().getTime());
+        getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
+        getModel().setIvaTrasladado(Double.valueOf(getView().getTxtIva().getText().replaceAll(",", "")));
+        getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
+        getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
+        getModel().setTipoDeComprobante("ingreso");
+        getModel().setVersion("2.0");
+
         getView().getBtnGuardar().setEnabled(false);
+        getModel().persist();
     } catch (Exception ex) {
-        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, null, ex);
+        getView().getBtnGuardar().setEnabled(true);
+        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Error al generar factura", ex);
+    } finally {
+        notifyIdle();
     }
     
   }
@@ -131,7 +135,11 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Factura> rep = new ArrayList<Factura>();
-                btnGuardar();
+                new Thread() {
+                    public void run() {
+                        btnGuardar();
+                    }
+                }.start();
                 //  new Reporte("facturatron/factura.jasper",FacturaDao.findById(10)); //buscamos la ruta donde se encuentra el reporte jasper
                 // reporte.lanzarPreview(null);
             }
