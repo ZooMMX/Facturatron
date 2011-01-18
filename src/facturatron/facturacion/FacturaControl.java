@@ -21,6 +21,7 @@ import java.net.URI;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -101,6 +102,13 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       getModel().setIvaTrasladado(impuesto);
       getModel().setTotal(total);
   }
+  public void btnObservaciones() {
+      String observaciones = getModel().getObservaciones();
+      FacturaObservacionesDialog dialog = new FacturaObservacionesDialog(null, observaciones);
+      String newObs = dialog.lanzar();
+      if(newObs != null) { observaciones = newObs; }
+      getModel().setObservaciones(observaciones);
+  }
   public void btnGuardar(){
 
     notifyBusy();
@@ -157,6 +165,12 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 btnBuscarCliente();
             }
         });
+        getView().getBtnObservaciones().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnObservaciones();
+            }
+        } );
         DocumentListener dl = new DocumentListener() {
 
             @Override

@@ -52,6 +52,7 @@ CREATE  TABLE IF NOT EXISTS `facturatron`.`comprobante` (
   `motivoDescuento` VARCHAR(45) NULL DEFAULT NULL ,
   `xml` TEXT NULL DEFAULT NULL ,
   `estadoComprobante` ENUM('CANCELADO','VIGENTE') NOT NULL DEFAULT 'VIGENTE' ,
+  `observaciones` TEXT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_Comprobate_Persona1` (`idemisor` ASC) ,
   INDEX `fk_Comprobate_Persona2` (`idreceptor` ASC) ,

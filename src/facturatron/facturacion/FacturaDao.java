@@ -28,8 +28,6 @@ import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mx.bigdata.sat.cfd.schema.Comprobante.Conceptos;
-import mx.bigdata.sat.cfd.schema.Comprobante.Conceptos.Concepto;
 import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos;
 import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos.Traslados;
 import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos.Traslados.Traslado;
@@ -100,6 +98,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setTotal(new BigDecimal(getTotal()).round(mc));
         comp.setDescuento(new BigDecimal(getDescuentoTasa0()).round(mc).add(new BigDecimal(getDescuentoTasa16()).round(mc)));
         comp.setTipoDeComprobante(getTipoDeComprobante());
+        comp.setObservaciones(getObservaciones());
         Persona emSucursal = getEmisorSucursal();
         if(emSucursal.getEstado().isEmpty()) { emSucursal = null; }
         comp.setEmisor(getEmisor().toEmisor(emSucursal));
@@ -108,7 +107,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setConceptos(cTron.toConceptos());
         comp.setConceptosTron(cTron);
         comp.setImpuestos(getImpuestos());
-        comp.setSubtotalGravado(getSubtotalGravado());
+        comp.setSubtotalGravado16(getSubtotalGravado16());
+        comp.setSubtotalGravado0(getSubtotalGravado0());
         comp.setSubtotalExento(getSubtotalExento());
          
         return comp;
@@ -132,22 +132,31 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         List<Traslado> list = trs.getTraslado();
 
         Traslado t1 = of.createComprobanteImpuestosTrasladosTraslado();
+        Traslado t2 = of.createComprobanteImpuestosTrasladosTraslado();
         t1.setImporte(new BigDecimal(getIvaTrasladado()).round(mc));
         t1.setImpuesto("IVA");
         t1.setTasa(new BigDecimal("16.00"));
         list.add(t1);
+        t2.setImporte(new BigDecimal(0d));
+        t2.setImpuesto("IVA");
+        t2.setTasa(new BigDecimal("0.00"));
+        list.add(t2);
         imps.setTraslados(trs);
         imps.setTotalImpuestosTrasladados(new BigDecimal(getIvaTrasladado()).round(mc));
         return imps;
      }
 
-     public Double getSubtotalGravado() {
+     public Double getSubtotalGravado16() {
         Double iva = getIvaTrasladado();
         return iva/0.16;
      }
 
      public Double getSubtotalExento() {
-         return getTotal()-getIvaTrasladado()-getSubtotalGravado();
+         return 0d;
+     }
+
+     public Double getSubtotalGravado0() {
+         return getTotal()-getIvaTrasladado()-getSubtotalGravado16();
      }
 
      @Override
@@ -214,6 +223,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setMotivoDescuento(rs.getString("motivoDescuento"));
                 bean.setXml(rs.getString("xml"));
                 bean.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE")?Estado.VIGENTE:Estado.CANCELADO);
+                bean.setObservaciones(rs.getString("observaciones"));
                 ret.add(bean);
 
              }
@@ -262,8 +272,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
                     "(version,fecha,serie,folio,sello,noCertificado,noAprobacion,anoAprobacion," +
                     "formaDePago,subtotal,total,descuentoTasa0,descuentoTasa16,tipoDeComprobante,idEmisor, idReceptor," +
-                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             ps.setString(1, getVersion());
             ps.setDate(2, new java.sql.Date(getFecha().getTime()));
@@ -286,6 +296,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setString(19, getMotivoDescuento());
             ps.setString(20, getXml());
             ps.setString(21, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
+            ps.setString(22, getObservaciones());
 
             ps.execute();
 
@@ -354,6 +365,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setMotivoDescuento(rs.getString("motivoDescuento"));
             dao.setXml(rs.getString("xml"));
             dao.setEstadoComprobante(rs.getString("estadoComprobante")=="VIGENTE"?Estado.VIGENTE:Estado.CANCELADO);
+            dao.setObservaciones(rs.getString("observaciones"));
 
             rs = bd.getStmt().executeQuery("select * from concepto where id = "+id);//
             ArrayList <Renglon> renglones = new ArrayList <Renglon>();

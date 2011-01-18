@@ -32,6 +32,20 @@ public class Factura extends Model implements Serializable {
         this.estadoComprobante = estado;
     }
 
+    /**
+     * @return the observaciones
+     */
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    /**
+     * @param observaciones the observaciones to set
+     */
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
     public enum Estado {CANCELADO, VIGENTE};
     private Integer id;
     private String version;
@@ -48,6 +62,7 @@ public class Factura extends Model implements Serializable {
     private Double descuentoTasa0        = 0d;
     private Double descuentoTasa16       = 0d;
     private Estado estadoComprobante     = Estado.VIGENTE;
+    private String observaciones         = "";
 
     private String tipoDeComprobante;
     private Persona emisor               = new Persona();
