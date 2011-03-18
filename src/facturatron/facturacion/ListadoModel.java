@@ -17,7 +17,7 @@ import java.sql.Date;
  */
 public class ListadoModel extends Model {
     private FacturaDao dao;
-    private ArrayList<Factura> facturas = new ArrayList<Factura>();
+    private ArrayList<FacturaDao> facturas = new ArrayList<FacturaDao>();
     private Date fechaInicial  ;
     private Date fechaFinal;
     private Double subtotal = 0d;
@@ -52,14 +52,14 @@ public class ListadoModel extends Model {
     /**
      * @return the facturas
      */
-    public ArrayList<Factura> getFacturas() {
+    public ArrayList<FacturaDao> getFacturas() {
         return facturas;
     }
 
     /**
      * @param facturas the facturas to set
      */
-    public void setFacturas(ArrayList<Factura> facturas) {
+    public void setFacturas(ArrayList<FacturaDao> facturas) {
         if(this.facturas != null) {
             this.facturas.clear();
             this.facturas.addAll( facturas );

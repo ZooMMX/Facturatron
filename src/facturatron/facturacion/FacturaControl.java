@@ -11,6 +11,7 @@ import facturatron.Dominio.Renglon;
 import java.awt.event.ActionEvent;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import facturatron.MVC.Controller;
 import facturatron.cliente.ClienteDao;
@@ -19,6 +20,7 @@ import facturatron.config.ConfiguracionDao;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -113,10 +115,12 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
 
     notifyBusy();
     try {
+        Calendar time = Calendar.getInstance();
         getModel().setCertificado("NULO");
         getModel().setEmisor((new ClienteDao()).findBy(1));
         getModel().setEmisorSucursal((new ClienteDao()).findBy(2));
-        getModel().setFecha(Calendar.getInstance().getTime());
+        getModel().setFecha(time.getTime());
+        getModel().setHora(new Time(time.getTime().getTime()));
         getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
         getModel().setIvaTrasladado(Double.valueOf(getView().getTxtIva().getText().replaceAll(",", "")));
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());

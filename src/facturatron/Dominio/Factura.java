@@ -8,6 +8,7 @@ package facturatron.Dominio;
 import facturatron.MVC.Model;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,10 +47,25 @@ public class Factura extends Model implements Serializable {
         this.observaciones = observaciones;
     }
 
+    /**
+     * @return the hora
+     */
+    public Time getHora() {
+        return hora;
+    }
+
+    /**
+     * @param hora the hora to set
+     */
+    public void setHora(Time hora) {
+        this.hora = hora;
+    }
+
     public enum Estado {CANCELADO, VIGENTE};
     private Integer id;
     private String version;
     private Date fecha;
+    private Time hora;
     private String serie;
     private BigInteger folio;
     private String sello;

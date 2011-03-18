@@ -13,6 +13,7 @@ import facturatron.MVC.Model;
 import facturatron.cliente.ClienteControl;
 import facturatron.config.ConfiguracionControl;
 import facturatron.facturacion.FacturaControl;
+import facturatron.facturacion.InformeMensual.InformeControl;
 import facturatron.facturacion.ListadoControl;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +38,7 @@ public class Main extends Controller<Model, MainForm> {
         asignarLinkFactura();
         asignarLinkClientes();
         asignarLinkFacturasEmitidas();
+        asignarLinkInformeMensual();
         asignarLinkCfgFiscal();
         asignarLinkCfgSistema();
         asignarLinkSalir();
@@ -63,6 +65,12 @@ public class Main extends Controller<Model, MainForm> {
         lc.init();
         ((MainForm)getView()).addTab("Facturas Emitidas", lc.getView());
     }
+
+     private void informeMensual() throws Exception {
+        InformeControl cfc = new InformeControl();
+        ((MainForm)getView()).addTab("Informe Mensual SAT", cfc.getView());
+    }
+
 
      private void configFiscal() throws Exception {
         ConfigFiscalControl cfc = new ConfigFiscalControl();
@@ -110,6 +118,26 @@ public class Main extends Controller<Model, MainForm> {
         }
         );
     }
+
+
+    private void asignarLinkInformeMensual() {
+        getView().getLinkInformeMensual().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Thread() { public void run() {
+                    try {
+                        informeMensual();
+                    } catch (Exception ex) {
+                       Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
+                    }
+                }}.start();
+            }
+        }
+        );
+    }
+
+
 
     private void asignarLinkClientes() {
         getView().getLinkCatalogo().addActionListener(new ActionListener() {
@@ -182,6 +210,5 @@ public class Main extends Controller<Model, MainForm> {
     public void enlazarModeloVista() {
         //Éste controlador no tiene modelo
     }
-
 
 }

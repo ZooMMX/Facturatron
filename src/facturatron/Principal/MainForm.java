@@ -39,6 +39,7 @@ public class MainForm extends javax.swing.JFrame {
         jXTaskPane1 = new org.jdesktop.swingx.JXTaskPane();
         linkFacturar = new org.jdesktop.swingx.JXHyperlink();
         linkFacturasEmitidas = new org.jdesktop.swingx.JXHyperlink();
+        linkInformeMensual = new org.jdesktop.swingx.JXHyperlink();
         jXTaskPane2 = new org.jdesktop.swingx.JXTaskPane();
         linkCatalogo = new org.jdesktop.swingx.JXHyperlink();
         jXTaskPane3 = new org.jdesktop.swingx.JXTaskPane();
@@ -67,6 +68,15 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
         jXTaskPane1.getContentPane().add(linkFacturasEmitidas);
+
+        linkInformeMensual.setText("Informe Mensual SAT");
+        linkInformeMensual.setUnclickedColor(new java.awt.Color(0, 0, 0));
+        linkInformeMensual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                linkInformeMensualActionPerformed(evt);
+            }
+        });
+        jXTaskPane1.getContentPane().add(linkInformeMensual);
 
         jXTaskPaneContainer1.add(jXTaskPane1);
 
@@ -153,6 +163,10 @@ public class MainForm extends javax.swing.JFrame {
         
     }//GEN-LAST:event_linkSalirActionPerformed
 
+    private void linkInformeMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkInformeMensualActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_linkInformeMensualActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -179,6 +193,7 @@ public class MainForm extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXHyperlink linkCfgSystem;
     private org.jdesktop.swingx.JXHyperlink linkFacturar;
     private org.jdesktop.swingx.JXHyperlink linkFacturasEmitidas;
+    private org.jdesktop.swingx.JXHyperlink linkInformeMensual;
     private org.jdesktop.swingx.JXHyperlink linkSalir;
     private javax.swing.JMenu menu;
     private javax.swing.JMenuItem menuSalir;
@@ -357,6 +372,13 @@ public class MainForm extends javax.swing.JFrame {
      */
     public org.jdesktop.swingx.JXHyperlink getLinkCfgSystem() {
         return linkCfgSystem;
+    }
+
+    /**
+     * @return the linkInformeMensual
+     */
+    public org.jdesktop.swingx.JXHyperlink getLinkInformeMensual() {
+        return linkInformeMensual;
     }
 
 

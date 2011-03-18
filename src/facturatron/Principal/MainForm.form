@@ -91,6 +91,17 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="linkFacturasEmitidasActionPerformed"/>
               </Events>
             </Component>
+            <Component class="org.jdesktop.swingx.JXHyperlink" name="linkInformeMensual">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Informe Mensual SAT"/>
+                <Property name="unclickedColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="0" type="rgb"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="linkInformeMensualActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="org.jdesktop.swingx.JXTaskPane" name="jXTaskPane2">

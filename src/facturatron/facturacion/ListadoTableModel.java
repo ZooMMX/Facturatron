@@ -33,9 +33,9 @@ public class ListadoTableModel extends AbstractTableModel {
         Double.class,
         Boolean.class
     };
-    private ArrayList<Factura> data;
+    private ArrayList<FacturaDao> data;
     public ListadoTableModel() {
-        data = new ArrayList<Factura>();
+        data = new ArrayList<FacturaDao>();
     }
 
     @Override
@@ -91,14 +91,14 @@ public class ListadoTableModel extends AbstractTableModel {
     /**
      * @return the data
      */
-    public ArrayList<Factura> getData() {
+    public ArrayList<FacturaDao> getData() {
         return data;
     }
 
     /**
      * @param data the data to set
      */
-    public void setData(ArrayList<Factura> data) {
+    public void setData(ArrayList<FacturaDao> data) {
         this.data = data;
     }
 

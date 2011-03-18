@@ -25,7 +25,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos;
@@ -45,6 +47,12 @@ import phesus.facturatron.lib.entities.ConceptosTron;
 public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
     private Configuracion config;
+    Calendar cal = Calendar.getInstance();
+    TimeZone tz = TimeZone.getTimeZone("America/Mexico_City");
+
+    public FacturaDao() {
+        cal.setTimeZone(tz);
+    }
 
     /** Carga el archivo de configuración y lo almacena en memoria.
      * Importante: Sólo carga el archivo de configuración una vez por instancia, las demás
@@ -88,7 +96,17 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         MathContext mc = MathContext.DECIMAL32;
         ComprobanteTron comp = new ComprobanteTron();
         comp.setVersion(getVersion());
-        comp.setFecha(new java.util.Date());
+
+        Calendar dCal = Calendar.getInstance();
+        dCal.setTime(getFecha());
+        Calendar tCal = Calendar.getInstance();
+        tCal.setTime(getHora());
+        dCal.set(Calendar.HOUR_OF_DAY, tCal.get(Calendar.HOUR_OF_DAY));
+        dCal.set(Calendar.MINUTE, tCal.get(Calendar.MINUTE));
+        dCal.set(Calendar.SECOND, tCal.get(Calendar.SECOND));
+        dCal.set(Calendar.MILLISECOND, tCal.get(Calendar.MILLISECOND));
+
+        comp.setFecha(dCal.getTime());
         comp.setSerie(getSerie());
         comp.setFolio(String.valueOf(getFolio()));
         comp.setNoAprobacion(getNoAprobacion());
@@ -110,6 +128,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setSubtotalGravado16(getSubtotalGravado16());
         comp.setSubtotalGravado0(getSubtotalGravado0());
         comp.setSubtotalExento(getSubtotalExento());
+        comp.setEstadoComprobante(getEstadoComprobante()==getEstadoComprobante().VIGENTE?true:false);
          
         return comp;
      }
@@ -187,7 +206,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         notifyObservers();
      }
 
-     public ArrayList<Factura> findAll(Date fechaInicial, Date fechaFinal){
+     public ArrayList<FacturaDao> findAll(Date fechaInicial, Date fechaFinal){
          JDBCDAOSupport bd = getBD();
          try {
 
@@ -196,14 +215,15 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setDate(1, fechaInicial);
             ps.setDate(2, fechaFinal);
             ResultSet rs = ps.executeQuery();
-            ArrayList<Factura> ret = new ArrayList<Factura>();
-            Factura bean;
+            ArrayList<FacturaDao> ret = new ArrayList<FacturaDao>();
+            FacturaDao bean;
             while (rs.next()) {
-                
-                bean = new Factura();
+
+                bean = new FacturaDao();
                 bean.setId(rs.getInt("id"));
                 bean.setVersion(rs.getString("version"));
                 bean.setFecha(rs.getDate("fecha"));
+                bean.setHora(rs.getTime("hora",cal));
                 bean.setSerie(rs.getString("serie"));
                 bean.setFolio(BigInteger.valueOf(rs.getLong("folio")));
                 bean.setSello(rs.getString("sello"));
@@ -272,8 +292,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
                     "(version,fecha,serie,folio,sello,noCertificado,noAprobacion,anoAprobacion," +
                     "formaDePago,subtotal,total,descuentoTasa0,descuentoTasa16,tipoDeComprobante,idEmisor, idReceptor," +
-                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             ps.setString(1, getVersion());
             ps.setDate(2, new java.sql.Date(getFecha().getTime()));
@@ -297,6 +317,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setString(20, getXml());
             ps.setString(21, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
             ps.setString(22, getObservaciones());
+            ps.setTime  (23, getHora());
 
             ps.execute();
 
@@ -346,6 +367,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setId(id);
             dao.setVersion(rs.getString("version"));
             dao.setFecha(rs.getDate("fecha"));
+            dao.setHora(rs.getTime("hora", Calendar.getInstance()));
             dao.setSerie(rs.getString("serie"));
             dao.setFolio(BigInteger.valueOf(rs.getLong("folio")));
             dao.setSello(rs.getString("sello"));
