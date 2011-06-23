@@ -21,6 +21,7 @@ public class Serie extends Model implements Serializable {
     private Integer folioInicial;
     private Integer folioFinal;
     private BigInteger folioActual;
+    private String tipo = "ingreso";
 
     /**
      * @return the noAprobacion
@@ -118,6 +119,20 @@ public class Serie extends Model implements Serializable {
      */
     public void setFolioActual(BigInteger folioActual) {
         this.folioActual = folioActual;
+    }
+
+    /**
+     * @return the tipo
+     */
+    public String getTipo() {
+        return tipo;
+    }
+
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     

@@ -128,7 +128,12 @@ public class FacturaTableModel extends AbstractTableModel {
         Double cantidad = renglon.getCantidad();
         Double valor    = renglon.getValorUniario();
 
+        Double importe = redondear(cantidad * valor);
         renglon.setImporte(cantidad * valor);
+    }
+
+    private Double redondear(double d) {
+        return Math.ceil(d*100)/100;
     }
 
     /**

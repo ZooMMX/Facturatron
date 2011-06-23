@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
@@ -58,7 +58,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnObservaciones" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="244" max="32767" attributes="0"/>
+                  <EmptySpace pref="205" max="32767" attributes="0"/>
                   <Component id="btnGuardar" min="-2" pref="167" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -116,13 +116,13 @@
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txtNombre" pref="334" max="32767" attributes="2"/>
-                      <Component id="txtRfc" alignment="0" pref="334" max="32767" attributes="2"/>
-                      <Component id="jScrollPane2" alignment="0" pref="334" max="32767" attributes="2"/>
+                      <Component id="txtNombre" pref="276" max="32767" attributes="2"/>
+                      <Component id="txtRfc" alignment="0" pref="276" max="32767" attributes="2"/>
+                      <Component id="jScrollPane2" alignment="0" pref="276" max="32767" attributes="2"/>
                   </Group>
                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txtFormaDePago" alignment="1" pref="167" max="32767" attributes="0"/>
+                      <Component id="txtFormaDePago" alignment="1" pref="185" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jLabel11" alignment="0" min="0" pref="0" max="32767" attributes="1"/>
@@ -133,13 +133,13 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtIdCliente" pref="31" max="32767" attributes="0"/>
+                                  <Component id="txtIdCliente" pref="18" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnBuscarCliente" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="txtSerie" alignment="1" pref="102" max="32767" attributes="0"/>
-                              <Component id="jComboBox1" alignment="0" pref="102" max="32767" attributes="0"/>
-                              <Component id="txtFolio" alignment="1" pref="102" max="32767" attributes="0"/>
+                              <Component id="txtSerie" alignment="1" pref="112" max="32767" attributes="0"/>
+                              <Component id="jComboBox1" alignment="0" pref="112" max="32767" attributes="0"/>
+                              <Component id="txtFolio" alignment="1" pref="112" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -158,7 +158,7 @@
                           <Component id="jLabel9" alignment="3" max="32767" attributes="1"/>
                           <Component id="txtIdCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="btnBuscarCliente" alignment="0" pref="25" max="32767" attributes="1"/>
+                      <Component id="btnBuscarCliente" alignment="0" pref="31" max="32767" attributes="1"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -319,12 +319,14 @@
         <Component class="javax.swing.JComboBox" name="jComboBox1">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
+              <StringArray count="1">
                 <StringItem index="0" value="Factura"/>
-                <StringItem index="1" value="Nota de cr&#xe9;dito"/>
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox1ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -337,38 +339,38 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" alignment="1" pref="593" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" alignment="1" pref="563" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel5" pref="136" max="32767" attributes="0"/>
+                              <Component id="jLabel5" max="32767" attributes="0"/>
                               <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="1"/>
                               <Component id="jLabel12" min="-2" max="-2" attributes="1"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="txtDescuentoTasa16" pref="128" max="32767" attributes="0"/>
+                                  <Component id="txtDescuentoTasa16" pref="109" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                                   <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtDescuentoTasa0" pref="128" max="32767" attributes="0"/>
+                                  <Component id="txtDescuentoTasa0" pref="108" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                                   <Component id="jLabel7" min="-2" max="-2" attributes="1"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtMotivoDescuento" pref="128" max="32767" attributes="0"/>
+                                  <Component id="txtMotivoDescuento" pref="109" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                                   <Component id="jLabel6" min="-2" pref="80" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtIva" pref="202" max="32767" attributes="2"/>
-                              <Component id="txtSubtotal" pref="202" max="32767" attributes="2"/>
-                              <Component id="txtTotal" pref="202" max="32767" attributes="2"/>
+                              <Component id="txtIva" pref="181" max="32767" attributes="2"/>
+                              <Component id="txtSubtotal" pref="181" max="32767" attributes="2"/>
+                              <Component id="txtTotal" pref="181" max="32767" attributes="2"/>
                           </Group>
                       </Group>
                   </Group>
@@ -380,7 +382,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="58" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="27" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="1"/>
@@ -512,7 +514,6 @@
           <SubComponents>
             <Component class="org.jdesktop.swingx.JXTable" name="tabConceptos">
               <Properties>
-                <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="4">
                     <Column editable="true" title="Title 1" type="java.lang.Object"/>

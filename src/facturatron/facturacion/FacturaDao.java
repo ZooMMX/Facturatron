@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos;
 import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos.Traslados;
 import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos.Traslados.Traslado;
@@ -166,8 +167,11 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
      }
 
      public Double getSubtotalGravado16() {
-        Double iva = getIvaTrasladado();
-        return iva/0.16;
+        Double gravado = 0d;
+        for (Renglon renglon : getRenglones()) {
+            if(!renglon.getTasa0()) { gravado += renglon.getImporte(); }
+        }
+        return gravado;
      }
 
      public Double getSubtotalExento() {
@@ -175,7 +179,11 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
      }
 
      public Double getSubtotalGravado0() {
-         return getTotal()-getIvaTrasladado()-getSubtotalGravado16();
+        Double gravado0 = 0d;
+        for (Renglon renglon : getRenglones()) {
+            if(renglon.getTasa0()) { gravado0 += renglon.getImporte(); }
+        }
+        return gravado0;
      }
 
      @Override

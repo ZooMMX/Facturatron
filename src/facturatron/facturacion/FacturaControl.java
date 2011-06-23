@@ -9,6 +9,7 @@ import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Renglon;
 import java.awt.event.ActionEvent;
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -36,6 +37,8 @@ import javax.swing.event.TableModelListener;
  */
 public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //solo controlador
 
+  ConfigFiscalDao configFiscal;
+
   public FacturaControl(){
       setModel(setupAndInstanceModel());
       setView(new FacturaForm());
@@ -44,7 +47,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
 
   public FacturaDao setupAndInstanceModel() {
       FacturaDao      dao          = new FacturaDao();
-      ConfigFiscalDao configFiscal = new ConfigFiscalDao();
+      configFiscal = new ConfigFiscalDao();
       configFiscal.load();
       dao.setAnoAprobacion(configFiscal.getAnoAprobacion());
       dao.setNoAprobacion(configFiscal.getNoAprobacion());
@@ -97,12 +100,13 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       if(descuento0 < importe0) { importe0 = importe0 - descuento0; }
       if(descuento16 < importe16) { importe16 = importe16 - descuento16; }
 
-      impuesto   = importe16 * 0.16;
+      impuesto   = redondear(importe16 * 0.16);
       total      = importe0 + importe16 + impuesto;
-
+      
       getModel().setSubtotal(subtotal);
       getModel().setIvaTrasladado(impuesto);
       getModel().setTotal(total);
+
   }
   public void btnObservaciones() {
       String observaciones = getModel().getObservaciones();
@@ -129,7 +133,15 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setVersion("2.0");
 
         getView().getBtnGuardar().setEnabled(false);
-        getModel().persist();
+        Integer folio    = getModel().getFolio().intValue();
+        Integer folioMin = configFiscal.getFolioInicial();
+        Integer folioFin = configFiscal.getFolioFinal();
+
+        if(folio < folioMin  || folio > folioFin) {
+            JOptionPane.showMessageDialog(getView(), "Folio fuera de rango. Posiblemente se terminaron los folios asignados por el SAT. Revise su configuración fiscal.");
+        } else {
+            getModel().persist();
+        }
     } catch (Exception ex) {
         getView().getBtnGuardar().setEnabled(true);
         Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Error al generar factura", ex);

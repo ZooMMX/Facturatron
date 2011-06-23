@@ -114,6 +114,7 @@ public class SerieDao extends Serie implements DAO<Integer,Serie> {
         this.setNoCertificado(rs.getString("noCertificado"));
         this.setSerie(rs.getString("serie"));
         this.setFolioActual(BigInteger.valueOf(rs.getLong("folioActual")));
+        //this.setTipo(rs.getString("tipo"));
 
         setChanged();
         notifyObservers();
@@ -134,6 +135,7 @@ public class SerieDao extends Serie implements DAO<Integer,Serie> {
             ps.setInt   (5, getFolioInicial());
             ps.setInt   (6, getFolioFinal());
             ps.setLong  (7, getFolioActual().longValue());
+            //ps.setString(8, getTipo());
 
             ps.execute();
     }
