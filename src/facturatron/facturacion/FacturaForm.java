@@ -63,6 +63,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         jXTitledPanel3 = new org.jdesktop.swingx.JXTitledPanel();
         btnGuardar = new javax.swing.JButton();
         btnObservaciones = new org.jdesktop.swingx.JXButton();
+        btnTicket = new javax.swing.JButton();
         jXTitledPanel2 = new org.jdesktop.swingx.JXTitledPanel();
         jLabel9 = new javax.swing.JLabel();
         txtIdCliente = new javax.swing.JFormattedTextField();
@@ -112,6 +113,8 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         btnObservaciones.setText("Ver/Editar Observaciones");
         btnObservaciones.setFont(new java.awt.Font("Tahoma", 0, 14));
 
+        btnTicket.setText("Añadir ticket");
+
         javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
         jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
         jXTitledPanel3Layout.setHorizontalGroup(
@@ -119,7 +122,9 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 205, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnTicket)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -129,7 +134,8 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                 .addContainerGap()
                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
-                    .addComponent(btnObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTicket))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -205,12 +211,12 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                    .addComponent(txtRfc, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                    .addComponent(txtRfc, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtFormaDePago, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                    .addComponent(txtFormaDePago, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
                     .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
@@ -220,12 +226,12 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel2Layout.createSequentialGroup()
-                                .addComponent(txtIdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
+                                .addComponent(txtIdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 15, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnBuscarCliente))
-                            .addComponent(txtSerie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, 112, Short.MAX_VALUE)
-                            .addComponent(txtFolio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))))
+                            .addComponent(txtSerie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                            .addComponent(jComboBox1, 0, 109, Short.MAX_VALUE)
+                            .addComponent(txtFolio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jXTitledPanel2Layout.setVerticalGroup(
@@ -342,7 +348,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
                     .addGroup(jXTitledPanel1Layout.createSequentialGroup()
                         .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -351,22 +357,22 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
-                                .addComponent(txtDescuentoTasa16, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                                .addComponent(txtDescuentoTasa16, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                                 .addGap(73, 73, 73)
                                 .addComponent(jLabel13))
                             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
-                                .addComponent(txtDescuentoTasa0, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                                .addComponent(txtDescuentoTasa0, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                                 .addGap(50, 50, 50)
                                 .addComponent(jLabel7))
                             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
-                                .addComponent(txtMotivoDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                                .addComponent(txtMotivoDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                                 .addGap(39, 39, 39)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtIva, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                            .addComponent(txtSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                            .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))))
+                            .addComponent(txtIva, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                            .addComponent(txtSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jXTitledPanel1Layout.setVerticalGroup(
@@ -454,6 +460,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnGuardar;
     private org.jdesktop.swingx.JXButton btnObservaciones;
+    private javax.swing.JButton btnTicket;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -734,6 +741,20 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
      */
     public org.jdesktop.swingx.JXButton getBtnObservaciones() {
         return btnObservaciones;
+    }
+
+    /**
+     * @return the btnTicket
+     */
+    public javax.swing.JButton getBtnTicket() {
+        return btnTicket;
+    }
+
+    /**
+     * @param btnTicket the btnTicket to set
+     */
+    public void setBtnTicket(javax.swing.JButton btnTicket) {
+        this.btnTicket = btnTicket;
     }
 
 }

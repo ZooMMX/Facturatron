@@ -7,6 +7,7 @@ package facturatron.Dominio;
 
 import facturatron.MVC.Model;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -73,10 +74,10 @@ public class Factura extends Model implements Serializable {
     private BigInteger noAprobacion;
     private Integer anoAprobacion;
     private String formaDePago           = "UNA SOLA EXHIBICIÓN";
-    private Double subtotal              = 0d;
-    private Double total                 = 0d;
-    private Double descuentoTasa0        = 0d;
-    private Double descuentoTasa16       = 0d;
+    private BigDecimal subtotal              = new BigDecimal("0.0");
+    private BigDecimal total                 = new BigDecimal("0.0");
+    private BigDecimal descuentoTasa0        = new BigDecimal("0.0");
+    private BigDecimal descuentoTasa16       = new BigDecimal("0.0");
     private Estado estadoComprobante     = Estado.VIGENTE;
     private String observaciones         = "";
 
@@ -84,11 +85,18 @@ public class Factura extends Model implements Serializable {
     private Persona emisor               = new Persona();
     private Persona emisorSucursal       = new Persona();
     private Persona receptor             = new Persona();
-    private Double ivaTrasladado         = 0d;
+    private BigDecimal ivaTrasladado         = new BigDecimal("0.0");
     private String certificado;
     private String motivoDescuento;
     private String xml;
     private ArrayList<Renglon> renglones = new ArrayList<Renglon>();
+
+    public Factura() {
+        subtotal.setScale(2);
+        total.setScale(2);
+        descuentoTasa0.setScale(2);
+        descuentoTasa16.setScale(2);
+    }
     
   public static List createBeanCollection(){
 
@@ -156,28 +164,28 @@ public class Factura extends Model implements Serializable {
     /**
      * @return the subtotal
      */
-    public Double getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
     /**
      * @param subtotal the subtotal to set
      */
-    public void setSubtotal(Double subtotal) {
+    public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
 
     /**
      * @return the total
      */
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
     /**
      * @param total the total to set
      */
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
@@ -354,14 +362,14 @@ public class Factura extends Model implements Serializable {
     /**
      * @return the ivaTrasladado
      */
-    public Double getIvaTrasladado() {
+    public BigDecimal getIvaTrasladado() {
         return ivaTrasladado;
     }
 
     /**
      * @param ivaTrasladado the ivaTrasladado to set
      */
-    public void setIvaTrasladado(Double ivaTrasladado) {
+    public void setIvaTrasladado(BigDecimal ivaTrasladado) {
         this.ivaTrasladado = ivaTrasladado;
     }
 
@@ -391,28 +399,28 @@ public class Factura extends Model implements Serializable {
     /**
      * @return the descuento
      */
-    public Double getDescuentoTasa0() {
+    public BigDecimal getDescuentoTasa0() {
         return descuentoTasa0;
     }
 
     /**
      * @param descuento the descuento to set
      */
-    public void setDescuentoTasa0(Double descuento) {
+    public void setDescuentoTasa0(BigDecimal descuento) {
         this.descuentoTasa0 = descuento;
     }
 
     /**
      * @return the descuento
      */
-    public Double getDescuentoTasa16() {
+    public BigDecimal getDescuentoTasa16() {
         return descuentoTasa16;
     }
 
     /**
      * @param descuento the descuento to set
      */
-    public void setDescuentoTasa16(Double descuento) {
+    public void setDescuentoTasa16(BigDecimal descuento) {
         this.descuentoTasa16 = descuento;
     }
 

@@ -6,14 +6,21 @@
 package facturatron.facturacion;
 
 import facturatron.Dominio.Renglon;
+import java.awt.Component;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
  * @author Octavio
  */
 public class FacturaTableModel extends AbstractTableModel {
+
+    //Algunos procesos pueden depender del orden de éstas columnas. Por ejemplo añadir tickets desde omoikane
     String[] columnNames = {"Cantidad",
                         "Código",
                         "Descripción",
@@ -22,16 +29,17 @@ public class FacturaTableModel extends AbstractTableModel {
                         "Tasa 0%",
                         "Importe"};
     Class[] columnClasses = {
-        Double.class,
+        BigDecimal.class,
         String.class,
         String.class,
         String.class,
-        Double.class,
+        BigDecimal.class,
         Boolean.class,
-        Double.class
+        BigDecimal.class
     };
     private ArrayList<Renglon> data = new ArrayList<Renglon>();
     public FacturaTableModel() {
+        
     }
 
     public void addRow() {
@@ -99,7 +107,7 @@ public class FacturaTableModel extends AbstractTableModel {
         Renglon fila = getData().get(row);
         switch(col) {
             case 0:
-                fila.setCantidad((Double) value);
+                fila.setCantidad((BigDecimal)value);
                 updateImporte(fila);
                 break;
             case 1:
@@ -112,7 +120,7 @@ public class FacturaTableModel extends AbstractTableModel {
                 fila.setUnidad((String) value);
                 break;
             case 4:
-                fila.setValorUniario((Double) value);
+                fila.setValorUniario((BigDecimal)value);
                 updateImporte(fila);
                 break;
             case 5:
@@ -125,15 +133,11 @@ public class FacturaTableModel extends AbstractTableModel {
         fireTableCellUpdated(row, col);
     }
     public void updateImporte(Renglon renglon) {
-        Double cantidad = renglon.getCantidad();
-        Double valor    = renglon.getValorUniario();
+        BigDecimal cantidad = renglon.getCantidad();
+        BigDecimal valor    = renglon.getValorUniario();
 
-        Double importe = redondear(cantidad * valor);
-        renglon.setImporte(cantidad * valor);
-    }
-
-    private Double redondear(double d) {
-        return Math.ceil(d*100)/100;
+        BigDecimal importe = cantidad.multiply(valor);
+        renglon.setImporte(importe);
     }
 
     /**
@@ -150,4 +154,21 @@ public class FacturaTableModel extends AbstractTableModel {
         this.data = data;
     }
 
+
+    public static class DecimalFormatRenderer extends DefaultTableCellRenderer {
+        private static final DecimalFormat formatter = new DecimalFormat( "#,##0.00" );
+
+        @Override
+        public Component getTableCellRendererComponent(
+            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            // First format the cell value as required
+            setHorizontalAlignment(RIGHT);
+            value = formatter.format((Number)value);
+
+            // And pass it on to parent class
+
+            return super.getTableCellRendererComponent(
+				table, value, isSelected, hasFocus, row, column );
+        }
+    }
 }
