@@ -18,12 +18,17 @@ import facturatron.MVC.Controller;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfigFiscalDao;
 import facturatron.config.ConfiguracionDao;
+import facturatron.omoikane.RenglonTicket;
+import facturatron.omoikane.Ticket;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.PersistenceException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -63,8 +68,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       String txtDesc16 = getView().getTxtDescuentoTasa16().getText();
             
       try {
-          getModel().setDescuentoTasa0(Double.valueOf(txtDesc0.replaceAll(",", "")));
-          getModel().setDescuentoTasa16(Double.valueOf(txtDesc16.replaceAll(",", "")));
+          getModel().setDescuentoTasa0 (new BigDecimal(txtDesc0 .replaceAll(",", "")));
+          getModel().setDescuentoTasa16(new BigDecimal(txtDesc16.replaceAll(",", "")));
       } catch(NumberFormatException nfe) {
           txtDesc0  = "0";
           txtDesc16 = "0";
@@ -82,26 +87,41 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   }
 
   public void renglonesActualizados() {
-      Double subtotal = 0d, impuesto = 0d, total = 0d, descuento0 = 0d, descuento16 = 16d, importe0 = 0d, importe16 = 0d;
+      MathContext mc = MathContext.DECIMAL128;
+
+      BigDecimal subtotal    = new BigDecimal("0.00", mc);
+      BigDecimal impuesto    = new BigDecimal("0.00", mc);
+      BigDecimal total       = new BigDecimal("0.00", mc);
+      BigDecimal descuento0  = new BigDecimal("0.00", mc);
+      BigDecimal descuento16 = new BigDecimal("16.00", mc);
+      BigDecimal importe0    = new BigDecimal("0.00", mc);
+      BigDecimal importe16   = new BigDecimal("0.00", mc);
+
+      subtotal   .setScale(2);
+      impuesto   .setScale(2);
+      total      .setScale(2);
+      descuento0 .setScale(2);
+      descuento16.setScale(2);
+      importe0   .setScale(2);
+      importe16  .setScale(2);
 
       for (Renglon renglon : getModel().getRenglones()) {
           if(renglon.getTasa0()) {
-              importe0 += renglon.getImporte();
+              importe0 = importe0.add(renglon.getImporte());
           } else {
-              importe16 += renglon.getImporte();
+              importe16 = importe16.add(renglon.getImporte());
           }
-
-          subtotal += renglon.getImporte();
+          subtotal = subtotal.add(renglon.getImporte());
       }
 
       descuento0 = getModel().getDescuentoTasa0();
       descuento16= getModel().getDescuentoTasa16();
 
-      if(descuento0 < importe0) { importe0 = importe0 - descuento0; }
-      if(descuento16 < importe16) { importe16 = importe16 - descuento16; }
+      if(descuento0  .compareTo(importe0)  < 0) { importe0  = importe0 .subtract(descuento0 ); }
+      if(descuento16 .compareTo(importe16) < 0) { importe16 = importe16.subtract(descuento16); }
 
-      impuesto   = redondear(importe16 * 0.16);
-      total      = importe0 + importe16 + impuesto;
+      impuesto   = importe16.multiply(new BigDecimal("0.16"), mc);
+      total      = importe0.add(importe16, mc).add(impuesto, mc);
       
       getModel().setSubtotal(subtotal);
       getModel().setIvaTrasladado(impuesto);
@@ -115,6 +135,41 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       if(newObs != null) { observaciones = newObs; }
       getModel().setObservaciones(observaciones);
   }
+  /*
+   * Éste método no importa el importe de cada renglón ni de la venta general, su cálculo es responsabilidad de los modelos
+   * de la factura
+   */
+  public void btnAddTicket() {
+      try {
+          AddTicketDialog dialog = new AddTicketDialog(null);
+          notifyBusy();
+          String idTicket = dialog.lanzar();
+          if(idTicket != null) {
+              String[] args = idTicket.split("-");
+              Integer           idAlmacen = Integer.valueOf(args[0]);
+              Integer           idCaja    = Integer.valueOf(args[1]);
+              Integer           idVenta   = Integer.valueOf(args[2]);
+              FacturaTableModel modelo    = (FacturaTableModel) getView().getTabConceptos().getModel();
+              Ticket            t         = Ticket.getTicketData(idAlmacen, idCaja, idVenta);
+              for (RenglonTicket renglon : t) {
+                  modelo.setValueAt(renglon.cantidad      , modelo.getRowCount()-1, 0); //0 = Columna cantidad
+                  modelo.setValueAt(renglon.codigo        , modelo.getRowCount()-1, 1);
+                  modelo.setValueAt(renglon.descripcion   , modelo.getRowCount()-1, 2); //2 = Descripción
+                  modelo.setValueAt(renglon.unidad        , modelo.getRowCount()-1, 3); //3 = Unidad
+                  modelo.setValueAt(renglon.precioUnitario, modelo.getRowCount()-1, 4); //4 = Precio unitario
+                  modelo.setValueAt(!renglon.impuestos    , modelo.getRowCount()-1, 5); //5 = Impuestos 0%
+              }
+          }
+      } catch(NumberFormatException nfe) {
+          Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", nfe);
+      } catch(ArrayIndexOutOfBoundsException ae) {
+          Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", ae);
+      } catch(PersistenceException pe) {
+          Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "No se pudo conectar a la base de datos del punto de venta", pe);
+      } finally {
+          notifyIdle();
+      }
+  }
   public void btnGuardar(){
 
     notifyBusy();
@@ -126,7 +181,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setFecha(time.getTime());
         getModel().setHora(new Time(time.getTime().getTime()));
         getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
-        getModel().setIvaTrasladado(Double.valueOf(getView().getTxtIva().getText().replaceAll(",", "")));
+        getModel().setIvaTrasladado(new BigDecimal(getView().getTxtIva().getText().replaceAll(",", "")));
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
         getModel().setTipoDeComprobante("ingreso");
@@ -187,6 +242,12 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 btnObservaciones();
             }
         } );
+        getView().getBtnTicket().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnAddTicket();
+            }
+        });
         DocumentListener dl = new DocumentListener() {
 
             @Override
@@ -214,12 +275,10 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         ftm.setData(getModel().getRenglones());
         ftm.addRow();
         getView().getTabConceptos().setModel(ftm);
+        getView().getTabConceptos().setDefaultRenderer(BigDecimal.class, new FacturaTableModel.DecimalFormatRenderer());
         getView().setModelo(getModel());
         getModel().addObserver(getView());
     }
 
-    private Double redondear(double d) {
-        return Math.ceil(d*100)/100;
-    }
 
 }
