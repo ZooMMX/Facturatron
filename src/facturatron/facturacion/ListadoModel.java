@@ -7,6 +7,7 @@ package facturatron.facturacion;
 
 import facturatron.Dominio.Factura;
 import facturatron.MVC.Model;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.sql.Date;
@@ -20,9 +21,9 @@ public class ListadoModel extends Model {
     private ArrayList<FacturaDao> facturas = new ArrayList<FacturaDao>();
     private Date fechaInicial  ;
     private Date fechaFinal;
-    private Double subtotal = 0d;
-    private Double iva = 0d;
-    private Double total = 0d;
+    private BigDecimal subtotal = new BigDecimal(0d);
+    private BigDecimal iva      = new BigDecimal(0d);
+    private BigDecimal total    = new BigDecimal(0d);
 
     ListadoModel() {
         setDao(new FacturaDao());
@@ -69,12 +70,14 @@ public class ListadoModel extends Model {
     }
 
     private void updateSumas() {
-        Double sub, imp, tot;
-        sub=imp=tot=0d;
+        BigDecimal sub, imp, tot;
+        sub = new BigDecimal(0d);
+        imp = new BigDecimal(0d);
+        tot = new BigDecimal(0d);
         for (Factura factura : this.facturas) {
-            sub   += factura.getSubtotal();
-            imp   += factura.getIvaTrasladado();
-            tot   += factura.getTotal();
+            sub   .add( factura.getSubtotal());
+            imp   .add( factura.getIvaTrasladado());
+            tot   .add( factura.getTotal());
         }
         setSubtotal(sub);
         setIva(imp);
@@ -122,42 +125,42 @@ public class ListadoModel extends Model {
     /**
      * @return the subtotal
      */
-    public Double getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
     /**
      * @param subtotal the subtotal to set
      */
-    public void setSubtotal(Double subtotal) {
+    public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
 
     /**
      * @return the iva
      */
-    public Double getIva() {
+    public BigDecimal getIva() {
         return iva;
     }
 
     /**
      * @param iva the iva to set
      */
-    public void setIva(Double iva) {
+    public void setIva(BigDecimal iva) {
         this.iva = iva;
     }
 
     /**
      * @return the total
      */
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
     /**
      * @param total the total to set
      */
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 

@@ -58,7 +58,9 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnObservaciones" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="205" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="btnTicket" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="73" max="32767" attributes="0"/>
                   <Component id="btnGuardar" min="-2" pref="167" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -71,6 +73,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnObservaciones" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnTicket" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -97,6 +100,11 @@
             </Property>
           </Properties>
         </Component>
+        <Component class="javax.swing.JButton" name="btnTicket">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="A&#xf1;adir ticket"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="org.jdesktop.swingx.JXTitledPanel" name="jXTitledPanel2">
@@ -116,13 +124,13 @@
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txtNombre" pref="276" max="32767" attributes="2"/>
-                      <Component id="txtRfc" alignment="0" pref="276" max="32767" attributes="2"/>
-                      <Component id="jScrollPane2" alignment="0" pref="276" max="32767" attributes="2"/>
+                      <Component id="txtNombre" pref="272" max="32767" attributes="2"/>
+                      <Component id="txtRfc" alignment="0" pref="272" max="32767" attributes="2"/>
+                      <Component id="jScrollPane2" alignment="0" pref="272" max="32767" attributes="2"/>
                   </Group>
                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txtFormaDePago" alignment="1" pref="185" max="32767" attributes="0"/>
+                      <Component id="txtFormaDePago" alignment="1" pref="182" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jLabel11" alignment="0" min="0" pref="0" max="32767" attributes="1"/>
@@ -133,13 +141,13 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtIdCliente" pref="18" max="32767" attributes="0"/>
+                                  <Component id="txtIdCliente" pref="15" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnBuscarCliente" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="txtSerie" alignment="1" pref="112" max="32767" attributes="0"/>
-                              <Component id="jComboBox1" alignment="0" pref="112" max="32767" attributes="0"/>
-                              <Component id="txtFolio" alignment="1" pref="112" max="32767" attributes="0"/>
+                              <Component id="txtSerie" alignment="1" pref="109" max="32767" attributes="0"/>
+                              <Component id="jComboBox1" alignment="0" pref="109" max="32767" attributes="0"/>
+                              <Component id="txtFolio" alignment="1" pref="109" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -341,7 +349,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" alignment="1" pref="563" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" alignment="1" pref="556" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel5" max="32767" attributes="0"/>
@@ -351,26 +359,26 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="txtDescuentoTasa16" pref="109" max="32767" attributes="0"/>
+                                  <Component id="txtDescuentoTasa16" pref="106" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                                   <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtDescuentoTasa0" pref="108" max="32767" attributes="0"/>
+                                  <Component id="txtDescuentoTasa0" pref="105" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                                   <Component id="jLabel7" min="-2" max="-2" attributes="1"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtMotivoDescuento" pref="109" max="32767" attributes="0"/>
+                                  <Component id="txtMotivoDescuento" pref="106" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                                   <Component id="jLabel6" min="-2" pref="80" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtIva" pref="181" max="32767" attributes="2"/>
-                              <Component id="txtSubtotal" pref="181" max="32767" attributes="2"/>
-                              <Component id="txtTotal" pref="181" max="32767" attributes="2"/>
+                              <Component id="txtIva" pref="177" max="32767" attributes="2"/>
+                              <Component id="txtSubtotal" pref="177" max="32767" attributes="2"/>
+                              <Component id="txtTotal" pref="177" max="32767" attributes="2"/>
                           </Group>
                       </Group>
                   </Group>

@@ -18,6 +18,7 @@ import facturatron.config.ConfiguracionDao;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.PreparedStatement;
@@ -94,7 +95,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
      public ComprobanteTron toComprobanteTron() {
 
-        MathContext mc = MathContext.DECIMAL32;
+        MathContext mc = MathContext.DECIMAL64;
         ComprobanteTron comp = new ComprobanteTron();
         comp.setVersion(getVersion());
 
@@ -113,9 +114,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setNoAprobacion(getNoAprobacion());
         comp.setAnoAprobacion(BigInteger.valueOf(getAnoAprobacion()));
         comp.setFormaDePago(getFormaDePago());
-        comp.setSubTotal(new BigDecimal(getSubtotal()).round(mc));
-        comp.setTotal(new BigDecimal(getTotal()).round(mc));
-        comp.setDescuento(new BigDecimal(getDescuentoTasa0()).round(mc).add(new BigDecimal(getDescuentoTasa16()).round(mc)));
+        comp.setSubTotal(getSubtotal().setScale(2,RoundingMode.HALF_EVEN));
+        comp.setTotal(getTotal().setScale(2,RoundingMode.HALF_EVEN));
+        comp.setDescuento(getDescuentoTasa0().add(getDescuentoTasa16()));
         comp.setTipoDeComprobante(getTipoDeComprobante());
         comp.setObservaciones(getObservaciones());
         Persona emSucursal = getEmisorSucursal();
@@ -138,14 +139,14 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         ConceptosTron cps = new ConceptosTron();
         
         for (Renglon renglon : getRenglones()) {
-            if(renglon.getImporte() == 0d || renglon.getImporte() == null) { continue; }
+            if(renglon.getImporte().equals(new BigDecimal(0d)) || renglon.getImporte() == null) { continue; }
             cps.add(renglon.toConceptoTron());
         }
         return cps;
      }
 
      public Impuestos getImpuestos() {
-        MathContext mc = MathContext.DECIMAL32;
+        
         ObjectFactory of = new ObjectFactory();
         Impuestos imps = of.createComprobanteImpuestos();
         Traslados trs = of.createComprobanteImpuestosTraslados();
@@ -153,7 +154,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
         Traslado t1 = of.createComprobanteImpuestosTrasladosTraslado();
         Traslado t2 = of.createComprobanteImpuestosTrasladosTraslado();
-        t1.setImporte(new BigDecimal(getIvaTrasladado()).round(mc));
+        t1.setImporte(getIvaTrasladado());
         t1.setImpuesto("IVA");
         t1.setTasa(new BigDecimal("16.00"));
         list.add(t1);
@@ -162,46 +163,46 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         t2.setTasa(new BigDecimal("0.00"));
         list.add(t2);
         imps.setTraslados(trs);
-        imps.setTotalImpuestosTrasladados(new BigDecimal(getIvaTrasladado()).round(mc));
+        imps.setTotalImpuestosTrasladados(getIvaTrasladado());
         return imps;
      }
 
-     public Double getSubtotalGravado16() {
-        Double gravado = 0d;
+     public BigDecimal getSubtotalGravado16() {
+        BigDecimal gravado = new BigDecimal(0d);
         for (Renglon renglon : getRenglones()) {
-            if(!renglon.getTasa0()) { gravado += renglon.getImporte(); }
+            if(!renglon.getTasa0()) { gravado = gravado.add(renglon.getImporte()); }
         }
         return gravado;
      }
 
-     public Double getSubtotalExento() {
-         return 0d;
+     public BigDecimal getSubtotalExento() {
+         return new BigDecimal(0d);
      }
 
-     public Double getSubtotalGravado0() {
-        Double gravado0 = 0d;
+     public BigDecimal getSubtotalGravado0() {
+        BigDecimal gravado0 = new BigDecimal(0d);
         for (Renglon renglon : getRenglones()) {
-            if(renglon.getTasa0()) { gravado0 += renglon.getImporte(); }
+            if(renglon.getTasa0()) { gravado0 = gravado0.add(renglon.getImporte()); }
         }
         return gravado0;
      }
 
      @Override
-     public void setTotal(Double total) {
+     public void setTotal(BigDecimal total) {
         super.setTotal(total);
         setChanged();
         notifyObservers();
      }
 
     @Override
-     public void setDescuentoTasa0(Double descuento) {
+     public void setDescuentoTasa0(BigDecimal descuento) {
          super.setDescuentoTasa0(descuento);
          setChanged();
          notifyObservers();
      }
 
     @Override
-     public void setDescuentoTasa16(Double descuento) {
+     public void setDescuentoTasa16(BigDecimal descuento) {
          super.setDescuentoTasa16(descuento);
          setChanged();
          notifyObservers();
@@ -239,14 +240,14 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setNoAprobacion(BigInteger.valueOf(rs.getInt("noAprobacion")));
                 bean.setAnoAprobacion(rs.getInt("anoAprobacion"));
                 bean.setFormaDePago(rs.getString("formaDePago"));
-                bean.setSubtotal(rs.getDouble("subtotal"));
-                bean.setTotal(rs.getDouble("total"));
-                bean.setDescuentoTasa0(rs.getDouble("descuentoTasa0"));
-                bean.setDescuentoTasa16(rs.getDouble("descuentoTasa16"));
+                bean.setSubtotal(rs.getBigDecimal("subtotal"));
+                bean.setTotal(rs.getBigDecimal("total"));
+                bean.setDescuentoTasa0(rs.getBigDecimal("descuentoTasa0"));
+                bean.setDescuentoTasa16(rs.getBigDecimal("descuentoTasa16"));
                 bean.setTipoDeComprobante(rs.getString("tipoDeComprobante"));
                 bean.setEmisor((new ClienteDao()).findBy(rs.getInt("idemisor")));
                 bean.setReceptor((new ClienteDao()).findBy(rs.getInt("idReceptor")));
-                bean.setIvaTrasladado(rs.getDouble("ivaTrasladado"));
+                bean.setIvaTrasladado(rs.getBigDecimal("ivaTrasladado"));
                 bean.setCertificado(rs.getString("certificado"));
                 bean.setMotivoDescuento(rs.getString("motivoDescuento"));
                 bean.setXml(rs.getString("xml"));
@@ -312,14 +313,14 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setInt(7, getNoAprobacion().intValue());
             ps.setInt(8, getAnoAprobacion().intValue());
             ps.setString(9, getFormaDePago());
-            ps.setDouble(10, getSubtotal());
-            ps.setDouble(11, getTotal());
-            ps.setDouble(12, getDescuentoTasa0());
-            ps.setDouble(13, getDescuentoTasa16());
+            ps.setBigDecimal(10, getSubtotal());
+            ps.setBigDecimal(11, getTotal());
+            ps.setBigDecimal(12, getDescuentoTasa0());
+            ps.setBigDecimal(13, getDescuentoTasa16());
             ps.setString(14, getTipoDeComprobante());
             ps.setInt(15, getEmisor().getId());
             ps.setInt(16, getReceptor().getId());
-            ps.setDouble(17, getIvaTrasladado());
+            ps.setBigDecimal(17, getIvaTrasladado());
             ps.setString(18, getCertificado());
             ps.setString(19, getMotivoDescuento());
             ps.setString(20, getXml());
@@ -335,16 +336,16 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             keys.close();
 
             for (Renglon renglon : getRenglones()) {  //
-                if(renglon.getImporte()<=0) { continue; }
+                if(renglon.getImporte().compareTo(new BigDecimal(0d))<=0) { continue; }
                 ps = bd.getCon().prepareStatement("insert into concepto (idComprobante,unidad,noIdentificacion,importe," +
                         "cantidad,descripcion,valorunitario,tasa0) VALUES (?,?,?,?,?,?,?,?)");
                 ps.setInt(1, idfactura);
                 ps.setString(2, renglon.getUnidad());
                 ps.setString(3, renglon.getNoIdentificacion());
-                ps.setDouble(4, renglon.getImporte());
-                ps.setDouble(5, renglon.getCantidad());
+                ps.setBigDecimal(4, renglon.getImporte());
+                ps.setBigDecimal(5, renglon.getCantidad());
                 ps.setString(6, renglon.getDescripcion());
-                ps.setDouble(7, renglon.getValorUniario());
+                ps.setBigDecimal(7, renglon.getValorUniario());
                 ps.setInt(8, renglon.getTasa0()?1:0);
                 ps.execute();
             }
@@ -383,18 +384,18 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setNoAprobacion(BigInteger.valueOf(rs.getInt("noAprobacion")));
             dao.setAnoAprobacion(rs.getInt("anoAprobacion"));
             dao.setFormaDePago(rs.getString("formaDePago"));
-            dao.setSubtotal(rs.getDouble("subtotal"));
-            dao.setTotal(rs.getDouble("total"));
-            dao.setDescuentoTasa0(rs.getDouble("descuentoTasa0"));
-            dao.setDescuentoTasa16(rs.getDouble("descuentoTasa16"));
+            dao.setSubtotal(rs.getBigDecimal("subtotal"));
+            dao.setTotal(rs.getBigDecimal("total"));
+            dao.setDescuentoTasa0(rs.getBigDecimal("descuentoTasa0"));
+            dao.setDescuentoTasa16(rs.getBigDecimal("descuentoTasa16"));
             dao.setTipoDeComprobante(rs.getString("tipoDeComprobante"));
             dao.setEmisor((new ClienteDao()).findBy(rs.getInt("idemisor")));
             dao.setReceptor((new ClienteDao()).findBy(rs.getInt("idReceptor")));
-            dao.setIvaTrasladado(rs.getDouble("ivaTrasladado"));
+            dao.setIvaTrasladado(rs.getBigDecimal("ivaTrasladado"));
             dao.setCertificado(rs.getString("certificado"));
             dao.setMotivoDescuento(rs.getString("motivoDescuento"));
             dao.setXml(rs.getString("xml"));
-            dao.setEstadoComprobante(rs.getString("estadoComprobante")=="VIGENTE"?Estado.VIGENTE:Estado.CANCELADO);
+            dao.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE")?Estado.VIGENTE:Estado.CANCELADO);
             dao.setObservaciones(rs.getString("observaciones"));
 
             rs = bd.getStmt().executeQuery("select * from concepto where id = "+id);//
@@ -405,10 +406,10 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 rb.setId(rs.getInt("id"));
                 rb.setUnidad(rs.getString("unidad"));
                 rb.setNoIdentificacion(rs.getString("noIdentificacion"));
-                rb.setImporte(rs.getDouble("importe"));
-                rb.setCantidad(rs.getDouble("cantidad"));
+                rb.setImporte(rs.getBigDecimal("importe"));
+                rb.setCantidad(rs.getBigDecimal("cantidad"));
                 rb.setDescripcion(rs.getString("descripcion"));
-                rb.setValorUniario(rs.getDouble("valorUnitario"));
+                rb.setValorUniario(rs.getBigDecimal("valorUnitario"));
                 rb.setTasa0(rs.getInt("tasa0")==1);
                 renglones.add(rb);
             }
