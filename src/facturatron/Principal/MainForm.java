@@ -46,6 +46,7 @@ public class MainForm extends javax.swing.JFrame {
         linkCfgFiscal = new org.jdesktop.swingx.JXHyperlink();
         linkCfgSystem = new org.jdesktop.swingx.JXHyperlink();
         linkSalir = new org.jdesktop.swingx.JXHyperlink();
+        jLabel1 = new javax.swing.JLabel();
         panelEdicion = new com.jidesoft.swing.JideTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         menu = new javax.swing.JMenu();
@@ -114,6 +115,11 @@ public class MainForm extends javax.swing.JFrame {
 
         jXTaskPaneContainer1.add(jXTaskPane3);
 
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("1.5.0");
+        jXTaskPaneContainer1.add(jLabel1);
+
         panelEdicion.setShowCloseButtonOnTab(true);
         panelEdicion.setShowTabButtons(true);
         panelEdicion.setTabEditingAllowed(true);
@@ -142,7 +148,7 @@ public class MainForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
         );
@@ -183,6 +189,7 @@ public class MainForm extends javax.swing.JFrame {
         this.getPanelEdicion().setSelectedComponent(comp);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane1;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane2;

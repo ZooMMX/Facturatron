@@ -5,31 +5,23 @@
 
 package facturatron.facturacion;
 
-import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Renglon;
 import java.awt.event.ActionEvent;
-import java.math.BigInteger;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import facturatron.MVC.Controller;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfigFiscalDao;
-import facturatron.config.ConfiguracionDao;
 import facturatron.omoikane.RenglonTicket;
 import facturatron.omoikane.Ticket;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.net.URI;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.PersistenceException;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -77,12 +69,16 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       renglonesActualizados();
   }
   public void btnBuscarCliente() {
-      int id = Integer.valueOf(getView().getTxtIdCliente().getText());
-      ClienteDao cliente = (new ClienteDao()).findBy(id);
-      if(cliente != null) {
-            getModel().setReceptor(cliente);
-      } else {
-            JOptionPane.showMessageDialog(getView(), "Cliente no encontrado");
+      try {
+          int id = Integer.valueOf(getView().getTxtIdCliente().getText());
+          ClienteDao cliente = (new ClienteDao()).findBy(id);
+          if(cliente != null) {
+                getModel().setReceptor(cliente);
+          } else {
+                JOptionPane.showMessageDialog(getView(), "Cliente no encontrado");
+          }
+      } catch(NumberFormatException nfe) {
+          Logger.getLogger(FacturaControl.class.getName()).log(Level.INFO, "Número de cliente inválido", nfe);
       }
   }
 

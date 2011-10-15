@@ -48,6 +48,13 @@ import phesus.facturatron.lib.entities.ConceptosTron;
  */
 public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
+    private static class FolioDuplicadoException extends Exception {
+
+        public FolioDuplicadoException() {
+            super("Error grave, el folio configurado es incorrecto, por favor llame a soporte técnico");
+        }
+    }
+
     private Configuracion config;
     Calendar cal = Calendar.getInstance();
     TimeZone tz = TimeZone.getTimeZone("America/Mexico_City");
@@ -296,6 +303,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
             setFolio(SerieDao.nextId(bd.getCon()));
 
+            if(findByFolio(getFolio())!=null) { throw new FolioDuplicadoException(); }
+
             comprobanteSellado = sellar();
 
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
@@ -363,6 +372,26 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
     @Override
     public void remove() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Factura findByFolio(BigInteger folio) {
+        try {
+            JDBCDAOSupport bd = getBD();
+            FacturaDao dao = new FacturaDao();
+            bd.conectar();
+            ResultSet rs = bd.getStmt().executeQuery("select id from comprobante where folio = " + folio);
+            if(rs.next()) {
+                Factura fact = findBy(rs.getInt("id"));
+                rs.close();
+                bd.desconectar();
+                return fact;
+            } else {
+                return null;
+            }
+        } catch(Exception e) {
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Excepción buscando por folio", e);
+        }
+        return null;
     }
 
     @Override
