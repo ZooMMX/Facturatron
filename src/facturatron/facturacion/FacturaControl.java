@@ -149,11 +149,11 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
               Ticket            t         = Ticket.getTicketData(idAlmacen, idCaja, idVenta);
               for (RenglonTicket renglon : t) {
                   modelo.setValueAt(renglon.cantidad      , modelo.getRowCount()-1, 0); //0 = Columna cantidad
-                  modelo.setValueAt(renglon.codigo        , modelo.getRowCount()-1, 1);
+                  modelo.setValueAt(!renglon.impuestos    , modelo.getRowCount()-1, 5); //5 = Impuestos 0%
+                  modelo.setValueAt(renglon.codigo        , modelo.getRowCount()-1, 1); //1 = Código
                   modelo.setValueAt(renglon.descripcion   , modelo.getRowCount()-1, 2); //2 = Descripción
                   modelo.setValueAt(renglon.unidad        , modelo.getRowCount()-1, 3); //3 = Unidad
                   modelo.setValueAt(renglon.precioUnitario, modelo.getRowCount()-1, 4); //4 = Precio unitario
-                  modelo.setValueAt(!renglon.impuestos    , modelo.getRowCount()-1, 5); //5 = Impuestos 0%
               }
           }
       } catch(NumberFormatException nfe) {
