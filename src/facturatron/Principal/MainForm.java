@@ -115,9 +115,9 @@ public class MainForm extends javax.swing.JFrame {
 
         jXTaskPaneContainer1.add(jXTaskPane3);
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("1.5.0");
+        jLabel1.setText("1.5.1");
         jXTaskPaneContainer1.add(jLabel1);
 
         panelEdicion.setShowCloseButtonOnTab(true);

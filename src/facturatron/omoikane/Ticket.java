@@ -33,21 +33,28 @@ public class Ticket extends ArrayList<RenglonTicket> {
         for (VentasDetalles vd : detalles) {
             final RenglonTicket renglon   = new RenglonTicket();
             final Articulos     producto  = productsJpa.findArticulos(vd.getIdArticulo());
-            final BigDecimal    precio    = new BigDecimal(vd.getPrecio(), mc).round(mc).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            final BigDecimal    impuestos = new BigDecimal(vd.getImpuestos(), mc).round(mc).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            final BigDecimal    precio    = new BigDecimal(vd.getPrecio(), mc).round(mc).setScale(4, BigDecimal.ROUND_HALF_EVEN);
+            final BigDecimal    impuestos = new BigDecimal(vd.getImpuestos(), mc).round(mc).setScale(4, BigDecimal.ROUND_HALF_EVEN);
+            final BigDecimal    descuento = new BigDecimal(vd.getDescuento(), mc).round(mc).setScale(4, BigDecimal.ROUND_UP);
+            final BigDecimal    cantidad  = new BigDecimal(vd.getCantidad(), mc).round(mc).setScale(4, BigDecimal.ROUND_HALF_EVEN);
+            //Precio unitario con descuento
+            final BigDecimal    pConDescu = cantidad.compareTo(new BigDecimal("0.0")) > 0 && descuento.compareTo(new BigDecimal("0.0")) > 0
+                                          ? precio.subtract(descuento.divide(cantidad, mc),mc).setScale(4, BigDecimal.ROUND_UP)
+                                          : precio;
             final BigDecimal    pUnitario = (producto.getImpuestos() > 0d)
-                    ? precio.divide(
-                        new BigDecimal("1.00").add(impuestos.divide(new BigDecimal("100.00"), 2, BigDecimal.ROUND_HALF_EVEN))
+                    ? pConDescu.divide(
+                        new BigDecimal("1.00").add(impuestos.divide(new BigDecimal("100.00"), 4, BigDecimal.ROUND_HALF_EVEN))
                      , 2, BigDecimal.ROUND_HALF_EVEN)
-                    : precio;
+                    : pConDescu;
 
-            renglon.cantidad       = new BigDecimal(vd.getCantidad(), mc).round(mc).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            renglon.cantidad       = cantidad;
             renglon.codigo         = producto.getCodigo();
             renglon.descripcion    = producto.getDescripcion();
             renglon.impuestos      = producto.getImpuestos() > 0d;
             renglon.precioUnitario = pUnitario;
             renglon.unidad         = producto.getUnidad();
-            renglon.importe        = new BigDecimal(vd.getTotal(), mc).round(mc).setScale(2, BigDecimal.ROUND_UP);
+            renglon.importe        = new BigDecimal(vd.getTotal(), mc).round(mc).setScale(4, BigDecimal.ROUND_UP);
+            renglon.descuento      = descuento;
 
             ticket.add(renglon);
         }
