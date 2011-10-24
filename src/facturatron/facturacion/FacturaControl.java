@@ -5,31 +5,23 @@
 
 package facturatron.facturacion;
 
-import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Renglon;
 import java.awt.event.ActionEvent;
-import java.math.BigInteger;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import facturatron.MVC.Controller;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfigFiscalDao;
-import facturatron.config.ConfiguracionDao;
 import facturatron.omoikane.RenglonTicket;
 import facturatron.omoikane.Ticket;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.net.URI;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.PersistenceException;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -77,12 +69,16 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       renglonesActualizados();
   }
   public void btnBuscarCliente() {
-      int id = Integer.valueOf(getView().getTxtIdCliente().getText());
-      ClienteDao cliente = (new ClienteDao()).findBy(id);
-      if(cliente != null) {
-            getModel().setReceptor(cliente);
-      } else {
-            JOptionPane.showMessageDialog(getView(), "Cliente no encontrado");
+      try {
+          int id = Integer.valueOf(getView().getTxtIdCliente().getText());
+          ClienteDao cliente = (new ClienteDao()).findBy(id);
+          if(cliente != null) {
+                getModel().setReceptor(cliente);
+          } else {
+                JOptionPane.showMessageDialog(getView(), "Cliente no encontrado");
+          }
+      } catch(NumberFormatException nfe) {
+          Logger.getLogger(FacturaControl.class.getName()).log(Level.INFO, "Número de cliente inválido", nfe);
       }
   }
 
@@ -140,35 +136,9 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
    * de la factura
    */
   public void btnAddTicket() {
-      try {
-          AddTicketDialog dialog = new AddTicketDialog(null);
-          notifyBusy();
-          String idTicket = dialog.lanzar();
-          if(idTicket != null) {
-              String[] args = idTicket.split("-");
-              Integer           idAlmacen = Integer.valueOf(args[0]);
-              Integer           idCaja    = Integer.valueOf(args[1]);
-              Integer           idVenta   = Integer.valueOf(args[2]);
-              FacturaTableModel modelo    = (FacturaTableModel) getView().getTabConceptos().getModel();
-              Ticket            t         = Ticket.getTicketData(idAlmacen, idCaja, idVenta);
-              for (RenglonTicket renglon : t) {
-                  modelo.setValueAt(renglon.cantidad      , modelo.getRowCount()-1, 0); //0 = Columna cantidad
-                  modelo.setValueAt(renglon.codigo        , modelo.getRowCount()-1, 1);
-                  modelo.setValueAt(renglon.descripcion   , modelo.getRowCount()-1, 2); //2 = Descripción
-                  modelo.setValueAt(renglon.unidad        , modelo.getRowCount()-1, 3); //3 = Unidad
-                  modelo.setValueAt(renglon.precioUnitario, modelo.getRowCount()-1, 4); //4 = Precio unitario
-                  modelo.setValueAt(!renglon.impuestos    , modelo.getRowCount()-1, 5); //5 = Impuestos 0%
-              }
-          }
-      } catch(NumberFormatException nfe) {
-          Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", nfe);
-      } catch(ArrayIndexOutOfBoundsException ae) {
-          Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", ae);
-      } catch(PersistenceException pe) {
-          Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "No se pudo conectar a la base de datos del punto de venta", pe);
-      } finally {
-          notifyIdle();
-      }
+      AddTicketDialog dialog = new AddTicketDialog(null);
+      notifyBusy();
+      new ThreadAddTicket(dialog).start();
   }
   public void btnGuardar(){
 
@@ -278,6 +248,45 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getView().getTabConceptos().setDefaultRenderer(BigDecimal.class, new FacturaTableModel.DecimalFormatRenderer());
         getView().setModelo(getModel());
         getModel().addObserver(getView());
+    }
+
+    private class ThreadAddTicket extends Thread {
+
+        private final AddTicketDialog dialog;
+
+        public ThreadAddTicket(AddTicketDialog dialog) {
+            this.dialog = dialog;
+        }
+
+        public void run() {
+            try {
+                String idTicket = dialog.lanzar();
+                if (idTicket != null) {
+                    String[] args = idTicket.split("-");
+                    Integer idAlmacen = Integer.valueOf(args[0]);
+                    Integer idCaja = Integer.valueOf(args[1]);
+                    Integer idVenta = Integer.valueOf(args[2]);
+                    FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();
+                    Ticket t = Ticket.getTicketData(idAlmacen, idCaja, idVenta);
+                    for (RenglonTicket renglon : t) {
+                        modelo.setValueAt(renglon.cantidad, modelo.getRowCount() - 1, 0); //0 = Columna cantidad
+                        modelo.setValueAt(!renglon.impuestos, modelo.getRowCount() - 1, 5); //5 = Impuestos 0%
+                        modelo.setValueAt(renglon.codigo, modelo.getRowCount() - 1, 1); //1 = Código
+                        modelo.setValueAt(renglon.descripcion, modelo.getRowCount() - 1, 2); //2 = Descripción
+                        modelo.setValueAt(renglon.unidad, modelo.getRowCount() - 1, 3); //3 = Unidad
+                        modelo.setValueAt(renglon.precioUnitario, modelo.getRowCount() - 1, 4); //4 = Precio unitario con descuento
+                    }
+                }
+            } catch (NumberFormatException nfe) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", nfe);
+            } catch (ArrayIndexOutOfBoundsException ae) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", ae);
+            } catch (PersistenceException pe) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "No se pudo conectar a la base de datos del punto de venta", pe);
+            } finally {
+                notifyIdle();
+            }
+        }
     }
 
 
