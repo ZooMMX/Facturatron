@@ -18,6 +18,7 @@ public class RenglonTicket {
     public String     descripcion;
     public String     unidad;
     public Boolean    impuestos;
+    public BigDecimal descuento;
     public BigDecimal importe;
     
 }
