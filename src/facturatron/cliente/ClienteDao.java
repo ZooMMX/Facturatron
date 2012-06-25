@@ -54,6 +54,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
                 bean.setNoExterior(rs.getString("noExterior"));
                 bean.setNoInterior(rs.getString("noInterior"));
                 bean.setPais(rs.getString("pais"));
+                bean.setRegimen(rs.getString("regimen"));
 
                 ret.add(bean);
 
@@ -82,10 +83,10 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             PreparedStatement ps;
 
             if(getId()!=null) {
-                ps = bd.getCon().prepareStatement("update persona set nombre=?,rfc=?,telefono=?,calle=?,codigoPostal=?,colonia=?,municipio=?,estado=?,noExterior=?,noInterior=?,pais=? WHERE id = ?");
-                ps.setInt(12, getId());
+                ps = bd.getCon().prepareStatement("update persona set nombre=?,rfc=?,telefono=?,calle=?,codigoPostal=?,colonia=?,municipio=?,estado=?,noExterior=?,noInterior=?,pais=?,regimen=? WHERE id = ?");
+                ps.setInt(13, getId());
             } else {
-                ps = bd.getCon().prepareStatement("insert into persona (nombre,rfc,telefono,calle,codigoPostal,colonia,municipio,estado,noExterior,noInterior,pais) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+                ps = bd.getCon().prepareStatement("insert into persona (nombre,rfc,telefono,calle,codigoPostal,colonia,municipio,estado,noExterior,noInterior,pais,regimen) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
             }
             
             ps.setString(1, getNombre());
@@ -99,6 +100,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             ps.setString(9, getNoExterior());
             ps.setString(10, getNoInterior());
             ps.setString(11, getPais());
+            ps.setString(12, getRegimen());
 
             ps.execute();
             bd.desconectar();
@@ -142,6 +144,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
         setNoExterior(null);
         setNoInterior(null);
         setPais(null);
+        setRegimen(null);
         setChanged();
         notifyObservers();
     }
@@ -170,6 +173,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             this.setNoExterior(rs.getString("noExterior"));
             this.setNoInterior(rs.getString("noInterior"));
             this.setPais(rs.getString("pais"));
+            this.setRegimen(rs.getString("regimen"));
 
             setChanged();
             notifyObservers();

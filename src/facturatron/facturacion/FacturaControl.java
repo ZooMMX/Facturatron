@@ -155,7 +155,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
         getModel().setTipoDeComprobante("ingreso");
-        getModel().setVersion("2.0");
+        getModel().setVersion("2.2");
 
         getView().getBtnGuardar().setEnabled(false);
         Integer folio    = getModel().getFolio().intValue();
