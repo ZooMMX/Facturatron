@@ -781,4 +781,18 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         this.btnTicket = btnTicket;
     }
 
+    /**
+     * @return the txtMetodoPago
+     */
+    public javax.swing.JTextField getTxtMetodoPago() {
+        return txtMetodoPago;
+    }
+
+    /**
+     * @param txtMetodoPago the txtMetodoPago to set
+     */
+    public void setTxtMetodoPago(javax.swing.JTextField txtMetodoPago) {
+        this.txtMetodoPago = txtMetodoPago;
+    }
+
 }

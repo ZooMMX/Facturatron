@@ -123,7 +123,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setNoAprobacion(getNoAprobacion());
         comp.setAnoAprobacion(BigInteger.valueOf(getAnoAprobacion()));
         comp.setFormaDePago(getFormaDePago());
-        comp.setMetodoDePago(getFormaDePago());
+        comp.setMetodoDePago(getMetodoDePago());
         comp.setLugarExpedicion(getEmisor().getMunicipio()+", "+getEmisor().getEstado());
 
         comp.setSubTotal(getSubtotal().setScale(2,RoundingMode.HALF_EVEN));

@@ -151,6 +151,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setFecha(time.getTime());
         getModel().setHora(new Time(time.getTime().getTime()));
         getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
+        getModel().setMetodoDePago(getView().getTxtMetodoPago().getText());
         getModel().setIvaTrasladado(new BigDecimal(getView().getTxtIva().getText().replaceAll(",", "")));
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
