@@ -7,12 +7,12 @@ package facturatron.Dominio;
 
 import facturatron.MVC.Model;
 import java.io.Serializable;
-import mx.bigdata.sat.cfd.schema.Comprobante.Emisor;
-import mx.bigdata.sat.cfd.schema.Comprobante.Receptor;
-import mx.bigdata.sat.cfd.schema.ObjectFactory;
-import mx.bigdata.sat.cfd.schema.TUbicacion;
-import mx.bigdata.sat.cfd.schema.TUbicacionFiscal;
-
+import mx.bigdata.sat.cfd.v22.schema.Comprobante.Emisor;
+import mx.bigdata.sat.cfd.v22.schema.Comprobante.Emisor.RegimenFiscal;
+import mx.bigdata.sat.cfd.v22.schema.Comprobante.Receptor;
+import mx.bigdata.sat.cfd.v22.schema.ObjectFactory;
+import mx.bigdata.sat.cfd.v22.schema.TUbicacion;
+import mx.bigdata.sat.cfd.v22.schema.TUbicacionFiscal;
 
 /**
  *
@@ -31,6 +31,7 @@ public class Persona extends Model implements Serializable {
     private String noExterior   = "";
     private String noInterior   = "";
     private String pais         = "";
+    private String regimen      = "NA";
 
 
     public Emisor toEmisor(Persona sucursal) {
@@ -38,6 +39,7 @@ public class Persona extends Model implements Serializable {
         Emisor emisor = of.createComprobanteEmisor();
         emisor.setNombre(getNombre());
         emisor.setRfc(getRfc());
+
         TUbicacionFiscal uf = of.createTUbicacionFiscal();
         uf.setCalle(getCalle());
         uf.setCodigoPostal(getCodigoPostal());
@@ -49,6 +51,10 @@ public class Persona extends Model implements Serializable {
         uf.setNoInterior(getNoInterior());
         uf.setPais(getPais());
         emisor.setDomicilioFiscal(uf);
+
+        RegimenFiscal rf = new RegimenFiscal();
+        rf.setRegimen(getRegimen());
+        emisor.getRegimenFiscal().add(rf);
 
         if(sucursal != null) {
             TUbicacion u = of.createTUbicacion();
@@ -256,6 +262,11 @@ public class Persona extends Model implements Serializable {
         this.pais = pais;
     }
 
-    
-    
+    public String getRegimen() {
+        return regimen;
+    }
+
+    public void setRegimen(String regimen) {
+        this.regimen = regimen;
+    }
 }
