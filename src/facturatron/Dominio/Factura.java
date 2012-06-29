@@ -73,7 +73,8 @@ public class Factura extends Model implements Serializable {
     private String noCertificado;
     private BigInteger noAprobacion;
     private Integer anoAprobacion;
-    private String formaDePago           = "UNA SOLA EXHIBICIÓN";
+    private String formaDePago               = "UNA SOLA EXHIBICIÓN";
+    private String metodoDePago              = "Efectivo";
     private BigDecimal subtotal              = new BigDecimal("0.0");
     private BigDecimal total                 = new BigDecimal("0.0");
     private BigDecimal descuentoTasa0        = new BigDecimal("0.0");
@@ -314,6 +315,20 @@ public class Factura extends Model implements Serializable {
      */
     public void setFormaDePago(String formaDePago) {
         this.formaDePago = formaDePago;
+    }
+
+    /**
+     * @return the formaDePago
+     */
+    public String getMetodoDePago() {
+        return metodoDePago;
+    }
+
+    /**
+     * @param formaDePago the formaDePago to set
+     */
+    public void setMetodoDePago(String metodoDePago) {
+        this.metodoDePago = metodoDePago;
     }
 
 

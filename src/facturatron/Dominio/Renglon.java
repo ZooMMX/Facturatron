@@ -8,13 +8,11 @@ package facturatron.Dominio;
 import facturatron.MVC.Model;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import mx.bigdata.sat.cfd.schema.Comprobante.Conceptos.Concepto;
-import mx.bigdata.sat.cfd.schema.ObjectFactory;
+import mx.bigdata.sat.cfd.v22.schema.Comprobante.Conceptos.Concepto;
+import mx.bigdata.sat.cfd.v22.schema.ObjectFactory;
 import phesus.facturatron.lib.entities.ConceptoTron;
 
 /**

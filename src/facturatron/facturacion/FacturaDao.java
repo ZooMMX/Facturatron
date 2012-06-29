@@ -32,15 +32,14 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos;
-import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos.Traslados;
-import mx.bigdata.sat.cfd.schema.Comprobante.Impuestos.Traslados.Traslado;
-import mx.bigdata.sat.cfd.schema.ObjectFactory;
+import mx.bigdata.sat.cfd.v22.schema.Comprobante.Impuestos;
+import mx.bigdata.sat.cfd.v22.schema.Comprobante.Impuestos.Traslados;
+import mx.bigdata.sat.cfd.v22.schema.Comprobante.Impuestos.Traslados.Traslado;
+import mx.bigdata.sat.cfd.v22.schema.ObjectFactory;
 import phesus.facturatron.lib.CFDFactory;
 import phesus.facturatron.lib.entities.CFDv2Tron;
 import phesus.facturatron.lib.entities.ComprobanteTron;
 import phesus.facturatron.lib.entities.ConceptosTron;
-
 
 /**
  *
@@ -96,7 +95,10 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         String folio = cfd.getComprobante().getFolio();
         cfd.toPDFFile(cfg.getPathPlantilla(), getPdfPath(serie, folio));
         cfd.toXMLFILE(                        getXmlPath(serie, folio));
+
+        //Visor Java
         //cfd.showPreview(cfg.getPathPlantilla());
+        //Visor nativo para windows
         VisorPdf.abrir(getPdfPath(serie, folio));
      }
 
@@ -121,6 +123,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setNoAprobacion(getNoAprobacion());
         comp.setAnoAprobacion(BigInteger.valueOf(getAnoAprobacion()));
         comp.setFormaDePago(getFormaDePago());
+        comp.setMetodoDePago(getMetodoDePago());
+        comp.setLugarExpedicion(getEmisor().getMunicipio()+", "+getEmisor().getEstado());
+
         comp.setSubTotal(getSubtotal().setScale(2,RoundingMode.HALF_EVEN));
         comp.setTotal(getTotal().setScale(2,RoundingMode.HALF_EVEN));
         comp.setDescuento(getDescuentoTasa0().add(getDescuentoTasa16()));

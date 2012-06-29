@@ -49,6 +49,7 @@ public class ConfigFiscalControl extends Controller<ConfigFiscalDao, ConfigFisca
                 getModelContrib().setNoExterior(getView().getTxtNoExterior().getText());
                 getModelContrib().setNoInterior(getView().getTxtNoInterior().getText());
                 getModelContrib().setPais(getView().getTxtPais().getText());
+                getModelContrib().setRegimen(getView().getTxtRegimen().getText());
 
                 getModelContribSuc().setNombre("NA");
                 getModelContribSuc().setRfc("NA");
