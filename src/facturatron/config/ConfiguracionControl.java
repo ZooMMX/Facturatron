@@ -134,6 +134,9 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
         getModel().setPathPdf(getView().getTxtPathPdf().getText());
         getModel().setPathPlantilla(getView().getTxtPathPlantilla().getText());
         getModel().setPathXml(getView().getTxtPathXml().getText());
+        getModel().setSmtpHost(getView().getTxtSmtpHost().getText());
+        getModel().setUsuarioSmtp(getView().getTxtUsuarioSmtp().getText());
+        getModel().setClaveSmtp(String.valueOf(getView().getTxtClaveSmtp().getPassword()));
 
         getModel().persist();
         JOptionPane.showMessageDialog(getView(), "Configuración actualizada");

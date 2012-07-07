@@ -56,6 +56,7 @@ public class ClienteControl extends Controller<ClienteDao, ClienteForm> {
         getModel().setNoExterior(getView().getTxtNoExterior().getText());
         getModel().setNoInterior(getView().getTxtNoInterior().getText());
         getModel().setPais(getView().getTxtPais().getText());
+        getModel().setCorreoElectronico(getView().getTxtCorreoElectronico().getText());
 
         try {
             getModel().persist();

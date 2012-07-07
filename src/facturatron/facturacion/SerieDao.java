@@ -104,7 +104,7 @@ public class SerieDao extends Serie implements DAO<Integer,Serie> {
         ResultSet rs = ps.executeQuery();
 
         if(!rs.next()) {
-            throw new Exception("No exíste registro de configuración de serie de facturas");
+            throw new Exception("No existe registro de configuración de serie de facturas");
         }
 
         this.setAnoAprobacion(rs.getInt("anoAprobacion"));

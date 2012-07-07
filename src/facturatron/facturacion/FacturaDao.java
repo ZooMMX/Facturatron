@@ -15,6 +15,7 @@ import facturatron.MVC.DAO;
 import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
+import facturatron.email.EmailFacturaCliente;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -68,7 +69,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
      * @return
      */
     Configuracion getConfig() {
-        if(config == null) { config = (new ConfiguracionDao()).load(); }
+        if (config == null) {
+            config = (new ConfiguracionDao()).load();
+        }
         return config;
     }
 
@@ -96,6 +99,14 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         cfd.toPDFFile(cfg.getPathPlantilla(), getPdfPath(serie, folio));
         cfd.toXMLFILE(                        getXmlPath(serie, folio));
 
+        ClienteDao cliente = new ClienteDao().findBy(getReceptor().getId());
+        if (cliente != null) {
+            EmailFacturaCliente emailFacturaCliente = new EmailFacturaCliente(cliente.getCorreoElectronico());
+            emailFacturaCliente.addAttachment(getPdfPath(serie, folio), serie + folio + "PDF");
+            emailFacturaCliente.addAttachment(getXmlPath(serie, folio), serie + folio + "XML");
+            Thread thread = new Thread(emailFacturaCliente);
+            thread.start();
+        }
         //Visor Java
         //cfd.showPreview(cfg.getPathPlantilla());
         //Visor nativo para windows
@@ -237,10 +248,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setDate(2, fechaFinal);
             ResultSet rs = ps.executeQuery();
             ArrayList<FacturaDao> ret = new ArrayList<FacturaDao>();
-            FacturaDao bean;
             while (rs.next()) {
 
-                bean = new FacturaDao();
+                FacturaDao bean = new FacturaDao();
                 bean.setId(rs.getInt("id"));
                 bean.setVersion(rs.getString("version"));
                 bean.setFecha(rs.getDate("fecha"));
@@ -287,9 +297,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         JDBCDAOSupport bd = getBD();
         bd.conectar(true);
         
-        PreparedStatement ps = bd.getCon().prepareStatement("update comprobante SET " +
-                "estadoComprobante=? " +
-                "WHERE id=?");
+        PreparedStatement ps = bd.getCon().prepareStatement("update comprobante SET "
+                + "estadoComprobante=? "
+                + "WHERE id=?");
 
         ps.setString(1, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
         ps.setInt(2, getId());

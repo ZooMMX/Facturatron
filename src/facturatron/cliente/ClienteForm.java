@@ -42,6 +42,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         getTxtPais()        .setText(getModelo().getPais());
         getTxtRfc()         .setText(getModelo().getRfc());
         getTxtTelefono()    .setText(getModelo().getTelefono());
+        getTxtCorreoElectronico().setText(getModelo().getCorreoElectronico());
     }
 
 
@@ -86,6 +87,9 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         txtPais = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        txtCorreoElectronico = new javax.swing.JTextField();
         jXTitledPanel1 = new org.jdesktop.swingx.JXTitledPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaCliente = new javax.swing.JTable();
@@ -93,10 +97,11 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         setPreferredSize(new java.awt.Dimension(509, 545));
 
         jXTitledPanel3.setTitle("Agregar/Modificar Cliente");
+        jXTitledPanel3.setPreferredSize(new java.awt.Dimension(489, 410));
 
         btnNuevo.setText("Cliente nuevo");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Nombre");
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
@@ -167,6 +172,20 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
             }
         });
 
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel13.setText("Correo Electrónico");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 315, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 48, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
         jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
         jXTitledPanel3Layout.setHorizontalGroup(
@@ -186,28 +205,36 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                         .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel10)
-                    .addComponent(jLabel12))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPais, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(txtEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(txtMunicipio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(txtCodigoPostal, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(txtColonia, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(txtCalle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(txtRfc, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel3Layout.createSequentialGroup()
+                    .addGroup(jXTitledPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jXTitledPanel3Layout.createSequentialGroup()
-                        .addComponent(txtNoExterior, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel11)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNoInterior, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)))
+                        .addGap(5, 5, 5)
+                        .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtRfc, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtCalle, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtCodigoPostal, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtColonia, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtMunicipio, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtPais, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jXTitledPanel3Layout.createSequentialGroup()
+                                .addComponent(txtNoExterior, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel11)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNoInterior, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
+                            .addComponent(txtEstado, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtCorreoElectronico)))
+                    .addGroup(jXTitledPanel3Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jXTitledPanel3Layout.setVerticalGroup(
@@ -260,6 +287,12 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(txtPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel13)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -281,14 +314,14 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
             jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jXTitledPanel1Layout.setVerticalGroup(
             jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -300,7 +333,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -346,6 +379,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -354,6 +388,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel1;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel3;
@@ -362,6 +397,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JTextField txtCalle;
     private javax.swing.JTextField txtCodigoPostal;
     private javax.swing.JTextField txtColonia;
+    private javax.swing.JTextField txtCorreoElectronico;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtMunicipio;
     private javax.swing.JTextField txtNoExterior;
@@ -614,6 +650,20 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
      */
     public void setBtnEliminar(javax.swing.JButton btnEliminar) {
         this.btnEliminar = btnEliminar;
+    }
+
+    /**
+     * @return the txtCorreoElectronico
+     */
+    public javax.swing.JTextField getTxtCorreoElectronico() {
+        return txtCorreoElectronico;
+    }
+
+    /**
+     * @param txtCorreoElectronico the txtCorreoElectronico to set
+     */
+    public void setTxtCorreoElectronico(javax.swing.JTextField txtCorreoElectronico) {
+        this.txtCorreoElectronico = txtCorreoElectronico;
     }
 
    

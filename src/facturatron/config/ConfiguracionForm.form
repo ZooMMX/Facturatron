@@ -16,11 +16,11 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jXTitledPanel2" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jXTitledPanel1" alignment="0" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jXTitledPanel1" max="32767" attributes="0"/>
+                  <Component id="jXTitledPanel2" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -33,7 +33,7 @@
               <Component id="jXTitledPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jXTitledPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="1"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -50,22 +50,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jXLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtPassBd" alignment="0" pref="228" max="32767" attributes="0"/>
-                              <Component id="txtUserBd" alignment="1" pref="228" max="32767" attributes="0"/>
-                              <Component id="txtPassCer" alignment="0" pref="228" max="32767" attributes="0"/>
-                              <Component id="txtUrlBd" alignment="0" pref="228" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jXLabel1" min="-2" max="-2" attributes="0"/>
                               <Component id="jXLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -75,11 +60,11 @@
                           </Group>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="txtPathXml" pref="173" max="32767" attributes="0"/>
-                              <Component id="txtPathPlantilla" alignment="1" pref="173" max="32767" attributes="0"/>
-                              <Component id="txtPathPdf" alignment="1" pref="173" max="32767" attributes="0"/>
-                              <Component id="txtPathCer" alignment="1" pref="173" max="32767" attributes="0"/>
-                              <Component id="txtPathKey" alignment="1" pref="173" max="32767" attributes="0"/>
+                              <Component id="txtPathXml" pref="209" max="32767" attributes="0"/>
+                              <Component id="txtPathPlantilla" alignment="1" max="32767" attributes="0"/>
+                              <Component id="txtPathPdf" alignment="1" max="32767" attributes="0"/>
+                              <Component id="txtPathCer" alignment="1" max="32767" attributes="0"/>
+                              <Component id="txtPathKey" alignment="1" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
@@ -88,6 +73,27 @@
                               <Component id="btnBuscarPdf" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="btnBuscarPlantilla" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="btnBuscarXml" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jXLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jXLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jXLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jXLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jXLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jXLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jXLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtPassBd" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtUserBd" alignment="1" max="32767" attributes="0"/>
+                              <Component id="txtPassCer" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtUrlBd" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtClaveSmtp" max="32767" attributes="0"/>
+                              <Component id="txtUsuarioSmtp" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtSmtpHost" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -128,7 +134,7 @@
                       <Component id="btnBuscarXml" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtPathXml" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jXLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtPassCer" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -149,6 +155,21 @@
                       <Component id="txtPassBd" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtSmtpHost" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jXLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtUsuarioSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jXLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtClaveSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jXLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -242,6 +263,27 @@
         </Component>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtPathXml">
         </Component>
+        <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel10">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Servidor SMTP:"/>
+          </Properties>
+        </Component>
+        <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel11">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Usuario Cuenta SMTP:"/>
+          </Properties>
+        </Component>
+        <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel12">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Clave Cuenta SMTP:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JPasswordField" name="txtClaveSmtp">
+        </Component>
+        <Component class="org.jdesktop.swingx.JXTextField" name="txtUsuarioSmtp">
+        </Component>
+        <Component class="org.jdesktop.swingx.JXTextField" name="txtSmtpHost">
+        </Component>
       </SubComponents>
     </Container>
     <Container class="org.jdesktop.swingx.JXTitledPanel" name="jXTitledPanel2">
@@ -255,7 +297,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="296" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

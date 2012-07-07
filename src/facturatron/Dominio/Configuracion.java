@@ -22,6 +22,11 @@ public class Configuracion extends Model implements Serializable {
     private String pathPdf = "";
     private String pathPlantilla = "";
     private String pathXml = "";
+    private String smtpHost = "";
+    private String usuarioSmtp = "";
+    private String claveSmtp = "";
+    
+    private static final long serialVersionUID = -3524646329180295196L;
 
     /**
      * @return the pathKey
@@ -147,5 +152,47 @@ public class Configuracion extends Model implements Serializable {
      */
     public void setPathXml(String pathXml) {
         this.pathXml = pathXml;
+    }
+
+    /**
+     * @return the stmpHost
+     */
+    public String getSmtpHost() {
+        return smtpHost;
+    }
+
+    /**
+     * @param stmpHost the stmpHost to set
+     */
+    public void setSmtpHost(String smtpHost) {
+        this.smtpHost = smtpHost;
+    }
+
+    /**
+     * @return the usuarioSmtp
+     */
+    public String getUsuarioSmtp() {
+        return usuarioSmtp;
+    }
+
+    /**
+     * @param usuarioSmtp the usuarioSmtp to set
+     */
+    public void setUsuarioSmtp(String usuarioSmtp) {
+        this.usuarioSmtp = usuarioSmtp;
+    }
+
+    /**
+     * @return the claveSmtp
+     */
+    public String getClaveSmtp() {
+        return claveSmtp;
+    }
+
+    /**
+     * @param claveSmtp the claveSmtp to set
+     */
+    public void setClaveSmtp(String claveSmtp) {
+        this.claveSmtp = claveSmtp;
     }
 }

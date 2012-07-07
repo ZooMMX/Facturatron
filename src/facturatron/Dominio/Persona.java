@@ -32,6 +32,7 @@ public class Persona extends Model implements Serializable {
     private String noInterior   = "";
     private String pais         = "";
     private String regimen      = "NA";
+    private String correoElectronico = "";
 
 
     public Emisor toEmisor(Persona sucursal) {
@@ -268,5 +269,19 @@ public class Persona extends Model implements Serializable {
 
     public void setRegimen(String regimen) {
         this.regimen = regimen;
+    }
+
+    /**
+     * @return the correoElectronico
+     */
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    /**
+     * @param correoElectronico the correoElectronico to set
+     */
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
     }
 }
