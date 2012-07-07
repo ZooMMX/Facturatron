@@ -252,6 +252,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setNoAprobacion(BigInteger.valueOf(rs.getInt("noAprobacion")));
                 bean.setAnoAprobacion(rs.getInt("anoAprobacion"));
                 bean.setFormaDePago(rs.getString("formaDePago"));
+                //bean.setMetodoDePago(rs.getString( "metodoDePago" ));
                 bean.setSubtotal(rs.getBigDecimal("subtotal"));
                 bean.setTotal(rs.getBigDecimal("total"));
                 bean.setDescuentoTasa0(rs.getBigDecimal("descuentoTasa0"));
@@ -341,6 +342,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setString(21, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
             ps.setString(22, getObservaciones());
             ps.setTime  (23, getHora());
+            //ps.setString(24, getMetodoDePago());
 
             ps.execute();
 
