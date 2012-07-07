@@ -89,6 +89,8 @@ public class ConfiguracionDao extends Configuracion implements DAO<Integer, Conf
             setSmtpHost(serialObject.getSmtpHost());
             setUsuarioSmtp(serialObject.getUsuarioSmtp());
             setClaveSmtp(serialObject.getClaveSmtp());
+            setSeguridad(serialObject.getSeguridad());
+            setPuertoSmtp(serialObject.getPuertoSmtp());
             setChanged();
             notifyObservers();
             return serialObject;

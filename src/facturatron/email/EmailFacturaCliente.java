@@ -13,9 +13,17 @@ import javax.swing.JOptionPane;
  */
 public class EmailFacturaCliente extends EmailMgmt implements Runnable {
 
-    public EmailFacturaCliente(String emailAddressTo) {
+    /**
+     * Constructor de la Clase.
+     *
+     * @param emailAddressTo La dirección del receptor del correo electrónico.
+     * @param subject Parte del subject del Correo.
+     */
+    public EmailFacturaCliente(String emailAddressTo, String subject) {
         super(emailAddressTo);
         setEmailAddressFrom("facturatron@facturatron.com");
+        setMsgSubject("Facturas PDF y XML " + subject);
+        setMsgContent("Anexadas Factura en PDF y XML");
     }
 
     @Override

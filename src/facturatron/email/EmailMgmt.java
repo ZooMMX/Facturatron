@@ -2,10 +2,12 @@ package facturatron.email;
 
 import facturatron.Dominio.Configuracion;
 import facturatron.config.ConfiguracionDao;
+import facturatron.config.ConfiguracionForm;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
@@ -179,7 +181,15 @@ public abstract class EmailMgmt {
             errorStatus = WRONG_SMTP;
             return false;
         }
-        email.setAuthentication(configuracion.getUsuarioSmtp(), configuracion.getClaveSmtp());
+        if (configuracion.getSeguridad().equals(ConfiguracionForm.USA_SSL)) {
+            email.setAuthentication(configuracion.getUsuarioSmtp(), configuracion.getClaveSmtp());
+            email.setSmtpPort(Integer.valueOf(configuracion.getPuertoSmtp()));
+            email.setSSL(true);
+        } else if (configuracion.getSeguridad().equals(ConfiguracionForm.USA_TLS)) {
+            email.setAuthentication(configuracion.getUsuarioSmtp(), configuracion.getClaveSmtp());
+            email.setSmtpPort(Integer.valueOf(configuracion.getPuertoSmtp()));
+            email.setTLS(true);
+        }
         try {
             if (!checkAddressTo(email)) {
                 return false;

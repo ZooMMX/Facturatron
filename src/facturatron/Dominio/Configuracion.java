@@ -25,9 +25,11 @@ public class Configuracion extends Model implements Serializable {
     private String smtpHost = "";
     private String usuarioSmtp = "";
     private String claveSmtp = "";
+    private String seguridad = "";
+    private String puertoSmtp = "25";
     
     private static final long serialVersionUID = -3524646329180295196L;
-
+    
     /**
      * @return the pathKey
      */
@@ -194,5 +196,33 @@ public class Configuracion extends Model implements Serializable {
      */
     public void setClaveSmtp(String claveSmtp) {
         this.claveSmtp = claveSmtp;
+    }
+
+    /**
+     * @return the seguridad
+     */
+    public String getSeguridad() {
+        return seguridad;
+    }
+
+    /**
+     * @param seguridad the seguridad to set
+     */
+    public void setSeguridad(String seguridad) {
+        this.seguridad = seguridad;
+    }
+
+    /**
+     * @return the puertoSmtp
+     */
+    public String getPuertoSmtp() {
+        return puertoSmtp;
+    }
+
+    /**
+     * @param puertoSmtp the puertoSmtp to set
+     */
+    public void setPuertoSmtp(String puertoSmtp) {
+        this.puertoSmtp = puertoSmtp;
     }
 }
