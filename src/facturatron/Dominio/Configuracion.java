@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package facturatron.Dominio;
 
 import facturatron.MVC.Model;
@@ -13,12 +8,13 @@ import java.io.Serializable;
  * @author Octavio
  */
 public class Configuracion extends Model implements Serializable {
-    private String pathKey  = "";
-    private String pathCer  = "";
+
+    private String pathKey = "";
+    private String pathCer = "";
     private String passCer = "";
-    private String urlBd   = "";
-    private String userBd  = "";
-    private String passBd  = "";
+    private String urlBd = "";
+    private String userBd = "";
+    private String passBd = "";
     private String pathPdf = "";
     private String pathPlantilla = "";
     private String pathXml = "";
@@ -27,9 +23,12 @@ public class Configuracion extends Model implements Serializable {
     private String claveSmtp = "";
     private String seguridad = "";
     private String puertoSmtp = "25";
-    
+    private String visorPDF = "";
+    private String correoRemitente = "";
+    private String tituloCorreo = "";
+    private String mensajeCorreo = "";
     private static final long serialVersionUID = -3524646329180295196L;
-    
+
     /**
      * @return the pathKey
      */
@@ -224,5 +223,61 @@ public class Configuracion extends Model implements Serializable {
      */
     public void setPuertoSmtp(String puertoSmtp) {
         this.puertoSmtp = puertoSmtp;
+    }
+
+    /**
+     * @return the visorPDF
+     */
+    public String getVisorPDF() {
+        return visorPDF;
+    }
+
+    /**
+     * @param visorPDF the visorPDF to set
+     */
+    public void setVisorPDF(String visorPDF) {
+        this.visorPDF = visorPDF;
+    }
+
+    /**
+     * @return the correoRemitente
+     */
+    public String getCorreoRemitente() {
+        return correoRemitente;
+    }
+
+    /**
+     * @param correoRemitente the correoRemitente to set
+     */
+    public void setCorreoRemitente(String correoRemitente) {
+        this.correoRemitente = correoRemitente;
+    }
+
+    /**
+     * @return the tituloCorreo
+     */
+    public String getTituloCorreo() {
+        return tituloCorreo;
+    }
+
+    /**
+     * @param tituloCorreo the tituloCorreo to set
+     */
+    public void setTituloCorreo(String tituloCorreo) {
+        this.tituloCorreo = tituloCorreo;
+    }
+
+    /**
+     * @return the mensajeCorreo
+     */
+    public String getMensajeCorreo() {
+        return mensajeCorreo;
+    }
+
+    /**
+     * @param mensajeCorreo the mensajeCorreo to set
+     */
+    public void setMensajeCorreo(String mensajeCorreo) {
+        this.mensajeCorreo = mensajeCorreo;
     }
 }

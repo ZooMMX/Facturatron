@@ -144,6 +144,11 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
         } else if (getView().getRbnUsaTLS().isSelected()) {
             getModel().setSeguridad(ConfiguracionForm.USA_TLS);
         }
+        getModel().setVisorPDF(getView().getRbnVisorPDFJava().isSelected()
+                ? ConfiguracionForm.VISOR_PDF_JAVA : ConfiguracionForm.VISOR_PDF_NATIVO);
+        getModel().setTituloCorreo(getView().getTxtTituloCorreo().getText());
+        getModel().setMensajeCorreo(getView().getTxtMensajeCorreo().getText());
+        getModel().setCorreoRemitente(getView().getTxtCorreoRemitente().getText());
         getModel().persist();
         JOptionPane.showMessageDialog(getView(), "Configuración actualizada");
     }

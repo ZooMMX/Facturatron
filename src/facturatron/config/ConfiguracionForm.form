@@ -4,6 +4,8 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="btnGroupSeguridad">
     </Component>
+    <Component class="javax.swing.ButtonGroup" name="btnGroupVisorPDF">
+    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -23,8 +25,9 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jXTitledPanel1" max="32767" attributes="0"/>
                   <Component id="jXTitledPanel2" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jXTitledPanel1" max="32767" attributes="0"/>
+                  <Component id="pnlConfiguracionCorreo" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -36,6 +39,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jXTitledPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="pnlConfiguracionCorreo" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jXTitledPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -46,69 +51,95 @@
     <Container class="org.jdesktop.swingx.JXTitledPanel" name="jXTitledPanel1">
       <Properties>
         <Property name="title" type="java.lang.String" value="Configuraci&#xf3;n del Sistema"/>
+        <Property name="titleFont" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Verdana" size="12" style="0"/>
+        </Property>
       </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jXLabel1" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jXLabel10" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jXLabel7" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jXLabel2" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jXLabel1" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="txtPathXml" max="32767" attributes="0"/>
-                              <Component id="txtPathPlantilla" alignment="1" max="32767" attributes="0"/>
-                              <Component id="txtPathPdf" alignment="1" max="32767" attributes="0"/>
-                              <Component id="txtPathCer" alignment="1" max="32767" attributes="0"/>
-                              <Component id="txtPathKey" alignment="1" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="btnBuscarCer" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnBuscarKey" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnBuscarPdf" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnBuscarPlantilla" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnBuscarXml" alignment="1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jXLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jXLabel13" alignment="0" min="-2" pref="141" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="txtPuertoSmtp" min="-2" pref="60" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="rbnSinSeguridad" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  <Component id="rbnUsaSSL" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="rbnUsaTLS" min="-2" max="-2" attributes="0"/>
+                                  <Component id="rbnVisorPDFNativo" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rbnVisorPDFJava" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="txtPathPdf" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="txtPathCer" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="txtPathKey" alignment="1" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="btnBuscarCer" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnBuscarKey" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnBuscarPdf" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jXLabel5" max="32767" attributes="0"/>
+                                      <Component id="jXLabel6" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jXLabel4" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jXLabel3" min="-2" pref="136" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jXLabel9" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
+                                      <Component id="jXLabel8" min="-2" pref="160" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtPassCer" max="32767" attributes="0"/>
+                                      <Component id="txtPathXml" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="txtPathPlantilla" alignment="1" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="btnBuscarPlantilla" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnBuscarXml" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                               <Component id="txtPassBd" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtUserBd" alignment="1" max="32767" attributes="0"/>
-                              <Component id="txtPassCer" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtUrlBd" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtClaveSmtp" max="32767" attributes="0"/>
-                              <Component id="txtUsuarioSmtp" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtSmtpHost" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtUserBd" alignment="1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -127,70 +158,55 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtPathKey" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jXLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPathKey" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnBuscarKey" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtPathPdf" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jXLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnBuscarPdf" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtPathPdf" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jXLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnBuscarPlantilla" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtPathPlantilla" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jXLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnBuscarXml" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtPathXml" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jXLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtPassCer" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jXLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtUrlBd" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jXLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtUserBd" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jXLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtPassBd" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtSmtpHost" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jXLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtUsuarioSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jXLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbnVisorPDFNativo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbnVisorPDFJava" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtClaveSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jXLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPathPlantilla" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnBuscarPlantilla" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jXLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="btnBuscarXml" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="txtPathXml" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jXLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtPuertoSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="rbnUsaSSL" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="rbnUsaTLS" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="rbnSinSeguridad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jXLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPassCer" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jXLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtUrlBd" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jXLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtUserBd" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jXLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtPassBd" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jXLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -199,45 +215,99 @@
       </Layout>
       <SubComponents>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtUserBd">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="txtPassCer">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="txtPassBd">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtPathKey">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtUrlBd">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtPathCer">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel1">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="Ruta certificado digital:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel2">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="Ruta llave p&#xfa;blica:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel3">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="Clave certificado:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel4">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="URL Base de datos:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel5">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="Usuario Base de Datos:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel6">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="Clave Base de Datos:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXButton" name="btnBuscarCer">
@@ -252,17 +322,29 @@
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel7">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="Ruta PDF:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel8">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="Ruta Plantilla:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel9">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="Ruta XML:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXButton" name="btnBuscarPdf">
@@ -281,62 +363,56 @@
           </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtPathPdf">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtPathPlantilla">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtPathXml">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel10">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Servidor SMTP:"/>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Tipo de Visor PDF:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
           </Properties>
         </Component>
-        <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel11">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Usuario Cuenta SMTP:"/>
-          </Properties>
-        </Component>
-        <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel12">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Clave Cuenta SMTP:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JPasswordField" name="txtClaveSmtp">
-        </Component>
-        <Component class="org.jdesktop.swingx.JXTextField" name="txtUsuarioSmtp">
-        </Component>
-        <Component class="org.jdesktop.swingx.JXTextField" name="txtSmtpHost">
-        </Component>
-        <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel13">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Puerto SMTP:"/>
-          </Properties>
-        </Component>
-        <Component class="org.jdesktop.swingx.JXTextField" name="txtPuertoSmtp">
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="rbnUsaSSL">
+        <Component class="javax.swing.JRadioButton" name="rbnVisorPDFNativo">
           <Properties>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="btnGroupSeguridad"/>
+              <ComponentRef name="btnGroupVisorPDF"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="SSL"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Visor PDF Nativo"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="rbnUsaTLS">
+        <Component class="javax.swing.JRadioButton" name="rbnVisorPDFJava">
           <Properties>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="btnGroupSeguridad"/>
+              <ComponentRef name="btnGroupVisorPDF"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="TLS"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="rbnSinSeguridad">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="btnGroupSeguridad"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="No"/>
-            <Property name="actionCommand" type="java.lang.String" value="NO"/>
+            <Property name="text" type="java.lang.String" value="Visor PDF Java"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -352,7 +428,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="384" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -371,6 +447,222 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Guardar"/>
           </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="org.jdesktop.swingx.JXTitledPanel" name="pnlConfiguracionCorreo">
+      <Properties>
+        <Property name="opaque" type="boolean" value="true"/>
+        <Property name="title" type="java.lang.String" value="Configuraci&#xf3;n para el Env&#xed;o del Correo Electr&#xf3;nico"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="lblClaveSMTP" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblUsuarioSMTP" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblServidorSMTP" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblPuertoSMTP" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="txtUsuarioSmtp" alignment="0" pref="242" max="32767" attributes="0"/>
+                      <Component id="txtSmtpHost" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtClaveSmtp" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="txtPuertoSmtp" min="-2" pref="60" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="rbnSinSeguridad" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          <Component id="rbnUsaSSL" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="rbnUsaTLS" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblTituloCorreo" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblTituloCorreo1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblTituloCorreo2" alignment="0" pref="151" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="scrMensajeCorreo" pref="229" max="32767" attributes="0"/>
+                      <Component id="txtCorreoRemitente" max="32767" attributes="0"/>
+                      <Component id="txtTituloCorreo" alignment="0" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtSmtpHost" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblServidorSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblTituloCorreo2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCorreoRemitente" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtUsuarioSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblUsuarioSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblTituloCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTituloCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtClaveSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblClaveSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTituloCorreo1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtPuertoSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="rbnUsaSSL" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="rbnUsaTLS" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="rbnSinSeguridad" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblPuertoSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Component id="scrMensajeCorreo" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="org.jdesktop.swingx.JXLabel" name="lblServidorSMTP">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Servidor SMTP:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="org.jdesktop.swingx.JXTextField" name="txtSmtpHost">
+        </Component>
+        <Component class="org.jdesktop.swingx.JXTextField" name="txtUsuarioSmtp">
+        </Component>
+        <Component class="org.jdesktop.swingx.JXLabel" name="lblUsuarioSMTP">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Usuario Cuenta SMTP:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="org.jdesktop.swingx.JXLabel" name="lblClaveSMTP">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Clave Cuenta SMTP:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JPasswordField" name="txtClaveSmtp">
+        </Component>
+        <Component class="org.jdesktop.swingx.JXTextField" name="txtPuertoSmtp">
+        </Component>
+        <Component class="org.jdesktop.swingx.JXLabel" name="lblPuertoSMTP">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Puerto SMTP:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbnSinSeguridad">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btnGroupSeguridad"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="No"/>
+            <Property name="actionCommand" type="java.lang.String" value="NO"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbnUsaSSL">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btnGroupSeguridad"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="SSL"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbnUsaTLS">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btnGroupSeguridad"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="TLS"/>
+          </Properties>
+        </Component>
+        <Component class="org.jdesktop.swingx.JXLabel" name="lblTituloCorreo">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="T&#xed;tulo del Correo:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="org.jdesktop.swingx.JXLabel" name="lblTituloCorreo1">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Mensaje del Correo:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Container class="javax.swing.JScrollPane" name="scrMensajeCorreo">
+          <Properties>
+            <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
+          </Properties>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextArea" name="txtMensajeCorreo">
+              <Properties>
+                <Property name="columns" type="int" value="20"/>
+                <Property name="rows" type="int" value="5"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="org.jdesktop.swingx.JXLabel" name="lblTituloCorreo2">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Correo del Remitente:"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="org.jdesktop.swingx.JXTextField" name="txtCorreoRemitente">
+        </Component>
+        <Component class="org.jdesktop.swingx.JXTextField" name="txtTituloCorreo">
         </Component>
       </SubComponents>
     </Container>

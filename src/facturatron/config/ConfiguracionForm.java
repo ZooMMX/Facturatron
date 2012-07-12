@@ -21,9 +21,29 @@ import java.util.Observer;
  */
 public class ConfiguracionForm extends javax.swing.JPanel implements Observer, ViewInterface<ConfiguracionDao> {
 
+    /**
+     * Constante para indicar que no se usar autenticación contra el servidor
+     * SMTP.
+     */
     public static final String SIN_SEGURIDAD = "NO";
+    /**
+     * Constante para indicar que se va a usar autenticación contra el servidor
+     * SMTP y se usa SSL.
+     */
     public static final String USA_SSL = "SSL";
+    /**
+     * Constante para indicar que se va a usar autenticación contra el servidor
+     * SMTP y se usa TLS.
+     */
     public static final String USA_TLS = "TLS";
+    /**
+     * Constante para indicar que el visor a usarse es el de Java.
+     */
+    public static final String VISOR_PDF_JAVA = "VISOR_JAVA";
+    /**
+     * Constante para indicar que el visor a usarse en el Nativo del SO.
+     */
+    public static final String VISOR_PDF_NATIVO = "VISOR_NATIVO";
     private ConfiguracionDao model;
 
     /**
@@ -65,6 +85,15 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
             getRbnSinSeguridad().setSelected(true);
         }
         getTxtPuertoSmtp().setText(getModel().getPuertoSmtp() == null ? "25" : getModel().getPuertoSmtp());
+        getTxtCorreoRemitente().setText(getModel().getCorreoRemitente());
+        getTxtMensajeCorreo().setText(getModel().getMensajeCorreo());
+        getTxtTituloCorreo().setText(getModel().getTituloCorreo());
+        if (getModel().getVisorPDF() == null) {
+            getRbnVisorPDFNativo().setSelected(true);
+        } else {
+            getRbnVisorPDFJava().setSelected(getModel().getVisorPDF().equals(VISOR_PDF_JAVA));
+            getRbnVisorPDFNativo().setSelected(getModel().getVisorPDF().equals(VISOR_PDF_NATIVO));
+        }
     }
 
     /**
@@ -77,6 +106,7 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
     private void initComponents() {
 
         btnGroupSeguridad = new javax.swing.ButtonGroup();
+        btnGroupVisorPDF = new javax.swing.ButtonGroup();
         jXTitledPanel1 = new org.jdesktop.swingx.JXTitledPanel();
         txtUserBd = new org.jdesktop.swingx.JXTextField();
         txtPassCer = new javax.swing.JPasswordField();
@@ -102,42 +132,84 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
         txtPathPlantilla = new org.jdesktop.swingx.JXTextField();
         txtPathXml = new org.jdesktop.swingx.JXTextField();
         jXLabel10 = new org.jdesktop.swingx.JXLabel();
-        jXLabel11 = new org.jdesktop.swingx.JXLabel();
-        jXLabel12 = new org.jdesktop.swingx.JXLabel();
-        txtClaveSmtp = new javax.swing.JPasswordField();
-        txtUsuarioSmtp = new org.jdesktop.swingx.JXTextField();
-        txtSmtpHost = new org.jdesktop.swingx.JXTextField();
-        jXLabel13 = new org.jdesktop.swingx.JXLabel();
-        txtPuertoSmtp = new org.jdesktop.swingx.JXTextField();
-        rbnUsaSSL = new javax.swing.JRadioButton();
-        rbnUsaTLS = new javax.swing.JRadioButton();
-        rbnSinSeguridad = new javax.swing.JRadioButton();
+        rbnVisorPDFNativo = new javax.swing.JRadioButton();
+        rbnVisorPDFJava = new javax.swing.JRadioButton();
         jXTitledPanel2 = new org.jdesktop.swingx.JXTitledPanel();
         btnGuardar = new org.jdesktop.swingx.JXButton();
+        pnlConfiguracionCorreo = new org.jdesktop.swingx.JXTitledPanel();
+        lblServidorSMTP = new org.jdesktop.swingx.JXLabel();
+        txtSmtpHost = new org.jdesktop.swingx.JXTextField();
+        txtUsuarioSmtp = new org.jdesktop.swingx.JXTextField();
+        lblUsuarioSMTP = new org.jdesktop.swingx.JXLabel();
+        lblClaveSMTP = new org.jdesktop.swingx.JXLabel();
+        txtClaveSmtp = new javax.swing.JPasswordField();
+        txtPuertoSmtp = new org.jdesktop.swingx.JXTextField();
+        lblPuertoSMTP = new org.jdesktop.swingx.JXLabel();
+        rbnSinSeguridad = new javax.swing.JRadioButton();
+        rbnUsaSSL = new javax.swing.JRadioButton();
+        rbnUsaTLS = new javax.swing.JRadioButton();
+        lblTituloCorreo = new org.jdesktop.swingx.JXLabel();
+        lblTituloCorreo1 = new org.jdesktop.swingx.JXLabel();
+        scrMensajeCorreo = new javax.swing.JScrollPane();
+        txtMensajeCorreo = new javax.swing.JTextArea();
+        lblTituloCorreo2 = new org.jdesktop.swingx.JXLabel();
+        txtCorreoRemitente = new org.jdesktop.swingx.JXTextField();
+        txtTituloCorreo = new org.jdesktop.swingx.JXTextField();
 
         jXTitledPanel1.setTitle("Configuración del Sistema");
+        jXTitledPanel1.setTitleFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
+        txtUserBd.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        txtPassCer.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        txtPassBd.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        txtPathKey.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        txtUrlBd.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        txtPathCer.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        jXLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jXLabel1.setText("Ruta certificado digital:");
+        jXLabel1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
+        jXLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jXLabel2.setText("Ruta llave pública:");
+        jXLabel2.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
+        jXLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jXLabel3.setText("Clave certificado:");
+        jXLabel3.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
+        jXLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jXLabel4.setText("URL Base de datos:");
+        jXLabel4.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
+        jXLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jXLabel5.setText("Usuario Base de Datos:");
+        jXLabel5.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
+        jXLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jXLabel6.setText("Clave Base de Datos:");
+        jXLabel6.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
         btnBuscarCer.setText("...");
 
         btnBuscarKey.setText("...");
 
+        jXLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jXLabel7.setText("Ruta PDF:");
+        jXLabel7.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
+        jXLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jXLabel8.setText("Ruta Plantilla:");
+        jXLabel8.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
+        jXLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jXLabel9.setText("Ruta XML:");
+        jXLabel9.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
         btnBuscarPdf.setText("...");
 
@@ -145,80 +217,90 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
 
         btnBuscarXml.setText("...");
 
-        jXLabel10.setText("Servidor SMTP:");
+        txtPathPdf.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
-        jXLabel11.setText("Usuario Cuenta SMTP:");
+        txtPathPlantilla.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
-        jXLabel12.setText("Clave Cuenta SMTP:");
+        txtPathXml.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
-        jXLabel13.setText("Puerto SMTP:");
+        jXLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jXLabel10.setText("Tipo de Visor PDF:");
+        jXLabel10.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
-        btnGroupSeguridad.add(rbnUsaSSL);
-        rbnUsaSSL.setText("SSL");
+        btnGroupVisorPDF.add(rbnVisorPDFNativo);
+        rbnVisorPDFNativo.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        rbnVisorPDFNativo.setSelected(true);
+        rbnVisorPDFNativo.setText("Visor PDF Nativo");
 
-        btnGroupSeguridad.add(rbnUsaTLS);
-        rbnUsaTLS.setText("TLS");
-
-        btnGroupSeguridad.add(rbnSinSeguridad);
-        rbnSinSeguridad.setText("No");
-        rbnSinSeguridad.setActionCommand("NO");
+        btnGroupVisorPDF.add(rbnVisorPDFJava);
+        rbnVisorPDFJava.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        rbnVisorPDFJava.setText("Visor PDF Java");
 
         javax.swing.GroupLayout jXTitledPanel1Layout = new javax.swing.GroupLayout(jXTitledPanel1.getContentContainer());
         jXTitledPanel1.getContentContainer().setLayout(jXTitledPanel1Layout);
         jXTitledPanel1Layout.setHorizontalGroup(
             jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jXTitledPanel1Layout.createSequentialGroup()
-                        .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jXLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtPathXml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPathPlantilla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPathPdf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPathCer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPathKey, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnBuscarCer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscarKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscarPdf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscarPlantilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscarXml, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jXTitledPanel1Layout.createSequentialGroup()
-                        .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jXLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addContainerGap()
+                        .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jXTitledPanel1Layout.createSequentialGroup()
+                                .addComponent(jXLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(12, 12, 12))
+                            .addGroup(jXTitledPanel1Layout.createSequentialGroup()
+                                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jXLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jXLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jXLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
-                                .addComponent(txtPuertoSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(rbnSinSeguridad)
-                                .addGap(12, 12, 12)
-                                .addComponent(rbnUsaSSL)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rbnUsaTLS)
+                                .addComponent(rbnVisorPDFNativo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbnVisorPDFJava)
                                 .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jXTitledPanel1Layout.createSequentialGroup()
+                                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtPathPdf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtPathCer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtPathKey, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnBuscarCer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnBuscarKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnBuscarPdf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jXTitledPanel1Layout.createSequentialGroup()
+                        .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jXTitledPanel1Layout.createSequentialGroup()
+                                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jXLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jXLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel1Layout.createSequentialGroup()
+                                .addComponent(jXLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(12, 12, 12))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel1Layout.createSequentialGroup()
+                                .addComponent(jXLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18))
+                            .addGroup(jXTitledPanel1Layout.createSequentialGroup()
+                                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jXLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jXLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(6, 6, 6)))
+                        .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jXTitledPanel1Layout.createSequentialGroup()
+                                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPassCer)
+                                    .addComponent(txtPathXml, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtPathPlantilla, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnBuscarPlantilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnBuscarXml, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(txtPassBd)
-                            .addComponent(txtUserBd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPassCer)
                             .addComponent(txtUrlBd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtClaveSmtp)
-                            .addComponent(txtUsuarioSmtp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtSmtpHost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(txtUserBd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jXTitledPanel1Layout.setVerticalGroup(
@@ -231,59 +313,46 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
                     .addComponent(btnBuscarCer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPathKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jXLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPathKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPathPdf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jXLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarPdf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPathPdf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscarPdf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jXLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jXLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rbnVisorPDFNativo)
+                    .addComponent(rbnVisorPDFJava))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPathPlantilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarPlantilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPathPlantilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jXLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jXLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnBuscarXml, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPathXml, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtPathXml, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jXLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jXLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassCer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassCer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jXLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jXLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUrlBd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUrlBd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jXLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jXLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUserBd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUserBd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jXLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jXLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassBd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSmtpHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jXLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
-                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtUsuarioSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jXLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtClaveSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jXLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPuertoSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbnUsaSSL)
-                    .addComponent(rbnUsaTLS)
-                    .addComponent(rbnSinSeguridad)
-                    .addComponent(jXLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassBd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jXLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -298,13 +367,132 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
             .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(384, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jXTitledPanel2Layout.setVerticalGroup(
             jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlConfiguracionCorreo.setOpaque(true);
+        pnlConfiguracionCorreo.setTitle("Configuración para el Envío del Correo Electrónico");
+
+        lblServidorSMTP.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblServidorSMTP.setText("Servidor SMTP:");
+        lblServidorSMTP.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        lblUsuarioSMTP.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblUsuarioSMTP.setText("Usuario Cuenta SMTP:");
+        lblUsuarioSMTP.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        lblClaveSMTP.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClaveSMTP.setText("Clave Cuenta SMTP:");
+        lblClaveSMTP.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        lblPuertoSMTP.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPuertoSMTP.setText("Puerto SMTP:");
+        lblPuertoSMTP.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        btnGroupSeguridad.add(rbnSinSeguridad);
+        rbnSinSeguridad.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        rbnSinSeguridad.setText("No");
+        rbnSinSeguridad.setActionCommand("NO");
+
+        btnGroupSeguridad.add(rbnUsaSSL);
+        rbnUsaSSL.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        rbnUsaSSL.setText("SSL");
+
+        btnGroupSeguridad.add(rbnUsaTLS);
+        rbnUsaTLS.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        rbnUsaTLS.setText("TLS");
+
+        lblTituloCorreo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTituloCorreo.setText("Título del Correo:");
+        lblTituloCorreo.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        lblTituloCorreo1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTituloCorreo1.setText("Mensaje del Correo:");
+        lblTituloCorreo1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        scrMensajeCorreo.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        txtMensajeCorreo.setColumns(20);
+        txtMensajeCorreo.setRows(5);
+        scrMensajeCorreo.setViewportView(txtMensajeCorreo);
+
+        lblTituloCorreo2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTituloCorreo2.setText("Correo del Remitente:");
+        lblTituloCorreo2.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        javax.swing.GroupLayout pnlConfiguracionCorreoLayout = new javax.swing.GroupLayout(pnlConfiguracionCorreo.getContentContainer());
+        pnlConfiguracionCorreo.getContentContainer().setLayout(pnlConfiguracionCorreoLayout);
+        pnlConfiguracionCorreoLayout.setHorizontalGroup(
+            pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlConfiguracionCorreoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblClaveSMTP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblUsuarioSMTP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblServidorSMTP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPuertoSMTP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(13, 13, 13)
+                .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtUsuarioSmtp, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                    .addComponent(txtSmtpHost, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtClaveSmtp)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlConfiguracionCorreoLayout.createSequentialGroup()
+                        .addComponent(txtPuertoSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(rbnSinSeguridad)
+                        .addGap(12, 12, 12)
+                        .addComponent(rbnUsaSSL)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rbnUsaTLS)))
+                .addGap(30, 30, 30)
+                .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTituloCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTituloCorreo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTituloCorreo2, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrMensajeCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                    .addComponent(txtCorreoRemitente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtTituloCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(17, 17, 17))
+        );
+        pnlConfiguracionCorreoLayout.setVerticalGroup(
+            pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlConfiguracionCorreoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSmtpHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblServidorSMTP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTituloCorreo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCorreoRemitente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtUsuarioSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblUsuarioSMTP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTituloCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTituloCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlConfiguracionCorreoLayout.createSequentialGroup()
+                        .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtClaveSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblClaveSMTP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTituloCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPuertoSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rbnUsaSSL)
+                            .addComponent(rbnUsaTLS)
+                            .addComponent(rbnSinSeguridad)
+                            .addComponent(lblPuertoSMTP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(scrMensajeCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -315,8 +503,9 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jXTitledPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jXTitledPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnlConfiguracionCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -324,6 +513,8 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlConfiguracionCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jXTitledPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -336,12 +527,10 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
     private org.jdesktop.swingx.JXButton btnBuscarPlantilla;
     private org.jdesktop.swingx.JXButton btnBuscarXml;
     private javax.swing.ButtonGroup btnGroupSeguridad;
+    private javax.swing.ButtonGroup btnGroupVisorPDF;
     private org.jdesktop.swingx.JXButton btnGuardar;
     private org.jdesktop.swingx.JXLabel jXLabel1;
     private org.jdesktop.swingx.JXLabel jXLabel10;
-    private org.jdesktop.swingx.JXLabel jXLabel11;
-    private org.jdesktop.swingx.JXLabel jXLabel12;
-    private org.jdesktop.swingx.JXLabel jXLabel13;
     private org.jdesktop.swingx.JXLabel jXLabel2;
     private org.jdesktop.swingx.JXLabel jXLabel3;
     private org.jdesktop.swingx.JXLabel jXLabel4;
@@ -352,10 +541,23 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
     private org.jdesktop.swingx.JXLabel jXLabel9;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel1;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel2;
+    private org.jdesktop.swingx.JXLabel lblClaveSMTP;
+    private org.jdesktop.swingx.JXLabel lblPuertoSMTP;
+    private org.jdesktop.swingx.JXLabel lblServidorSMTP;
+    private org.jdesktop.swingx.JXLabel lblTituloCorreo;
+    private org.jdesktop.swingx.JXLabel lblTituloCorreo1;
+    private org.jdesktop.swingx.JXLabel lblTituloCorreo2;
+    private org.jdesktop.swingx.JXLabel lblUsuarioSMTP;
+    private org.jdesktop.swingx.JXTitledPanel pnlConfiguracionCorreo;
     private javax.swing.JRadioButton rbnSinSeguridad;
     private javax.swing.JRadioButton rbnUsaSSL;
     private javax.swing.JRadioButton rbnUsaTLS;
+    private javax.swing.JRadioButton rbnVisorPDFJava;
+    private javax.swing.JRadioButton rbnVisorPDFNativo;
+    private javax.swing.JScrollPane scrMensajeCorreo;
     private javax.swing.JPasswordField txtClaveSmtp;
+    private org.jdesktop.swingx.JXTextField txtCorreoRemitente;
+    private javax.swing.JTextArea txtMensajeCorreo;
     private javax.swing.JPasswordField txtPassBd;
     private javax.swing.JPasswordField txtPassCer;
     private org.jdesktop.swingx.JXTextField txtPathCer;
@@ -365,6 +567,7 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
     private org.jdesktop.swingx.JXTextField txtPathXml;
     private org.jdesktop.swingx.JXTextField txtPuertoSmtp;
     private org.jdesktop.swingx.JXTextField txtSmtpHost;
+    private org.jdesktop.swingx.JXTextField txtTituloCorreo;
     private org.jdesktop.swingx.JXTextField txtUrlBd;
     private org.jdesktop.swingx.JXTextField txtUserBd;
     private org.jdesktop.swingx.JXTextField txtUsuarioSmtp;
@@ -634,5 +837,75 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
      */
     public void setTxtPuertoSmtp(org.jdesktop.swingx.JXTextField txtPuertoSmtp) {
         this.txtPuertoSmtp = txtPuertoSmtp;
+    }
+
+    /**
+     * @return the rbnVisorPDFJava
+     */
+    public javax.swing.JRadioButton getRbnVisorPDFJava() {
+        return rbnVisorPDFJava;
+    }
+
+    /**
+     * @param rbnVisorPDFJava the rbnVisorPDFJava to set
+     */
+    public void setRbnVisorPDFJava(javax.swing.JRadioButton rbnVisorPDFJava) {
+        this.rbnVisorPDFJava = rbnVisorPDFJava;
+    }
+
+    /**
+     * @return the rbnVisorPDFNativo
+     */
+    public javax.swing.JRadioButton getRbnVisorPDFNativo() {
+        return rbnVisorPDFNativo;
+    }
+
+    /**
+     * @param rbnVisorPDFNativo the rbnVisorPDFNativo to set
+     */
+    public void setRbnVisorPDFNativo(javax.swing.JRadioButton rbnVisorPDFNativo) {
+        this.rbnVisorPDFNativo = rbnVisorPDFNativo;
+    }
+
+    /**
+     * @return the txtCorreoRemitente
+     */
+    public org.jdesktop.swingx.JXTextField getTxtCorreoRemitente() {
+        return txtCorreoRemitente;
+    }
+
+    /**
+     * @param txtCorreoRemitente the txtCorreoRemitente to set
+     */
+    public void setTxtCorreoRemitente(org.jdesktop.swingx.JXTextField txtCorreoRemitente) {
+        this.txtCorreoRemitente = txtCorreoRemitente;
+    }
+
+    /**
+     * @return the txtMensajeCorreo
+     */
+    public javax.swing.JTextArea getTxtMensajeCorreo() {
+        return txtMensajeCorreo;
+    }
+
+    /**
+     * @param txtMensajeCorreo the txtMensajeCorreo to set
+     */
+    public void setTxtMensajeCorreo(javax.swing.JTextArea txtMensajeCorreo) {
+        this.txtMensajeCorreo = txtMensajeCorreo;
+    }
+
+    /**
+     * @return the txtTituloCorreo
+     */
+    public org.jdesktop.swingx.JXTextField getTxtTituloCorreo() {
+        return txtTituloCorreo;
+    }
+
+    /**
+     * @param txtTituloCorreo the txtTituloCorreo to set
+     */
+    public void setTxtTituloCorreo(org.jdesktop.swingx.JXTextField txtTituloCorreo) {
+        this.txtTituloCorreo = txtTituloCorreo;
     }
 }
