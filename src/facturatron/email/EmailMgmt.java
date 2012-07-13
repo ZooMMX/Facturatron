@@ -177,6 +177,7 @@ public abstract class EmailMgmt {
         Configuracion configuracion = new ConfiguracionDao().load();
         MultiPartEmail email = new MultiPartEmail();
         email.setHostName(configuracion.getSmtpHost());
+        setEmailAddressFrom(configuracion.getCorreoRemitente());
         if (email.getHostName() == null || email.getHostName().equals("")) {
             errorStatus = WRONG_SMTP;
             return false;

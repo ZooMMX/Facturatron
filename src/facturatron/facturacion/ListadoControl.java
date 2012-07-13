@@ -2,13 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package facturatron.facturacion;
 
-import facturatron.Dominio.Factura.Estado;
+import facturatron.Dominio.Configuracion;
 import facturatron.MVC.Controller;
 import facturatron.Principal.VisorPdf;
-import facturatron.facturacion.FacturaDao;
+import facturatron.config.ConfiguracionDao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,7 +24,7 @@ import javax.swing.JOptionPane;
  */
 public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
 
-    public ListadoControl(){
+    public ListadoControl() {
         setView(new ListadoForm());
         setModel(new ListadoModel());
     }
@@ -45,10 +43,10 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
     public void btnCancelarFactura() {
         int row = getView().getTablaListado().getSelectedRow();
         int id = getModel().getFacturas().get(row).getId();
-        FacturaDao factura = (FacturaDao) getModel().getDao().findBy(id);        
-        
-        String confirmMsg = "¿Realmente quiere cancelar la factura folio "+factura.getFolio()+"?";
-        if(JOptionPane.showConfirmDialog(getView(), confirmMsg) == JOptionPane.YES_OPTION) {
+        FacturaDao factura = (FacturaDao) getModel().getDao().findBy(id);
+
+        String confirmMsg = "¿Realmente quiere cancelar la factura folio " + factura.getFolio() + "?";
+        if (JOptionPane.showConfirmDialog(getView(), confirmMsg) == JOptionPane.YES_OPTION) {
             try {
                 factura.cancelar();
                 getModel().load();
@@ -64,7 +62,8 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
             int row = getView().getTablaListado().getSelectedRow();
             int id = getModel().getFacturas().get(row).getId();
             FacturaDao factura = (FacturaDao) getModel().getDao().findBy(id);
-            VisorPdf.abrir(factura.getPdfPath());
+            Configuracion cfg = new ConfiguracionDao().load();
+            VisorPdf.abrir(factura.getPdfPath(), factura.toComprobanteTron(), cfg.getPathPlantilla());
         } catch (IOException ex) {
             Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "Error de lectura", ex);
         } catch (InterruptedException ex) {
@@ -81,39 +80,48 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
         return super.getView();
     }
 
-
     @Override
     public void asignarEventos() {
         getView().getBtnCancelarFactura().addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 btnCancelarFactura();
             }
         });
         getView().getBtnVerFactura().addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {   //se crea una nueva ventana con los datos de la factura seleccionada
                 btnVerFactura();
             }
         });
         getView().getDesde().addPropertyChangeListener("date", new PropertyChangeListener() {
+
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                new Thread() { public void run() {
-                    notifyBusy();
-                    getModel().setFechaInicial(new java.sql.Date(getView().getDesde().getDate().getTime()));
-                    notifyIdle();
-                }}.start();
+                new Thread() {
+
+                    public void run() {
+                        notifyBusy();
+                        getModel().setFechaInicial(new java.sql.Date(getView().getDesde().getDate().getTime()));
+                        notifyIdle();
+                    }
+                }.start();
             }
         });
         getView().getHasta().addPropertyChangeListener("date", new PropertyChangeListener() {
+
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                new Thread() { public void run() {
-                    notifyBusy();
-                    getModel().setFechaFinal(new java.sql.Date(getView().getHasta().getDate().getTime()));
-                    notifyIdle();
-                }}.start();
+                new Thread() {
+
+                    public void run() {
+                        notifyBusy();
+                        getModel().setFechaFinal(new java.sql.Date(getView().getHasta().getDate().getTime()));
+                        notifyIdle();
+                    }
+                }.start();
             }
         });
     }
@@ -128,5 +136,4 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
         getView().getHasta().setDate(getModel().getFechaFinal());
         getModel().addObserver(getView());
     }
-
 }

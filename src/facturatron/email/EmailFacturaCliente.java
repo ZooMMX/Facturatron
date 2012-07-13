@@ -4,6 +4,8 @@
  */
 package facturatron.email;
 
+import facturatron.Dominio.Configuracion;
+import facturatron.config.ConfiguracionDao;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,11 +21,11 @@ public class EmailFacturaCliente extends EmailMgmt implements Runnable {
      * @param emailAddressTo La dirección del receptor del correo electrónico.
      * @param subject Parte del subject del Correo.
      */
-    public EmailFacturaCliente(String emailAddressTo, String subject) {
+    public EmailFacturaCliente(String emailAddressTo) {
         super(emailAddressTo);
-        setEmailAddressFrom("facturatron@facturatron.com");
-        setMsgSubject("Facturas PDF y XML " + subject);
-        setMsgContent("Anexadas Factura en PDF y XML");
+        Configuracion configuracion = new ConfiguracionDao().load();
+        setMsgSubject(configuracion.getTituloCorreo());
+        setMsgContent(configuracion.getMensajeCorreo());
     }
 
     @Override

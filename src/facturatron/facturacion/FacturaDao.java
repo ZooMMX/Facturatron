@@ -100,8 +100,7 @@ public class FacturaDao extends Factura implements DAO<Integer, Factura> {
 
         ClienteDao cliente = new ClienteDao().findBy(getReceptor().getId());
         if (cliente != null) {
-            EmailFacturaCliente emailFacturaCliente = new EmailFacturaCliente(cliente.getCorreoElectronico(),
-                    cfd.getComprobante().getSerie() + cfd.getComprobante().getFolio());
+            EmailFacturaCliente emailFacturaCliente = new EmailFacturaCliente(cliente.getCorreoElectronico());
             emailFacturaCliente.addAttachment(getPdfPath(serie, folio), serie + folio + "PDF");
             emailFacturaCliente.addAttachment(getXmlPath(serie, folio), serie + folio + "XML");
             Thread thread = new Thread(emailFacturaCliente);
@@ -110,12 +109,10 @@ public class FacturaDao extends Factura implements DAO<Integer, Factura> {
         //Visor Java
         //cfd.showPreview(cfg.getPathPlantilla());
         //Visor nativo para windows
-        VisorPdf.abrir(getPdfPath(serie, folio));
+        VisorPdf.abrir(getPdfPath(serie, folio), cfd.getComprobante(), cfg.getPathPlantilla());
     }
 
     public ComprobanteTron toComprobanteTron() {
-
-        MathContext mc = MathContext.DECIMAL64;
         ComprobanteTron comp = new ComprobanteTron();
         comp.setVersion(getVersion());
 
@@ -129,6 +126,8 @@ public class FacturaDao extends Factura implements DAO<Integer, Factura> {
         dCal.set(Calendar.MILLISECOND, tCal.get(Calendar.MILLISECOND));
 
         comp.setFecha(dCal.getTime());
+        comp.setNoCertificado(getNoCertificado());
+        comp.setSello(getSello());
         comp.setSerie(getSerie());
         comp.setFolio(String.valueOf(getFolio()));
         comp.setNoAprobacion(getNoAprobacion());
@@ -136,6 +135,7 @@ public class FacturaDao extends Factura implements DAO<Integer, Factura> {
         comp.setFormaDePago(getFormaDePago());
         comp.setMetodoDePago(getMetodoDePago());
         comp.setLugarExpedicion(getEmisor().getMunicipio() + ", " + getEmisor().getEstado());
+        comp.setObservaciones(getObservaciones());
 
         comp.setSubTotal(getSubtotal().setScale(2, RoundingMode.HALF_EVEN));
         comp.setTotal(getTotal().setScale(2, RoundingMode.HALF_EVEN));
@@ -284,7 +284,6 @@ public class FacturaDao extends Factura implements DAO<Integer, Factura> {
                 bean.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE") ? Estado.VIGENTE : Estado.CANCELADO);
                 bean.setObservaciones(rs.getString("observaciones"));
                 ret.add(bean);
-
             }
             return ret;
         } catch (Exception ex) {
@@ -455,11 +454,10 @@ public class FacturaDao extends Factura implements DAO<Integer, Factura> {
             dao.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE") ? Estado.VIGENTE : Estado.CANCELADO);
             dao.setObservaciones(rs.getString("observaciones"));
 
-            rs = bd.getStmt().executeQuery("select * from concepto where id = " + id);//
+            rs = bd.getStmt().executeQuery("select * from concepto where idcomprobante = " + id);//
             ArrayList<Renglon> renglones = new ArrayList<Renglon>();
-            Renglon rb = new Renglon();
             while (rs.next()) {
-                rb = new Renglon();
+                Renglon rb = new Renglon();
                 rb.setId(rs.getInt("id"));
                 rb.setUnidad(rs.getString("unidad"));
                 rb.setNoIdentificacion(rs.getString("noIdentificacion"));
