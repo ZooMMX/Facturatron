@@ -2,14 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package facturatron.Principal;
 
-import com.jidesoft.swing.TabEditingEvent;
-import com.jidesoft.swing.TabEditingListener;
 import facturatron.config.ConfigFiscalControl;
 import facturatron.MVC.Controller;
 import facturatron.MVC.Model;
+import facturatron.acercade.AcercaDeControl;
 import facturatron.cliente.ClienteControl;
 import facturatron.config.ConfiguracionControl;
 import facturatron.facturacion.FacturaControl;
@@ -19,13 +17,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.java.swingfx.waitwithstyle.InfiniteProgressPanel;
 
 /**
-
+ *
  */
 public class Main extends Controller<Model, MainForm> {
-    
+
     public Main() {
         setView(new MainForm());
         getView().setVisible(true);
@@ -34,52 +31,74 @@ public class Main extends Controller<Model, MainForm> {
 
     @Override
     public void asignarEventos() {
-        
+
         asignarLinkFactura();
         asignarLinkClientes();
         asignarLinkFacturasEmitidas();
         asignarLinkInformeMensual();
         asignarLinkCfgFiscal();
         asignarLinkCfgSistema();
+        asignarLinkAcercaDe();
         asignarLinkSalir();
         asignarMenuSalir();
-        
+
     }
 
     private void facturar() throws Exception {
         FacturaControl fs = new FacturaControl();
         fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
-        ((MainForm)getView()).addTab("Facturar", fs.getView());
+        ((MainForm) getView()).addTab("Facturar", fs.getView());
     }
 
-
-     private void clientes() throws Exception {
+    private void clientes() throws Exception {
         ClienteControl fs = new ClienteControl();
         fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
-        ((MainForm)getView()).addTab("Clientes", fs.getView());
+        ((MainForm) getView()).addTab("Clientes", fs.getView());
     }
 
-     private void facturasEmitidas() throws Exception {
+    private void facturasEmitidas() throws Exception {
         ListadoControl lc = new ListadoControl();
         lc.setBusyHandler(new ProgressPanelBusyHandler(getView()));
         lc.init();
-        ((MainForm)getView()).addTab("Facturas Emitidas", lc.getView());
+        ((MainForm) getView()).addTab("Facturas Emitidas", lc.getView());
+    }
+    
+    private void acercaDe() throws Exception {
+        AcercaDeControl adc = new AcercaDeControl();
+        ((MainForm) getView()).addTab("Acerca De", adc.getView());
     }
 
-     private void informeMensual() throws Exception {
+    private void informeMensual() throws Exception {
         InformeControl cfc = new InformeControl();
-        ((MainForm)getView()).addTab("Informe Mensual SAT", cfc.getView());
+        ((MainForm) getView()).addTab("Informe Mensual SAT", cfc.getView());
     }
 
-
-     private void configFiscal() throws Exception {
+    private void configFiscal() throws Exception {
         ConfigFiscalControl cfc = new ConfigFiscalControl();
-        ((MainForm)getView()).addTab("Configuración fiscal", cfc.getView());
+        ((MainForm) getView()).addTab("Configuración fiscal", cfc.getView());
     }
 
-     private void configSistema() throws Exception {
+    private void configSistema() throws Exception {
         ConfiguracionControl cfc = new ConfiguracionControl();
-        ((MainForm)getView()).addTab("Configuración sistema", cfc.getView());
+        ((MainForm) getView()).addTab("Configuración sistema", cfc.getView());
+    }
+
+    private void asignarLinkAcercaDe() {
+        getView().getLinkCfgAcercaDe().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Thread() {
+                    public void run() {
+                        try {
+                            acercaDe();
+                        } catch (Exception ex) {
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
+                        }
+                    }
+                }.start();
+            }
+        });
     }
 
     private void asignarLinkFactura() {
@@ -88,18 +107,18 @@ public class Main extends Controller<Model, MainForm> {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Thread() {
+
                     @Override
                     public void run() {
-                        try {                            
-                           facturar();
+                        try {
+                            facturar();
                         } catch (Exception ex) {
-                           Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
-                        } 
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
+                        }
                     }
                 }.start();
             }
-        }
-        );
+        });
     }
 
     private void asignarLinkFacturasEmitidas() {
@@ -107,37 +126,38 @@ public class Main extends Controller<Model, MainForm> {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Thread() { public void run() {
-                    try {
-                        facturasEmitidas();
-                    } catch (Exception ex) {
-                       Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
-                    }
-                }}.start();
-            }
-        }
-        );
-    }
+                new Thread() {
 
+                    public void run() {
+                        try {
+                            facturasEmitidas();
+                        } catch (Exception ex) {
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
+                        }
+                    }
+                }.start();
+            }
+        });
+    }
 
     private void asignarLinkInformeMensual() {
         getView().getLinkInformeMensual().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Thread() { public void run() {
-                    try {
-                        informeMensual();
-                    } catch (Exception ex) {
-                       Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
+                new Thread() {
+
+                    public void run() {
+                        try {
+                            informeMensual();
+                        } catch (Exception ex) {
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo facturación", ex);
+                        }
                     }
-                }}.start();
+                }.start();
             }
-        }
-        );
+        });
     }
-
-
 
     private void asignarLinkClientes() {
         getView().getLinkCatalogo().addActionListener(new ActionListener() {
@@ -147,10 +167,10 @@ public class Main extends Controller<Model, MainForm> {
                 try {
                     clientes();
                 } catch (Exception ex) {
-                   Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo Catalogo", ex);
-                }            }
-        }
-        );
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo Catalogo", ex);
+                }
+            }
+        });
     }
 
     private void asignarLinkCfgFiscal() {
@@ -161,10 +181,10 @@ public class Main extends Controller<Model, MainForm> {
                 try {
                     configFiscal();
                 } catch (Exception ex) {
-                   Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo ConfigFiscal", ex);
-                }            }
-        }
-        );
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo ConfigFiscal", ex);
+                }
+            }
+        });
     }
 
     private void asignarLinkCfgSistema() {
@@ -183,14 +203,13 @@ public class Main extends Controller<Model, MainForm> {
 
     private void asignarLinkSalir() {
         getView().getLinkSalir().addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 cerrarSistema();
             }
-        }
-        );
+        });
     }
-
 
     private void cerrarSistema() {
         System.exit(0);
@@ -198,17 +217,16 @@ public class Main extends Controller<Model, MainForm> {
 
     private void asignarMenuSalir() {
         getView().getMenuSalir().addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 cerrarSistema();
             }
-        }
-        );
+        });
     }
 
     @Override
     public void enlazarModeloVista() {
         //Éste controlador no tiene modelo
     }
-
 }
