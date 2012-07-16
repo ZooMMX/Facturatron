@@ -39,7 +39,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jXTitledPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="pnlConfiguracionCorreo" min="-2" max="-2" attributes="0"/>
+              <Component id="pnlConfiguracionCorreo" min="-2" pref="194" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jXTitledPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
@@ -467,14 +467,25 @@
                       <Component id="lblServidorSMTP" alignment="0" max="32767" attributes="0"/>
                       <Component id="lblPuertoSMTP" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="txtUsuarioSmtp" alignment="0" pref="242" max="32767" attributes="0"/>
-                      <Component id="txtSmtpHost" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txtClaveSmtp" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="txtPuertoSmtp" min="-2" pref="60" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="btnProbarConfiguracion" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtSmtpHost" alignment="1" min="-2" pref="290" max="-2" attributes="0"/>
+                              <Component id="txtUsuarioSmtp" alignment="1" min="-2" pref="290" max="-2" attributes="0"/>
+                              <Component id="txtClaveSmtp" alignment="1" min="-2" pref="290" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblTituloCorreo" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblTituloCorreo1" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblTituloCorreo2" alignment="0" pref="168" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="txtPuertoSmtp" min="-2" pref="60" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="rbnSinSeguridad" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Component id="rbnUsaSSL" min="-2" max="-2" attributes="0"/>
@@ -482,19 +493,13 @@
                           <Component id="rbnUsaTLS" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblTituloCorreo" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblTituloCorreo1" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblTituloCorreo2" alignment="0" pref="151" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="scrMensajeCorreo" pref="229" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="txtTituloCorreo" max="32767" attributes="0"/>
                       <Component id="txtCorreoRemitente" max="32767" attributes="0"/>
-                      <Component id="txtTituloCorreo" alignment="0" max="32767" attributes="0"/>
+                      <Component id="scrMensajeCorreo" pref="221" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -502,26 +507,15 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtSmtpHost" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblServidorSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblTituloCorreo2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtCorreoRemitente" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtUsuarioSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblUsuarioSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblTituloCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtTituloCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
+                          <Component id="txtSmtpHost" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                          <Component id="txtUsuarioSmtp" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txtClaveSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblClaveSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblTituloCorreo1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -531,8 +525,27 @@
                               <Component id="rbnSinSeguridad" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblPuertoSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnProbarConfiguracion" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="scrMensajeCorreo" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblServidorSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtCorreoRemitente" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTituloCorreo2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblUsuarioSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTituloCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtTituloCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="scrMensajeCorreo" min="-2" pref="80" max="-2" attributes="0"/>
+                              <Component id="lblTituloCorreo1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -663,6 +676,12 @@
         <Component class="org.jdesktop.swingx.JXTextField" name="txtCorreoRemitente">
         </Component>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtTituloCorreo">
+        </Component>
+        <Component class="org.jdesktop.swingx.JXButton" name="btnProbarConfiguracion">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Probar Configuraci&#xf3;n"/>
+            <Property name="toolTipText" type="java.lang.String" value="Se enviar&#xe1; un Correo a la Direcci&#xf3;n que indique en el Correo del Remitente"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

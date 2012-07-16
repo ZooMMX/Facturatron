@@ -5,6 +5,7 @@
 package facturatron.config;
 
 import facturatron.MVC.Controller;
+import facturatron.email.EmailPruebaConf;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -194,6 +195,23 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
                 btnBuscarXml();
             }
         });
+        getView().getBtnProbarConfiguracion().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnProbarConfiguracionClicked();
+            }
+        });
+    }
+
+    private void btnProbarConfiguracionClicked() {
+        EmailPruebaConf emailPruebaConf = new EmailPruebaConf(getView().getTxtCorreoRemitente().getText());
+        boolean res = emailPruebaConf.enviarCorreoPrueba();
+        if (res) {
+            JOptionPane.showMessageDialog(getView(), "Correo enviado satisfactoriamente!", "Información", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(getView(), "Ocurrió un Error enviando el Correo!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override
