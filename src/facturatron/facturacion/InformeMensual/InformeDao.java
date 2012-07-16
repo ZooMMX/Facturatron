@@ -64,7 +64,7 @@ public class InformeDao extends Model {
     /** Consulta la base de datos y rellena el informe mensual para el SAT
      *
      */
-    public void generar() throws Exception {
+    public String generar() throws Exception {
         Calendar desde = Calendar.getInstance();
         Calendar hasta;
         desde.clear();
@@ -89,7 +89,7 @@ public class InformeDao extends Model {
                 p.toEmisor(p), 
                 desde);
         im.cargarComprobantes(comps);
-        im.toTXTFile(getFolderDest());
+        return im.toTXTFile(getFolderDest());
     }
 
     public String getFolderDest() {
