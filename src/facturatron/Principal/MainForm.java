@@ -24,6 +24,7 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         this.getPanelEdicion().setAutoFocusOnTabHideClose(true);
         this.getPanelEdicion().setAutoRequestFocus(true);
+        setSize(1024, 768);
     }
 
     /** This method is called from within the constructor to
