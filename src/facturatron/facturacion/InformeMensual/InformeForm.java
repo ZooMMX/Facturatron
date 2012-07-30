@@ -49,8 +49,6 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
 
         txtMes.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
-        txtAnio.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-
         jXLabel1.setText("Año:");
         jXLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -95,8 +93,11 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
         );
 
         scrInformeMensual.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrInformeMensual.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrInformeMensual.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
 
         txtInformeMensual.setEditable(false);
+        txtInformeMensual.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
         scrInformeMensual.setViewportView(txtInformeMensual);
 
         lblRutaArchivo.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -111,7 +112,7 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(scrInformeMensual, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE))
+                        .addComponent(scrInformeMensual, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE))
                     .addComponent(lblRutaArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -119,12 +120,14 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 81, Short.MAX_VALUE))
                     .addComponent(scrInformeMensual))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblRutaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

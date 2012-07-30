@@ -22,7 +22,7 @@
                   <Group type="102" attributes="0">
                       <Component id="jXTitledPanel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scrInformeMensual" pref="372" max="32767" attributes="0"/>
+                      <Component id="scrInformeMensual" pref="322" max="32767" attributes="0"/>
                   </Group>
                   <Component id="lblRutaArchivo" alignment="0" max="32767" attributes="2"/>
               </Group>
@@ -34,13 +34,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jXTitledPanel1" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jXTitledPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="81" max="32767" attributes="0"/>
+                  </Group>
                   <Component id="scrInformeMensual" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="lblRutaArchivo" min="-2" pref="21" max="-2" attributes="1"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -103,11 +106,6 @@
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JYearChooser" name="txtAnio">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Verdana" size="14" style="0"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXLabel" name="jXLabel1">
           <Properties>
@@ -138,6 +136,10 @@
     <Container class="javax.swing.JScrollPane" name="scrInformeMensual">
       <Properties>
         <Property name="horizontalScrollBarPolicy" type="int" value="32"/>
+        <Property name="verticalScrollBarPolicy" type="int" value="22"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Verdana" size="11" style="0"/>
+        </Property>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
@@ -145,6 +147,9 @@
         <Component class="javax.swing.JEditorPane" name="txtInformeMensual">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="11" style="0"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>
