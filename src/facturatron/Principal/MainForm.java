@@ -24,6 +24,7 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         this.getPanelEdicion().setAutoFocusOnTabHideClose(true);
         this.getPanelEdicion().setAutoRequestFocus(true);
+        setSize(1024, 768);
     }
 
     /** This method is called from within the constructor to
@@ -45,6 +46,7 @@ public class MainForm extends javax.swing.JFrame {
         jXTaskPane3 = new org.jdesktop.swingx.JXTaskPane();
         linkCfgFiscal = new org.jdesktop.swingx.JXHyperlink();
         linkCfgSystem = new org.jdesktop.swingx.JXHyperlink();
+        linkCfgAcercaDe = new org.jdesktop.swingx.JXHyperlink();
         linkSalir = new org.jdesktop.swingx.JXHyperlink();
         jLabel1 = new javax.swing.JLabel();
         panelEdicion = new com.jidesoft.swing.JideTabbedPane();
@@ -104,6 +106,10 @@ public class MainForm extends javax.swing.JFrame {
         linkCfgSystem.setUnclickedColor(new java.awt.Color(0, 0, 0));
         jXTaskPane3.getContentPane().add(linkCfgSystem);
 
+        linkCfgAcercaDe.setText("Acerca De");
+        linkCfgAcercaDe.setUnclickedColor(new java.awt.Color(0, 0, 0));
+        jXTaskPane3.getContentPane().add(linkCfgAcercaDe);
+
         linkSalir.setText("Salir");
         linkSalir.setUnclickedColor(new java.awt.Color(0, 0, 0));
         linkSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -115,7 +121,7 @@ public class MainForm extends javax.swing.JFrame {
 
         jXTaskPaneContainer1.add(jXTaskPane3);
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10));
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("1.6.0b");
         jXTaskPaneContainer1.add(jLabel1);
@@ -196,6 +202,7 @@ public class MainForm extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXTaskPane jXTaskPane3;
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     private org.jdesktop.swingx.JXHyperlink linkCatalogo;
+    private org.jdesktop.swingx.JXHyperlink linkCfgAcercaDe;
     private org.jdesktop.swingx.JXHyperlink linkCfgFiscal;
     private org.jdesktop.swingx.JXHyperlink linkCfgSystem;
     private org.jdesktop.swingx.JXHyperlink linkFacturar;
@@ -386,6 +393,20 @@ public class MainForm extends javax.swing.JFrame {
      */
     public org.jdesktop.swingx.JXHyperlink getLinkInformeMensual() {
         return linkInformeMensual;
+    }
+
+    /**
+     * @return the linkCfgAcercaDe
+     */
+    public org.jdesktop.swingx.JXHyperlink getLinkCfgAcercaDe() {
+        return linkCfgAcercaDe;
+    }
+
+    /**
+     * @param linkCfgAcercaDe the linkCfgAcercaDe to set
+     */
+    public void setLinkCfgAcercaDe(org.jdesktop.swingx.JXHyperlink linkCfgAcercaDe) {
+        this.linkCfgAcercaDe = linkCfgAcercaDe;
     }
 
 

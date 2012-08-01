@@ -130,14 +130,17 @@ public class ListadoForm extends javax.swing.JPanel implements ViewInterface<Lis
         });
         jScrollPane1.setViewportView(tablaListado);
 
+        txtTotal.setEditable(false);
         txtTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jXLabel1.setText("Total:");
 
+        txtIVA.setEditable(false);
         txtIVA.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jXLabel2.setText("IVA:");
 
+        txtSubtotal.setEditable(false);
         txtSubtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jXLabel3.setText("Subtotal:");

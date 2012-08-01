@@ -36,7 +36,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
 
             //Sólo las personas con ID > 2 Son Clientes; La persona 1 es el contribuyente (emisor); La persona 2
             //  es la sucursal.
-            ResultSet rs = bd.getStmt().executeQuery("SELECT * FROM Persona WHERE id > 2");
+            ResultSet rs = bd.getStmt().executeQuery("SELECT * FROM persona WHERE id > 2");
             ArrayList<Persona> ret = new ArrayList<Persona>();
             Persona bean;
             while (rs.next()) {
@@ -55,6 +55,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
                 bean.setNoInterior(rs.getString("noInterior"));
                 bean.setPais(rs.getString("pais"));
                 bean.setRegimen(rs.getString("regimen"));
+                bean.setCorreoElectronico(rs.getString("correoelectronico"));
 
                 ret.add(bean);
 
@@ -83,10 +84,10 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             PreparedStatement ps;
 
             if(getId()!=null) {
-                ps = bd.getCon().prepareStatement("update persona set nombre=?,rfc=?,telefono=?,calle=?,codigoPostal=?,colonia=?,municipio=?,estado=?,noExterior=?,noInterior=?,pais=?,regimen=? WHERE id = ?");
-                ps.setInt(13, getId());
+                ps = bd.getCon().prepareStatement("update persona set nombre=?,rfc=?,telefono=?,calle=?,codigoPostal=?,colonia=?,municipio=?,estado=?,noExterior=?,noInterior=?,pais=?,regimen=?, correoelectronico=? WHERE id = ?");
+                ps.setInt(14, getId());
             } else {
-                ps = bd.getCon().prepareStatement("insert into persona (nombre,rfc,telefono,calle,codigoPostal,colonia,municipio,estado,noExterior,noInterior,pais,regimen) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+                ps = bd.getCon().prepareStatement("insert into persona (nombre,rfc,telefono,calle,codigoPostal,colonia,municipio,estado,noExterior,noInterior,pais,regimen,correoelectronico) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
             }
             
             ps.setString(1, getNombre());
@@ -101,6 +102,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             ps.setString(10, getNoInterior());
             ps.setString(11, getPais());
             ps.setString(12, getRegimen());
+            ps.setString(13, getCorreoElectronico());
 
             ps.execute();
             bd.desconectar();
@@ -145,6 +147,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
         setNoInterior(null);
         setPais(null);
         setRegimen(null);
+        setCorreoElectronico(null);
         setChanged();
         notifyObservers();
     }
@@ -155,12 +158,13 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
 
             bd.conectar();
 
-            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM Persona WHERE id = ?");
+            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM persona WHERE id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
-            if(!rs.next()) { return null; }
-
+            if (!rs.next()) {
+                return null;
+            }
             this.setId(rs.getInt("id"));
             this.setNombre(rs.getString("nombre"));
             this.setRfc(rs.getString("rfc"));
@@ -174,6 +178,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             this.setNoInterior(rs.getString("noInterior"));
             this.setPais(rs.getString("pais"));
             this.setRegimen(rs.getString("regimen"));
+            this.setCorreoElectronico(rs.getString("correoelectronico"));
 
             setChanged();
             notifyObservers();

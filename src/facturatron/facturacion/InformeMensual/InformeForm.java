@@ -41,19 +41,22 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
         jXLabel1 = new org.jdesktop.swingx.JXLabel();
         jXLabel2 = new org.jdesktop.swingx.JXLabel();
         btnGenInforme = new org.jdesktop.swingx.JXButton();
+        scrInformeMensual = new javax.swing.JScrollPane();
+        txtInformeMensual = new javax.swing.JEditorPane();
+        lblRutaArchivo = new org.jdesktop.swingx.JXLabel();
 
         jXTitledPanel1.setTitle("Periodo");
 
-        txtMes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMes.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
         jXLabel1.setText("Año:");
-        jXLabel1.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jXLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jXLabel2.setText("Mes:");
-        jXLabel2.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jXLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         btnGenInforme.setText("Generar informe");
-        btnGenInforme.setFont(new java.awt.Font("Tahoma", 0, 14));
+        btnGenInforme.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jXTitledPanel1Layout = new javax.swing.GroupLayout(jXTitledPanel1.getContentContainer());
         jXTitledPanel1.getContentContainer().setLayout(jXTitledPanel1Layout);
@@ -64,9 +67,9 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jXTitledPanel1Layout.createSequentialGroup()
                         .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jXLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                            .addComponent(jXLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(86, 86, 86)
+                            .addComponent(jXLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jXLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                         .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txtAnio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtMes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -78,16 +81,26 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtAnio, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                    .addComponent(txtAnio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jXLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jXLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, 24, Short.MAX_VALUE))
+                    .addComponent(txtMes, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(btnGenInforme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        scrInformeMensual.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrInformeMensual.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrInformeMensual.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
+
+        txtInformeMensual.setEditable(false);
+        txtInformeMensual.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
+        scrInformeMensual.setViewportView(txtInformeMensual);
+
+        lblRutaArchivo.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -95,15 +108,26 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scrInformeMensual, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE))
+                    .addComponent(lblRutaArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 81, Short.MAX_VALUE))
+                    .addComponent(scrInformeMensual))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblRutaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -113,7 +137,10 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
     private org.jdesktop.swingx.JXLabel jXLabel1;
     private org.jdesktop.swingx.JXLabel jXLabel2;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel1;
+    private org.jdesktop.swingx.JXLabel lblRutaArchivo;
+    private javax.swing.JScrollPane scrInformeMensual;
     private com.toedter.calendar.JYearChooser txtAnio;
+    private javax.swing.JEditorPane txtInformeMensual;
     private com.toedter.calendar.JMonthChooser txtMes;
     // End of variables declaration//GEN-END:variables
 
@@ -148,4 +175,32 @@ public class InformeForm extends javax.swing.JPanel implements ViewInterface<Inf
         return btnGenInforme;
     }
 
+    /**
+     * @return the txtInformeMensual
+     */
+    public javax.swing.JEditorPane getTxtInformeMensual() {
+        return txtInformeMensual;
+    }
+
+    /**
+     * @param txtInformeMensual the txtInformeMensual to set
+     */
+    public void setTxtInformeMensual(javax.swing.JEditorPane txtInformeMensual) {
+        this.txtInformeMensual = txtInformeMensual;
+    }
+
+    /**
+     * @return the lblRutaArchivo
+     */
+    public org.jdesktop.swingx.JXLabel getLblRutaArchivo() {
+        return lblRutaArchivo;
+    }
+
+    /**
+     * @param lblRutaArchivo the lblRutaArchivo to set
+     */
+    public void setLblRutaArchivo(org.jdesktop.swingx.JXLabel lblRutaArchivo) {
+        this.lblRutaArchivo = lblRutaArchivo;
+    }
+    
 }

@@ -86,6 +86,15 @@ public class ConfiguracionDao extends Configuracion implements DAO<Integer, Conf
             setPathPdf(serialObject.getPathPdf());
             setPathPlantilla(serialObject.getPathPlantilla());
             setPathXml(serialObject.getPathXml());
+            setSmtpHost(serialObject.getSmtpHost());
+            setUsuarioSmtp(serialObject.getUsuarioSmtp());
+            setClaveSmtp(serialObject.getClaveSmtp());
+            setSeguridad(serialObject.getSeguridad());
+            setPuertoSmtp(serialObject.getPuertoSmtp());
+            setVisorPDF(serialObject.getVisorPDF());
+            setTituloCorreo(serialObject.getTituloCorreo());
+            setMensajeCorreo(serialObject.getMensajeCorreo());
+            setCorreoRemitente(serialObject.getCorreoRemitente());
             setChanged();
             notifyObservers();
             return serialObject;

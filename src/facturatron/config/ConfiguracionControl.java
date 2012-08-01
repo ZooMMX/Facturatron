@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package facturatron.config;
 
 import facturatron.MVC.Controller;
+import facturatron.email.EmailPruebaConf;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -40,7 +40,7 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
                 return "Certificado Digital";
             }
         });
-        if(jfc.showOpenDialog(getView())==JFileChooser.APPROVE_OPTION) {
+        if (jfc.showOpenDialog(getView()) == JFileChooser.APPROVE_OPTION) {
             getView().getTxtPathCer().setText(jfc.getSelectedFile().getPath());
         }
     }
@@ -59,15 +59,15 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
                 return "Certificado Digital";
             }
         });
-        if(jfc.showOpenDialog(getView())==JFileChooser.APPROVE_OPTION) {
+        if (jfc.showOpenDialog(getView()) == JFileChooser.APPROVE_OPTION) {
             getView().getTxtPathKey().setText(jfc.getSelectedFile().getPath());
         }
     }
 
-    public void btnBuscarPdf(){
+    public void btnBuscarPdf() {
         JFileChooser jfc = new JFileChooser();
         jfc.setFileSelectionMode(jfc.DIRECTORIES_ONLY);
-        
+
         jfc.setFileFilter(new FileFilter() {
 
             @Override
@@ -80,12 +80,12 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
                 return "Carpeta de Almacenamiento";
             }
         });
-        if(jfc.showOpenDialog(getView())==JFileChooser.APPROVE_OPTION) {
+        if (jfc.showOpenDialog(getView()) == JFileChooser.APPROVE_OPTION) {
             getView().getTxtPathPdf().setText(jfc.getSelectedFile().getPath());
         }
     }
 
-    public void btnBuscarPlantilla(){
+    public void btnBuscarPlantilla() {
         JFileChooser jfc = new JFileChooser();
         jfc.setFileFilter(new FileFilter() {
 
@@ -99,12 +99,12 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
                 return "Plantilla de Jasper";
             }
         });
-        if(jfc.showOpenDialog(getView())==JFileChooser.APPROVE_OPTION) {
+        if (jfc.showOpenDialog(getView()) == JFileChooser.APPROVE_OPTION) {
             getView().getTxtPathPlantilla().setText(jfc.getSelectedFile().getPath());
         }
     }
 
-    public void btnBuscarXml(){
+    public void btnBuscarXml() {
         JFileChooser jfc = new JFileChooser();
         jfc.setFileSelectionMode(jfc.DIRECTORIES_ONLY);
         jfc.setFileFilter(new FileFilter() {
@@ -119,7 +119,7 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
                 return "Carpeta de Almacenamiento";
             }
         });
-        if(jfc.showOpenDialog(getView())==JFileChooser.APPROVE_OPTION) {
+        if (jfc.showOpenDialog(getView()) == JFileChooser.APPROVE_OPTION) {
             getView().getTxtPathXml().setText(jfc.getSelectedFile().getPath());
         }
     }
@@ -128,13 +128,28 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
         getModel().setpathCer(getView().getTxtPathCer().getText());
         getModel().setpathKey(getView().getTxtPathKey().getText());
         getModel().setpassCer(String.valueOf(getView().getTxtPassCer().getPassword()));
-        getModel().setUrlBd  (getView().getTxtUrlBd().getText());
-        getModel().setUserBd (getView().getTxtUserBd().getText());
-        getModel().setPassBd (String.valueOf(getView().getTxtPassBd().getPassword()));
+        getModel().setUrlBd(getView().getTxtUrlBd().getText());
+        getModel().setUserBd(getView().getTxtUserBd().getText());
+        getModel().setPassBd(String.valueOf(getView().getTxtPassBd().getPassword()));
         getModel().setPathPdf(getView().getTxtPathPdf().getText());
         getModel().setPathPlantilla(getView().getTxtPathPlantilla().getText());
         getModel().setPathXml(getView().getTxtPathXml().getText());
-
+        getModel().setSmtpHost(getView().getTxtSmtpHost().getText());
+        getModel().setUsuarioSmtp(getView().getTxtUsuarioSmtp().getText());
+        getModel().setClaveSmtp(String.valueOf(getView().getTxtClaveSmtp().getPassword()));
+        getModel().setPuertoSmtp(getView().getTxtPuertoSmtp().getText());
+        if (getView().getRbnSinSeguridad().isSelected()) {
+            getModel().setSeguridad(ConfiguracionForm.SIN_SEGURIDAD);
+        } else if (getView().getRbnUsaSSL().isSelected()) {
+            getModel().setSeguridad(ConfiguracionForm.USA_SSL);
+        } else if (getView().getRbnUsaTLS().isSelected()) {
+            getModel().setSeguridad(ConfiguracionForm.USA_TLS);
+        }
+        getModel().setVisorPDF(getView().getRbnVisorPDFJava().isSelected()
+                ? ConfiguracionForm.VISOR_PDF_JAVA : ConfiguracionForm.VISOR_PDF_NATIVO);
+        getModel().setTituloCorreo(getView().getTxtTituloCorreo().getText());
+        getModel().setMensajeCorreo(getView().getTxtMensajeCorreo().getText());
+        getModel().setCorreoRemitente(getView().getTxtCorreoRemitente().getText());
         getModel().persist();
         JOptionPane.showMessageDialog(getView(), "Configuración actualizada");
     }
@@ -162,21 +177,41 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
                 btnBuscarLlave();
             }
         });
-        getView().getBtnBuscarPdf().addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        getView().getBtnBuscarPdf().addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
                 btnBuscarPdf();
             }
         });
-        getView().getBtnBuscarPlantilla().addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        getView().getBtnBuscarPlantilla().addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
                 btnBuscarPlantilla();
             }
         });
-        getView().getBtnBuscarXml().addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        getView().getBtnBuscarXml().addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
                 btnBuscarXml();
             }
         });
+        getView().getBtnProbarConfiguracion().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnProbarConfiguracionClicked();
+            }
+        });
+    }
+
+    private void btnProbarConfiguracionClicked() {
+        EmailPruebaConf emailPruebaConf = new EmailPruebaConf(getView().getTxtCorreoRemitente().getText());
+        boolean res = emailPruebaConf.enviarCorreoPrueba();
+        if (res) {
+            JOptionPane.showMessageDialog(getView(), "Correo enviado satisfactoriamente!", "Información", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(getView(), "Ocurrió un Error enviando el Correo!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override
@@ -184,5 +219,4 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
         getView().setModel(getModel());
         getModel().addObserver(getView());
     }
-
 }

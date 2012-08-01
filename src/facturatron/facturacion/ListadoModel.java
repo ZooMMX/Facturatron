@@ -75,9 +75,9 @@ public class ListadoModel extends Model {
         imp = new BigDecimal(0d);
         tot = new BigDecimal(0d);
         for (Factura factura : this.facturas) {
-            sub   .add( factura.getSubtotal());
-            imp   .add( factura.getIvaTrasladado());
-            tot   .add( factura.getTotal());
+            sub = sub.add(factura.getSubtotal());
+            imp = imp.add(factura.getIvaTrasladado());
+            tot = tot.add(factura.getTotal());
         }
         setSubtotal(sub);
         setIva(imp);

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package facturatron.Dominio;
 
 import facturatron.MVC.Model;
@@ -13,15 +8,26 @@ import java.io.Serializable;
  * @author Octavio
  */
 public class Configuracion extends Model implements Serializable {
-    private String pathKey  = "";
-    private String pathCer  = "";
+
+    private String pathKey = "";
+    private String pathCer = "";
     private String passCer = "";
-    private String urlBd   = "";
-    private String userBd  = "";
-    private String passBd  = "";
+    private String urlBd = "";
+    private String userBd = "";
+    private String passBd = "";
     private String pathPdf = "";
     private String pathPlantilla = "";
     private String pathXml = "";
+    private String smtpHost = "";
+    private String usuarioSmtp = "";
+    private String claveSmtp = "";
+    private String seguridad = "";
+    private String puertoSmtp = "25";
+    private String visorPDF = "";
+    private String correoRemitente = "";
+    private String tituloCorreo = "";
+    private String mensajeCorreo = "";
+    private static final long serialVersionUID = -3524646329180295196L;
 
     /**
      * @return the pathKey
@@ -147,5 +153,131 @@ public class Configuracion extends Model implements Serializable {
      */
     public void setPathXml(String pathXml) {
         this.pathXml = pathXml;
+    }
+
+    /**
+     * @return the stmpHost
+     */
+    public String getSmtpHost() {
+        return smtpHost;
+    }
+
+    /**
+     * @param stmpHost the stmpHost to set
+     */
+    public void setSmtpHost(String smtpHost) {
+        this.smtpHost = smtpHost;
+    }
+
+    /**
+     * @return the usuarioSmtp
+     */
+    public String getUsuarioSmtp() {
+        return usuarioSmtp;
+    }
+
+    /**
+     * @param usuarioSmtp the usuarioSmtp to set
+     */
+    public void setUsuarioSmtp(String usuarioSmtp) {
+        this.usuarioSmtp = usuarioSmtp;
+    }
+
+    /**
+     * @return the claveSmtp
+     */
+    public String getClaveSmtp() {
+        return claveSmtp;
+    }
+
+    /**
+     * @param claveSmtp the claveSmtp to set
+     */
+    public void setClaveSmtp(String claveSmtp) {
+        this.claveSmtp = claveSmtp;
+    }
+
+    /**
+     * @return the seguridad
+     */
+    public String getSeguridad() {
+        return seguridad;
+    }
+
+    /**
+     * @param seguridad the seguridad to set
+     */
+    public void setSeguridad(String seguridad) {
+        this.seguridad = seguridad;
+    }
+
+    /**
+     * @return the puertoSmtp
+     */
+    public String getPuertoSmtp() {
+        return puertoSmtp;
+    }
+
+    /**
+     * @param puertoSmtp the puertoSmtp to set
+     */
+    public void setPuertoSmtp(String puertoSmtp) {
+        this.puertoSmtp = puertoSmtp;
+    }
+
+    /**
+     * @return the visorPDF
+     */
+    public String getVisorPDF() {
+        return visorPDF;
+    }
+
+    /**
+     * @param visorPDF the visorPDF to set
+     */
+    public void setVisorPDF(String visorPDF) {
+        this.visorPDF = visorPDF;
+    }
+
+    /**
+     * @return the correoRemitente
+     */
+    public String getCorreoRemitente() {
+        return correoRemitente;
+    }
+
+    /**
+     * @param correoRemitente the correoRemitente to set
+     */
+    public void setCorreoRemitente(String correoRemitente) {
+        this.correoRemitente = correoRemitente;
+    }
+
+    /**
+     * @return the tituloCorreo
+     */
+    public String getTituloCorreo() {
+        return tituloCorreo;
+    }
+
+    /**
+     * @param tituloCorreo the tituloCorreo to set
+     */
+    public void setTituloCorreo(String tituloCorreo) {
+        this.tituloCorreo = tituloCorreo;
+    }
+
+    /**
+     * @return the mensajeCorreo
+     */
+    public String getMensajeCorreo() {
+        return mensajeCorreo;
+    }
+
+    /**
+     * @param mensajeCorreo the mensajeCorreo to set
+     */
+    public void setMensajeCorreo(String mensajeCorreo) {
+        this.mensajeCorreo = mensajeCorreo;
     }
 }
