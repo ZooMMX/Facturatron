@@ -15,6 +15,7 @@ import facturatron.MVC.DAO;
 import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
+import facturatron.email.EmailFacturaCliente;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -89,17 +90,24 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         return cfd;
      }
      private void distribuir(CFDv2Tron cfd) throws Exception {
-
         Configuracion cfg = getConfig();
         String serie = cfd.getComprobante().getSerie();
         String folio = cfd.getComprobante().getFolio();
         cfd.toPDFFile(cfg.getPathPlantilla(), getPdfPath(serie, folio));
-        cfd.toXMLFILE(                        getXmlPath(serie, folio));
+        cfd.toXMLFILE(getXmlPath(serie, folio));
 
+        ClienteDao cliente = new ClienteDao().findBy(getReceptor().getId());
+        if (cliente != null) {
+            EmailFacturaCliente emailFacturaCliente = new EmailFacturaCliente(cliente.getCorreoElectronico());
+            emailFacturaCliente.addAttachment(getPdfPath(serie, folio), serie + folio + "PDF");
+            emailFacturaCliente.addAttachment(getXmlPath(serie, folio), serie + folio + "XML");
+            Thread thread = new Thread(emailFacturaCliente);
+            thread.start();
+        }
         //Visor Java
         //cfd.showPreview(cfg.getPathPlantilla());
         //Visor nativo para windows
-        VisorPdf.abrir(getPdfPath(serie, folio));
+        VisorPdf.abrir(getPdfPath(serie, folio), cfd.getComprobante(), cfg.getPathPlantilla());
      }
 
      public ComprobanteTron toComprobanteTron() {
