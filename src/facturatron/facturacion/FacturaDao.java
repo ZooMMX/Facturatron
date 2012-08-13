@@ -2,9 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package facturatron.facturacion;
-
 
 import facturatron.Dominio.Configuracion;
 import facturatron.MVC.JDBCDAOSupport;
@@ -15,6 +13,7 @@ import facturatron.MVC.DAO;
 import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
+import facturatron.email.EmailFacturaCliente;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -45,7 +44,7 @@ import phesus.facturatron.lib.entities.ConceptosTron;
  *
  * @author saul
  */
-public class FacturaDao extends Factura implements DAO<Integer,Factura>{
+public class FacturaDao extends Factura implements DAO<Integer, Factura> {
 
     private static class FolioDuplicadoException extends Exception {
 
@@ -53,7 +52,6 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             super("Error grave, el folio configurado es incorrecto, por favor llame a soporte técnico");
         }
     }
-
     private Configuracion config;
     Calendar cal = Calendar.getInstance();
     TimeZone tz = TimeZone.getTimeZone("America/Mexico_City");
@@ -62,23 +60,27 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         cal.setTimeZone(tz);
     }
 
-    /** Carga el archivo de configuración y lo almacena en memoria.
-     * Importante: Sólo carga el archivo de configuración una vez por instancia, las demás
+    /**
+     * Carga el archivo de configuración y lo almacena en memoria. Importante:
+     * Sólo carga el archivo de configuración una vez por instancia, las demás
      * las toma del atributo config (caché)
+     *
      * @return
      */
     Configuracion getConfig() {
-        if(config == null) { config = (new ConfiguracionDao()).load(); }
+        if (config == null) {
+            config = (new ConfiguracionDao()).load();
+        }
         return config;
     }
 
-     private CFDv2Tron sellar() throws URISyntaxException, Exception {
+    private CFDv2Tron sellar() throws URISyntaxException, Exception {
         ComprobanteTron comp = toComprobanteTron();
 
         Configuracion config = getConfig();
         comp.setPassKey(config.getpassCer());
-        comp.setURIKey(new URI("file:///"+config.getpathKey().replace("\\", "/")));
-        comp.setURICer(new URI("file:///"+config.getpathCer().replace("\\", "/")));
+        comp.setURIKey(new URI("file:///" + config.getpathKey().replace("\\", "/")));
+        comp.setURICer(new URI("file:///" + config.getpathCer().replace("\\", "/")));
 
         CFDFactory cfdf = new CFDFactory();
         CFDv2Tron cfd = cfdf.toCFD(comp);
@@ -87,24 +89,30 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         setXml(cfd.getXML());
 
         return cfd;
-     }
-     private void distribuir(CFDv2Tron cfd) throws Exception {
+    }
 
+    private void distribuir(CFDv2Tron cfd) throws Exception {
         Configuracion cfg = getConfig();
         String serie = cfd.getComprobante().getSerie();
         String folio = cfd.getComprobante().getFolio();
         cfd.toPDFFile(cfg.getPathPlantilla(), getPdfPath(serie, folio));
-        cfd.toXMLFILE(                        getXmlPath(serie, folio));
+        cfd.toXMLFILE(getXmlPath(serie, folio));
 
+        ClienteDao cliente = new ClienteDao().findBy(getReceptor().getId());
+        if (cliente != null) {
+            EmailFacturaCliente emailFacturaCliente = new EmailFacturaCliente(cliente.getCorreoElectronico());
+            emailFacturaCliente.addAttachment(getPdfPath(serie, folio), serie + folio + "PDF");
+            emailFacturaCliente.addAttachment(getXmlPath(serie, folio), serie + folio + "XML");
+            Thread thread = new Thread(emailFacturaCliente);
+            thread.start();
+        }
         //Visor Java
         //cfd.showPreview(cfg.getPathPlantilla());
         //Visor nativo para windows
-        VisorPdf.abrir(getPdfPath(serie, folio));
-     }
+        VisorPdf.abrir(getPdfPath(serie, folio), cfd.getComprobante(), cfg.getPathPlantilla());
+    }
 
-     public ComprobanteTron toComprobanteTron() {
-
-        MathContext mc = MathContext.DECIMAL64;
+    public ComprobanteTron toComprobanteTron() {
         ComprobanteTron comp = new ComprobanteTron();
         comp.setVersion(getVersion());
 
@@ -118,21 +126,26 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         dCal.set(Calendar.MILLISECOND, tCal.get(Calendar.MILLISECOND));
 
         comp.setFecha(dCal.getTime());
+        comp.setNoCertificado(getNoCertificado());
+        comp.setSello(getSello());
         comp.setSerie(getSerie());
         comp.setFolio(String.valueOf(getFolio()));
         comp.setNoAprobacion(getNoAprobacion());
         comp.setAnoAprobacion(BigInteger.valueOf(getAnoAprobacion()));
         comp.setFormaDePago(getFormaDePago());
         comp.setMetodoDePago(getMetodoDePago());
-        comp.setLugarExpedicion(getEmisor().getMunicipio()+", "+getEmisor().getEstado());
+        comp.setLugarExpedicion(getEmisor().getMunicipio() + ", " + getEmisor().getEstado());
+        comp.setObservaciones(getObservaciones());
 
-        comp.setSubTotal(getSubtotal().setScale(2,RoundingMode.HALF_EVEN));
-        comp.setTotal(getTotal().setScale(2,RoundingMode.HALF_EVEN));
+        comp.setSubTotal(getSubtotal().setScale(2, RoundingMode.HALF_EVEN));
+        comp.setTotal(getTotal().setScale(2, RoundingMode.HALF_EVEN));
         comp.setDescuento(getDescuentoTasa0().add(getDescuentoTasa16()));
         comp.setTipoDeComprobante(getTipoDeComprobante());
         comp.setObservaciones(getObservaciones());
         Persona emSucursal = getEmisorSucursal();
-        if(emSucursal.getEstado().isEmpty()) { emSucursal = null; }
+        if (emSucursal.getEstado().isEmpty()) {
+            emSucursal = null;
+        }
         comp.setEmisor(getEmisor().toEmisor(emSucursal));
         comp.setReceptor(getReceptor().toReceptor());
         ConceptosTron cTron = getConceptosTron();
@@ -142,23 +155,25 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setSubtotalGravado16(getSubtotalGravado16());
         comp.setSubtotalGravado0(getSubtotalGravado0());
         comp.setSubtotalExento(getSubtotalExento());
-        comp.setEstadoComprobante(getEstadoComprobante()==getEstadoComprobante().VIGENTE?true:false);
-         
-        return comp;
-     }
+        comp.setEstadoComprobante(getEstadoComprobante() == getEstadoComprobante().VIGENTE ? true : false);
 
-     public ConceptosTron getConceptosTron() {
+        return comp;
+    }
+
+    public ConceptosTron getConceptosTron() {
         ConceptosTron cps = new ConceptosTron();
-        
+
         for (Renglon renglon : getRenglones()) {
-            if(renglon.getImporte().equals(new BigDecimal(0d)) || renglon.getImporte() == null) { continue; }
+            if (renglon.getImporte().equals(new BigDecimal(0d)) || renglon.getImporte() == null) {
+                continue;
+            }
             cps.add(renglon.toConceptoTron());
         }
         return cps;
-     }
+    }
 
-     public Impuestos getImpuestos() {
-        
+    public Impuestos getImpuestos() {
+
         ObjectFactory of = new ObjectFactory();
         Impuestos imps = of.createComprobanteImpuestos();
         Traslados trs = of.createComprobanteImpuestosTraslados();
@@ -177,59 +192,63 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         imps.setTraslados(trs);
         imps.setTotalImpuestosTrasladados(getIvaTrasladado());
         return imps;
-     }
+    }
 
-     public BigDecimal getSubtotalGravado16() {
+    public BigDecimal getSubtotalGravado16() {
         BigDecimal gravado = new BigDecimal(0d);
         for (Renglon renglon : getRenglones()) {
-            if(!renglon.getTasa0()) { gravado = gravado.add(renglon.getImporte()); }
+            if (!renglon.getTasa0()) {
+                gravado = gravado.add(renglon.getImporte());
+            }
         }
         return gravado;
-     }
+    }
 
-     public BigDecimal getSubtotalExento() {
-         return new BigDecimal(0d);
-     }
+    public BigDecimal getSubtotalExento() {
+        return new BigDecimal(0d);
+    }
 
-     public BigDecimal getSubtotalGravado0() {
+    public BigDecimal getSubtotalGravado0() {
         BigDecimal gravado0 = new BigDecimal(0d);
         for (Renglon renglon : getRenglones()) {
-            if(renglon.getTasa0()) { gravado0 = gravado0.add(renglon.getImporte()); }
+            if (renglon.getTasa0()) {
+                gravado0 = gravado0.add(renglon.getImporte());
+            }
         }
         return gravado0;
-     }
+    }
 
-     @Override
-     public void setTotal(BigDecimal total) {
+    @Override
+    public void setTotal(BigDecimal total) {
         super.setTotal(total);
         setChanged();
         notifyObservers();
-     }
+    }
 
     @Override
-     public void setDescuentoTasa0(BigDecimal descuento) {
-         super.setDescuentoTasa0(descuento);
-         setChanged();
-         notifyObservers();
-     }
+    public void setDescuentoTasa0(BigDecimal descuento) {
+        super.setDescuentoTasa0(descuento);
+        setChanged();
+        notifyObservers();
+    }
 
     @Override
-     public void setDescuentoTasa16(BigDecimal descuento) {
-         super.setDescuentoTasa16(descuento);
-         setChanged();
-         notifyObservers();
-     }
+    public void setDescuentoTasa16(BigDecimal descuento) {
+        super.setDescuentoTasa16(descuento);
+        setChanged();
+        notifyObservers();
+    }
 
-     @Override
-     public void setReceptor(Persona receptor) {
+    @Override
+    public void setReceptor(Persona receptor) {
         super.setReceptor(receptor);
         setChanged();
         notifyObservers();
-     }
+    }
 
-     public ArrayList<FacturaDao> findAll(Date fechaInicial, Date fechaFinal){
-         JDBCDAOSupport bd = getBD();
-         try {
+    public ArrayList<FacturaDao> findAll(Date fechaInicial, Date fechaFinal) {
+        JDBCDAOSupport bd = getBD();
+        try {
 
             bd.conectar();
             PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM comprobante WHERE fecha >= ? and fecha <= ?");
@@ -237,14 +256,13 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setDate(2, fechaFinal);
             ResultSet rs = ps.executeQuery();
             ArrayList<FacturaDao> ret = new ArrayList<FacturaDao>();
-            FacturaDao bean;
             while (rs.next()) {
 
-                bean = new FacturaDao();
+                FacturaDao bean = new FacturaDao();
                 bean.setId(rs.getInt("id"));
                 bean.setVersion(rs.getString("version"));
                 bean.setFecha(rs.getDate("fecha"));
-                bean.setHora(rs.getTime("hora",cal));
+                bean.setHora(rs.getTime("hora", cal));
                 bean.setSerie(rs.getString("serie"));
                 bean.setFolio(BigInteger.valueOf(rs.getLong("folio")));
                 bean.setSello(rs.getString("sello"));
@@ -252,7 +270,6 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setNoAprobacion(BigInteger.valueOf(rs.getInt("noAprobacion")));
                 bean.setAnoAprobacion(rs.getInt("anoAprobacion"));
                 bean.setFormaDePago(rs.getString("formaDePago"));
-                //bean.setMetodoDePago(rs.getString( "metodoDePago" ));
                 bean.setSubtotal(rs.getBigDecimal("subtotal"));
                 bean.setTotal(rs.getBigDecimal("total"));
                 bean.setDescuentoTasa0(rs.getBigDecimal("descuentoTasa0"));
@@ -264,35 +281,35 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setCertificado(rs.getString("certificado"));
                 bean.setMotivoDescuento(rs.getString("motivoDescuento"));
                 bean.setXml(rs.getString("xml"));
-                bean.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE")?Estado.VIGENTE:Estado.CANCELADO);
+                bean.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE") ? Estado.VIGENTE : Estado.CANCELADO);
                 bean.setObservaciones(rs.getString("observaciones"));
                 ret.add(bean);
+            }
+            return ret;
+        } catch (Exception ex) {
 
-             }
-             return ret;
-        }catch(Exception ex){
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, null, ex);
 
-            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, null, ex); 
-             
-        } finally{  //si falla o no falla se tiene que desconectar
+        } finally {  //si falla o no falla se tiene que desconectar
             bd.desconectar();
         }
         return null;
-     }
+    }
 
-    /** Actualiza éste comprobante, pocos atributos serán editables
+    /**
+     * Actualiza éste comprobante, pocos atributos serán editables
      *
      * @throws SQLException
      */
     public void update() throws SQLException {
         JDBCDAOSupport bd = getBD();
         bd.conectar(true);
-        
-        PreparedStatement ps = bd.getCon().prepareStatement("update comprobante SET " +
-                "estadoComprobante=? " +
-                "WHERE id=?");
 
-        ps.setString(1, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
+        PreparedStatement ps = bd.getCon().prepareStatement("update comprobante SET "
+                + "estadoComprobante=? "
+                + "WHERE id=?");
+
+        ps.setString(1, getEstadoComprobante() == Estado.VIGENTE ? "VIGENTE" : "CANCELADO");
         ps.setInt(2, getId());
 
         ps.executeUpdate();
@@ -309,15 +326,17 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
             setFolio(SerieDao.nextId(bd.getCon()));
 
-            if(findByFolio(getFolio())!=null) { throw new FolioDuplicadoException(); }
+            if (findByFolio(getFolio()) != null) {
+                throw new FolioDuplicadoException();
+            }
 
             comprobanteSellado = sellar();
 
-            PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
-                    "(version,fecha,serie,folio,sello,noCertificado,noAprobacion,anoAprobacion," +
-                    "formaDePago,subtotal,total,descuentoTasa0,descuentoTasa16,tipoDeComprobante,idEmisor, idReceptor," +
-                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante "
+                    + "(version,fecha,serie,folio,sello,noCertificado,noAprobacion,anoAprobacion,"
+                    + "formaDePago,subtotal,total,descuentoTasa0,descuentoTasa16,tipoDeComprobante,idEmisor, idReceptor,"
+                    + "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             ps.setString(1, getVersion());
             ps.setDate(2, new java.sql.Date(getFecha().getTime()));
@@ -339,10 +358,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setString(18, getCertificado());
             ps.setString(19, getMotivoDescuento());
             ps.setString(20, getXml());
-            ps.setString(21, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
+            ps.setString(21, getEstadoComprobante() == Estado.VIGENTE ? "VIGENTE" : "CANCELADO");
             ps.setString(22, getObservaciones());
-            ps.setTime  (23, getHora());
-            //ps.setString(24, getMetodoDePago());
+            ps.setTime(23, getHora());
 
             ps.execute();
 
@@ -352,9 +370,11 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             keys.close();
 
             for (Renglon renglon : getRenglones()) {  //
-                if(renglon.getImporte().compareTo(new BigDecimal(0d))<=0) { continue; }
-                ps = bd.getCon().prepareStatement("insert into concepto (idComprobante,unidad,noIdentificacion,importe," +
-                        "cantidad,descripcion,valorunitario,tasa0) VALUES (?,?,?,?,?,?,?,?)");
+                if (renglon.getImporte().compareTo(new BigDecimal(0d)) <= 0) {
+                    continue;
+                }
+                ps = bd.getCon().prepareStatement("insert into concepto (idComprobante,unidad,noIdentificacion,importe,"
+                        + "cantidad,descripcion,valorunitario,tasa0) VALUES (?,?,?,?,?,?,?,?)");
                 ps.setInt(1, idfactura);
                 ps.setString(2, renglon.getUnidad());
                 ps.setString(3, renglon.getNoIdentificacion());
@@ -362,7 +382,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 ps.setBigDecimal(5, renglon.getCantidad());
                 ps.setString(6, renglon.getDescripcion());
                 ps.setBigDecimal(7, renglon.getValorUniario());
-                ps.setInt(8, renglon.getTasa0()?1:0);
+                ps.setInt(8, renglon.getTasa0() ? 1 : 0);
                 ps.execute();
             }
             distribuir(comprobanteSellado);
@@ -387,7 +407,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             FacturaDao dao = new FacturaDao();
             bd.conectar();
             ResultSet rs = bd.getStmt().executeQuery("select id from comprobante where folio = " + folio);
-            if(rs.next()) {
+            if (rs.next()) {
                 Factura fact = findBy(rs.getInt("id"));
                 rs.close();
                 bd.desconectar();
@@ -395,7 +415,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             } else {
                 return null;
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Excepción buscando por folio", e);
         }
         return null;
@@ -403,7 +423,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
     @Override
     public Factura findBy(Integer id) {
-     try {
+        try {
             JDBCDAOSupport bd = getBD();
             FacturaDao dao = new FacturaDao();
             bd.conectar();
@@ -431,14 +451,13 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setCertificado(rs.getString("certificado"));
             dao.setMotivoDescuento(rs.getString("motivoDescuento"));
             dao.setXml(rs.getString("xml"));
-            dao.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE")?Estado.VIGENTE:Estado.CANCELADO);
+            dao.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE") ? Estado.VIGENTE : Estado.CANCELADO);
             dao.setObservaciones(rs.getString("observaciones"));
 
-            rs = bd.getStmt().executeQuery("select * from concepto where id = "+id);//
-            ArrayList <Renglon> renglones = new ArrayList <Renglon>();
-            Renglon rb = new Renglon();
-            while(rs.next()){
-                rb = new Renglon();
+            rs = bd.getStmt().executeQuery("select * from concepto where idcomprobante = " + id);//
+            ArrayList<Renglon> renglones = new ArrayList<Renglon>();
+            while (rs.next()) {
+                Renglon rb = new Renglon();
                 rb.setId(rs.getInt("id"));
                 rb.setUnidad(rs.getString("unidad"));
                 rb.setNoIdentificacion(rs.getString("noIdentificacion"));
@@ -446,7 +465,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 rb.setCantidad(rs.getBigDecimal("cantidad"));
                 rb.setDescripcion(rs.getString("descripcion"));
                 rb.setValorUniario(rs.getBigDecimal("valorUnitario"));
-                rb.setTasa0(rs.getInt("tasa0")==1);
+                rb.setTasa0(rs.getInt("tasa0") == 1);
                 renglones.add(rb);
             }
             dao.setRenglones(renglones);
@@ -461,7 +480,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
     @Override
     public JDBCDAOSupport getBD() {
-       return new JDBCDAOSupport();
+        return new JDBCDAOSupport();
     }
 
     @Override
@@ -474,24 +493,29 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
     }
 
     String getReciboName(String serie, String folio) {
-        serie                = (serie!=null?serie:"");
-        String nombreRecibo  = "Factura"+serie+folio;
+        serie = (serie != null ? serie : "");
+        String nombreRecibo = "Factura" + serie + folio;
         return nombreRecibo;
     }
 
     String getPdfPath() {
-        return getConfig().getPathPdf()+getReciboName()+".pdf";
+        return getConfig().getPathPdf() + getReciboName() + ".pdf";
     }
 
     String getXmlPath() {
-        return getConfig().getPathXml()+getReciboName()+".xml";
+        return getConfig().getPathXml() + getReciboName() + ".xml";
     }
-    String getPdfPath(String s, String f) { return getConfig().getPathPdf()+getReciboName(s,f)+".pdf"; }
-    String getXmlPath(String s, String f) { return getConfig().getPathXml()+getReciboName(s,f)+".xml"; }
+
+    String getPdfPath(String s, String f) {
+        return getConfig().getPathPdf() + getReciboName(s, f) + ".pdf";
+    }
+
+    String getXmlPath(String s, String f) {
+        return getConfig().getPathXml() + getReciboName(s, f) + ".xml";
+    }
 
     void cancelar() throws SQLException {
         setEstadoComprobante(Estado.CANCELADO);
         update();
     }
-
 }
