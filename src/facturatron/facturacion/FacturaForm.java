@@ -104,7 +104,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
 
         jXTitledPanel3.setTitle("Acciones");
 
-        btnGuardar.setFont(new java.awt.Font("Tahoma", 0, 14));
+        btnGuardar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnGuardar.setText("Guardar factura");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,7 +113,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         });
 
         btnObservaciones.setText("Ver/Editar Observaciones");
-        btnObservaciones.setFont(new java.awt.Font("Tahoma", 0, 14));
+        btnObservaciones.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         btnTicket.setText("Añadir ticket");
 
@@ -126,7 +126,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                 .addComponent(btnObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnTicket)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -143,7 +143,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
 
         jXTitledPanel2.setTitle("Datos Fiscales");
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Id Cliente:");
 
         btnBuscarCliente.setText("Buscar");
@@ -153,7 +153,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("RFC:");
         jLabel3.setPreferredSize(new java.awt.Dimension(64, 14));
 
@@ -164,31 +164,29 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Dirección:");
         jLabel2.setMaximumSize(new java.awt.Dimension(64, 14));
         jLabel2.setMinimumSize(new java.awt.Dimension(64, 14));
         jLabel2.setPreferredSize(new java.awt.Dimension(64, 14));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Razón Social:");
 
         txtNombre.setEditable(false);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setText("Folio:");
 
         txtFolio.setEditable(false);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Serie:");
 
         txtSerie.setEditable(false);
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("Tipo:");
-
-        txtFormaDePago.setEditable(false);
 
         txtDireccion.setColumns(20);
         txtDireccion.setRows(5);
@@ -201,7 +199,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             }
         });
 
-        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel14.setText("Método de pago:");
 
         txtMetodoPago.addActionListener(new java.awt.event.ActionListener() {
@@ -236,7 +234,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                             .addComponent(txtFormaDePago, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
                             .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, 0, 1, Short.MAX_VALUE)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING))
@@ -295,41 +293,41 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
 
         jXTitledPanel1.setTitle("Conceptos");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Motivo Descuento:");
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Total:");
 
         txtTotal.setEditable(false);
-        txtTotal.setFont(new java.awt.Font("Tahoma", 0, 18));
+        txtTotal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("IVA (16%):");
 
         txtIva.setEditable(false);
-        txtIva.setFont(new java.awt.Font("Tahoma", 0, 18));
+        txtIva.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("Descuento Tasa 0:");
 
         txtDescuentoTasa0.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        txtDescuentoTasa0.setFont(new java.awt.Font("Tahoma", 0, 18));
+        txtDescuentoTasa0.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txtDescuentoTasa0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDescuentoTasa0ActionPerformed(evt);
             }
         });
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Subtotal:");
 
         txtSubtotal.setEditable(false);
-        txtSubtotal.setFont(new java.awt.Font("Tahoma", 0, 18));
+        txtSubtotal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         tabConceptos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -352,12 +350,12 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         });
         jScrollPane1.setViewportView(tabConceptos);
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Descuento Tasa 16:");
 
         txtDescuentoTasa16.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        txtDescuentoTasa16.setFont(new java.awt.Font("Tahoma", 0, 18));
+        txtDescuentoTasa16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txtDescuentoTasa16.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDescuentoTasa16ActionPerformed(evt);
@@ -397,7 +395,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
