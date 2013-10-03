@@ -25,7 +25,7 @@ public class JpaController {
         HashMap props           = new HashMap();
         Pattern pattern         = Pattern.compile("(^jdbc:mysql://.*?)/[0-9|A-Z|a-z|_|#|$]{1,16}$");
         Matcher matcher         = pattern.matcher(config.getUrlBd());
-        String  urlBD           = matcher.replaceAll("$1/Omoikane");
+        String  urlBD           = matcher.replaceAll("$1/omoikane");
 
         props.put("javax.persistence.jdbc.url", urlBD);
         emf = Persistence.createEntityManagerFactory("FacturatronPU", props);
