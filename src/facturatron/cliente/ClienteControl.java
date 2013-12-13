@@ -8,6 +8,9 @@ import facturatron.MVC.Controller;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -29,6 +32,11 @@ public class ClienteControl extends Controller<ClienteDao, ClienteForm> {
 
     public void updateListado() {
         ((ClienteTableModel)getView().getTablaCliente().getModel()).fill();
+        getView().getTablaCliente().updateUI();
+    }
+    public void btnBuscar() {
+        String searchString = getView().getTxtBusqueda().getText();
+        ((ClienteTableModel)getView().getTablaCliente().getModel()).search(searchString);
         getView().getTablaCliente().updateUI();
     }
     public void btnEliminar() {
@@ -103,6 +111,21 @@ public class ClienteControl extends Controller<ClienteDao, ClienteForm> {
                 btnEliminar();
             }
         });
+        getView().getBtnBuscar().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnBuscar();
+            }
+            
+        });
+        getView().getTxtBusqueda().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) btnBuscar();
+            }
+        });
+        
     }
 
     @Override

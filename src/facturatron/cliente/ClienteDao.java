@@ -28,8 +28,8 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
      }
 
     @Override
-        public ArrayList<Persona> findAll(){
-        JDBCDAOSupport bd = getBD();
+    public ArrayList<Persona> findAll(){
+         JDBCDAOSupport bd = getBD();
          try{
 
             bd.conectar();
@@ -184,6 +184,52 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             notifyObservers();
 
             return this;
+        }catch(Exception ex){
+
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Error al consultar cliente/persona", ex);
+
+        } finally{
+            bd.desconectar();
+        }
+        return null;
+        
+    }
+    
+    public ArrayList<Persona> find(String searchString) {
+         JDBCDAOSupport bd = getBD();
+         try{
+
+            bd.conectar();
+
+            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM persona WHERE id > 2 AND (nombre like ? OR rfc like ?)");
+            searchString = "%"+searchString+"%";
+            ps.setString(1, searchString);
+            ps.setString(2, searchString);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Persona> ret = new ArrayList<Persona>();
+            Persona bean;
+            while (rs.next()) {
+
+                bean = new Persona();
+                bean.setId(rs.getInt("id"));
+                bean.setNombre(rs.getString("nombre"));
+                bean.setRfc(rs.getString("rfc"));
+                bean.setTelefono(rs.getString("telefono"));
+                bean.setCalle(rs.getString("calle"));
+                bean.setCodigoPostal(rs.getString("codigoPostal"));
+                bean.setColonia(rs.getString("colonia"));
+                bean.setMunicipio(rs.getString("municipio"));
+                bean.setEstado(rs.getString("estado"));
+                bean.setNoExterior(rs.getString("noExterior"));
+                bean.setNoInterior(rs.getString("noInterior"));
+                bean.setPais(rs.getString("pais"));
+                bean.setRegimen(rs.getString("regimen"));
+                bean.setCorreoElectronico(rs.getString("correoelectronico"));
+
+                ret.add(bean);
+
+             }
+             return ret;
         }catch(Exception ex){
 
             Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Error al consultar cliente/persona", ex);

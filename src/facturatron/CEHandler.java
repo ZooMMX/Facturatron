@@ -9,6 +9,7 @@ import java.util.logging.Filter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,9 +39,14 @@ public class CEHandler extends Handler {
     }
 
     private void excepcion(LogRecord record) {
-        ExceptionWindow ew = new ExceptionWindow();
+        JFrame mainJFrame = (JFrame) JFrame.getFrames()[0];
+        ExceptionWindow ew = new ExceptionWindow(mainJFrame);
         ew.getLblTituloError().setText(record.getMessage());
         ew.getTxtExcepcion().setText(Misc.getStackTraceString(record.getThrown()));
+        ew.setLblDescripcion(record.getThrown().getMessage());
+        ew.setModal(true);
+        ew.setLocationByPlatform(true);
+        ew.setLocationRelativeTo(mainJFrame);
         ew.setVisible(true);
         record.getThrown().printStackTrace();
     }

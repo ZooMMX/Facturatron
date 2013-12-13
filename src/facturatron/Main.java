@@ -5,12 +5,11 @@
 
 package facturatron;
 
-import facturatron.facturacion.FacturaControl;
-import facturatron.facturacion.FacturaForm;
+import com.alee.laf.WebLookAndFeel;
 import facturatron.omoikane.Ticket;
 import java.util.Locale;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -22,11 +21,18 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        Locale.setDefault(Locale.US);
-        Thread.setDefaultUncaughtExceptionHandler(new UEHandler());
-        Logger.getLogger("").addHandler(new CEHandler());
-        facturatron.Principal.Main frame = new facturatron.Principal.Main();
+        // You should work with UI (including installing L&F) inside EDT
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+            public void run ()
+            {
+                WebLookAndFeel.install ();
+                Locale.setDefault(Locale.US);
+                Thread.setDefaultUncaughtExceptionHandler(new UEHandler());
+                Logger.getLogger("").addHandler(new CEHandler());
+                facturatron.Principal.Main frame = new facturatron.Principal.Main();
+            }
+        } );        
         
         //prueba();
 

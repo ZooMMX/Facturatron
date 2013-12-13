@@ -11,17 +11,29 @@
 
 package facturatron;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import javax.swing.JFrame;
+
 /**
  *
  * @author mora
  */
-public class ExceptionWindow extends javax.swing.JFrame {
+public class ExceptionWindow extends javax.swing.JDialog {
 
+    public ExceptionWindow(JFrame owner) {
+        super(owner); 
+        initComponents();
+    }
+    
     /** Creates new form ExceptionWindow */
     public ExceptionWindow() {
         initComponents();
+
     }
 
+      
     public static void show(Throwable e) {
         ExceptionWindow ew = new ExceptionWindow();
         ew.getTxtExcepcion().setText(Misc.getStackTraceString(e));
@@ -39,29 +51,56 @@ public class ExceptionWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         btnCerrar = new javax.swing.JButton();
+        webTabbedPane1 = new com.alee.laf.tabbedpane.WebTabbedPane();
+        webPanel1 = new com.alee.laf.panel.WebPanel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        lblTituloError = new javax.swing.JLabel();
+        lblDescripcion = new javax.swing.JLabel();
+        webPanel2 = new com.alee.laf.panel.WebPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtExcepcion = new javax.swing.JTextArea();
-        lblTituloError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Mensaje de error");
+        setTitle("Mensaje");
+        setLocationByPlatform(true);
 
         btnCerrar.setText("Cerrar");
+        btnCerrar.setFocusCycleRoot(true);
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCerrarActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Se ha generado la siguiente excepción:");
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel1.setText("  i  ");
+        webPanel1.add(jLabel1, java.awt.BorderLayout.LINE_START);
+
+        jPanel1.setLayout(new java.awt.GridLayout(2, 0));
+
+        lblTituloError.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblTituloError.setText("Error Desconocido");
+        lblTituloError.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel1.add(lblTituloError);
+
+        lblDescripcion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblDescripcion.setText("Sin detalles");
+        lblDescripcion.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel1.add(lblDescripcion);
+
+        webPanel1.add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        webTabbedPane1.addTab("Mensaje", webPanel1);
 
         txtExcepcion.setColumns(20);
         txtExcepcion.setRows(5);
         jScrollPane1.setViewportView(txtExcepcion);
 
-        lblTituloError.setFont(new java.awt.Font("Tahoma", 0, 18));
-        lblTituloError.setText("Error Desconocido");
+        webPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        webTabbedPane1.addTab("Detalles", webPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,21 +109,17 @@ public class ExceptionWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addComponent(btnCerrar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblTituloError, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE))
+                    .addComponent(webTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCerrar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTituloError)
-                .addGap(9, 9, 9)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                .addComponent(webTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCerrar)
                 .addContainerGap())
@@ -112,9 +147,14 @@ public class ExceptionWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblTituloError;
     private javax.swing.JTextArea txtExcepcion;
+    private com.alee.laf.panel.WebPanel webPanel1;
+    private com.alee.laf.panel.WebPanel webPanel2;
+    private com.alee.laf.tabbedpane.WebTabbedPane webTabbedPane1;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -150,6 +190,10 @@ public class ExceptionWindow extends javax.swing.JFrame {
      */
     public javax.swing.JLabel getLblTituloError() {
         return lblTituloError;
+    }
+    
+    public void setLblDescripcion(String txt) {
+        this.lblDescripcion.setText(txt);
     }
 
 }

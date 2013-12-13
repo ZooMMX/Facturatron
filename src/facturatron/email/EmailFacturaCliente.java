@@ -6,6 +6,7 @@ package facturatron.email;
 
 import facturatron.Dominio.Configuracion;
 import facturatron.config.ConfiguracionDao;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,10 +33,11 @@ public class EmailFacturaCliente extends EmailMgmt implements Runnable {
     public void run() {
         boolean res = sendEmail();
         if (!res) {
+            JFrame mainJFrame = (JFrame) JFrame.getFrames()[0];
             if (getErrorStatus() == WRONG_SMTP) {
-                JOptionPane.showMessageDialog(null, "No ha configurado el Servidor SMTP para el envío de Correos!");
+                JOptionPane.showMessageDialog(mainJFrame, "No ha configurado el Servidor SMTP para el envío de Correos!");
             } else if (getErrorStatus() == WRONG_TO_ADDRESS) {
-                JOptionPane.showMessageDialog(null, "La Dirección de Correo del Cliente no es válida!");
+                JOptionPane.showMessageDialog(mainJFrame, "La Dirección de Correo del Cliente no es válida!");
             }
         }
     }

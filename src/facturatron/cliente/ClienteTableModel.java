@@ -39,6 +39,11 @@ public class ClienteTableModel extends AbstractTableModel {
         setData((new ClienteDao()).findAll());
         fireTableRowsUpdated(0, getRowCount()-1);
     }
+    
+    public void search(String searchString) {
+        setData((new ClienteDao()).find(searchString));
+        fireTableRowsUpdated(0, getRowCount()-1);
+    }          
 
     public void addRow() {
         getData().add(new Persona());

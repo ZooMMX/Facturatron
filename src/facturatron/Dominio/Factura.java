@@ -13,6 +13,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -62,34 +63,77 @@ public class Factura extends Model implements Serializable {
         this.hora = hora;
     }
 
+    /**
+     * @return the folioFiscal
+     */
+    public String getFolioFiscal() {
+        return folioFiscal;
+    }
+
+    /**
+     * @param folioFiscal the folioFiscal to set
+     */
+    public void setFolioFiscal(String folioFiscal) {
+        this.folioFiscal = folioFiscal;
+    }
+
     public enum Estado {CANCELADO, VIGENTE};
+    @NotNull
     private Integer id;
+    @NotNull
     private String version;
+    @NotNull
     private Date fecha;
+    @NotNull
     private Time hora;
+    @NotNull
     private String serie;
+    @NotNull
     private BigInteger folio;
+    @NotNull
+    private String folioFiscal;
+    @NotNull
     private String sello;
+    @NotNull
     private String noCertificado;
+    @NotNull
     private BigInteger noAprobacion;
+    @NotNull
     private Integer anoAprobacion;
+    @NotNull
     private String formaDePago               = "UNA SOLA EXHIBICIÓN";
+    @NotNull
     private String metodoDePago              = "Efectivo";
+    @NotNull
     private BigDecimal subtotal              = new BigDecimal("0.0");
+    @NotNull
     private BigDecimal total                 = new BigDecimal("0.0");
+    @NotNull
     private BigDecimal descuentoTasa0        = new BigDecimal("0.0");
+    @NotNull
     private BigDecimal descuentoTasa16       = new BigDecimal("0.0");
+    @NotNull
     private Estado estadoComprobante     = Estado.VIGENTE;
+    @NotNull
     private String observaciones         = "";
 
+    @NotNull
     private String tipoDeComprobante;
+    @NotNull
     private Persona emisor               = new Persona();
+    @NotNull
     private Persona emisorSucursal       = new Persona();
+    @NotNull
     private Persona receptor             = new Persona();
+    @NotNull
     private BigDecimal ivaTrasladado         = new BigDecimal("0.0");
+    @NotNull
     private String certificado;
+    @NotNull
     private String motivoDescuento;
+    @NotNull
     private String xml;
+    @NotNull
     private ArrayList<Renglon> renglones = new ArrayList<Renglon>();
 
     public Factura() {
@@ -102,39 +146,7 @@ public class Factura extends Model implements Serializable {
   public static List createBeanCollection(){
 
     ArrayList <Factura> ret = new ArrayList<Factura>();
-    /*
-    Factura fb = new Factura();
-    fb.setRazon("TRESARI SERVICIO,S.A. DE C.V");
-    fb.setDireccion("CALLE RADAMES TREVIÑO No. 4802 COL. MEXICO 68 C.P. 72300");
-    fb.setRfc("TSE-091013-9C5");
-    fb.setFolio(123);
-    fb.setObservaciones("computadora toshiba");
-    ArrayList <Renglon> renglones = new ArrayList <Renglon>();
-    fb.setRenglones(renglones); //renglones de la factura
-    Renglon rec = new Renglon();
-    rec.setCantidad(2d);
-    rec.setDescripcion("laptop toshiba");
-    rec.setPu(2000d);
-    rec.setImporte(4000d);
-    renglones.add(rec);
-    rec = new Renglon();
-    rec.setCantidad(3d);
-    rec.setDescripcion("laptop accer");
-    rec.setPu(4000d);
-    rec.setImporte(12000d);
-    renglones.add(rec);
-
-    ret.add(fb);
-
-    fb = new Factura();
-    fb.setRazon("SAUL ROMERO HARO");
-    fb.setDireccion("CALLE RADAMES TREVIÑO No. 4802 COL. MEXICO 68 C.P. 72300");
-    fb.setRfc("TSE-091013-9C5");
-    fb.setFolio(123);
-    fb.setObservaciones("computadora toshiba");
-    ret.add(fb);
-
-    */
+    
     return ret;
 
   }

@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import facturatron.MVC.Controller;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfigFiscalDao;
+import facturatron.facturacion.PAC.PACException;
+
 import facturatron.omoikane.RenglonTicket;
 import facturatron.omoikane.Ticket;
+import java.awt.Frame;
+import java.awt.List;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -22,11 +26,14 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.PersistenceException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.xml.bind.MarshalException;
+import org.xml.sax.SAXParseException;
 
 /**
  *
@@ -40,6 +47,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       setModel(setupAndInstanceModel());
       setView(new FacturaForm());
       init();
+      PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(this);
+      popupBuscarCliente.install();
   }
 
   public FacturaDao setupAndInstanceModel() {
@@ -68,7 +77,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       }
       renglonesActualizados();
   }
-  public void btnBuscarCliente() {
+  public void cargarCliente() {
       try {
           int id = Integer.valueOf(getView().getTxtIdCliente().getText());
           ClienteDao cliente = (new ClienteDao()).findBy(id);
@@ -126,7 +135,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   }
   public void btnObservaciones() {
       String observaciones = getModel().getObservaciones();
-      FacturaObservacionesDialog dialog = new FacturaObservacionesDialog(null, observaciones);
+      FacturaObservacionesDialog dialog = new FacturaObservacionesDialog(getView().getJFrameParent(), observaciones);
       String newObs = dialog.lanzar();
       if(newObs != null) { observaciones = newObs; }
       getModel().setObservaciones(observaciones);
@@ -136,12 +145,98 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
    * de la factura
    */
   public void btnAddTicket() {
-      AddTicketDialog dialog = new AddTicketDialog(null);
+      JFrame mainJFrame = (JFrame) JFrame.getFrames()[0];
+      AddTicketDialog dialog = new AddTicketDialog(mainJFrame);
       notifyBusy();
       new ThreadAddTicket(dialog).start();
   }
+  
+  public Boolean validarForm() {
+      //Validar Forma de pago
+      if( getView().getTxtFormaDePago().getText().isEmpty() ) { 
+          JOptionPane.showMessageDialog(getView(), "El campo forma de pago no puede estar vacío");
+          return false;
+      }
+      
+      //Validar Metodo de pago
+      if( getView().getTxtMetodoPago().getText().isEmpty() ) { 
+          JOptionPane.showMessageDialog(getView(), "El campo método de pago no puede estar vacío");
+          return false;
+      }
+      
+      //Validar IVA
+      if( getView().getTxtTotal().getText().isEmpty() ) {
+          JOptionPane.showMessageDialog(getView(), "El campo total no puede estar vacío");
+          return false;
+      }
+      
+      //Validar cliente
+      if( getView().getTxtIdCliente().getText().isEmpty() ) {
+          JOptionPane.showMessageDialog(getView(), "El campo ID cliente no puede estar vacío");
+          return false;
+      }
+      try {
+        Integer x = Integer.valueOf(getView().getTxtIdCliente().getText());
+      } catch(NumberFormatException nfe) {
+          JOptionPane.showMessageDialog(getView(), "El campo cliente no tiene un ID válido");
+          return false;
+      }
+      
+      //Validación de conceptos
+      ArrayList<Renglon> renglones = ((FacturaTableModel) getView().getTabConceptos().getModel()).getData();
+      //Validar cada renglon
+      Integer filas = 0;
+      for (Renglon renglon : renglones) {
+          /** Validar cantidad; la cantidad también sirve como bandera para indicar si el renglón se toma en cuenta
+           * o no
+           */
+          BigDecimal cantidad = renglon.getCantidad();
+          if(cantidad != null && cantidad.compareTo(new BigDecimal(0)) <= 0) {
+              //Esta fila tiene una cantidad en cero, no es tomada en cuenta
+              continue;
+          } else {
+              //Esta se toma en cuenta
+              filas++;
+          }
+          //Validar valor unitario
+          BigDecimal valor = renglon.getValorUniario();
+          if(valor != null && valor.compareTo(new BigDecimal(0)) <= 0) {
+              JOptionPane.showMessageDialog(getView(), "La columna PU (precio unitario) tiene un contenido inválido en la fila " + filas);
+              return false;
+          }                  
+          //Validar unidad
+          String unidad = renglon.getUnidad();
+          if(unidad != null && unidad.isEmpty()) {
+              JOptionPane.showMessageDialog(getView(), "La columna unidad tiene un contenido inválido o vacío en la fila " + filas);
+              return false;
+          }                  
+          //Validar descripcion
+          String descripcion = renglon.getDescripcion();
+          if(descripcion != null && descripcion.isEmpty()) {
+              JOptionPane.showMessageDialog(getView(), "La columna descripción tiene un contenido inválido o vacío en la fila " + filas);
+              return false;
+          } 
+          //Validar código
+          String codigo = renglon.getNoIdentificacion();
+          if(codigo != null && codigo.isEmpty()) {
+              JOptionPane.showMessageDialog(getView(), "La columna codigo tiene un contenido inválido o vacío en la fila " + filas);
+              return false;
+          } 
+      }
+      
+      //Validar cantidad de conceptos en la factura, de acuerdo al contador de filas tomadas en cuenta en la validación anterior
+      if(filas < 1) {
+          JOptionPane.showMessageDialog(getView(), "No se han agregado conceptos al comprobante");
+              return false;
+      }
+      
+            
+      return true;
+  }
+  
   public void btnGuardar(){
 
+    if(!validarForm()) return;
     notifyBusy();
     try {
         Calendar time = Calendar.getInstance();
@@ -156,7 +251,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
         getModel().setTipoDeComprobante("ingreso");
-        getModel().setVersion("2.2");
+        getModel().setVersion("3.2");
 
         getView().getBtnGuardar().setEnabled(false);
         Integer folio    = getModel().getFolio().intValue();
@@ -168,10 +263,14 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         } else {
             getModel().persist();
         }
+    } catch (SAXParseException e) {
+        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Datos erróneos.", e);
+    } catch (PACException pa) {
+        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, pa.getMessage(), pa.getCause());
     } catch (Exception ex) {
-        getView().getBtnGuardar().setEnabled(true);
-        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Error al generar factura", ex);
+        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Error desconocido al generar factura", ex);
     } finally {
+        getView().getBtnGuardar().setEnabled(true);
         notifyIdle();
     }
     
@@ -199,12 +298,6 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             @Override
             public void tableChanged(TableModelEvent e) {
                 renglonesActualizados();
-            }
-        });
-        getView().getBtnBuscarCliente().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnBuscarCliente();
             }
         });
         getView().getBtnObservaciones().addActionListener(new ActionListener() {

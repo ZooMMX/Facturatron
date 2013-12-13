@@ -1,6 +1,7 @@
 package facturatron.Dominio;
 
 import facturatron.MVC.Model;
+import facturatron.config.ConfiguracionDao;
 import java.io.Serializable;
 
 /**
@@ -27,8 +28,22 @@ public class Configuracion extends Model implements Serializable {
     private String correoRemitente = "";
     private String tituloCorreo = "";
     private String mensajeCorreo = "";
+    private String usuarioPAC = "";
+    private String passwordPAC = "";
     private static final long serialVersionUID = -3524646329180295196L;
 
+    private static Configuracion config;
+    
+    /** (Singleton) Carga el archivo de configuración y lo almacena en memoria.
+     * Importante: Sólo carga el archivo de configuración una vez por instancia, las demás
+     * las toma del atributo config (caché)
+     * @return
+     */
+    public static Configuracion getConfig() {
+        if(config == null) { config = (new ConfiguracionDao()).load(); }
+        return config;
+    }
+    
     /**
      * @return the pathKey
      */
@@ -279,5 +294,33 @@ public class Configuracion extends Model implements Serializable {
      */
     public void setMensajeCorreo(String mensajeCorreo) {
         this.mensajeCorreo = mensajeCorreo;
+    }
+
+    /**
+     * @return the usuarioPAC
+     */
+    public String getUsuarioPAC() {
+        return usuarioPAC;
+    }
+
+    /**
+     * @param usuarioPAC the usuarioPAC to set
+     */
+    public void setUsuarioPAC(String usuarioPAC) {
+        this.usuarioPAC = usuarioPAC;
+    }
+
+    /**
+     * @return the passwordPAC
+     */
+    public String getPasswordPAC() {
+        return passwordPAC;
+    }
+
+    /**
+     * @param passwordPAC the passwordPAC to set
+     */
+    public void setPasswordPAC(String passwordPAC) {
+        this.passwordPAC = passwordPAC;
     }
 }

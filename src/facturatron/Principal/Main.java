@@ -9,6 +9,7 @@ import facturatron.MVC.Controller;
 import facturatron.MVC.Model;
 import facturatron.acercade.AcercaDeControl;
 import facturatron.cliente.ClienteControl;
+import facturatron.config.ConfigPACControl;
 import facturatron.config.ConfiguracionControl;
 import facturatron.facturacion.FacturaControl;
 import facturatron.facturacion.InformeMensual.InformeControl;
@@ -38,9 +39,9 @@ public class Main extends Controller<Model, MainForm> {
         asignarLinkInformeMensual();
         asignarLinkCfgFiscal();
         asignarLinkCfgSistema();
+        asignarLinkCfgPAC();
         asignarLinkAcercaDe();
         asignarLinkSalir();
-        asignarMenuSalir();
 
     }
 
@@ -59,8 +60,8 @@ public class Main extends Controller<Model, MainForm> {
     private void facturasEmitidas() throws Exception {
         ListadoControl lc = new ListadoControl();
         lc.setBusyHandler(new ProgressPanelBusyHandler(getView()));
-        lc.init();
         ((MainForm) getView()).addTab("Facturas Emitidas", lc.getView());
+        lc.init();
     }
     
     private void acercaDe() throws Exception {
@@ -81,6 +82,11 @@ public class Main extends Controller<Model, MainForm> {
     private void configSistema() throws Exception {
         ConfiguracionControl cfc = new ConfiguracionControl();
         ((MainForm) getView()).addTab("Configuración sistema", cfc.getView());
+    }    
+    
+    private void configPAC() throws Exception {
+        ConfigPACControl cfc = new ConfigPACControl();
+        ((MainForm) getView()).addTab("Configuración PAC", cfc.getView());
     }
 
     private void asignarLinkAcercaDe() {
@@ -200,6 +206,21 @@ public class Main extends Controller<Model, MainForm> {
             }
         });
     }
+    
+    
+    private void asignarLinkCfgPAC() {
+        getView().getLinkCfgPAC().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    configPAC();
+                } catch (Exception ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo ConfigSistema", ex);
+                }
+            }
+        });
+    }
 
     private void asignarLinkSalir() {
         getView().getLinkSalir().addActionListener(new ActionListener() {
@@ -213,16 +234,6 @@ public class Main extends Controller<Model, MainForm> {
 
     private void cerrarSistema() {
         System.exit(0);
-    }
-
-    private void asignarMenuSalir() {
-        getView().getMenuSalir().addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cerrarSistema();
-            }
-        });
     }
 
     @Override

@@ -11,6 +11,9 @@
 
 package facturatron.facturacion;
 
+import java.awt.Dialog;
+import java.awt.Window;
+
 /**
  *
  * @author Octavio
@@ -21,6 +24,13 @@ public class FacturaObservacionesDialog extends javax.swing.JDialog {
     /** Creates new form FacturaObservacionesDialog */
     public FacturaObservacionesDialog(java.awt.Frame parent, String defaultVal) {
         super(parent, true);
+        _FacturaObservacionesDialog(defaultVal);
+    }
+    public FacturaObservacionesDialog(Dialog parent, String defaultVal) {
+        super(parent, true);
+        _FacturaObservacionesDialog(defaultVal);
+    }
+    private void _FacturaObservacionesDialog(String defaultVal) {
         initComponents();
         setLocationRelativeTo(null);
         getTxtObservaciones().setText(defaultVal);

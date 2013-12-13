@@ -7,12 +7,12 @@ package facturatron.Dominio;
 
 import facturatron.MVC.Model;
 import java.io.Serializable;
-import mx.bigdata.sat.cfd.v22.schema.Comprobante.Emisor;
-import mx.bigdata.sat.cfd.v22.schema.Comprobante.Emisor.RegimenFiscal;
-import mx.bigdata.sat.cfd.v22.schema.Comprobante.Receptor;
-import mx.bigdata.sat.cfd.v22.schema.ObjectFactory;
-import mx.bigdata.sat.cfd.v22.schema.TUbicacion;
-import mx.bigdata.sat.cfd.v22.schema.TUbicacionFiscal;
+import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Emisor;
+import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Emisor.RegimenFiscal;
+import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Receptor;
+import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
+import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
+import mx.bigdata.sat.cfdi.v32.schema.TUbicacionFiscal;
 
 /**
  *

@@ -13,10 +13,10 @@ import facturatron.config.ConfiguracionDao;
 import facturatron.facturacion.FacturaDao;
 import java.util.ArrayList;
 import java.util.Calendar;
-import phesus.facturatron.lib.InformeMensual;
+import facturatron.lib.InformeMensual;
 import java.sql.Date;
 import java.util.regex.Pattern;
-import phesus.facturatron.lib.entities.ComprobanteTron;
+import facturatron.lib.entities.ComprobanteTron;
 
 /**
  *

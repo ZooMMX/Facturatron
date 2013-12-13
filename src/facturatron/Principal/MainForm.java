@@ -12,6 +12,7 @@
 package facturatron.Principal;
 
 import java.awt.Component;
+import org.jdesktop.swingx.JXHyperlink;
 
 /**
  *
@@ -46,13 +47,11 @@ public class MainForm extends javax.swing.JFrame {
         jXTaskPane3 = new org.jdesktop.swingx.JXTaskPane();
         linkCfgFiscal = new org.jdesktop.swingx.JXHyperlink();
         linkCfgSystem = new org.jdesktop.swingx.JXHyperlink();
+        linkCfgPAC = new org.jdesktop.swingx.JXHyperlink();
         linkCfgAcercaDe = new org.jdesktop.swingx.JXHyperlink();
         linkSalir = new org.jdesktop.swingx.JXHyperlink();
         jLabel1 = new javax.swing.JLabel();
         panelEdicion = new com.jidesoft.swing.JideTabbedPane();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        menu = new javax.swing.JMenu();
-        menuSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Facturatron");
@@ -106,6 +105,10 @@ public class MainForm extends javax.swing.JFrame {
         linkCfgSystem.setUnclickedColor(new java.awt.Color(0, 0, 0));
         jXTaskPane3.getContentPane().add(linkCfgSystem);
 
+        linkCfgPAC.setText("Configuración PAC");
+        linkCfgPAC.setUnclickedColor(new java.awt.Color(0, 0, 0));
+        jXTaskPane3.getContentPane().add(linkCfgPAC);
+
         linkCfgAcercaDe.setText("Acerca De");
         linkCfgAcercaDe.setUnclickedColor(new java.awt.Color(0, 0, 0));
         jXTaskPane3.getContentPane().add(linkCfgAcercaDe);
@@ -123,22 +126,12 @@ public class MainForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("1.6.0.1");
+        jLabel1.setText("1.7.0 RC 1");
         jXTaskPaneContainer1.add(jLabel1);
 
         panelEdicion.setShowCloseButtonOnTab(true);
         panelEdicion.setShowTabButtons(true);
         panelEdicion.setTabEditingAllowed(true);
-
-        menu.setText("Archivo");
-
-        menuSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
-        menuSalir.setText("Salir");
-        menu.add(menuSalir);
-
-        jMenuBar1.add(menu);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -154,9 +147,9 @@ public class MainForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+            .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
         );
 
         pack();
@@ -196,7 +189,6 @@ public class MainForm extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenuBar jMenuBar1;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane1;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane2;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane3;
@@ -204,13 +196,12 @@ public class MainForm extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXHyperlink linkCatalogo;
     private org.jdesktop.swingx.JXHyperlink linkCfgAcercaDe;
     private org.jdesktop.swingx.JXHyperlink linkCfgFiscal;
+    private org.jdesktop.swingx.JXHyperlink linkCfgPAC;
     private org.jdesktop.swingx.JXHyperlink linkCfgSystem;
     private org.jdesktop.swingx.JXHyperlink linkFacturar;
     private org.jdesktop.swingx.JXHyperlink linkFacturasEmitidas;
     private org.jdesktop.swingx.JXHyperlink linkInformeMensual;
     private org.jdesktop.swingx.JXHyperlink linkSalir;
-    private javax.swing.JMenu menu;
-    private javax.swing.JMenuItem menuSalir;
     private com.jidesoft.swing.JideTabbedPane panelEdicion;
     // End of variables declaration//GEN-END:variables
 
@@ -288,14 +279,6 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     /**
-     * @return the menuSalir
-     */
-    public javax.swing.JMenuItem getMenuSalir() {
-        return menuSalir;
-    }
-
-
-    /**
      * @return the panelEdicion
      */
     public com.jidesoft.swing.JideTabbedPane getPanelEdicion() {
@@ -309,28 +292,6 @@ public class MainForm extends javax.swing.JFrame {
         this.panelEdicion = panelEdicion;
     }
 
-    /**
-     * @return the menu
-     */
-    public javax.swing.JMenu getMenu() {
-        return menu;
-    }
-
-    /**
-     * @param menu the menu to set
-     */
-    public void setMenu(javax.swing.JMenu menu) {
-        this.menu = menu;
-    }
-
-    /**
-     * @param menuSalir the menuSalir to set
-     */
-    public void setMenuSalir(javax.swing.JMenuItem menuSalir) {
-        this.menuSalir = menuSalir;
-    }
-
-   
     /**
      * @return the linkCatalogo
      */
@@ -409,5 +370,7 @@ public class MainForm extends javax.swing.JFrame {
         this.linkCfgAcercaDe = linkCfgAcercaDe;
     }
 
-
+    public JXHyperlink getLinkCfgPAC() {
+        return linkCfgPAC;
+    }
 }

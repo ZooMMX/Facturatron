@@ -11,9 +11,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import mx.bigdata.sat.cfd.v22.schema.Comprobante.Conceptos.Concepto;
-import mx.bigdata.sat.cfd.v22.schema.ObjectFactory;
-import phesus.facturatron.lib.entities.ConceptoTron;
+import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos.Concepto;
+import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
+import facturatron.lib.entities.ConceptoTron;
 
 /**
  *

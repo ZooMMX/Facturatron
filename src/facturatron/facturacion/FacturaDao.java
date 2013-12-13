@@ -7,46 +7,72 @@ package facturatron.facturacion;
 
 
 import facturatron.Dominio.Configuracion;
-import facturatron.MVC.JDBCDAOSupport;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Persona;
 import facturatron.Dominio.Renglon;
 import facturatron.MVC.DAO;
+import facturatron.MVC.JDBCDAOSupport;
 import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
 import facturatron.email.EmailFacturaCliente;
+import facturatron.facturacion.PAC.PACException;
+import facturatron.facturacion.cfdi.finkok.FinkokPACServiceImpl;
+import facturatron.lib.CFDFactory;
+import facturatron.lib.entities.CFDv3Tron;
+import facturatron.lib.entities.ComprobanteTron;
+import facturatron.lib.entities.ConceptosTron;
+import java.awt.print.Book;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import mx.bigdata.sat.cfd.v22.schema.Comprobante.Impuestos;
-import mx.bigdata.sat.cfd.v22.schema.Comprobante.Impuestos.Traslados;
-import mx.bigdata.sat.cfd.v22.schema.Comprobante.Impuestos.Traslados.Traslado;
-import mx.bigdata.sat.cfd.v22.schema.ObjectFactory;
-import phesus.facturatron.lib.CFDFactory;
-import phesus.facturatron.lib.entities.CFDv2Tron;
-import phesus.facturatron.lib.entities.ComprobanteTron;
-import phesus.facturatron.lib.entities.ConceptosTron;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.xml.bind.MarshalException;
+import mx.bigdata.sat.cfdi.CFDv32;
+import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos;
+import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos.Traslados;
+import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos.Traslados.Traslado;
+import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
 
 /**
  *
- * @author saul
+ * @author Octavio
  */
 public class FacturaDao extends Factura implements DAO<Integer,Factura>{
+
+    public void validateConstraints() throws ValidationException {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<FacturaDao>> violations = validator.validate(this);
+        String violaciones = "";
+        for (ConstraintViolation<FacturaDao> violation : violations) {
+           violaciones = violaciones.concat( String.format("%s: %s%n",violation.getPropertyPath(), violation.getMessage()) );
+        }
+        if(!violations.isEmpty()) throw new ValidationException(violaciones);
+    }
 
     private static class FolioDuplicadoException extends Exception {
 
@@ -55,7 +81,6 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         }
     }
 
-    private Configuracion config;
     Calendar cal = Calendar.getInstance();
     TimeZone tz = TimeZone.getTimeZone("America/Mexico_City");
 
@@ -63,33 +88,42 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         cal.setTimeZone(tz);
     }
 
-    /** Carga el archivo de configuración y lo almacena en memoria.
-     * Importante: Sólo carga el archivo de configuración una vez por instancia, las demás
-     * las toma del atributo config (caché)
-     * @return
-     */
-    Configuracion getConfig() {
-        if(config == null) { config = (new ConfiguracionDao()).load(); }
-        return config;
-    }
+    private Configuracion getConfig() { return Configuracion.getConfig(); } 
 
-     private CFDv2Tron sellar() throws URISyntaxException, Exception {
-        ComprobanteTron comp = toComprobanteTron();
-
-        Configuracion config = getConfig();
-        comp.setPassKey(config.getpassCer());
-        comp.setURIKey(new URI("file:///"+config.getpathKey().replace("\\", "/")));
-        comp.setURICer(new URI("file:///"+config.getpathCer().replace("\\", "/")));
-
-        CFDFactory cfdf = new CFDFactory();
-        CFDv2Tron cfd = cfdf.toCFD(comp);
-
-        setSello(comp.getSello());
-        setXml(cfd.getXML());
-
-        return cfd;
+    private CFDv3Tron sellarFirmarYTimbrar() throws Exception {
+        try {
+            ComprobanteTron comp = toComprobanteTron();
+            
+            Configuracion cfg = Configuracion.getConfig();
+            comp.setPassKey(cfg.getpassCer());
+            comp.setURIKey(new URI("file:///"+cfg.getpathKey().replace("\\", "/")));
+            comp.setURICer(new URI("file:///"+cfg.getpathCer().replace("\\", "/")));
+            
+            //Sellar, firmar y timbrar mediante CFDFactory
+            CFDFactory cfdf = new CFDFactory();
+            CFDv3Tron cfd = cfdf.toCFDI(comp);
+            
+            setSello(comp.getSello());
+            setXml(cfd.getXML());
+            setFolioFiscal(cfd.getComprobante().getFolioFiscal());
+            
+            return cfd;
+        } catch (URISyntaxException u) {
+            throw new Exception("Dirección(es) URI del certificado y/o llave tienen una sintaxis incorrecta.", u);
+        } catch (Exception ex) {
+            throw ex;
+        }
      }
-     private void distribuir(CFDv2Tron cfd) throws Exception {
+    
+    /**
+     * Éste método genera y envía todos los archivos finales requeridos:
+     * <li> Guarda archivo XML en el sistema de archivos listo para su uso
+     * <li> Guarda archivo  PDF de comprobante fiscal digital por internet en el sistema de archivos
+     * <li> Envía los archivos anteriores por correo electrónico
+     * @param cfd
+     * @throws Exception 
+     */
+     private void distribuir(CFDv3Tron cfd) throws Exception {
         Configuracion cfg = getConfig();
         String serie = cfd.getComprobante().getSerie();
         String folio = cfd.getComprobante().getFolio();
@@ -110,10 +144,13 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         VisorPdf.abrir(getPdfPath(serie, folio), cfd.getComprobante(), cfg.getPathPlantilla());
      }
 
-     public ComprobanteTron toComprobanteTron() {
+     public ComprobanteTron toComprobanteTron() throws Exception {
 
         MathContext mc = MathContext.DECIMAL64;
         ComprobanteTron comp = new ComprobanteTron();
+                /* CFDv32.newComprobante( new ByteArrayInputStream(getXml().getBytes("UTF-8")) );
+        ComprobanteTron compTron = new ComprobanteTron(comp); */
+
         comp.setVersion(getVersion());
 
         Calendar dCal = Calendar.getInstance();
@@ -128,8 +165,6 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setFecha(dCal.getTime());
         comp.setSerie(getSerie());
         comp.setFolio(String.valueOf(getFolio()));
-        comp.setNoAprobacion(getNoAprobacion());
-        comp.setAnoAprobacion(BigInteger.valueOf(getAnoAprobacion()));
         comp.setFormaDePago(getFormaDePago());
         comp.setMetodoDePago(getMetodoDePago());
         comp.setLugarExpedicion(getEmisor().getMunicipio()+", "+getEmisor().getEstado());
@@ -150,7 +185,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setSubtotalGravado16(getSubtotalGravado16());
         comp.setSubtotalGravado0(getSubtotalGravado0());
         comp.setSubtotalExento(getSubtotalExento());
-        comp.setEstadoComprobante(getEstadoComprobante()==getEstadoComprobante().VIGENTE?true:false);
+        comp.setEstadoComprobante(getEstadoComprobante()==getEstadoComprobante().VIGENTE?true:false);       
          
         return comp;
      }
@@ -274,6 +309,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setXml(rs.getString("xml"));
                 bean.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE")?Estado.VIGENTE:Estado.CANCELADO);
                 bean.setObservaciones(rs.getString("observaciones"));
+                bean.setFolioFiscal(rs.getString("folioFiscal"));
                 ret.add(bean);
 
              }
@@ -305,12 +341,14 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
         ps.executeUpdate();
     }
-
+    
     @Override
-    public void persist() throws SQLException {
+    public void persist() throws PACException, SQLException, Exception {
+        
         JDBCDAOSupport bd = null;
-        try {
-            CFDv2Tron comprobanteSellado;
+        try {                    
+            
+            CFDv3Tron comprobanteSelladoYFirmado;
             bd = getBD();
             bd.conectar(true);
             bd.getCon().setAutoCommit(false);
@@ -319,13 +357,13 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
             if(findByFolio(getFolio())!=null) { throw new FolioDuplicadoException(); }
 
-            comprobanteSellado = sellar();
+            comprobanteSelladoYFirmado = sellarFirmarYTimbrar();
 
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
                     "(version,fecha,serie,folio,sello,noCertificado,noAprobacion,anoAprobacion," +
                     "formaDePago,subtotal,total,descuentoTasa0,descuentoTasa16,tipoDeComprobante,idEmisor, idReceptor," +
-                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora, folioFiscal) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             ps.setString(1, getVersion());
             ps.setDate(2, new java.sql.Date(getFecha().getTime()));
@@ -350,6 +388,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setString(21, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
             ps.setString(22, getObservaciones());
             ps.setTime  (23, getHora());
+            ps.setString(24, getFolioFiscal());
             //ps.setString(24, getMetodoDePago());
 
             ps.execute();
@@ -373,14 +412,20 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 ps.setInt(8, renglon.getTasa0()?1:0);
                 ps.execute();
             }
-            distribuir(comprobanteSellado);
+            distribuir(comprobanteSelladoYFirmado);
             bd.getCon().commit();
-
+        } catch (PACException ex) {            
+            throw ex;
+        } catch (SQLException ex) {
+            throw ex;
         } catch (Exception ex) {
-            bd.getCon().rollback();
-            throw new SQLException(ex);
+            throw ex;
         } finally {
-            bd.desconectar();
+            //TODO Rollback del timbre?
+            if(bd != null) {
+                bd.getCon().rollback();
+                bd.desconectar();
+            }
         }
     }
 
@@ -441,6 +486,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setXml(rs.getString("xml"));
             dao.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE")?Estado.VIGENTE:Estado.CANCELADO);
             dao.setObservaciones(rs.getString("observaciones"));
+            dao.setFolioFiscal(rs.getString("folioFiscal"));
 
             rs = bd.getStmt().executeQuery("select * from concepto where id = "+id);//
             ArrayList <Renglon> renglones = new ArrayList <Renglon>();
@@ -497,9 +543,36 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
     String getPdfPath(String s, String f) { return getConfig().getPathPdf()+getReciboName(s,f)+".pdf"; }
     String getXmlPath(String s, String f) { return getConfig().getPathXml()+getReciboName(s,f)+".xml"; }
 
-    void cancelar() throws SQLException {
-        setEstadoComprobante(Estado.CANCELADO);
-        update();
+    void cancelar() throws SQLException, PACException {
+        
+        Estado estadoOriginal = getEstadoComprobante();
+        try {
+            setEstadoComprobante(Estado.CANCELADO);
+            update();
+        } catch(SQLException ex) {
+            //Si falló el almacenamiento de la cancelación, no continuar
+            throw ex;
+        }
+        
+        try {            
+            Factura comprobante = this;
+
+            FinkokPACServiceImpl impl = new FinkokPACServiceImpl();
+            Boolean isCancelado = impl.cancelar(comprobante);
+
+        } catch(PACException pe) {
+            //Rollback DB manual
+            try {
+                setEstadoComprobante(estadoOriginal);
+                update();
+            } catch(SQLException ex) {
+                Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Error rolling back, el comprobante quedó en un estado inconsistente.", ex);
+            }
+
+            //Exception to be thrown
+            throw pe;
+        }
+        
     }
 
 }

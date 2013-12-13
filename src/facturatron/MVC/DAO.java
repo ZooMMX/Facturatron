@@ -13,7 +13,7 @@ import java.util.List;
  * @author Octavio
  */
 public interface DAO<K,E> {
-    public void persist() throws SQLException;
+    public void persist() throws Exception;
     public void remove();
     public E findBy(K id);
     public List<E> findAll();

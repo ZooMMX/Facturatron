@@ -95,6 +95,9 @@ public class ConfiguracionDao extends Configuracion implements DAO<Integer, Conf
             setTituloCorreo(serialObject.getTituloCorreo());
             setMensajeCorreo(serialObject.getMensajeCorreo());
             setCorreoRemitente(serialObject.getCorreoRemitente());
+            
+            setUsuarioPAC(serialObject.getUsuarioPAC());
+            setPasswordPAC(serialObject.getPasswordPAC());
             setChanged();
             notifyObservers();
             return serialObject;
