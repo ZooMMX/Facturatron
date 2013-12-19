@@ -29,7 +29,7 @@ public class ArticulosJpaController extends JpaController {
         return emf.createEntityManager();
     }
 
-    public void create(Articulos articulos) {
+    public void create(Articulo articulos) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -43,7 +43,7 @@ public class ArticulosJpaController extends JpaController {
         }
     }
 
-    public void edit(Articulos articulos) throws NonexistentEntityException, Exception {
+    public void edit(Articulo articulos) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -71,9 +71,9 @@ public class ArticulosJpaController extends JpaController {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Articulos articulos;
+            Articulo articulos;
             try {
-                articulos = em.getReference(Articulos.class, id);
+                articulos = em.getReference(Articulo.class, id);
                 articulos.getIdArticulo();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The articulos with id " + id + " no longer exists.", enfe);
@@ -87,19 +87,19 @@ public class ArticulosJpaController extends JpaController {
         }
     }
 
-    public List<Articulos> findArticulosEntities() {
+    public List<Articulo> findArticulosEntities() {
         return findArticulosEntities(true, -1, -1);
     }
 
-    public List<Articulos> findArticulosEntities(int maxResults, int firstResult) {
+    public List<Articulo> findArticulosEntities(int maxResults, int firstResult) {
         return findArticulosEntities(false, maxResults, firstResult);
     }
 
-    private List<Articulos> findArticulosEntities(boolean all, int maxResults, int firstResult) {
+    private List<Articulo> findArticulosEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Articulos.class));
+            cq.select(cq.from(Articulo.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -111,10 +111,10 @@ public class ArticulosJpaController extends JpaController {
         }
     }
 
-    public Articulos findArticulos(Integer id) {
+    public Articulo findArticulos(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Articulos.class, id);
+            return em.find(Articulo.class, id);
         } finally {
             em.close();
         }
@@ -124,7 +124,7 @@ public class ArticulosJpaController extends JpaController {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Articulos> rt = cq.from(Articulos.class);
+            Root<Articulo> rt = cq.from(Articulo.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

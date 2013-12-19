@@ -3,13 +3,13 @@
   <persistence-unit name="FacturatronPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>facturatron.omoikane.Ventas</class>
-    <class>facturatron.omoikane.Articulos</class>
+    <class>facturatron.omoikane.Articulo</class>
     <class>facturatron.omoikane.VentasDetalles</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://sfmvaldez.poweredbyclear.com:3308/Omoikane"/>
-      <property name="javax.persistence.jdbc.password" value="gatogato"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/omoikane"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="Jasper"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
     </properties>
   </persistence-unit>
 </persistence>

@@ -5,8 +5,12 @@
 
 package facturatron.omoikane;
 
+import facturatron.facturacion.ListadoModel;
 import facturatron.omoikane.exceptions.NonexistentEntityException;
 import facturatron.omoikane.exceptions.PreexistingEntityException;
+import groovy.lang.IntRange;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -140,6 +144,30 @@ public class VentasJpaController extends JpaController {
         } finally {
             em.close();
         }
+    }
+    
+    public int[] getIDIntervalFromDay(Date dayIni, Date dayFin) {
+        int[] intervalo = {0,0};
+        EntityManager em = getEntityManager();
+        try {
+            Query q1 = em.createQuery("SELECT min(v.ventasPK.idVenta) FROM Ventas v WHERE v.fechaHora between :dayIni and :dayFin", Integer.class);
+            Query q2 = em.createQuery("SELECT max(v.ventasPK.idVenta) FROM Ventas v WHERE v.fechaHora between :dayIni and :dayFin", Integer.class);
+                        
+            q1.setParameter("dayIni", dayIni);
+            q1.setParameter("dayFin", dayFin);
+            
+            q2.setParameter("dayIni", dayIni);
+            q2.setParameter("dayFin", dayFin);
+            
+            List resultado1 = q1.getResultList();
+            List resultado2 = q2.getResultList();
+            intervalo[0] = ((Integer) q1.getSingleResult()).intValue();
+            intervalo[1] = ((Integer) q2.getSingleResult()).intValue();
+            
+            return intervalo;
+        } finally {
+            em.close();
+        }        
     }
 
 }

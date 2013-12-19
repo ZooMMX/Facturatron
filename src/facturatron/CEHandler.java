@@ -12,8 +12,8 @@ import java.util.logging.LogRecord;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-/**
- *
+/** Manejador de excepciones controladas (Controlled Exception Handler)
+ * 
  * @author mora
  */
 public class CEHandler extends Handler {

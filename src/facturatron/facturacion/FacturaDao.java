@@ -16,6 +16,8 @@ import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
 import facturatron.email.EmailFacturaCliente;
+import facturatron.facturacion.PAC.IPACService;
+import facturatron.facturacion.PAC.PACContext;
 import facturatron.facturacion.PAC.PACException;
 import facturatron.facturacion.cfdi.finkok.FinkokPACServiceImpl;
 import facturatron.lib.CFDFactory;
@@ -269,6 +271,13 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         setChanged();
         notifyObservers();
      }
+     
+     @Override
+     public void setMetodoDePago(String metodoDePago) {
+        super.setMetodoDePago(metodoDePago);
+        setChanged();
+        notifyObservers();
+     }
 
      public ArrayList<FacturaDao> findAll(Date fechaInicial, Date fechaFinal){
          JDBCDAOSupport bd = getBD();
@@ -345,10 +354,12 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
     @Override
     public void persist() throws PACException, SQLException, Exception {
         
+        Boolean timbrado = false;
         JDBCDAOSupport bd = null;
+        CFDv3Tron comprobanteSelladoFirmadoTimbrado;
+        
         try {                    
             
-            CFDv3Tron comprobanteSelladoYFirmado;
             bd = getBD();
             bd.conectar(true);
             bd.getCon().setAutoCommit(false);
@@ -357,7 +368,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
             if(findByFolio(getFolio())!=null) { throw new FolioDuplicadoException(); }
 
-            comprobanteSelladoYFirmado = sellarFirmarYTimbrar();
+            comprobanteSelladoFirmadoTimbrado = sellarFirmarYTimbrar();
+            timbrado = true; //Necesario para posible rollback
 
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
                     "(version,fecha,serie,folio,sello,noCertificado,noAprobacion,anoAprobacion," +
@@ -412,13 +424,16 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 ps.setInt(8, renglon.getTasa0()?1:0);
                 ps.execute();
             }
-            distribuir(comprobanteSelladoYFirmado);
+            distribuir(comprobanteSelladoFirmadoTimbrado);
             bd.getCon().commit();
         } catch (PACException ex) {            
             throw ex;
         } catch (SQLException ex) {
+            //En caso de que haya quedado registrado el timbre, es necesario cancelarlo
+            if(bd != null && timbrado) { rollBackTimbre(this); }
             throw ex;
         } catch (Exception ex) {
+            if(bd != null && timbrado) { rollBackTimbre(this); }
             throw ex;
         } finally {
             //TODO Rollback del timbre?
@@ -426,6 +441,14 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bd.getCon().rollback();
                 bd.desconectar();
             }
+        }
+    }
+    private void rollBackTimbre(Factura c) {
+        try {
+            IPACService pacService = PACContext.instancePACService();
+            pacService.cancelar(c);
+        } catch (PACException ex) {
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Error descartando timbre. ¡Esta factura puede haber quedar registrada en el PAC y SAT!", ex);
         }
     }
 
@@ -557,7 +580,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         try {            
             Factura comprobante = this;
 
-            FinkokPACServiceImpl impl = new FinkokPACServiceImpl();
+            IPACService impl = PACContext.instancePACService();
             Boolean isCancelado = impl.cancelar(comprobante);
 
         } catch(PACException pe) {

@@ -26,17 +26,17 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "articulos")
 @NamedQueries({
-    @NamedQuery(name = "Articulos.findAll", query = "SELECT a FROM Articulos a"),
-    @NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"),
-    @NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"),
-    @NamedQuery(name = "Articulos.findByIdLinea", query = "SELECT a FROM Articulos a WHERE a.idLinea = :idLinea"),
-    @NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"),
-    @NamedQuery(name = "Articulos.findByUnidad", query = "SELECT a FROM Articulos a WHERE a.unidad = :unidad"),
-    @NamedQuery(name = "Articulos.findByImpuestos", query = "SELECT a FROM Articulos a WHERE a.impuestos = :impuestos"),
-    @NamedQuery(name = "Articulos.findByUModificacion", query = "SELECT a FROM Articulos a WHERE a.uModificacion = :uModificacion"),
-    @NamedQuery(name = "Articulos.findByVersion", query = "SELECT a FROM Articulos a WHERE a.version = :version"),
-    @NamedQuery(name = "Articulos.findByIdGrupo", query = "SELECT a FROM Articulos a WHERE a.idGrupo = :idGrupo")})
-public class Articulos implements Serializable {
+    @NamedQuery(name = "Articulo.findAll", query = "SELECT a FROM Articulo a"),
+    @NamedQuery(name = "Articulo.findByIdArticulo", query = "SELECT a FROM Articulo a WHERE a.idArticulo = :idArticulo"),
+    @NamedQuery(name = "Articulo.findByCodigo", query = "SELECT a FROM Articulo a WHERE a.codigo = :codigo"),
+    @NamedQuery(name = "Articulo.findByIdLinea", query = "SELECT a FROM Articulo a WHERE a.idLinea = :idLinea"),
+    @NamedQuery(name = "Articulo.findByDescripcion", query = "SELECT a FROM Articulo a WHERE a.descripcion = :descripcion"),
+    @NamedQuery(name = "Articulo.findByUnidad", query = "SELECT a FROM Articulo a WHERE a.unidad = :unidad"),
+    @NamedQuery(name = "Articulo.findByImpuestos", query = "SELECT a FROM Articulo a WHERE a.impuestos = :impuestos"),
+    @NamedQuery(name = "Articulo.findByUModificacion", query = "SELECT a FROM Articulo a WHERE a.uModificacion = :uModificacion"),
+    @NamedQuery(name = "Articulo.findByVersion", query = "SELECT a FROM Articulo a WHERE a.version = :version"),
+    @NamedQuery(name = "Articulo.findByIdGrupo", query = "SELECT a FROM Articulo a WHERE a.idGrupo = :idGrupo")})
+public class Articulo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,14 +63,14 @@ public class Articulos implements Serializable {
     @Column(name = "id_grupo")
     private int idGrupo;
 
-    public Articulos() {
+    public Articulo() {
     }
 
-    public Articulos(Integer idArticulo) {
+    public Articulo(Integer idArticulo) {
         this.idArticulo = idArticulo;
     }
 
-    public Articulos(Integer idArticulo, Date uModificacion, int idGrupo) {
+    public Articulo(Integer idArticulo, Date uModificacion, int idGrupo) {
         this.idArticulo = idArticulo;
         this.uModificacion = uModificacion;
         this.idGrupo = idGrupo;
@@ -158,10 +158,10 @@ public class Articulos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Articulos)) {
+        if (!(object instanceof Articulo)) {
             return false;
         }
-        Articulos other = (Articulos) object;
+        Articulo other = (Articulo) object;
         if ((this.idArticulo == null && other.idArticulo != null) || (this.idArticulo != null && !this.idArticulo.equals(other.idArticulo))) {
             return false;
         }

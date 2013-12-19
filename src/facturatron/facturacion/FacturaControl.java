@@ -6,6 +6,7 @@
 package facturatron.facturacion;
 
 import facturatron.Dominio.Factura;
+import facturatron.Dominio.Persona;
 import facturatron.Dominio.Renglon;
 import java.awt.event.ActionEvent;
 import java.sql.Time;
@@ -14,6 +15,8 @@ import facturatron.MVC.Controller;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfigFiscalDao;
 import facturatron.facturacion.PAC.PACException;
+import facturatron.omoikane.CorteZ;
+import facturatron.omoikane.CorteZDao;
 
 import facturatron.omoikane.RenglonTicket;
 import facturatron.omoikane.Ticket;
@@ -149,6 +152,11 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       AddTicketDialog dialog = new AddTicketDialog(mainJFrame);
       notifyBusy();
       new ThreadAddTicket(dialog).start();
+  }
+  
+  public void btnFacturaDia() {
+      notifyBusy();
+      new ThreadAddCorteZ().start();
   }
   
   public Boolean validarForm() {
@@ -312,6 +320,13 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 btnAddTicket();
             }
         });
+        getView().getBtnFacturaDia().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnFacturaDia();
+            }
+        });
+        
         DocumentListener dl = new DocumentListener() {
 
             @Override
@@ -344,6 +359,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().addObserver(getView());
     }
 
+    //TODO Volver ésta clase un handler
     private class ThreadAddTicket extends Thread {
 
         private final AddTicketDialog dialog;
@@ -377,6 +393,48 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", ae);
             } catch (PersistenceException pe) {
                 Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "No se pudo conectar a la base de datos del punto de venta", pe);
+            } finally {
+                notifyIdle();
+            }
+        }
+    }
+    
+    //TODO Volverlo esta clase un handler
+    private class ThreadAddCorteZ extends Thread {
+
+        public ThreadAddCorteZ() {
+        }
+
+        public void run() {
+            try {
+                CorteZDao dao = new CorteZDao();
+                CorteZ corte = dao.load(Calendar.getInstance().getTime());
+                FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();
+                
+                ClienteDao clienteDao = new ClienteDao();
+                ArrayList<Persona> publicoEnGeneral = clienteDao.find("blico en general");
+                getModel().setMetodoDePago("EFECTIVO");
+                if(publicoEnGeneral.size() > 0)
+                    getModel().setReceptor(publicoEnGeneral.get(0));
+                
+                BigDecimal ventaAlDieciseis = corte.getImpuestos().divide(new BigDecimal(.16), 4, BigDecimal.ROUND_HALF_EVEN);
+                BigDecimal ventaAlCero      = corte.getSubtotal().subtract(ventaAlDieciseis);
+                
+                modelo.setValueAt(new BigDecimal(1)   , 0,  0);
+                modelo.setValueAt("Sin código"        , 0,  1);
+                modelo.setValueAt("Ventas al 16%"      , 0,  2);
+                modelo.setValueAt("PZA"               , 0,  3);
+                modelo.setValueAt(ventaAlDieciseis    , 0,  4);
+                modelo.setValueAt(false               , 0,  5);
+                
+                modelo.setValueAt(new BigDecimal(1)   , 1,  0);
+                modelo.setValueAt("Sin código"        , 1,  1);
+                modelo.setValueAt("Ventas al 0%"       , 1,  2);
+                modelo.setValueAt("PZA"               , 1,  3);
+                modelo.setValueAt(ventaAlCero         , 1,  4);
+                modelo.setValueAt(true                , 1,  5);
+                
+                JOptionPane.showMessageDialog(getView(), "Por favor verifique que los datos de la factura del día sean correctos antes de guardarla.");
             } finally {
                 notifyIdle();
             }

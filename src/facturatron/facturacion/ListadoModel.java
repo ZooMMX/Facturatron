@@ -25,7 +25,7 @@ public class ListadoModel extends Model {
     private BigDecimal iva      = new BigDecimal(0d);
     private BigDecimal total    = new BigDecimal(0d);
 
-    ListadoModel() {
+    public ListadoModel() {
         setDao(new FacturaDao());
     }
 

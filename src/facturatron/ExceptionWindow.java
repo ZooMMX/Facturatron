@@ -11,9 +11,15 @@
 
 package facturatron;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import javax.swing.JFrame;
 
 /**
@@ -60,6 +66,7 @@ public class ExceptionWindow extends javax.swing.JDialog {
         webPanel2 = new com.alee.laf.panel.WebPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtExcepcion = new javax.swing.JTextArea();
+        webButton1 = new com.alee.laf.button.WebButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mensaje");
@@ -70,6 +77,12 @@ public class ExceptionWindow extends javax.swing.JDialog {
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCerrarActionPerformed(evt);
+            }
+        });
+
+        webTabbedPane1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                webTabbedPane1PropertyChange(evt);
             }
         });
 
@@ -96,11 +109,23 @@ public class ExceptionWindow extends javax.swing.JDialog {
 
         txtExcepcion.setColumns(20);
         txtExcepcion.setRows(5);
+        txtExcepcion.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtExcepcionPropertyChange(evt);
+            }
+        });
         jScrollPane1.setViewportView(txtExcepcion);
 
         webPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         webTabbedPane1.addTab("Detalles", webPanel2);
+
+        webButton1.setText("Copiar");
+        webButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,7 +136,8 @@ public class ExceptionWindow extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(webTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(webButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCerrar)))
                 .addContainerGap())
         );
@@ -121,7 +147,9 @@ public class ExceptionWindow extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(webTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCerrar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCerrar)
+                    .addComponent(webButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -129,9 +157,37 @@ public class ExceptionWindow extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
-        // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void webTabbedPane1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_webTabbedPane1PropertyChange
+
+    }//GEN-LAST:event_webTabbedPane1PropertyChange
+
+    private void txtExcepcionPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtExcepcionPropertyChange
+        
+    }//GEN-LAST:event_txtExcepcionPropertyChange
+
+    private void webButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton1ActionPerformed
+        Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clip.setContents(new Transferable() {
+
+            @Override
+            public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[] { DataFlavor.stringFlavor };
+            }
+
+            @Override
+            public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return flavor.match(DataFlavor.stringFlavor);
+            }
+
+            @Override
+            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                return txtExcepcion.getText();
+            }
+        }, null);
+    }//GEN-LAST:event_webButton1ActionPerformed
 
     /**
     * @param args the command line arguments
@@ -152,6 +208,7 @@ public class ExceptionWindow extends javax.swing.JDialog {
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblTituloError;
     private javax.swing.JTextArea txtExcepcion;
+    private com.alee.laf.button.WebButton webButton1;
     private com.alee.laf.panel.WebPanel webPanel1;
     private com.alee.laf.panel.WebPanel webPanel2;
     private com.alee.laf.tabbedpane.WebTabbedPane webTabbedPane1;

@@ -47,6 +47,7 @@ public class ConfiguracionDao extends Configuracion implements DAO<Integer, Conf
                 Logger.getLogger(ConfiguracionDao.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        reloadConfig();
     }
 
     @Override

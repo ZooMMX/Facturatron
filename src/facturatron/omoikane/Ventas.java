@@ -61,10 +61,6 @@ public class Ventas implements Serializable {
     private Integer facturada;
     @Column(name = "completada")
     private Integer completada;
-    @Basic(optional = false)
-    @Lob
-    @Column(name = "eliminar")
-    private byte[] eliminar;
     @Column(name = "subtotal")
     private Double subtotal;
     @Column(name = "descuento")
@@ -100,7 +96,6 @@ public class Ventas implements Serializable {
         this.ventasPK = ventasPK;
         this.fechaHora = fechaHora;
         this.uModificacion = uModificacion;
-        this.eliminar = eliminar;
         this.idUsuario = idUsuario;
         this.efectivo = efectivo;
         this.cambio = cambio;
@@ -159,15 +154,7 @@ public class Ventas implements Serializable {
     public void setCompletada(Integer completada) {
         this.completada = completada;
     }
-
-    public byte[] getEliminar() {
-        return eliminar;
-    }
-
-    public void setEliminar(byte[] eliminar) {
-        this.eliminar = eliminar;
-    }
-
+    
     public Double getSubtotal() {
         return subtotal;
     }

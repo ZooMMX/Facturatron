@@ -34,7 +34,10 @@ import javax.persistence.Table;
     @NamedQuery(name = "VentasDetalles.findByImpuestos", query = "SELECT v FROM VentasDetalles v WHERE v.impuestos = :impuestos"),
     @NamedQuery(name = "VentasDetalles.findByDescuento", query = "SELECT v FROM VentasDetalles v WHERE v.descuento = :descuento"),
     @NamedQuery(name = "VentasDetalles.findByTotal", query = "SELECT v FROM VentasDetalles v WHERE v.total = :total"),
-    @NamedQuery(name = "VentasDetalles.findByIdLinea", query = "SELECT v FROM VentasDetalles v WHERE v.idLinea = :idLinea")})
+    @NamedQuery(name = "VentasDetalles.findByIdLinea", query = "SELECT v FROM VentasDetalles v WHERE v.idLinea = :idLinea"),
+    @NamedQuery(name = "VentasDetalles.sumTotalIntervalOfIDs", query = "SELECT sum(v.total) FROM VentasDetalles v WHERE v.ventasDetallesPK.idVenta between :idinicial and :idfinal"),
+    @NamedQuery(name = "VentasDetalles.sumSubtotalIntervalOfIDs", query = "SELECT sum(v.subtotal) FROM VentasDetalles v WHERE v.ventasDetallesPK.idVenta between :idinicial and :idfinal"),
+    @NamedQuery(name = "VentasDetalles.sumImpuestosIntervalOfIDs", query = "SELECT sum(v.impuestos) FROM VentasDetalles v WHERE v.ventasDetallesPK.idVenta between :idinicial and :idfinal")})
 public class VentasDetalles implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId

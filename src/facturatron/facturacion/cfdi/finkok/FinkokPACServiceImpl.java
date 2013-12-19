@@ -29,6 +29,7 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.security.Security;
@@ -102,14 +103,21 @@ public class FinkokPACServiceImpl implements IPACService {
             
             System.out.println("XML: " + acuse.getXml().getValue());
             
-            
         } catch (UnsupportedEncodingException ex) {
             throw new PACException( "UnsupportedEncodingException en timbrar con finkok", ex);
         } catch (ParseException ex) {
             throw new PACException( "ParseException en fecha de timbre del proveedor finkok", ex);
         } catch (FinkokIncidenciasException ex) {
             throw new PACException( "Excepción timbrando con finkok", ex );
+        } catch(Exception ex) {
+            PACException pace;
+            if(ex.getCause() instanceof UnknownHostException) 
+                pace = new PACException("Error, no hay conexión a internet", new PACException("Es necesario conectarse para continuar con el timbrado en el PAC", ex));
+            else
+                pace = new PACException("Excepción desconocida", ex);
+            throw pace;
         }
+        
         return cfdi;
                     
     }
@@ -207,7 +215,11 @@ public class FinkokPACServiceImpl implements IPACService {
             PACException pace = new PACException("Error de lectura de la llave o el certificado", ex);
             throw pace;
         } catch (Exception ex) {
-            PACException pace = new PACException("Error desconocido en métodos loadPKCS8PrivateKey o loadX509Certificate", ex);
+            PACException pace;
+            if(ex.getCause() instanceof UnknownHostException) 
+                pace = new PACException("No hay conexión a internet, es necesario conectarse para continuar", ex);
+            else
+                pace = new PACException("Error desconocido en métodos loadPKCS8PrivateKey o loadX509Certificate", ex);
             throw pace;
         }
     }

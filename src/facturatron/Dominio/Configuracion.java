@@ -44,6 +44,11 @@ public class Configuracion extends Model implements Serializable {
         return config;
     }
     
+    public static void reloadConfig() {
+        config = null;
+        getConfig();
+    }
+    
     /**
      * @return the pathKey
      */

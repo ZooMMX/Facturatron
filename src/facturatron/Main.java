@@ -6,7 +6,9 @@
 package facturatron;
 
 import com.alee.laf.WebLookAndFeel;
+import facturatron.omoikane.CorteZDao;
 import facturatron.omoikane.Ticket;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
@@ -21,6 +23,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        //prueba2(); 
+        
         // You should work with UI (including installing L&F) inside EDT
         SwingUtilities.invokeLater ( new Runnable ()
         {
@@ -34,7 +38,6 @@ public class Main {
             }
         } );        
         
-        //prueba();
 
     }
     public static void prueba() {
@@ -44,6 +47,11 @@ public class Main {
         Ticket expResult = null;
         Ticket result = Ticket.getTicketData(idAlmacen, idCaja, idVenta);
         System.out.println("just it");
+    }
+    
+    public static void prueba2() {
+        CorteZDao dao = new CorteZDao();
+        dao.load(Calendar.getInstance().getTime());
     }
 
 }

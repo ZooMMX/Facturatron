@@ -7,12 +7,14 @@ package facturatron.omoikane;
 
 import facturatron.omoikane.exceptions.NonexistentEntityException;
 import facturatron.omoikane.exceptions.PreexistingEntityException;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -149,6 +151,46 @@ public class VentasDetallesJpaController extends JpaController {
             return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();
+        }
+    }
+    
+    public SumaVentas sumaVentasDetalles(int desdeID, int hastaID) {
+        EntityManager em = getEntityManager();
+        try {
+
+            TypedQuery<Double> q = em.createNamedQuery("VentasDetalles.sumImpuestosIntervalOfIDs", Double.class);
+            q.setParameter("idinicial", desdeID);
+            q.setParameter("idfinal"  , hastaID);
+            Double sumaImpuestos = q.getSingleResult();
+            
+            q = em.createNamedQuery("VentasDetalles.sumTotalIntervalOfIDs", Double.class);
+            q.setParameter("idinicial", desdeID);
+            q.setParameter("idfinal"  , hastaID);
+            Double sumaTotal = q.getSingleResult();
+            
+            Double sumaSubtotal = sumaTotal - sumaImpuestos;
+
+            SumaVentas sumaVentas = new SumaVentas(sumaSubtotal, sumaImpuestos, sumaTotal);
+            return sumaVentas;
+        } finally {
+            em.close();
+        }
+    }
+    public class SumaVentas {
+        public SumaVentas(Double s, Double i, Double t) {
+            total     = new BigDecimal( t );
+            subtotal  = new BigDecimal( s );
+            impuestos = new BigDecimal( i );
+        } 
+        public BigDecimal total, impuestos, subtotal;
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb
+                    .append("[Subtotal: ").append(subtotal).append(", ")
+                    .append("Impustos: ").append(impuestos).append(", ")
+                    .append("Total: ").append(total)
+                    .append("]");
+            return sb.toString();
         }
     }
 
