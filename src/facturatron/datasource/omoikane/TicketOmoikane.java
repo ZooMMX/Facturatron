@@ -3,24 +3,48 @@
  * and open the template in the editor.
  */
 
-package facturatron.omoikane;
+package facturatron.datasource.omoikane;
 
+import facturatron.datasource.DatasourceException;
+import facturatron.datasource.IDatasourceService;
+import facturatron.datasource.RenglonTicket;
+import facturatron.datasource.Ticket;
+import facturatron.omoikane.Articulo;
+import facturatron.omoikane.ArticulosJpaController;
+import facturatron.datasource.CorteZ;
+import facturatron.omoikane.CorteZDao;
+import facturatron.omoikane.Ventas;
+import facturatron.omoikane.VentasDetalles;
+import facturatron.omoikane.VentasDetallesJpaController;
+import facturatron.omoikane.VentasJpaController;
+import facturatron.omoikane.VentasPK;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  *
  * @author octavioruizcastillo
  */
-public class Ticket extends ArrayList<RenglonTicket> {
+public class TicketOmoikane extends Ticket {
 
-
-    public static Ticket getTicketData(Integer idAlmacen, Integer idCaja, Integer idVenta) {
+    public Ticket getTicket(Object id) {
+        String idString = (String) id;
+        String[] args = idString.split("-");
+        Integer idAlmacen = Integer.valueOf(args[0]);
+        Integer idCaja = Integer.valueOf(args[1]);
+        Integer idVenta = Integer.valueOf(args[2]);
+        return getTicketData(idAlmacen, idCaja, idVenta);
+    }
+    
+    
+    public TicketOmoikane getTicketData(Integer idAlmacen, Integer idCaja, Integer idVenta) {
 
         MathContext                 mc          = MathContext.DECIMAL64;
-        Ticket                      ticket      = new Ticket();
+        TicketOmoikane                      ticket      = new TicketOmoikane();
         VentasJpaController         ventaJpa    = new VentasJpaController();
         VentasDetallesJpaController detallesJpa = new VentasDetallesJpaController();
         ArticulosJpaController      productsJpa = new ArticulosJpaController();
@@ -65,4 +89,5 @@ public class Ticket extends ArrayList<RenglonTicket> {
 
         return ticket;
     }
+    
 }

@@ -99,6 +99,13 @@ public class ConfiguracionDao extends Configuracion implements DAO<Integer, Conf
             
             setUsuarioPAC(serialObject.getUsuarioPAC());
             setPasswordPAC(serialObject.getPasswordPAC());
+            setConectorPAC(serialObject.getConectorPAC());
+            
+            setUsuarioDatasource(serialObject.getUsuarioDatasource());
+            setPasswordDatasource(serialObject.getPasswordDatasource());
+            setConectorDatasource(serialObject.getConectorDatasource());
+            setUrlDatasource(serialObject.getUrlDatasource());
+            
             setChanged();
             notifyObservers();
             return serialObject;

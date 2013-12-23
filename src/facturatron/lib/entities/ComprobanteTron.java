@@ -11,6 +11,7 @@ import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
 
 import facturatron.lib.NumeroConLetra;
 import java.text.DecimalFormat;
+import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
 import mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital;
 
 /**
@@ -232,6 +233,14 @@ public class ComprobanteTron extends Comprobante {
     
     public String getFolioFiscal() {
         return getTimbre().getUUID();
+    }
+    
+    public void addTimbreFiscalDigital(TimbreFiscalDigital timbre) {
+        ObjectFactory of = new ObjectFactory();
+        if( getComplemento() == null ) 
+            setComplemento(of.createComprobanteComplemento());
+        
+        getComplemento().getAny().add(timbre);
     }
     
     public String getQrstring() {

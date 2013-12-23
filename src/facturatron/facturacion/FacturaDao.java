@@ -19,7 +19,7 @@ import facturatron.email.EmailFacturaCliente;
 import facturatron.facturacion.PAC.IPACService;
 import facturatron.facturacion.PAC.PACContext;
 import facturatron.facturacion.PAC.PACException;
-import facturatron.facturacion.cfdi.finkok.FinkokPACServiceImpl;
+import facturatron.facturacion.PAC.finkok.FinkokPACServiceImpl;
 import facturatron.lib.CFDFactory;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;

@@ -5,13 +5,12 @@
 package facturatron.config;
 
 import facturatron.MVC.Controller;
-import facturatron.email.EmailPruebaConf;
+import facturatron.datasource.DatasourceContext.DATASOURCE;
+import facturatron.facturacion.PAC.PACContext.PACS;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import javax.swing.JFileChooser;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -22,13 +21,28 @@ public class ConfigPACControl extends Controller<ConfiguracionDao, ConfigPACForm
     public ConfigPACControl() {
         setModel(new ConfiguracionDao());
         setView(new ConfigPACForm());
+        
+        //Establecer los conectores PAC y Datasource disponibles en los comboBox
+        getView().getPacComboBox().setModel( new DefaultComboBoxModel<>( PACS.values() ) );
+        getView().getOrigenComboBox().setModel( new DefaultComboBoxModel<>( DATASOURCE.values() ) );
+        
+        //Iniciar GUI
         init();
+        
+        //Cargar configuración en la GUI
         getModel().load();
+        
     }
 
     public void btnGuardar() {
         getModel().setUsuarioPAC(getView().getTxtUsuario().getText());
         getModel().setPasswordPAC(String.valueOf( getView().getTxtPassword().getPassword() ));
+        getModel().setConectorPAC((PACS) getView().getPacComboBox().getSelectedItem());
+        
+        getModel().setUsuarioDatasource(getView().getTxtUsuarioOrigen().getText());
+        getModel().setPasswordDatasource(String.valueOf( getView().getTxtPasswordOrigen().getPassword() ));
+        getModel().setConectorDatasource((DATASOURCE) getView().getOrigenComboBox().getSelectedItem() );
+        getModel().setUrlDatasource( getView().getTxtUrlOrigen().getText() );
         
         getModel().persist();
         JOptionPane.showMessageDialog(getView(), "Configuración actualizada");

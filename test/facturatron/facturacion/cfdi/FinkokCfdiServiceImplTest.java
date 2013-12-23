@@ -6,7 +6,7 @@
 
 package facturatron.facturacion.cfdi;
 
-import facturatron.facturacion.cfdi.finkok.FinkokPACServiceImpl;
+import facturatron.facturacion.PAC.finkok.FinkokPACServiceImpl;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Persona;
 import facturatron.lib.CFDFactory;

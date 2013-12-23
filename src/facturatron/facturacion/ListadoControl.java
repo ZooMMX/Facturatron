@@ -84,21 +84,25 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
      * Muestra valores internos de un comprobante y cancelación, y su estado de envío del PAC al SAT
      */
     public void btnStatusSAT() {
-        int row = getView().getTablaListado().getSelectedRow();
-        int id = getModel().getFacturas().get(row).getId();
-        FacturaDao factura = (FacturaDao) getModel().getDao().findBy(id);
-        if(factura.getFolioFiscal() == null) { JOptionPane.showMessageDialog(getView(), "Comprobante almacenado erróneamente no contiene folio fiscal"); return; }
-        IPACService pac = PACContext.instancePACService();
-        
-        StringBuilder statusString = new StringBuilder();
-        statusString.append("Estado del comprobante: ").append( factura.getEstadoComprobante().toString()).append("\r\n"); 
-        statusString.append("Folio fiscal del comprobante: ").append( factura.getFolioFiscal()).append("\r\n");
-        statusString.append( pac.getStatusTimbre(factura).getMensaje() );
-        if(factura.getEstadoComprobante() == Factura.Estado.CANCELADO)  statusString.append( pac.getStatusCancelacion(factura).getMensaje() );
-                
-        JFrame mainJFrame = (JFrame) JFrame.getFrames()[0];
-        FacturaStatusDialog dialog = new FacturaStatusDialog(mainJFrame, statusString.toString());
-        dialog.lanzar();
+        try {
+            int row = getView().getTablaListado().getSelectedRow();
+            int id = getModel().getFacturas().get(row).getId();
+            FacturaDao factura = (FacturaDao) getModel().getDao().findBy(id);
+            if(factura.getFolioFiscal() == null) { JOptionPane.showMessageDialog(getView(), "Comprobante almacenado erróneamente no contiene folio fiscal"); return; }
+            IPACService pac = PACContext.instancePACService();
+            
+            StringBuilder statusString = new StringBuilder();
+            statusString.append("Estado interno del comprobante: ").append( factura.getEstadoComprobante().toString()).append("\r\n");
+            statusString.append("Folio fiscal del comprobante: ").append( factura.getFolioFiscal()).append("\r\n");
+            statusString.append( pac.getStatusTimbre(factura).getMensaje() ).append("\r\n");
+            if(factura.getEstadoComprobante() == Factura.Estado.CANCELADO)  statusString.append( pac.getStatusCancelacion(factura).getMensaje() ).append("\r\n");
+            
+            JFrame mainJFrame = (JFrame) JFrame.getFrames()[0];
+            FacturaStatusDialog dialog = new FacturaStatusDialog(mainJFrame, statusString.toString());
+            dialog.lanzar();
+        } catch (PACException ex) {
+            Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "Error al contactar al PAC para obtener status", ex);
+        }
     }
             
     /**

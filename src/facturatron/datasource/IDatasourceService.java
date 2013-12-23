@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Phesus
+ * Copyright (C) 2013 octavioruizcastillo @ Phesus
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,18 +16,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package facturatron.facturacion.PAC;
+package facturatron.datasource;
+
+import java.util.Date;
 
 /**
  *
  * @author octavioruizcastillo
  */
-public class PACException extends Exception {
-    public PACException(String msj) {
-        super(msj);
-    }
-    public PACException(String msj, Throwable t) {
-        super(msj, t);
-    }
-    
+public interface IDatasourceService  {
+    public Ticket getTicket(Object id) throws DatasourceException;
+    public CorteZ getCorteZ(Date fecha) throws DatasourceException;
 }

@@ -27,6 +27,7 @@ public class Persona extends Model implements Serializable {
     private String codigoPostal = "";
     private String colonia      = "";
     private String municipio    = "";
+    private String localidad    = null;
     private String estado       = "";
     private String noExterior   = "";
     private String noInterior   = "";
@@ -85,6 +86,7 @@ public class Persona extends Model implements Serializable {
         uf.setEstado(getEstado());
         uf.setReferencia("Vacío");
         uf.setMunicipio(getMunicipio());
+        uf.setLocalidad(getLocalidad());
         uf.setNoExterior(getNoExterior());
         uf.setNoInterior(getNoInterior());
         uf.setPais(getPais());
@@ -283,5 +285,19 @@ public class Persona extends Model implements Serializable {
      */
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
+    }
+
+    /**
+     * @return the localidad
+     */
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    /**
+     * @param localidad the localidad to set
+     */
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
     }
 }

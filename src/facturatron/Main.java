@@ -6,8 +6,10 @@
 package facturatron;
 
 import com.alee.laf.WebLookAndFeel;
+import facturatron.datasource.DatasourceContext;
+import facturatron.datasource.DatasourceException;
 import facturatron.omoikane.CorteZDao;
-import facturatron.omoikane.Ticket;
+import facturatron.datasource.omoikane.TicketOmoikane;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -40,16 +42,16 @@ public class Main {
         
 
     }
-    public static void prueba() {
+    public static void prueba() throws DatasourceException {
         Integer idAlmacen = 1;
         Integer idCaja = 2;
         Integer idVenta = 653527;
-        Ticket expResult = null;
-        Ticket result = Ticket.getTicketData(idAlmacen, idCaja, idVenta);
-        System.out.println("just it");
+        TicketOmoikane expResult = null;
+        TicketOmoikane result = (TicketOmoikane) DatasourceContext.instanceDatasourceInstance().getTicket("1-2-653527");
+        System.out.println("just that");
     }
     
-    public static void prueba2() {
+    public static void prueba2() throws DatasourceException {
         CorteZDao dao = new CorteZDao();
         dao.load(Calendar.getInstance().getTime());
     }

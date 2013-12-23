@@ -14,12 +14,15 @@ import java.util.ArrayList;
 import facturatron.MVC.Controller;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfigFiscalDao;
+import facturatron.datasource.DatasourceContext;
+import facturatron.datasource.DatasourceException;
 import facturatron.facturacion.PAC.PACException;
-import facturatron.omoikane.CorteZ;
+import facturatron.datasource.CorteZ;
 import facturatron.omoikane.CorteZDao;
 
-import facturatron.omoikane.RenglonTicket;
-import facturatron.omoikane.Ticket;
+import facturatron.datasource.RenglonTicket;
+import facturatron.datasource.Ticket;
+import facturatron.datasource.omoikane.TicketOmoikane;
 import java.awt.Frame;
 import java.awt.List;
 import java.awt.event.ActionListener;
@@ -40,7 +43,8 @@ import org.xml.sax.SAXParseException;
 
 /**
  *
- * @author saul
+ * @author Octavio Ruiz @ Phesus
+ * @author saul @ Phesus
  */
 public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //solo controlador
 
@@ -368,16 +372,16 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             this.dialog = dialog;
         }
 
+        @Override
         public void run() {
             try {
                 String idTicket = dialog.lanzar();
                 if (idTicket != null) {
-                    String[] args = idTicket.split("-");
-                    Integer idAlmacen = Integer.valueOf(args[0]);
-                    Integer idCaja = Integer.valueOf(args[1]);
-                    Integer idVenta = Integer.valueOf(args[2]);
+                    
                     FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();
-                    Ticket t = Ticket.getTicketData(idAlmacen, idCaja, idVenta);
+                    
+                    Ticket t = DatasourceContext.instanceDatasourceInstance().getTicket(idTicket);
+                    
                     for (RenglonTicket renglon : t) {
                         modelo.setValueAt(renglon.cantidad, modelo.getRowCount() - 1, 0); //0 = Columna cantidad
                         modelo.setValueAt(!renglon.impuestos, modelo.getRowCount() - 1, 5); //5 = Impuestos 0%
@@ -387,10 +391,12 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                         modelo.setValueAt(renglon.precioUnitario, modelo.getRowCount() - 1, 4); //4 = Precio unitario con descuento
                     }
                 }
+            } catch (DatasourceException ex) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Problema al importar datos del ticket", ex);
             } catch (NumberFormatException nfe) {
                 Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", nfe);
             } catch (ArrayIndexOutOfBoundsException ae) {
-                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", ae);
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653528", ae);
             } catch (PersistenceException pe) {
                 Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "No se pudo conectar a la base de datos del punto de venta", pe);
             } finally {
@@ -405,10 +411,11 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         public ThreadAddCorteZ() {
         }
 
+        @Override
         public void run() {
             try {
-                CorteZDao dao = new CorteZDao();
-                CorteZ corte = dao.load(Calendar.getInstance().getTime());
+                CorteZ corte = DatasourceContext.instanceDatasourceInstance().getCorteZ(Calendar.getInstance().getTime());
+                
                 FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();
                 
                 ClienteDao clienteDao = new ClienteDao();
@@ -435,6 +442,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 modelo.setValueAt(true                , 1,  5);
                 
                 JOptionPane.showMessageDialog(getView(), "Por favor verifique que los datos de la factura del día sean correctos antes de guardarla.");
+            } catch (DatasourceException ex) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Error al obtener información", ex);
             } finally {
                 notifyIdle();
             }

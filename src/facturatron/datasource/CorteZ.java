@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package facturatron.omoikane;
+package facturatron.datasource;
 
 import java.math.BigDecimal;
 

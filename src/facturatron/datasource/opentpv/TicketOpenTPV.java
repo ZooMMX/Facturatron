@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Phesus
+ * Copyright (C) 2013 octavioruizcastillo
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,18 +16,28 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package facturatron.facturacion.PAC;
+package facturatron.datasource.opentpv;
+
+import facturatron.datasource.Ticket;
 
 /**
  *
  * @author octavioruizcastillo
  */
-public class PACException extends Exception {
-    public PACException(String msj) {
-        super(msj);
+public class TicketOpenTPV extends Ticket {
+    private String id;
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
     }
-    public PACException(String msj, Throwable t) {
-        super(msj, t);
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
-    
 }

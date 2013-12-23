@@ -16,18 +16,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package facturatron.facturacion.PAC;
+package facturatron.datasource;
 
 /**
  *
  * @author octavioruizcastillo
  */
-public class PACException extends Exception {
-    public PACException(String msj) {
+public class DatasourceException extends Exception {
+     public DatasourceException(String msj) {
         super(msj);
     }
-    public PACException(String msj, Throwable t) {
+    public DatasourceException(String msj, Throwable t) {
         super(msj, t);
     }
-    
 }

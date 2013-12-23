@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package facturatron.facturacion.cfdi.finkok;
+package facturatron.facturacion.PAC.finkok;
 
 import com.finkok.facturacion.cancel.Application;
 import com.finkok.facturacion.cancel.CancelSOAP;
@@ -19,12 +19,10 @@ import facturatron.facturacion.PAC.IPACService;
 import facturatron.facturacion.PAC.IStatusTimbre;
 import facturatron.facturacion.PAC.PACException;
 import facturatron.lib.entities.CFDv3Tron;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -33,13 +31,11 @@ import java.net.UnknownHostException;
 import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.security.Security;
-import java.security.Signature;
 import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Complemento;

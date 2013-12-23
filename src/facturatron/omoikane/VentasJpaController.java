@@ -5,6 +5,7 @@
 
 package facturatron.omoikane;
 
+import facturatron.datasource.DatasourceException;
 import facturatron.facturacion.ListadoModel;
 import facturatron.omoikane.exceptions.NonexistentEntityException;
 import facturatron.omoikane.exceptions.PreexistingEntityException;
@@ -146,7 +147,7 @@ public class VentasJpaController extends JpaController {
         }
     }
     
-    public int[] getIDIntervalFromDay(Date dayIni, Date dayFin) {
+    public int[] getIDIntervalFromDay(Date dayIni, Date dayFin) throws DatasourceException {
         int[] intervalo = {0,0};
         EntityManager em = getEntityManager();
         try {
@@ -159,8 +160,9 @@ public class VentasJpaController extends JpaController {
             q2.setParameter("dayIni", dayIni);
             q2.setParameter("dayFin", dayFin);
             
-            List resultado1 = q1.getResultList();
-            List resultado2 = q2.getResultList();
+            if(q1.getSingleResult() == null || q2.getSingleResult() == null)
+                throw new DatasourceException("No se encontraron ventas para facturar");
+            
             intervalo[0] = ((Integer) q1.getSingleResult()).intValue();
             intervalo[1] = ((Integer) q2.getSingleResult()).intValue();
             

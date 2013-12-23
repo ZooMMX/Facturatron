@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Phesus
+ * Copyright (C) 2013 octavioruizcastillo
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,18 +16,33 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package facturatron.facturacion.PAC;
+package facturatron.datasource.omoikane;
+
+import facturatron.datasource.DatasourceException;
+import facturatron.datasource.IDatasourceService;
+import facturatron.datasource.Ticket;
+import facturatron.datasource.CorteZ;
+import facturatron.omoikane.CorteZDao;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
  * @author octavioruizcastillo
  */
-public class PACException extends Exception {
-    public PACException(String msj) {
-        super(msj);
+public class OmoikaneDatasourceImpl implements IDatasourceService {
+
+    @Override
+    public Ticket getTicket(Object id) {
+        return new TicketOmoikane().getTicket(id);
     }
-    public PACException(String msj, Throwable t) {
-        super(msj, t);
+
+    @Override
+    public CorteZ getCorteZ(Date fecha) throws DatasourceException {
+        CorteZDao dao = new CorteZDao();
+        CorteZ corte = dao.load(Calendar.getInstance().getTime());
+        return corte;
     }
+
     
 }

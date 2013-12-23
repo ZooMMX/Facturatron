@@ -2,4 +2,5 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://demo-facturacion.finkok.com/servicios/soap/stamp.wsdl" uri="xml-resources/web-service-references/stamp/wsdl/demo-facturacion.finkok.com/servicios/soap/stamp.wsdl"/>
     <system systemId="http://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl" uri="xml-resources/web-service-references/cancel/wsdl/demo-facturacion.finkok.com/servicios/soap/cancel.wsdl"/>
+    <system systemId="https://www.appfacturainteligente.com/ConexionRemotaCFDI32/ConexionRemota32.asmx?WSDL" uri="xml-resources/web-service-references/ConexionRemota32/wsdl/www.appfacturainteligente.com/ConexionRemotaCFDI32/ConexionRemota32.asmx.wsdl"/>
 </catalog>

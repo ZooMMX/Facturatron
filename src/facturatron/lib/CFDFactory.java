@@ -5,8 +5,10 @@
 
 package facturatron.lib;
 
+import facturatron.facturacion.PAC.IPACService;
+import facturatron.facturacion.PAC.PACContext;
 import facturatron.facturacion.PAC.PACException;
-import facturatron.facturacion.cfdi.finkok.FinkokPACServiceImpl;
+import facturatron.facturacion.PAC.finkok.FinkokPACServiceImpl;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,7 +70,7 @@ public class CFDFactory {
     }
     
     public CFDv3Tron firmar(CFDv3Tron cfdi) throws PACException {
-        FinkokPACServiceImpl instance = new FinkokPACServiceImpl();
+        IPACService instance  = PACContext.instancePACService();
         CFDv3Tron cfdiFirmado = instance.timbrar(cfdi);
         
         return cfdiFirmado;

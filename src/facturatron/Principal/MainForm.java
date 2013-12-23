@@ -105,7 +105,7 @@ public class MainForm extends javax.swing.JFrame {
         linkCfgSystem.setUnclickedColor(new java.awt.Color(0, 0, 0));
         jXTaskPane3.getContentPane().add(linkCfgSystem);
 
-        linkCfgPAC.setText("Configuración PAC");
+        linkCfgPAC.setText("Configuración Integraciones");
         linkCfgPAC.setUnclickedColor(new java.awt.Color(0, 0, 0));
         jXTaskPane3.getContentPane().add(linkCfgPAC);
 

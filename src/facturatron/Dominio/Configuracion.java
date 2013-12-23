@@ -2,6 +2,8 @@ package facturatron.Dominio;
 
 import facturatron.MVC.Model;
 import facturatron.config.ConfiguracionDao;
+import facturatron.datasource.DatasourceContext.DATASOURCE;
+import facturatron.facturacion.PAC.PACContext.PACS;
 import java.io.Serializable;
 
 /**
@@ -30,6 +32,11 @@ public class Configuracion extends Model implements Serializable {
     private String mensajeCorreo = "";
     private String usuarioPAC = "";
     private String passwordPAC = "";
+    private PACS   conectorPAC = PACS.Finkok;
+    private String usuarioDatasource = "";
+    private String passwordDatasource = "";
+    private String urlDatasource = "";
+    private DATASOURCE conectorDatasource = DATASOURCE.Omoikane;
     private static final long serialVersionUID = -3524646329180295196L;
 
     private static Configuracion config;
@@ -53,42 +60,42 @@ public class Configuracion extends Model implements Serializable {
      * @return the pathKey
      */
     public String getpathKey() {
-        return pathKey;
+        return getPathKey();
     }
 
     /**
      * @param pathKey the pathKey to set
      */
     public void setpathKey(String pathKey) {
-        this.pathKey = pathKey;
+        this.setPathKey(pathKey);
     }
 
     /**
      * @return the pathCer
      */
     public String getpathCer() {
-        return pathCer;
+        return getPathCer();
     }
 
     /**
      * @param pathCer the pathCer to set
      */
     public void setpathCer(String pathCer) {
-        this.pathCer = pathCer;
+        this.setPathCer(pathCer);
     }
 
     /**
      * @return the passCer
      */
     public String getpassCer() {
-        return passCer;
+        return getPassCer();
     }
 
     /**
      * @param passCer the passCer to set
      */
     public void setpassCer(String passCer) {
-        this.passCer = passCer;
+        this.setPassCer(passCer);
     }
 
     /**
@@ -327,5 +334,117 @@ public class Configuracion extends Model implements Serializable {
      */
     public void setPasswordPAC(String passwordPAC) {
         this.passwordPAC = passwordPAC;
+    }
+
+    /**
+     * @return the conectorPAC
+     */
+    public PACS getConectorPAC() {
+        return conectorPAC;
+    }
+
+    /**
+     * @param conectorPAC the conectorPAC to set
+     */
+    public void setConectorPAC(PACS conectorPAC) {
+        this.conectorPAC = conectorPAC;
+    }
+
+    /**
+     * @return the pathKey
+     */
+    public String getPathKey() {
+        return pathKey;
+    }
+
+    /**
+     * @param pathKey the pathKey to set
+     */
+    public void setPathKey(String pathKey) {
+        this.pathKey = pathKey;
+    }
+
+    /**
+     * @return the pathCer
+     */
+    public String getPathCer() {
+        return pathCer;
+    }
+
+    /**
+     * @param pathCer the pathCer to set
+     */
+    public void setPathCer(String pathCer) {
+        this.pathCer = pathCer;
+    }
+
+    /**
+     * @return the passCer
+     */
+    public String getPassCer() {
+        return passCer;
+    }
+
+    /**
+     * @param passCer the passCer to set
+     */
+    public void setPassCer(String passCer) {
+        this.passCer = passCer;
+    }
+
+    /**
+     * @return the usuarioDatasource
+     */
+    public String getUsuarioDatasource() {
+        return usuarioDatasource;
+    }
+
+    /**
+     * @param usuarioDatasource the usuarioDatasource to set
+     */
+    public void setUsuarioDatasource(String usuarioDatasource) {
+        this.usuarioDatasource = usuarioDatasource;
+    }
+
+    /**
+     * @return the passwordDatasource
+     */
+    public String getPasswordDatasource() {
+        return passwordDatasource;
+    }
+
+    /**
+     * @param passwordDatasource the passwordDatasource to set
+     */
+    public void setPasswordDatasource(String passwordDatasource) {
+        this.passwordDatasource = passwordDatasource;
+    }
+
+    /**
+     * @return the conectorDatasource
+     */
+    public DATASOURCE getConectorDatasource() {
+        return conectorDatasource;
+    }
+
+    /**
+     * @param conectorDatasource the conectorDatasource to set
+     */
+    public void setConectorDatasource(DATASOURCE conectorDatasource) {
+        this.conectorDatasource = conectorDatasource;
+    }
+
+    /**
+     * @return the urlDatasource
+     */
+    public String getUrlDatasource() {
+        return urlDatasource;
+    }
+
+    /**
+     * @param urlDatasource the urlDatasource to set
+     */
+    public void setUrlDatasource(String urlDatasource) {
+        this.urlDatasource = urlDatasource;
     }
 }
