@@ -56,6 +56,8 @@ public class MainForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Facturatron");
 
+        jXTaskPaneContainer1.setBackground(new java.awt.Color(255, 255, 255));
+
         jXTaskPane1.setTitle("Facturas");
 
         linkFacturar.setText("Facturar");
@@ -107,6 +109,11 @@ public class MainForm extends javax.swing.JFrame {
 
         linkCfgPAC.setText("Configuración Integraciones");
         linkCfgPAC.setUnclickedColor(new java.awt.Color(0, 0, 0));
+        linkCfgPAC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                linkCfgPACActionPerformed(evt);
+            }
+        });
         jXTaskPane3.getContentPane().add(linkCfgPAC);
 
         linkCfgAcercaDe.setText("Acerca De");
@@ -171,6 +178,10 @@ public class MainForm extends javax.swing.JFrame {
     private void linkInformeMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkInformeMensualActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_linkInformeMensualActionPerformed
+
+    private void linkCfgPACActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkCfgPACActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_linkCfgPACActionPerformed
 
     /**
     * @param args the command line arguments

@@ -38,15 +38,23 @@ public class ConfigFiscalDao extends SerieDao implements DAO<Integer,Serie>, Obs
      * tambien carga los datos de la sucursal que son representados por la persona ID 2
      * Nota: Las personas del ID 3 en adelante son clientes
      * @return this
+     * @throws java.sql.SQLException
      */
-    public Serie load() {
-        loadEmisor();
-        loadSerie();
+    @Override
+    public Serie load() throws SQLException {
+        try {
+            loadEmisor();
+            loadSerie();
 
-
-        return this;
+            return this;
+        } catch(SQLException se) {
+            if(se.getMessage().contains("driver"))
+                throw new SQLException("No se ha configurado adecuadamente la base de datos", se);
+            else
+                throw new SQLException("Error de base de datos", se);
+        }
     }
-    private void loadEmisor() {
+    private void loadEmisor() throws SQLException {
         ClienteDao dao = new ClienteDao();
         dao.addObserver(this);
         setContribuyente(dao);
@@ -71,7 +79,7 @@ public class ConfigFiscalDao extends SerieDao implements DAO<Integer,Serie>, Obs
     }
 
     @Override
-    public Serie findBy(Integer id) {
+    public Serie findBy(Integer id) throws SQLException {
         return load();
     }
 

@@ -16,6 +16,7 @@ import java.io.PrintStream;
 public class Misc {
     public static String getStackTraceString(java.lang.Throwable exc)
         {
+            if(exc == null) return "Sin stacktrace";
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PrintStream print = new PrintStream(baos);
             exc.printStackTrace(print);

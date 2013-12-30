@@ -19,14 +19,14 @@ import javax.swing.JTextField;
  *
  * @author octavioruizcastillo
  */
-public class ConfigPACForm extends javax.swing.JPanel implements Observer, ViewInterface<ConfiguracionDao> {
+public class ConfigDatasourceAndPACForm extends javax.swing.JPanel implements Observer, ViewInterface<ConfiguracionDao> {
 
     private ConfiguracionDao model;
     
     /**
      * Creates new form ConfigPACForm
      */
-    public ConfigPACForm() {
+    public ConfigDatasourceAndPACForm() {
         initComponents();
     }
 

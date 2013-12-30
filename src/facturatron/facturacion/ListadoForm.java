@@ -68,10 +68,12 @@ public class ListadoForm extends javax.swing.JPanel implements ViewInterface<Lis
         jXLabel3 = new org.jdesktop.swingx.JXLabel();
         jXTitledPanel3 = new org.jdesktop.swingx.JXTitledPanel();
         btnVerFactura = new javax.swing.JButton();
-        btnCancelarFactura = new javax.swing.JButton();
         btnStatusSAT = new javax.swing.JButton();
+        btnCancelarFacturaManual = new javax.swing.JButton();
+        btnCancelarFactura = new javax.swing.JButton();
 
         jXTitledPanel1.setTitle("Filtro de Facturas");
+        jXTitledPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Fecha Inicial");
@@ -93,11 +95,11 @@ public class ListadoForm extends javax.swing.JPanel implements ViewInterface<Lis
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(desde, javax.swing.GroupLayout.PREFERRED_SIZE, 151, Short.MAX_VALUE)
+                .addComponent(desde, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addComponent(hasta, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                .addComponent(hasta, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jXTitledPanel1Layout.setVerticalGroup(
@@ -113,6 +115,7 @@ public class ListadoForm extends javax.swing.JPanel implements ViewInterface<Lis
         );
 
         jXTitledPanel2.setTitle("Facturas Emitidas");
+        jXTitledPanel2.setBorder(new javax.swing.border.MatteBorder(null));
 
         tablaListado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -155,27 +158,27 @@ public class ListadoForm extends javax.swing.JPanel implements ViewInterface<Lis
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jXTitledPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE))
                     .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                         .addGap(194, 194, 194)
                         .addComponent(jXLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                        .addComponent(txtSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jXLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIVA, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                        .addComponent(txtIVA, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jXLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)))
+                        .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jXTitledPanel2Layout.setVerticalGroup(
             jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -188,47 +191,44 @@ public class ListadoForm extends javax.swing.JPanel implements ViewInterface<Lis
         );
 
         jXTitledPanel3.setTitle("Acciones para la factura seleccionada");
+        jXTitledPanel3.setBorder(null);
+        jXTitledPanel3.getContentContainer().setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
         btnVerFactura.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnVerFactura.setText("Ver");
-        btnVerFactura.setPreferredSize(new java.awt.Dimension(145, 31));
+        btnVerFactura.setPreferredSize(new java.awt.Dimension(145, 27));
         btnVerFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVerFacturaActionPerformed(evt);
             }
         });
-
-        btnCancelarFactura.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnCancelarFactura.setForeground(new java.awt.Color(255, 0, 0));
-        btnCancelarFactura.setText("Cancelar");
-        btnCancelarFactura.setPreferredSize(new java.awt.Dimension(145, 31));
+        jXTitledPanel3.getContentContainer().add(btnVerFactura);
 
         btnStatusSAT.setText("Ver status SAT");
+        btnStatusSAT.setPreferredSize(new java.awt.Dimension(135, 27));
         btnStatusSAT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnStatusSATActionPerformed(evt);
             }
         });
+        jXTitledPanel3.getContentContainer().add(btnStatusSAT);
 
-        javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
-        jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
-        jXTitledPanel3Layout.setHorizontalGroup(
-            jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnCancelarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
-                .addComponent(btnStatusSAT)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnVerFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jXTitledPanel3Layout.setVerticalGroup(
-            jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnCancelarFactura, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-            .addComponent(btnStatusSAT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnVerFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        btnCancelarFacturaManual.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnCancelarFacturaManual.setForeground(new java.awt.Color(255, 0, 0));
+        btnCancelarFacturaManual.setText("Cancelación Manual");
+        btnCancelarFacturaManual.setPreferredSize(new java.awt.Dimension(145, 27));
+        btnCancelarFacturaManual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarFacturaManualActionPerformed(evt);
+            }
+        });
+        jXTitledPanel3.getContentContainer().add(btnCancelarFacturaManual);
+
+        btnCancelarFactura.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnCancelarFactura.setForeground(new java.awt.Color(255, 0, 0));
+        btnCancelarFactura.setText("Cancelar");
+        btnCancelarFactura.setPreferredSize(new java.awt.Dimension(145, 27));
+        jXTitledPanel3.getContentContainer().add(btnCancelarFactura);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -237,7 +237,7 @@ public class ListadoForm extends javax.swing.JPanel implements ViewInterface<Lis
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
                     .addComponent(jXTitledPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jXTitledPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -267,12 +267,17 @@ public class ListadoForm extends javax.swing.JPanel implements ViewInterface<Lis
         // TODO add your handling code here:
     }//GEN-LAST:event_btnVerFacturaActionPerformed
 
+    private void btnCancelarFacturaManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarFacturaManualActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelarFacturaManualActionPerformed
+
     public ListadoTableModel getModelListado(){
         return (ListadoTableModel) getTablaListado().getModel();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelarFactura;
+    private javax.swing.JButton btnCancelarFacturaManual;
     private javax.swing.JButton btnStatusSAT;
     private javax.swing.JButton btnVerFactura;
     private org.jdesktop.swingx.JXDatePicker desde;
@@ -435,5 +440,12 @@ public class ListadoForm extends javax.swing.JPanel implements ViewInterface<Lis
     
     public JButton getBtnStatusSAT() {
         return btnStatusSAT;
+    }
+
+    /**
+     * @return the btnCancelarFacturaManual
+     */
+    public javax.swing.JButton getBtnCancelarFacturaManual() {
+        return btnCancelarFacturaManual;
     }
 }

@@ -12,6 +12,7 @@ import facturatron.Dominio.Persona;
 import facturatron.Dominio.Renglon;
 import facturatron.MVC.DAO;
 import facturatron.MVC.JDBCDAOSupport;
+import facturatron.Principal.Main;
 import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
@@ -143,7 +144,11 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         //Visor Java
         //cfd.showPreview(cfg.getPathPlantilla());
         //Visor nativo para windows
-        VisorPdf.abrir(getPdfPath(serie, folio), cfd.getComprobante(), cfg.getPathPlantilla());
+        try {
+            VisorPdf.abrir(getPdfPath(serie, folio), cfd.getComprobante(), cfg.getPathPlantilla());
+        } catch(IOException io) {
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Excepción en visor PDF", io);
+        }
      }
 
      public ComprobanteTron toComprobanteTron() throws Exception {

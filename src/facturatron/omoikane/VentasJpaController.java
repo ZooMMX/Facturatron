@@ -5,19 +5,15 @@
 
 package facturatron.omoikane;
 
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import facturatron.datasource.DatasourceException;
-import facturatron.facturacion.ListadoModel;
 import facturatron.omoikane.exceptions.NonexistentEntityException;
 import facturatron.omoikane.exceptions.PreexistingEntityException;
-import groovy.lang.IntRange;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -31,7 +27,7 @@ public class VentasJpaController extends JpaController {
         super();
     }
 
-    public EntityManager getEntityManager() {
+    public EntityManager getEntityManager() throws PersistenceException {
         return emf.createEntityManager();
     }
 
@@ -80,38 +76,18 @@ public class VentasJpaController extends JpaController {
         }
     }
 
-    public void destroy(VentasPK id) throws NonexistentEntityException {
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            em.getTransaction().begin();
-            Ventas ventas;
-            try {
-                ventas = em.getReference(Ventas.class, id);
-                ventas.getVentasPK();
-            } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The ventas with id " + id + " no longer exists.", enfe);
-            }
-            em.remove(ventas);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
-
-    public List<Ventas> findVentasEntities() {
+    public List<Ventas> findVentasEntities() throws CommunicationsException {
         return findVentasEntities(true, -1, -1);
     }
 
-    public List<Ventas> findVentasEntities(int maxResults, int firstResult) {
+    public List<Ventas> findVentasEntities(int maxResults, int firstResult) throws CommunicationsException {
         return findVentasEntities(false, maxResults, firstResult);
     }
 
-    private List<Ventas> findVentasEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
+    private List<Ventas> findVentasEntities(boolean all, int maxResults, int firstResult) throws CommunicationsException {
+        EntityManager em = null;
         try {
+            em = getEntityManager();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Ventas.class));
             Query q = em.createQuery(cq);
@@ -120,37 +96,42 @@ public class VentasJpaController extends JpaController {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
+        } catch (PersistenceException ex) {
+            throw ex;
         } finally {
-            em.close();
+            if(em != null) em.close();
         }
     }
 
-    public Ventas findVentas(VentasPK id) {
-        EntityManager em = getEntityManager();
+    public Ventas findVentas(VentasPK id) throws PersistenceException {
+        EntityManager em = null;
         try {
+            em = getEntityManager();
             return em.find(Ventas.class, id);
         } finally {
-            em.close();
+            if(em != null) em.close();
         }
     }
 
-    public int getVentasCount() {
-        EntityManager em = getEntityManager();
+    public int getVentasCount() throws PersistenceException {
+        EntityManager em = null;
         try {
+            em = getEntityManager();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Ventas> rt = cq.from(Ventas.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
         } finally {
-            em.close();
+            if(em != null) em.close();
         }
     }
     
     public int[] getIDIntervalFromDay(Date dayIni, Date dayFin) throws DatasourceException {
         int[] intervalo = {0,0};
-        EntityManager em = getEntityManager();
+        EntityManager em = null;
         try {
+            em = getEntityManager();
             Query q1 = em.createQuery("SELECT min(v.ventasPK.idVenta) FROM Ventas v WHERE v.fechaHora between :dayIni and :dayFin", Integer.class);
             Query q2 = em.createQuery("SELECT max(v.ventasPK.idVenta) FROM Ventas v WHERE v.fechaHora between :dayIni and :dayFin", Integer.class);
                         
@@ -167,8 +148,10 @@ public class VentasJpaController extends JpaController {
             intervalo[1] = ((Integer) q2.getSingleResult()).intValue();
             
             return intervalo;
+        } catch (PersistenceException ex) {
+            throw new DatasourceException("No hay comunicación con el origen de datos o está mal configurado", ex);
         } finally {
-            em.close();
+            if(em != null) em.close();
         }        
     }
 

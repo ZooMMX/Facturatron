@@ -26,17 +26,19 @@ public class JDBCDAOSupport {
     private static ArrayList<Connection> pool = new ArrayList<Connection>();
     private int poolSize = 3;
 
-     public void conectar() {
+     public void conectar() throws SQLException {
          conectar(false);
      }
-     public void conectar(boolean newConnRequired){
+     public void conectar(boolean newConnRequired) throws SQLException{
         try {
             Class.forName("com.mysql.jdbc.Driver");
             assignConnection(newConnRequired);
 
             setStmt(getCon().createStatement());
-        } catch (Exception ex) {
-            Logger.getLogger(JDBCDAOSupport.class.getName()).log(Level.SEVERE, "Error al conectar a la base de datos", ex);
+        } catch (SQLException ex) {
+            throw ex;
+        } catch (ClassNotFoundException ex) {
+            throw new SQLException("Driver mysql no encontrado en el classpath", ex);
         }
 
      }
@@ -90,7 +92,8 @@ public class JDBCDAOSupport {
 
     public void desconectar() {
         try {
-            getStmt().close();
+            if(getStmt() != null)
+                getStmt().close();
             if(JDBCDAOSupport.pool.size() < poolSize) {
                 JDBCDAOSupport.pool.add(con);
             } else {

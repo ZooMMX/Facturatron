@@ -152,7 +152,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
         notifyObservers();
     }
     @Override
-    public ClienteDao findBy(Integer id) {
+    public ClienteDao findBy(Integer id) throws SQLException {
          JDBCDAOSupport bd = getBD();
          try{
 
@@ -184,14 +184,12 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             notifyObservers();
 
             return this;
-        }catch(Exception ex){
-
-            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Error al consultar cliente/persona", ex);
-
+        } catch(SQLException se) {
+            throw se;
         } finally{
-            bd.desconectar();
+            if(bd != null)
+                bd.desconectar();
         }
-        return null;
         
     }
     

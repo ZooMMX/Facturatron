@@ -9,7 +9,9 @@ import facturatron.Dominio.Configuracion;
 import facturatron.MVC.DAO;
 import facturatron.MVC.JDBCDAOSupport;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -70,12 +72,27 @@ public class ConfiguracionDao extends Configuracion implements DAO<Integer, Conf
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Carga el archivo de configuración en un objeto facturatron.dominio.Configuracion, 
+     * si el archivo no exíste, se crea uno con los valores default de la
+     * clase facturatron.dominio.Configuracion
+     * @return 
+     */
     public Configuracion load() {
         FileInputStream fis = null;
         Configuracion serialObject;
         ObjectInputStream inStream = null;
         try {
-            fis = new FileInputStream(configFile);
+            //En caso de que el archivo de configuración no exista, crearlo
+            try {
+                fis = new FileInputStream(configFile);
+            } catch(FileNotFoundException fntf) {
+                FileOutputStream fos = new FileOutputStream(configFile);
+                fos.close();
+                persist();
+            }
+            
+            if(fis==null) fis = new FileInputStream(configFile);
             inStream = new ObjectInputStream(fis);
             serialObject = (ConfiguracionDao) inStream.readObject();
             setPassBd(serialObject.getPassBd());

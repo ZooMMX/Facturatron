@@ -94,12 +94,12 @@ public class OpenTPVDatasourceImpl implements IDatasourceService {
                 renglonTicket.descripcion    = renglonResultSet.name;;
                 renglonTicket.descuento      = new BigDecimal(0d);
                 renglonTicket.importe        = new BigDecimal(renglonResultSet.price);
-                println(renglonResultSet.rate);
+                //println(renglonResultSet.rate);
                 renglonTicket.impuestos      = renglonResultSet.rate == 0.16d;
                 renglonTicket.precioUnitario = new BigDecimal(renglonResultSet.price);
                 renglonTicket.unidad         = "PZA";
 
-                println renglonTicket;
+                //println renglonTicket;
                 ticket.add( renglonTicket );
             }
         } catch(com.mysql.jdbc.exceptions.jdbc4.CommunicationsException ex) {

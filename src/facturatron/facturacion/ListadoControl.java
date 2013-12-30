@@ -8,6 +8,7 @@ import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
 import facturatron.MVC.Controller;
 import facturatron.Principal.VisorPdf;
+import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
 import facturatron.facturacion.PAC.IPACService;
 import facturatron.facturacion.PAC.PACContext;
@@ -60,6 +61,32 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
                 Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "Error al almacenar comprobante cancelado", ex);
             } catch (PACException ex) {
                 Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "No se canceló el comprobante.", ex);
+            }
+        }
+    }
+    
+    public void btnCancelarFacturaManual() {
+
+        String confirmMsg = JOptionPane.showInputDialog(
+                getView(),
+                "Con esta ventana usted puede cancelar un comprobante que no se encuentra en la lista, tan solo escribiendo su UUID",
+                "Cancelación manual",
+                JOptionPane.QUESTION_MESSAGE);
+        if (confirmMsg != null && !confirmMsg.isEmpty()) {
+            try {
+                IPACService impl = PACContext.instancePACService();
+                Factura comp = new Factura();
+                comp.setFolioFiscal(confirmMsg);
+                comp.setEmisor((new ClienteDao()).findBy(1));
+                
+                Boolean isCancelado = impl.cancelar(comp);
+                
+                getModel().load();
+                JOptionPane.showMessageDialog(getView(), "Comprobante cancelado");
+            } catch (PACException ex) {
+                Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "No se canceló el comprobante.", ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "Error relacionado con la BD al consultar emisor", ex);
             }
         }
     }
@@ -122,9 +149,25 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
             public void actionPerformed(ActionEvent e) {
                 new Thread() {
 
+                    @Override
                     public void run() {
                         notifyBusy();
                         btnCancelarFactura();
+                        notifyIdle();
+                    }
+                }.start();
+            }
+        });
+        getView().getBtnCancelarFacturaManual().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Thread() {
+
+                    @Override
+                    public void run() {
+                        notifyBusy();
+                        btnCancelarFacturaManual();
                         notifyIdle();
                     }
                 }.start();
@@ -150,6 +193,7 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
             public void propertyChange(PropertyChangeEvent evt) {
                 new Thread() {
 
+                    @Override
                     public void run() {
                         notifyBusy();
                         getModel().setFechaInicial(new java.sql.Date(getView().getDesde().getDate().getTime()));
@@ -164,6 +208,7 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
             public void propertyChange(PropertyChangeEvent evt) {
                 new Thread() {
 
+                    @Override
                     public void run() {
                         notifyBusy();
                         getModel().setFechaFinal(new java.sql.Date(getView().getHasta().getDate().getTime()));

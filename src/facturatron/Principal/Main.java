@@ -9,7 +9,7 @@ import facturatron.MVC.Controller;
 import facturatron.MVC.Model;
 import facturatron.acercade.AcercaDeControl;
 import facturatron.cliente.ClienteControl;
-import facturatron.config.ConfigPACControl;
+import facturatron.config.ConfigDatasourceAndPACControl;
 import facturatron.config.ConfiguracionControl;
 import facturatron.facturacion.FacturaControl;
 import facturatron.facturacion.InformeMensual.InformeControl;
@@ -85,7 +85,7 @@ public class Main extends Controller<Model, MainForm> {
     }    
     
     private void configPAC() throws Exception {
-        ConfigPACControl cfc = new ConfigPACControl();
+        ConfigDatasourceAndPACControl cfc = new ConfigDatasourceAndPACControl();
         ((MainForm) getView()).addTab("Configuración PAC", cfc.getView());
     }
 

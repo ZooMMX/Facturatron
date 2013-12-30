@@ -28,6 +28,7 @@ import java.awt.List;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,14 +52,18 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   ConfigFiscalDao configFiscal;
 
   public FacturaControl(){
-      setModel(setupAndInstanceModel());
-      setView(new FacturaForm());
-      init();
-      PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(this);
-      popupBuscarCliente.install();
+      try {
+          setModel(setupAndInstanceModel());
+          setView(new FacturaForm());
+          init();
+          PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(this);
+          popupBuscarCliente.install();
+      } catch (SQLException ex) {
+          Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Error de BD al iniciar facturación", ex);
+      }
   }
 
-  public FacturaDao setupAndInstanceModel() {
+  public FacturaDao setupAndInstanceModel() throws SQLException {
       FacturaDao      dao          = new FacturaDao();
       configFiscal = new ConfigFiscalDao();
       configFiscal.load();
@@ -95,6 +100,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
           }
       } catch(NumberFormatException nfe) {
           Logger.getLogger(FacturaControl.class.getName()).log(Level.INFO, "Número de cliente inválido", nfe);
+      } catch (SQLException ex) {
+          Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Error cargando cliente", ex);
       }
   }
 

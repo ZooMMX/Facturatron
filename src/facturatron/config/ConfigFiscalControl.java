@@ -22,10 +22,14 @@ import javax.swing.JOptionPane;
 public class ConfigFiscalControl extends Controller<ConfigFiscalDao, ConfigFiscalForm> {
 
     public ConfigFiscalControl() {
-        setModel(new ConfigFiscalDao());
-        setView(new ConfigFiscalForm());
-        init();
-        getModel().load();
+        try {
+            setModel(new ConfigFiscalDao());
+            setView(new ConfigFiscalForm());
+            init();
+            getModel().load();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConfigFiscalControl.class.getName()).log(Level.SEVERE, "Problema con la base de datos", ex);
+        }
     }
 
     public void btnGuardar() {

@@ -15,7 +15,7 @@ import java.util.List;
 public interface DAO<K,E> {
     public void persist() throws Exception;
     public void remove();
-    public E findBy(K id);
+    public E findBy(K id) throws SQLException;
     public List<E> findAll();
     public JDBCDAOSupport getBD();
 

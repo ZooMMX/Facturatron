@@ -151,7 +151,7 @@ public abstract class EmailMgmt {
     private boolean checkAddressTo(MultiPartEmail email) throws EmailException {
         if (emailAddressTo == null || emailAddressTo.equals("")) {
             errorStatus = WRONG_TO_ADDRESS;
-            logger.log(Level.SEVERE, "No Email Address To has been set!");
+            //logger.log(Level.SEVERE, "No Email Address To has been set!");
             return false;
         } else {
             emailAddressTo = emailAddressTo.trim();

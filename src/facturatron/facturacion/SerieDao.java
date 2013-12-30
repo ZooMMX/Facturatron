@@ -36,7 +36,7 @@ public class SerieDao extends Serie implements DAO<Integer,Serie> {
      * Nota: Las personas del ID 2 en adelante son clientes
      * @return this
      */
-    public Serie load() {
+    public Serie load() throws SQLException {
         loadSerie();
         return this;
     }
@@ -60,7 +60,7 @@ public class SerieDao extends Serie implements DAO<Integer,Serie> {
     }
 
     @Override
-    public Serie findBy(Integer id) {
+    public Serie findBy(Integer id) throws SQLException {
         return load();
     }
 

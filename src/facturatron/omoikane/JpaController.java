@@ -5,8 +5,10 @@
 
 package facturatron.omoikane;
 
+import facturatron.Dominio.Configuracion;
 import facturatron.config.ConfiguracionDao;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.EntityManagerFactory;
@@ -19,15 +21,13 @@ import javax.persistence.Persistence;
 public class JpaController {
 
     public JpaController() {
-        ConfiguracionDao config = new ConfiguracionDao();
-        config.load();
+        Configuracion config = ConfiguracionDao.getConfig();
 
-        HashMap props           = new HashMap();
-        Pattern pattern         = Pattern.compile("(^jdbc:mysql://.*?)/[0-9|A-Z|a-z|_|#|$]{1,16}$");
-        Matcher matcher         = pattern.matcher(config.getUrlBd());
-        String  urlBD           = matcher.replaceAll("$1/omoikane");
+        Map<String, Object> props = new HashMap<>();
 
-        props.put("javax.persistence.jdbc.url", urlBD);
+        props.put("javax.persistence.jdbc.url", config.getUrlDatasource());
+        props.put("javax.persistence.jdbc.password", config.getPasswordDatasource());
+        props.put("javax.persistence.jdbc.user", config.getUsuarioDatasource());
         emf = Persistence.createEntityManagerFactory("FacturatronPU", props);
     }
     protected EntityManagerFactory emf = null;

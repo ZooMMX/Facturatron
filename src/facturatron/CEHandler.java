@@ -39,6 +39,7 @@ public class CEHandler extends Handler {
     }
 
     private void excepcion(LogRecord record) {
+        if(record.getThrown() == null) record.setThrown(new Exception("Sin stacktrace"));
         JFrame mainJFrame = (JFrame) JFrame.getFrames()[0];
         ExceptionWindow ew = new ExceptionWindow(mainJFrame);
         ew.getLblTituloError().setText(record.getMessage());

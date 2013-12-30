@@ -16,11 +16,10 @@ import javax.swing.JOptionPane;
  *
  * @author Octavio
  */
-public class ConfigPACControl extends Controller<ConfiguracionDao, ConfigPACForm> {
-
-    public ConfigPACControl() {
+public class ConfigDatasourceAndPACControl extends Controller<ConfiguracionDao, ConfigDatasourceAndPACForm> {
+    public ConfigDatasourceAndPACControl() {
         setModel(new ConfiguracionDao());
-        setView(new ConfigPACForm());
+        setView(new ConfigDatasourceAndPACForm());
         
         //Establecer los conectores PAC y Datasource disponibles en los comboBox
         getView().getPacComboBox().setModel( new DefaultComboBoxModel<>( PACS.values() ) );

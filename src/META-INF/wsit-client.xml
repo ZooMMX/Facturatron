@@ -6,4 +6,6 @@
  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="mainclientconfig" 
  >
     <import location="ConexionRemota32.asmx.xml" namespace="https://www.appfacturainteligente.com/ConexionRemotaCFDI32"/>
+    <import location="stamp.xml" namespace="http://facturacion.finkok.com/stamp"/>
+    <import location="cancel.xml" namespace="http://facturacion.finkok.com/cancel"/>
 </definitions>

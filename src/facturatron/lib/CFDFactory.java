@@ -43,7 +43,8 @@ public class CFDFactory {
         
         CFDv32 cfd = new CFDv32(comprobante);        
         Comprobante sellado;
-        
+        comprobante.getCadenaOriginal();
+                
         sellado = cfd.sellarComprobante(key, cert);        
         cfd.validar();
         cfd.verificar();

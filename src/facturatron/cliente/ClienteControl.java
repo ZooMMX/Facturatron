@@ -47,7 +47,11 @@ public class ClienteControl extends Controller<ClienteDao, ClienteForm> {
         }
     }
     public void clienteSeleccionado(int id) {
-        getModel().findBy(id);
+        try {
+            getModel().findBy(id);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteControl.class.getName()).log(Level.SEVERE, "Error de BD obteniendo info de cliente", ex);
+        }
     }
     public void btnNuevo() {
         getModel().clearDataModel();
