@@ -45,3 +45,7 @@ CFDILib/.DS_Store
 src/.DS_Store
 
 config.dat
+
+dist/.DS_Store
+
+dist/Facturatron.jar
