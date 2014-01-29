@@ -26,6 +26,9 @@ import facturatron.datasource.omoikane.TicketOmoikane;
 import java.awt.Frame;
 import java.awt.List;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.sql.SQLException;
@@ -298,7 +301,15 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
 
     @Override
     public void asignarEventos() {
-     getView().getBtnGuardar().addActionListener(new ActionListener() {
+        getView().getTxtIdCliente().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(!getView().getTxtIdCliente().getText().equals(""))
+                    cargarCliente();
+            }
+            
+        });
+        getView().getBtnGuardar().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {

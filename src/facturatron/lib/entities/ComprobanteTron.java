@@ -30,6 +30,7 @@ public class ComprobanteTron extends Comprobante {
     private BigDecimal subtotalGravado16;
     private String importeConLetra;
     private String observaciones;
+    private String pathLogo;
 
     public ComprobanteTron(Comprobante c) {
         super.setAddenda(c.getAddenda());
@@ -259,4 +260,19 @@ public class ComprobanteTron extends Comprobante {
                 .append("&id=").append(uuid);
         return stringBuilder.toString();
     }
+
+    /**
+     * @return the pathLogo
+     */
+    public String getPathLogo() {
+        return pathLogo;
+    }
+
+    /**
+     * @param pathLogo the pathLogo to set
+     */
+    public void setPathLogo(String pathLogo) {
+        this.pathLogo = pathLogo;
+    }
+
 }

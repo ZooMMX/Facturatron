@@ -22,8 +22,8 @@ public class ConfigDatasourceAndPACControl extends Controller<ConfiguracionDao, 
         setView(new ConfigDatasourceAndPACForm());
         
         //Establecer los conectores PAC y Datasource disponibles en los comboBox
-        getView().getPacComboBox().setModel( new DefaultComboBoxModel<>( PACS.values() ) );
-        getView().getOrigenComboBox().setModel( new DefaultComboBoxModel<>( DATASOURCE.values() ) );
+        getView().getPacComboBox().setModel( new DefaultComboBoxModel<PACS>( PACS.values() ) );
+        getView().getOrigenComboBox().setModel( new DefaultComboBoxModel<DATASOURCE>( DATASOURCE.values() ) );
         
         //Iniciar GUI
         init();

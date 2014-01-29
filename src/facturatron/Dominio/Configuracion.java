@@ -19,6 +19,7 @@ public class Configuracion extends Model implements Serializable {
     private String userBd = "";
     private String passBd = "";
     private String pathPdf = "";
+    private String pathLogo = "";
     private String pathPlantilla = "";
     private String pathXml = "";
     private String smtpHost = "";
@@ -446,5 +447,19 @@ public class Configuracion extends Model implements Serializable {
      */
     public void setUrlDatasource(String urlDatasource) {
         this.urlDatasource = urlDatasource;
+    }
+
+    /**
+     * @return the pathLogo
+     */
+    public String getPathLogo() {
+        return pathLogo;
+    }
+
+    /**
+     * @param pathLogo the pathLogo to set
+     */
+    public void setPathLogo(String pathLogo) {
+        this.pathLogo = pathLogo;
     }
 }

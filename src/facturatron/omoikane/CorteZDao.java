@@ -46,6 +46,17 @@ public class CorteZDao {
             listadoModel.setFechaFinal  (new java.sql.Date(dayFin.getTimeInMillis()));
             listadoModel.load();
             
+            //Restar descuentos y recalcular
+            //  Descuentos al 0%
+            ListadoModel l = listadoModel;
+            l.setSubtotal( l.getSubtotal().subtract( l.getDescuento0() ) );
+            l.setTotal   ( l.getTotal().subtract( l.getDescuento0() ) );
+            //  Descuentos al 16%
+            BigDecimal descuentoIva = l.getDescuento16().multiply(new BigDecimal("0.16"));
+            l.setSubtotal( l.getSubtotal().subtract( l.getDescuento16() ) );
+            l.setIva     ( l.getIva().subtract( descuentoIva ) );
+            l.setTotal   ( l.getTotal().subtract(descuentoIva).subtract(l.getDescuento16()) );
+            
             //CorteZ = ventas del día - facturas del día
             BigDecimal subtotal   = sumaVentas.subtotal .subtract( listadoModel.getSubtotal() );
             BigDecimal impuestos  = sumaVentas.impuestos.subtract( listadoModel.getIva()      );

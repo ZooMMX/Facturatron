@@ -5,6 +5,7 @@
 
 package facturatron.lib;
 
+import facturatron.Dominio.Configuracion;
 import facturatron.facturacion.PAC.IPACService;
 import facturatron.facturacion.PAC.PACContext;
 import facturatron.facturacion.PAC.PACException;
@@ -19,6 +20,7 @@ import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
 import mx.bigdata.sat.security.KeyLoader;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;
+import java.net.URI;
 import mx.bigdata.sat.cfdi.CFDv32;
 
 /**
@@ -35,46 +37,67 @@ public class CFDFactory {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
-
-        PrivateKey key = KeyLoader.loadPKCS8PrivateKey(new FileInputStream(new File(comprobante.getURIKey())),
-                               comprobante.getPassKey());
-        X509Certificate cert = KeyLoader
-          .loadX509Certificate(new FileInputStream(new File(comprobante.getURICer())));
+        Boolean sellar = PACContext.instancePACService().getRequiereSellado();
         
-        CFDv32 cfd = new CFDv32(comprobante);        
-        Comprobante sellado;
-        comprobante.getCadenaOriginal();
-                
-        sellado = cfd.sellarComprobante(key, cert);        
-        cfd.validar();
-        cfd.verificar();
-        cfd.guardar(ps);        
-                
+        if(sellar)
+            sellar(comprobante, ps);
+        else {
+            comprobante.setNoCertificado("");
+            comprobante.setSello("");
+            comprobante.setCadenaOriginal("");
+            comprobante.setCertificado("");
+        }
+        
         CFDv3Tron cfdtron =  new CFDv3Tron();
-
-        comprobante.setNoCertificado(sellado.getNoCertificado());
-        comprobante.setSello(sellado.getSello());
-        comprobante.setCadenaOriginal(cfd.getCadenaOriginal());
-        comprobante.setCertificado(sellado.getCertificado());
         cfdtron.setComprobante(comprobante);
         cfdtron.setXML(baos.toString());
         
-        cfdtron = firmar(cfdtron);
+        cfdtron = timbrar(cfdtron);
         CFDv32 cfdi = new CFDv32(cfdtron.getComprobante());
+        baos.reset();
         ps.flush();
-        cfdi.validar();
-        cfdi.verificar();
+        if(sellar) {
+            cfdi.validar();
+            cfdi.verificar();
+        }
         cfdi.guardar(ps);
         cfdtron.setXML(baos.toString());
         
         return cfdtron;
     }
-    
-    public CFDv3Tron firmar(CFDv3Tron cfdi) throws PACException {
-        IPACService instance  = PACContext.instancePACService();
-        CFDv3Tron cfdiFirmado = instance.timbrar(cfdi);
+
+    private void sellar(ComprobanteTron comprobante, PrintStream ps) throws Exception {
+                    
+        Configuracion cfg = Configuracion.getConfig();
+        comprobante.setPassKey(cfg.getpassCer());
+        comprobante.setURIKey(new URI("file:///"+cfg.getpathKey().replace("\\", "/")));
+        comprobante.setURICer(new URI("file:///"+cfg.getpathCer().replace("\\", "/")));
+            
+        PrivateKey key = KeyLoader.loadPKCS8PrivateKey(new FileInputStream(new File(comprobante.getURIKey())),
+                comprobante.getPassKey());
+        X509Certificate cert = KeyLoader
+                .loadX509Certificate(new FileInputStream(new File(comprobante.getURICer())));
         
-        return cfdiFirmado;
+        CFDv32 cfd = new CFDv32(comprobante);
+        Comprobante sellado;
+        comprobante.getCadenaOriginal();
+        
+        sellado = cfd.sellarComprobante(key, cert);
+        cfd.validar();
+        cfd.verificar();
+        cfd.guardar(ps);
+        
+        comprobante.setNoCertificado(sellado.getNoCertificado());
+        comprobante.setSello(sellado.getSello());
+        comprobante.setCadenaOriginal(cfd.getCadenaOriginal());
+        comprobante.setCertificado(sellado.getCertificado());
+    }
+    
+    public CFDv3Tron timbrar(CFDv3Tron cfdi) throws PACException {
+        IPACService instance  = PACContext.instancePACService();
+        CFDv3Tron cfdiTimbrado = instance.timbrar(cfdi);
+        
+        return cfdiTimbrado;
     }
     
 }

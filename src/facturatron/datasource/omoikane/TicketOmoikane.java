@@ -20,6 +20,7 @@ import facturatron.omoikane.VentasJpaController;
 import facturatron.omoikane.VentasPK;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,7 +45,7 @@ public class TicketOmoikane extends Ticket {
     public TicketOmoikane getTicketData(Integer idAlmacen, Integer idCaja, Integer idVenta) {
 
         MathContext                 mc          = MathContext.DECIMAL64;
-        TicketOmoikane                      ticket      = new TicketOmoikane();
+        TicketOmoikane              ticket      = new TicketOmoikane();
         VentasJpaController         ventaJpa    = new VentasJpaController();
         VentasDetallesJpaController detallesJpa = new VentasDetallesJpaController();
         ArticulosJpaController      productsJpa = new ArticulosJpaController();
@@ -62,6 +63,7 @@ public class TicketOmoikane extends Ticket {
             final BigDecimal    impuestosPorc = new BigDecimal(producto.getImpuestos(), mc).round(mc).setScale(4, BigDecimal.ROUND_HALF_EVEN);
             final BigDecimal    descuento     = new BigDecimal(vd.getDescuento(), mc).round(mc).setScale(4, BigDecimal.ROUND_UP);
             final BigDecimal    cantidad      = new BigDecimal(vd.getCantidad(), mc).round(mc).setScale(4, BigDecimal.ROUND_HALF_EVEN);
+            final BigDecimal    subtotal      = new BigDecimal(vd.getSubtotal(), mc).round(mc).setScale(4, BigDecimal.ROUND_HALF_EVEN);
             //Precio unitario con descuento
             /*
             final BigDecimal    pConDescu = cantidad.compareTo(new BigDecimal("0.0")) > 0 && descuento.compareTo(new BigDecimal("0.0")) > 0
@@ -72,9 +74,16 @@ public class TicketOmoikane extends Ticket {
                         new BigDecimal("1.00").add(impuestosPorc.divide(new BigDecimal("100.00"), 4, BigDecimal.ROUND_HALF_EVEN))
                      , 2, BigDecimal.ROUND_HALF_EVEN)
                     : pConDescu;
-            */
-            //precio unitario = precio - impuestos
-            final BigDecimal pUnitario = precio.subtract( impuestos );
+            */            
+            //precio unitario = subtotal / cantidad
+            BigDecimal pUnitario = subtotal.divide( cantidad, BigDecimal.ROUND_HALF_EVEN );
+            
+            //precio unitario = pUnitario - (pUnitario * 0.137931)
+            if(producto.getImpuestos() > 0d) {
+                BigDecimal tmpImptos = pUnitario.multiply(new BigDecimal(0.137931d));
+                pUnitario = pUnitario.subtract(tmpImptos);
+            }
+            
             renglon.cantidad       = cantidad;
             renglon.codigo         = producto.getCodigo();
             renglon.descripcion    = producto.getDescripcion();

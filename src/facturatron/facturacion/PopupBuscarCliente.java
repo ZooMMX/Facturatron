@@ -15,10 +15,14 @@ import com.alee.managers.popup.PopupWay;
 import com.alee.managers.popup.WebButtonPopup;
 import facturatron.Dominio.Persona;
 import facturatron.cliente.ClienteTableModel;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 /**
@@ -50,11 +54,32 @@ public class PopupBuscarCliente {
         table      = new WebTable();
         tableModel = new ClienteTableModel();
         table.setModel( tableModel );
+        table.getColumnModel().getColumn(0).setMaxWidth(40); //Ancho del ID
+        table.getColumnModel().getColumn(1).setMinWidth(280); //Ancho de la razón social
+        table.getColumnModel().getColumn(2).setMinWidth(120); //Ancho del RFC
+        table.getColumnModel().getColumn(3).setMinWidth(120); //Ancho de la calle
+        table.getColumnModel().getColumn(4).setMinWidth(120); //Ancho del colonia
+        table.getColumnModel().getColumn(5).setMinWidth(120); //Ancho del municipio
         field.setHorizontalAlignment ( SwingConstants.CENTER );
         GroupPanel content = new GroupPanel ( 5, false, label, field, table );
+        content.setMinimumWidth(800);
         content.setMargin ( 15 );
         
         // Setup events
+        table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
+        table.getActionMap().put("Enter", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                selectCliente();
+            }
+        });
+        content.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Escape");
+        content.getActionMap().put("Escape", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                popup.hidePopup();
+            }
+        });
         field.addKeyListener( new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {

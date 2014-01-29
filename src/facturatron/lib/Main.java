@@ -5,6 +5,9 @@
 
 package facturatron.lib;
 
+import facturatron.lib.entities.CFDv3Tron;
+import facturatron.lib.entities.ComprobanteTron;
+import facturatron.lib.entities.ConceptosTron;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
@@ -22,8 +25,6 @@ import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Receptor;
 import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
 import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
 import mx.bigdata.sat.cfdi.v32.schema.TUbicacionFiscal;
-import facturatron.lib.entities.CFDv3Tron;
-import facturatron.lib.entities.ComprobanteTron;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
@@ -79,12 +80,13 @@ public class Main {
      * @return
      * @throws Exception
      */
-    public static facturatron.lib.entities.ComprobanteTron[] createComprobantesPrueba() throws Exception {
+    public static ComprobanteTron[] createComprobantesPrueba() throws Exception {
         ComprobanteTron[] comp = createComprobantes();
         comp[0].setPassKey("12345678a");
         comp[0].setURIKey(new URI("file:////Users/octavioruizcastillo/AppDev/Proyectos/CFD/CFDI/aad990814bp7_1210261233s.cer"));
         comp[0].setURICer(new URI("file:////Users/octavioruizcastillo/AppDev/Proyectos/CFD/CFDI/aad990814bp7_1210261233s.key"));
-
+        comp[0].setPathLogo("/Users/octavioruizcastillo/Dropbox/FormatosFacturatron1_7_0/LOGOTIPOHA.png");
+        
         CFDFactory cfdf = new CFDFactory();
         CFDv3Tron cfd = cfdf.toCFDI(comp[0]);
         
@@ -108,6 +110,7 @@ public class Main {
         comps[0].setPassKey("12345678a");
         comps[0].setURIKey(new URI("file:////Users/octavioruizcastillo/AppDev/Proyectos/CFD/CFDI/aad990814bp7_1210261233s.key"));
         comps[0].setURICer(new URI("file:////Users/octavioruizcastillo/AppDev/Proyectos/CFD/CFDI/aad990814bp7_1210261233s.cer"));
+        comps[0].setPathLogo("/Users/octavioruizcastillo/Dropbox/FormatosFacturatron1_7_0/LOGOTIPOHA.png");
         
         ObjectFactory of = new ObjectFactory();
         TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();
@@ -140,6 +143,7 @@ public class Main {
         comp.setEmisor(createEmisor(of));
         comp.setReceptor(createReceptor(of));
         comp.setConceptos(createConceptos(of));
+        comp.setConceptosTron(ConceptosTron.toConceptosTron(comp.getConceptos()));
         comp.setImpuestos(createImpuestos(of));
         comp.setMetodoDePago("EFECTIVO");
         comp.setLugarExpedicion("Tlatlauquitepec, Puebla");

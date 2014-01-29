@@ -21,9 +21,11 @@ public class ListadoModel extends Model {
     private ArrayList<FacturaDao> facturas = new ArrayList<FacturaDao>();
     private Date fechaInicial  ;
     private Date fechaFinal;
-    private BigDecimal subtotal = new BigDecimal(0d);
-    private BigDecimal iva      = new BigDecimal(0d);
-    private BigDecimal total    = new BigDecimal(0d);
+    private BigDecimal subtotal    = new BigDecimal(0d);
+    private BigDecimal iva         = new BigDecimal(0d);
+    private BigDecimal total       = new BigDecimal(0d);
+    private BigDecimal descuento0  = new BigDecimal(0d);
+    private BigDecimal descuento16 = new BigDecimal(0d);
 
     public ListadoModel() {
         setDao(new FacturaDao());
@@ -70,14 +72,18 @@ public class ListadoModel extends Model {
     }
 
     private void updateSumas() {
-        BigDecimal sub, imp, tot;
-        sub = new BigDecimal(0d);
-        imp = new BigDecimal(0d);
-        tot = new BigDecimal(0d);
+        BigDecimal sub, imp, tot, des0, des16;
+        sub   = new BigDecimal(0d);
+        imp   = new BigDecimal(0d);
+        tot   = new BigDecimal(0d);
+        des0  = new BigDecimal(0d);
+        des16 = new BigDecimal(0d);
         for (Factura factura : this.facturas) {
-            sub = sub.add(factura.getSubtotal());
-            imp = imp.add(factura.getIvaTrasladado());
-            tot = tot.add(factura.getTotal());
+            sub   = sub.add(factura.getSubtotal());
+            imp   = imp.add(factura.getIvaTrasladado());
+            tot   = tot.add(factura.getTotal());
+            des0  = des0.add(factura.getDescuentoTasa0());
+            des16 = des16.add(factura.getDescuentoTasa16());
         }
         setSubtotal(sub);
         setIva(imp);
@@ -162,6 +168,34 @@ public class ListadoModel extends Model {
      */
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    /**
+     * @return the descuento0
+     */
+    public BigDecimal getDescuento0() {
+        return descuento0;
+    }
+
+    /**
+     * @param descuento0 the descuento0 to set
+     */
+    public void setDescuento0(BigDecimal descuento0) {
+        this.descuento0 = descuento0;
+    }
+
+    /**
+     * @return the descuento16
+     */
+    public BigDecimal getDescuento16() {
+        return descuento16;
+    }
+
+    /**
+     * @param descuento16 the descuento16 to set
+     */
+    public void setDescuento16(BigDecimal descuento16) {
+        this.descuento16 = descuento16;
     }
 
 }

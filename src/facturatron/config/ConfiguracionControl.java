@@ -103,6 +103,25 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
             getView().getTxtPathPlantilla().setText(jfc.getSelectedFile().getPath());
         }
     }
+    
+    public void btnBuscarLogotipo() {
+        JFileChooser jfc = new JFileChooser();
+        jfc.setFileFilter(new FileFilter() {
+
+            @Override
+            public boolean accept(File f) {
+                return (f.getName().matches(".*\\.png") || f.isDirectory());
+            }
+
+            @Override
+            public String getDescription() {
+                return "Imagen PNG";
+            }
+        });
+        if (jfc.showOpenDialog(getView()) == JFileChooser.APPROVE_OPTION) {
+            getView().getTxtPathLogo().setText(jfc.getSelectedFile().getPath());
+        }
+    }
 
     public void btnBuscarXml() {
         JFileChooser jfc = new JFileChooser();
@@ -133,6 +152,7 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
         getModel().setPassBd(String.valueOf(getView().getTxtPassBd().getPassword()));
         getModel().setPathPdf(getView().getTxtPathPdf().getText());
         getModel().setPathPlantilla(getView().getTxtPathPlantilla().getText());
+        getModel().setPathLogo(getView().getTxtPathLogo().getText());
         getModel().setPathXml(getView().getTxtPathXml().getText());
         getModel().setSmtpHost(getView().getTxtSmtpHost().getText());
         getModel().setUsuarioSmtp(getView().getTxtUsuarioSmtp().getText());
@@ -187,6 +207,12 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
 
             public void actionPerformed(ActionEvent e) {
                 btnBuscarPlantilla();
+            }
+        });
+        getView().getBtnBuscarLogo().addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                btnBuscarLogotipo();
             }
         });
         getView().getBtnBuscarXml().addActionListener(new ActionListener() {

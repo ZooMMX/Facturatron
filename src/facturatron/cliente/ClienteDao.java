@@ -193,13 +193,18 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
         
     }
     
+    /**
+     * Busca un cliente, devuelve un máximo de 25 resultados
+     * @param searchString
+     * @return 
+     */
     public ArrayList<Persona> find(String searchString) {
          JDBCDAOSupport bd = getBD();
          try{
 
             bd.conectar();
 
-            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM persona WHERE id > 2 AND (nombre like ? OR rfc like ?)");
+            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM persona WHERE id > 2 AND (nombre like ? OR rfc like ?) LIMIT 25");
             searchString = "%"+searchString+"%";
             ps.setString(1, searchString);
             ps.setString(2, searchString);

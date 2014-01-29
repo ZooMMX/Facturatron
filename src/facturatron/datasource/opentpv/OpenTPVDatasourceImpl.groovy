@@ -83,15 +83,17 @@ public class OpenTPVDatasourceImpl implements IDatasourceService {
 
             ticket.setId( ticketResultSet.id );
 
-            sql.eachRow("""
-                    SELECT * 
+            def rows = sql.rows("""
+                    SELECT tl.units as units, p.code as code, p.name as name, tl.price as price, t.rate 
                     FROM ticketlines tl, taxes t, products p 
-                    WHERE tl.product = p.id AND tl.taxid = t.id AND tl.ticket = ?""", [ ticket.getId() ]) { renglonResultSet ->
+                    WHERE tl.product = p.id AND tl.taxid = t.id AND tl.ticket = ?""", [ ticket.getId() ]);
+            
+            rows.each { renglonResultSet ->
                 
                 RenglonTicket renglonTicket  = new RenglonTicket();
                 renglonTicket.cantidad       = renglonResultSet.units;
                 renglonTicket.codigo         = renglonResultSet.code;
-                renglonTicket.descripcion    = renglonResultSet.name;;
+                renglonTicket.descripcion    = renglonResultSet.name;
                 renglonTicket.descuento      = new BigDecimal(0d);
                 renglonTicket.importe        = new BigDecimal(renglonResultSet.price);
                 //println(renglonResultSet.rate);

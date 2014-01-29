@@ -2,13 +2,11 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-CREATE SCHEMA IF NOT EXISTS `facturatron` DEFAULT CHARACTER SET latin1 ;
-USE `facturatron` ;
 
 -- -----------------------------------------------------
 -- Table `facturatron`.`persona`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `facturatron`.`persona` (
+CREATE  TABLE IF NOT EXISTS `persona` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `nombre` VARCHAR(255) NULL DEFAULT NULL ,
   `rfc` VARCHAR(13) NULL DEFAULT NULL ,
@@ -23,14 +21,14 @@ CREATE  TABLE IF NOT EXISTS `facturatron`.`persona` (
   `pais` VARCHAR(45) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
 -- Table `facturatron`.`comprobante`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `facturatron`.`comprobante` (
+CREATE  TABLE IF NOT EXISTS `comprobante` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `version` VARCHAR(8) NOT NULL ,
   `fecha` DATE NOT NULL ,
@@ -60,12 +58,12 @@ CREATE  TABLE IF NOT EXISTS `facturatron`.`comprobante` (
   INDEX `fk_Comprobate_Persona2` (`idreceptor` ASC) ,
   CONSTRAINT `fk_Comprobate_Persona1`
     FOREIGN KEY (`idemisor` )
-    REFERENCES `facturatron`.`persona` (`id` )
+    REFERENCES `persona` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Comprobate_Persona2`
     FOREIGN KEY (`idreceptor` )
-    REFERENCES `facturatron`.`persona` (`id` )
+    REFERENCES `persona` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -76,7 +74,7 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 -- Table `facturatron`.`concepto`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `facturatron`.`concepto` (
+CREATE  TABLE IF NOT EXISTS `concepto` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `idComprobante` INT(11) NULL DEFAULT NULL ,
   `unidad` VARCHAR(45) NULL DEFAULT NULL ,
@@ -90,7 +88,7 @@ CREATE  TABLE IF NOT EXISTS `facturatron`.`concepto` (
   INDEX `fk_Concepto_Comprobate` (`idComprobante` ASC) ,
   CONSTRAINT `fk_Concepto_Comprobate`
     FOREIGN KEY (`idComprobante` )
-    REFERENCES `facturatron`.`comprobante` (`id` )
+    REFERENCES `comprobante` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -101,7 +99,7 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 -- Table `facturatron`.`serie`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `facturatron`.`serie` (
+CREATE  TABLE IF NOT EXISTS `serie` (
   `anoAprobacion` INT(11) NOT NULL ,
   `noAprobacion` INT(11) NOT NULL ,
   `noCertificado` TEXT NOT NULL ,
@@ -117,3 +115,12 @@ DEFAULT CHARACTER SET = latin1;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- Insertar valor inicial de serie
+INSERT INTO serie 
+    (anoAprobacion, noAprobacion, noCertificado, serie, folioInicial, folioFinal, folioActual)
+VALUES
+    (0, 0, "", "", 1, 100, 1);
+-- Insertar Emisor Matriz y Sucursal
+INSERT INTO persona (id) values(1);
+INSERT INTO persona (id) values(2 );

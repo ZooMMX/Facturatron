@@ -128,11 +128,17 @@ import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
             SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             
             String claveCFDI = "";
+            /* Java 7
             switch(comprobante.getTipoDeComprobante()) {
                 case "ingreso":  claveCFDI = "FAC"; break;
                 case "egreso":   claveCFDI = "CRE"; break;
                 case "traslado": claveCFDI = "POR"; break;
             }
+            */
+            if(comprobante.getTipoDeComprobante().equals("ingreso"))  claveCFDI = "FAC";
+            if(comprobante.getTipoDeComprobante().equals("egreso"))   claveCFDI = "CRE";
+            if(comprobante.getTipoDeComprobante().equals("traslado")) claveCFDI = "POR";
+            
             BigDecimal totalImpRetenidos   = comprobante.getImpuestos().getTotalImpuestosRetenidos();
             BigDecimal totalImpTrasladados = comprobante.getImpuestos().getTotalImpuestosTrasladados();
             BigDecimal zero                = new BigDecimal(0);

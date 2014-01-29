@@ -49,3 +49,9 @@ config.dat
 dist/.DS_Store
 
 dist/Facturatron.jar
+
+configMega.dat
+
+installer.xml
+
+installer.xml.backup

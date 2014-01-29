@@ -91,16 +91,32 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         cal.setTimeZone(tz);
     }
 
-    private Configuracion getConfig() { return Configuracion.getConfig(); } 
+    private Configuracion getConfig() { return Configuracion.getConfig(); }     
+    
+    String getReciboName() {
+        return getReciboName(getSerie(), getFolio().toString());
+    }
+
+    String getReciboName(String serie, String folio) {
+        serie                = (serie!=null?serie:"");
+        String nombreRecibo  = "Factura"+serie+folio;
+        return nombreRecibo;
+    }
+
+    String getPdfPath() {
+        return getConfig().getPathPdf()+getReciboName()+".pdf";
+    }
+
+    String getXmlPath() {
+        return getConfig().getPathXml()+getReciboName()+".xml";
+    }
+    String getPdfPath(String s, String f) { return getConfig().getPathPdf()+getReciboName(s,f)+".pdf"; }
+    String getXmlPath(String s, String f) { return getConfig().getPathXml()+getReciboName(s,f)+".xml"; }
+
 
     private CFDv3Tron sellarFirmarYTimbrar() throws Exception {
         try {
             ComprobanteTron comp = toComprobanteTron();
-            
-            Configuracion cfg = Configuracion.getConfig();
-            comp.setPassKey(cfg.getpassCer());
-            comp.setURIKey(new URI("file:///"+cfg.getpathKey().replace("\\", "/")));
-            comp.setURICer(new URI("file:///"+cfg.getpathCer().replace("\\", "/")));
             
             //Sellar, firmar y timbrar mediante CFDFactory
             CFDFactory cfdf = new CFDFactory();
@@ -118,38 +134,6 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         }
      }
     
-    /**
-     * Éste método genera y envía todos los archivos finales requeridos:
-     * <li> Guarda archivo XML en el sistema de archivos listo para su uso
-     * <li> Guarda archivo  PDF de comprobante fiscal digital por internet en el sistema de archivos
-     * <li> Envía los archivos anteriores por correo electrónico
-     * @param cfd
-     * @throws Exception 
-     */
-     private void distribuir(CFDv3Tron cfd) throws Exception {
-        Configuracion cfg = getConfig();
-        String serie = cfd.getComprobante().getSerie();
-        String folio = cfd.getComprobante().getFolio();
-        cfd.toPDFFile(cfg.getPathPlantilla(), getPdfPath(serie, folio));
-        cfd.toXMLFILE(getXmlPath(serie, folio));
-
-        ClienteDao cliente = new ClienteDao().findBy(getReceptor().getId());
-        if (cliente != null) {
-            EmailFacturaCliente emailFacturaCliente = new EmailFacturaCliente(cliente.getCorreoElectronico());
-            emailFacturaCliente.addAttachment(getPdfPath(serie, folio), serie + folio + "PDF");
-            emailFacturaCliente.addAttachment(getXmlPath(serie, folio), serie + folio + "XML");
-            Thread thread = new Thread(emailFacturaCliente);
-            thread.start();
-        }
-        //Visor Java
-        //cfd.showPreview(cfg.getPathPlantilla());
-        //Visor nativo para windows
-        try {
-            VisorPdf.abrir(getPdfPath(serie, folio), cfd.getComprobante(), cfg.getPathPlantilla());
-        } catch(IOException io) {
-            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Excepción en visor PDF", io);
-        }
-     }
 
      public ComprobanteTron toComprobanteTron() throws Exception {
 
@@ -429,7 +413,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 ps.setInt(8, renglon.getTasa0()?1:0);
                 ps.execute();
             }
-            distribuir(comprobanteSelladoFirmadoTimbrado);
+            //Distribuir (xml, pdf, mail) utilizando el handler apropiado para el PAC seleccionado
+            PACContext.instancePACService().getDistribucionHandler().distribuir(this, comprobanteSelladoFirmadoTimbrado);
             bd.getCon().commit();
         } catch (PACException ex) {            
             throw ex;
@@ -551,25 +536,6 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         throw new UnsupportedOperationException("Not supported. Instead use findAll(Date fechaInicial, Date fechaFinal)");
     }
 
-    String getReciboName() {
-        return getReciboName(getSerie(), getFolio().toString());
-    }
-
-    String getReciboName(String serie, String folio) {
-        serie                = (serie!=null?serie:"");
-        String nombreRecibo  = "Factura"+serie+folio;
-        return nombreRecibo;
-    }
-
-    String getPdfPath() {
-        return getConfig().getPathPdf()+getReciboName()+".pdf";
-    }
-
-    String getXmlPath() {
-        return getConfig().getPathXml()+getReciboName()+".xml";
-    }
-    String getPdfPath(String s, String f) { return getConfig().getPathPdf()+getReciboName(s,f)+".pdf"; }
-    String getXmlPath(String s, String f) { return getConfig().getPathXml()+getReciboName(s,f)+".xml"; }
 
     void cancelar() throws SQLException, PACException {
         

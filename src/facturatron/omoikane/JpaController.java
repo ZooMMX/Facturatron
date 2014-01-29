@@ -23,7 +23,7 @@ public class JpaController {
     public JpaController() {
         Configuracion config = ConfiguracionDao.getConfig();
 
-        Map<String, Object> props = new HashMap<>();
+        Map<String, Object> props = new HashMap<String, Object>();
 
         props.put("javax.persistence.jdbc.url", config.getUrlDatasource());
         props.put("javax.persistence.jdbc.password", config.getPasswordDatasource());

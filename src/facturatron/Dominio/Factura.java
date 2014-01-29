@@ -103,7 +103,7 @@ public class Factura extends Model implements Serializable {
     @NotNull
     private String formaDePago               = "UNA SOLA EXHIBICIÓN";
     @NotNull
-    private String metodoDePago              = "Efectivo";
+    private String metodoDePago              = "";
     @NotNull
     private BigDecimal subtotal              = new BigDecimal("0.0");
     @NotNull

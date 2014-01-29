@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConceptosFacturaDigital" language="groovy" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[cantidad]]></fieldDescription>
+	</field>
+	<field name="complementoConcepto" class="mx.bigdata.sat.cfd.schema.Comprobante$Conceptos$Concepto$ComplementoConcepto">
+		<fieldDescription><![CDATA[complementoConcepto]]></fieldDescription>
+	</field>
+	<field name="cuentaPredial" class="mx.bigdata.sat.cfd.schema.Comprobante$Conceptos$Concepto$CuentaPredial">
+		<fieldDescription><![CDATA[cuentaPredial]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[descripcion]]></fieldDescription>
+	</field>
+	<field name="importe" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[importe]]></fieldDescription>
+	</field>
+	<field name="informacionAduanera" class="java.util.List">
+		<fieldDescription><![CDATA[informacionAduanera]]></fieldDescription>
+	</field>
+	<field name="noIdentificacion" class="java.lang.String">
+		<fieldDescription><![CDATA[noIdentificacion]]></fieldDescription>
+	</field>
+	<field name="parte" class="java.util.List">
+		<fieldDescription><![CDATA[parte]]></fieldDescription>
+	</field>
+	<field name="unidad" class="java.lang.String">
+		<fieldDescription><![CDATA[unidad]]></fieldDescription>
+	</field>
+	<field name="valorUnitario" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorUnitario]]></fieldDescription>
+	</field>
+	<field name="etiquetaImpuestos" class="java.lang.String">
+		<fieldDescription><![CDATA[etiquetaImpuestos]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement mode="Opaque" x="0" y="10" width="572" height="23" forecolor="#FFFFFF" backcolor="#666666"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="13" y="12" width="80" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="12" width="42" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="12" width="40" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Unidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="12" width="234" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="12" width="66" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Valor Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="475" y="12" width="74" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="135" y="0" width="40" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000">
+				<reportElement x="93" y="0" width="42" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(-#,##0.00)">
+				<reportElement x="475" y="0" width="74" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="13" y="15" width="550" height="1" forecolor="#000066"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="13" y="0" width="80" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{noIdentificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="550" y="0" width="22" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" "+$F{etiquetaImpuestos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(-#,##0.00)">
+				<reportElement x="409" y="0" width="66" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorUnitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="175" y="0" width="234" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

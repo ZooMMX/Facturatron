@@ -14,6 +14,8 @@ import com.finkok.facturacion.cancel.StringArray;
 import com.finkok.facturacion.cancel.UUIDS;
 import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
+import facturatron.facturacion.DefaultDistribucionHandler;
+import facturatron.facturacion.IDistribucionHandler;
 import facturatron.facturacion.PAC.FinkokIncidenciasException;
 import facturatron.facturacion.PAC.IPACService;
 import facturatron.facturacion.PAC.IStatusTimbre;
@@ -77,7 +79,7 @@ public class FinkokPACServiceImpl implements IPACService {
             String xml = cfdi.getXML();
             Configuracion config = Configuracion.getConfig();
             
-            AcuseRecepcionCFDI acuse = stamp(xml.getBytes("UTF-8"), 
+            AcuseRecepcionCFDI acuse = stamp(xml.getBytes(), 
                     config.getUsuarioPAC(), 
                     config.getPasswordPAC());
             
@@ -97,10 +99,6 @@ public class FinkokPACServiceImpl implements IPACService {
             complemento.getAny().add(timbre);
             cfdi.getComprobante().setComplemento(complemento);
             
-            System.out.println("XML: " + acuse.getXml().getValue());
-            
-        } catch (UnsupportedEncodingException ex) {
-            throw new PACException( "UnsupportedEncodingException en timbrar con finkok", ex);
         } catch (ParseException ex) {
             throw new PACException( "ParseException en fecha de timbre del proveedor finkok", ex);
         } catch (FinkokIncidenciasException ex) {
@@ -369,5 +367,14 @@ public class FinkokPACServiceImpl implements IPACService {
         //Ningun código desconocido, podría ser un error
         throw new PACException("Código de Finkok desconocido: " + codigo);
     }
+
+    @Override
+    public boolean getRequiereSellado() {
+        return true;
+    }
     
+    @Override
+    public IDistribucionHandler getDistribucionHandler() {
+        return new DefaultDistribucionHandler();
+    }
 }
