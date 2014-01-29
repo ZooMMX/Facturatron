@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- Page Content -->
+<div class="container">
+	<div class="row">
+
+	    <div class="col-md-6">
+	      <h2 class="page-header">Soporte</h2>
+	    </div>
+	</div>
+
+  <!-- Service Paragraphs -->
+
+  <div class="row">
+
+    <div class="col-md-6">
+      <h2 class="page-header">Manual</h2>
+        <p>Instrucciones de instalación y uso</p>
+        <a class="btn btn-primary" id="manual" href="#">Consultar</a>
+    </div>
+
+    <div class="col-md-6">
+      <h2 class="page-header">FAQ</h2>
+        <p>Respuestas a preguntas frecuente, esta es la primera línea de defensa contra cualquier duda.</p>
+        <a class="btn btn-primary" id="faq" href="#">Consultar</a>
+    </div>
+
+  </div><!-- /.row -->
+</div>
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+	    $("#manual").click(function() {
+	        $('#contenido')
+	           .load('sidebar.html');
+	    });
+	});
+	$(function() {
+	    $("#faq").click(function() {
+	        $('#contenido')
+	           .load('faq.html');
+	    });
+	});
+</script>
