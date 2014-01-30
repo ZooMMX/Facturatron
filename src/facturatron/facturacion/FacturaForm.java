@@ -15,6 +15,7 @@ import com.alee.laf.button.WebButton;
 import java.awt.Container;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import org.jdesktop.swingx.JXTable;
 
@@ -91,7 +92,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         txtFormaDePago = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDireccion = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox();
+        comboTipoComprobante = new javax.swing.JComboBox<TipoComprobante>();
         jLabel14 = new javax.swing.JLabel();
         txtMetodoPago = new javax.swing.JTextField();
         btnBuscarCliente = new com.alee.laf.button.WebButton();
@@ -114,6 +115,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         setPreferredSize(new java.awt.Dimension(640, 480));
 
         jXTitledPanel3.setTitle("Acciones");
+        jXTitledPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         btnGuardar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnGuardar.setText("Guardar factura");
@@ -141,23 +143,23 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                 .addComponent(btnTicket)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFacturaDia)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jXTitledPanel3Layout.setVerticalGroup(
             jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTitledPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
                     .addComponent(btnObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnTicket)
-                    .addComponent(btnFacturaDia))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnFacturaDia)))
         );
 
         jXTitledPanel2.setTitle("Datos Fiscales");
+        jXTitledPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Id Cliente:");
@@ -201,10 +203,11 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         txtDireccion.setRows(5);
         jScrollPane2.setViewportView(txtDireccion);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Factura" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        comboTipoComprobante.setModel(new javax.swing.DefaultComboBoxModel(TipoComprobante.values()));
+        comboTipoComprobante.setSelectedItem(TipoComprobante.FACTURA);
+        comboTipoComprobante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                comboTipoComprobanteActionPerformed(evt);
             }
         });
 
@@ -243,8 +246,8 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtRfc)
-                                    .addComponent(jScrollPane2))))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                                    .addComponent(txtRfc))))
                         .addGap(10, 10, 10)
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtFormaDePago, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -257,11 +260,11 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel2Layout.createSequentialGroup()
-                                        .addComponent(txtIdCliente)
+                                        .addComponent(txtIdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtSerie, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(comboTipoComprobante, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtFolio, javax.swing.GroupLayout.Alignment.TRAILING)))))
                     .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel14)
@@ -293,7 +296,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(comboTipoComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -303,11 +306,11 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(txtMetodoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(txtMetodoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jXTitledPanel1.setTitle("Conceptos");
+        jXTitledPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Motivo Descuento:");
@@ -480,9 +483,9 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDescuentoTasa16ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void comboTipoComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoComprobanteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_comboTipoComprobanteActionPerformed
 
     private void txtMetodoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMetodoPagoActionPerformed
         // TODO add your handling code here:
@@ -499,7 +502,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JButton btnGuardar;
     private org.jdesktop.swingx.JXButton btnObservaciones;
     private javax.swing.JButton btnTicket;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox<TipoComprobante> comboTipoComprobante;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -817,5 +820,12 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     public javax.swing.JButton getBtnFacturaDia() {
         return btnFacturaDia;
     }
+    
+    public JComboBox<TipoComprobante> getComboTipoComprobante() {
+        return comboTipoComprobante;
+    }
 
+    public TipoComprobante getTipoComprobante() {
+        return (TipoComprobante) comboTipoComprobante.getSelectedItem();
+    }
 }

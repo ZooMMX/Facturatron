@@ -241,7 +241,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
           //Validar código
           String codigo = renglon.getNoIdentificacion();
           if(codigo != null && codigo.isEmpty()) {
-              JOptionPane.showMessageDialog(getView(), "La columna codigo tiene un contenido inválido o vacío en la fila " + filas);
+              JOptionPane.showMessageDialog(getView(), "La columna código tiene un contenido inválido o vacío en la fila " + filas);
               return false;
           } 
       }
@@ -272,7 +272,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setIvaTrasladado(new BigDecimal(getView().getTxtIva().getText().replaceAll(",", "")));
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
-        getModel().setTipoDeComprobante("ingreso");
+        getModel().setTipoDeComprobante(getView().getTipoComprobante().getEfectoString());
         getModel().setVersion("3.2");
 
         getView().getBtnGuardar().setEnabled(false);

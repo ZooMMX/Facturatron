@@ -2,6 +2,8 @@ build/
 dist/
 nbproject/
 /.buildpath
+/.gradle
+/gradle/
 /build/
 */archive/
  
