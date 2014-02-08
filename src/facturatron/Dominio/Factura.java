@@ -128,6 +128,8 @@ public class Factura extends Model implements Serializable {
     @NotNull
     private BigDecimal ivaTrasladado         = new BigDecimal("0.0");
     @NotNull
+    private BigDecimal iepsTrasladado        = new BigDecimal("0.0");
+    @NotNull
     private String certificado;
     @NotNull
     private String motivoDescuento;
@@ -398,6 +400,20 @@ public class Factura extends Model implements Serializable {
      */
     public void setIvaTrasladado(BigDecimal ivaTrasladado) {
         this.ivaTrasladado = ivaTrasladado;
+    }
+    
+    /**
+     * @return the iepsTrasladado
+     */
+    public BigDecimal getIEPSTrasladado() {
+        return iepsTrasladado;
+    }
+
+    /**
+     * @param ivaTrasladado the ivaTrasladado to set
+     */
+    public void setIEPSTrasladado(BigDecimal iepsTrasladado) {
+        this.iepsTrasladado = iepsTrasladado;
     }
 
     /**

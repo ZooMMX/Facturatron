@@ -26,7 +26,8 @@ public class FacturaTableModel extends AbstractTableModel {
                         "Descripción",
                         "Unidad",
                         "PU",
-                        "Tasa 0%",
+                        "IVA Tasa 0%",
+                        "% IEPS",
                         "Importe"};
     Class[] columnClasses = {
         BigDecimal.class,
@@ -35,6 +36,7 @@ public class FacturaTableModel extends AbstractTableModel {
         String.class,
         BigDecimal.class,
         Boolean.class,
+        BigDecimal.class,
         BigDecimal.class
     };
     private ArrayList<Renglon> data = new ArrayList<Renglon>();
@@ -51,7 +53,7 @@ public class FacturaTableModel extends AbstractTableModel {
     @Override
     public boolean isCellEditable(int row, int col) {
         
-        return (col != 6);
+        return (col != 7);
     }
 
     @Override
@@ -86,6 +88,8 @@ public class FacturaTableModel extends AbstractTableModel {
             case 5:
                 return fila.getTasa0();
             case 6:
+                return fila.getTasaIEPS();
+            case 7:
                 return fila.getImporte();
         }
         return null;
@@ -126,8 +130,11 @@ public class FacturaTableModel extends AbstractTableModel {
             case 5:
                 fila.setTasa0((Boolean) value);
                 break;
+            case 6:
+                fila.setTasaIEPS((BigDecimal) value);
+                break;
         }
-        if(row == getRowCount()-1 && col == getColumnCount()-3) {
+        if(row == getRowCount()-1 && col == getColumnCount()-4) {
             addRow();
         }
         fireTableCellUpdated(row, col);

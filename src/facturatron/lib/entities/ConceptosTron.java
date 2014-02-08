@@ -17,6 +17,17 @@ import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
  */
 public class ConceptosTron extends ArrayList<ConceptoTron> {
 
+    /**
+     * Este método genera una inconsistencia en la arquitectura, no es posible mapear
+     * etiquetaImpuestos ya que su valor es generado en la clase Renglon. La lógica con la que 
+     * está programado Facturatron es para usar de esta manera los Beans:
+     * 1) Renglon -[evoluciona en]-> 2) ConceptoTron -[contiene a]-> 3) Concepto
+     * Éste método se salta el primer bean.
+     * @param conceptos
+     * @return
+     * @deprecated
+     */
+    @Deprecated
     public static ConceptosTron toConceptosTron(Conceptos conceptos) {
         ConceptosTron conceptosTron = new ConceptosTron();
         for (Concepto concepto : conceptos.getConcepto()) {

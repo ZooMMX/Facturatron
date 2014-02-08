@@ -5,6 +5,7 @@
 
 package facturatron.lib.entities;
 
+import java.math.BigDecimal;
 import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos.Concepto;
 
 
@@ -15,6 +16,7 @@ import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos.Concepto;
  */
 public class ConceptoTron extends Concepto {
     private String etiquetaImpuestos;
+    private BigDecimal ieps;
 
 
     /**
@@ -29,5 +31,13 @@ public class ConceptoTron extends Concepto {
      */
     public void setEtiquetaImpuestos(String etiquetaImpuestos) {
         this.etiquetaImpuestos = etiquetaImpuestos;
+    }
+
+    public void setIEPS(BigDecimal ieps) {
+        this.ieps = ieps;
+    }
+    
+    public BigDecimal getIEPS() {
+        return ieps;
     }
 }

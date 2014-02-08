@@ -5,8 +5,10 @@
 
 package facturatron.lib;
 
+import facturatron.Dominio.Renglon;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;
+import facturatron.lib.entities.ConceptoTron;
 import facturatron.lib.entities.ConceptosTron;
 import java.math.BigDecimal;
 import java.net.URI;
@@ -142,8 +144,9 @@ public class Main {
         comp.setTipoDeComprobante("ingreso");
         comp.setEmisor(createEmisor(of));
         comp.setReceptor(createReceptor(of));
-        comp.setConceptos(createConceptos(of));
-        comp.setConceptosTron(ConceptosTron.toConceptosTron(comp.getConceptos()));
+        comp.setConceptos(createConceptos(of).toConceptos());        
+        comp.setConceptosTron(createConceptos(of));
+        
         comp.setImpuestos(createImpuestos(of));
         comp.setMetodoDePago("EFECTIVO");
         comp.setLugarExpedicion("Tlatlauquitepec, Puebla");
@@ -197,32 +200,39 @@ public class Main {
         receptor.setDomicilio(uf);
         return receptor;
     }
-
-    private static Conceptos createConceptos(ObjectFactory of) {
-        Conceptos cps = of.createComprobanteConceptos();
-        List<Concepto> list = cps.getConcepto();
-        Concepto c1 = of.createComprobanteConceptosConcepto();
-
-        c1.setUnidad("CAPSULAS");
-        c1.setImporte(new BigDecimal("244.00"));
-        c1.setCantidad(new BigDecimal("1.0"));
-        c1.setDescripcion("VIBRAMICINA 100MG 10");
-        c1.setValorUnitario(new BigDecimal("244.00"));
-        list.add(c1);
-        Concepto c2 = of.createComprobanteConceptosConcepto();
-        c2.setUnidad("BOTELLA");
-        c2.setImporte(new BigDecimal("137.93"));
-        c2.setCantidad(new BigDecimal("1.0"));
-        c2.setDescripcion("CLORUTO 500M");
-        c2.setValorUnitario(new BigDecimal("137.93"));
-        list.add(c2);
-        Concepto c3 = of.createComprobanteConceptosConcepto();
-        c3.setUnidad("TABLETAS");
-        c3.setImporte(new BigDecimal("84.50"));
-        c3.setCantidad(new BigDecimal("1.0"));
-        c3.setDescripcion("SEDEPRON 250MG 10");
-        c3.setValorUnitario(new BigDecimal("84.50"));
-        list.add(c3);
+    
+    private static ConceptosTron createConceptos(ObjectFactory of) {
+        ConceptosTron cps = new ConceptosTron();
+        
+        Renglon r1 = new Renglon();
+        r1.setUnidad("CAPSULAS");
+        r1.setImporte(new BigDecimal("244.00"));
+        r1.setCantidad(new BigDecimal("1.0"));
+        r1.setDescripcion("VIBRAMICINA 100MG 10");
+        r1.setValorUniario(new BigDecimal("244.00"));
+        r1.setTasaIEPS(new BigDecimal("8"));
+        r1.setIEPS(new BigDecimal(19.52));
+        cps.add(r1.toConceptoTron());
+        
+        Renglon r2 = new Renglon();
+        r2.setUnidad("BOTELLA");
+        r2.setImporte(new BigDecimal("137.93"));
+        r2.setCantidad(new BigDecimal("1.0"));
+        r2.setDescripcion("CLORUTO 500M");
+        r2.setValorUniario(new BigDecimal("137.93"));
+        r2.setTasaIEPS(new BigDecimal("25"));
+        r2.setIEPS(new BigDecimal("34.48"));
+        cps.add(r2.toConceptoTron());
+        
+        Renglon r3 = new Renglon();
+        r3.setUnidad("TABLETAS");
+        r3.setImporte(new BigDecimal("84.50"));
+        r3.setCantidad(new BigDecimal("1.0"));
+        r3.setDescripcion("SEDEPRON 250MG 10");
+        r3.setValorUniario(new BigDecimal("84.50"));
+        r3.setTasaIEPS(new BigDecimal("8"));
+        r3.setIEPS(new BigDecimal("6.76"));
+        cps.add(r3.toConceptoTron());
         return cps;
     }
 
@@ -237,11 +247,16 @@ public class Main {
         list.add(t1);
         Traslado t2 = of.createComprobanteImpuestosTrasladosTraslado();
         t2.setImporte(new BigDecimal("22.07"));
-        t2.setImpuesto("IVA");
-        t2.setTasa(new BigDecimal("16.00"));
+        t2.setImpuesto("IEPS");
+        t2.setTasa(new BigDecimal("25.00"));
         list.add(t2);
+        Traslado t3 = of.createComprobanteImpuestosTrasladosTraslado();
+        t3.setImporte(new BigDecimal("4.00"));
+        t3.setImpuesto("IEPS");
+        t3.setTasa(new BigDecimal("8.00"));
+        list.add(t3);
         imps.setTraslados(trs);
-        imps.setTotalImpuestosTrasladados(new BigDecimal("42.07"));
+        imps.setTotalImpuestosTrasladados(new BigDecimal("46.07"));
         return imps;
     }
 

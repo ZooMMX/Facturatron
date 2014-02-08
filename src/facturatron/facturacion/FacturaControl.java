@@ -31,6 +31,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
@@ -112,7 +113,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       MathContext mc = MathContext.DECIMAL128;
 
       BigDecimal subtotal    = new BigDecimal("0.00", mc);
-      BigDecimal impuesto    = new BigDecimal("0.00", mc);
+      BigDecimal iva         = new BigDecimal("0.00", mc);
+      BigDecimal ieps        = new BigDecimal("0.00", mc);
       BigDecimal total       = new BigDecimal("0.00", mc);
       BigDecimal descuento0  = new BigDecimal("0.00", mc);
       BigDecimal descuento16 = new BigDecimal("16.00", mc);
@@ -120,7 +122,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       BigDecimal importe16   = new BigDecimal("0.00", mc);
 
       subtotal   .setScale(2);
-      impuesto   .setScale(2);
+      iva        .setScale(2);
+      ieps       .setScale(2);
       total      .setScale(2);
       descuento0 .setScale(2);
       descuento16.setScale(2);
@@ -133,6 +136,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
           } else {
               importe16 = importe16.add(renglon.getImporte());
           }
+          ieps     = ieps.add( renglon.getIEPS() );
           subtotal = subtotal.add(renglon.getImporte());
       }
 
@@ -142,11 +146,13 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       if(descuento0  .compareTo(importe0)  < 0) { importe0  = importe0 .subtract(descuento0 ); }
       if(descuento16 .compareTo(importe16) < 0) { importe16 = importe16.subtract(descuento16); }
 
-      impuesto   = importe16.multiply(new BigDecimal("0.16"), mc);
-      total      = importe0.add(importe16, mc).add(impuesto, mc);
+      iva        = importe16.multiply(new BigDecimal("0.16"), mc);
+      total      = importe0.add(importe16, mc).add(iva, mc);
+      total      = total.add( ieps , mc );
       
       getModel().setSubtotal(subtotal);
-      getModel().setIvaTrasladado(impuesto);
+      getModel().setIvaTrasladado(iva);
+      getModel().setIEPSTrasladado(ieps);
       getModel().setTotal(total);
 
   }
@@ -309,6 +315,20 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             }
             
         });
+        getView().getTxtMetodoPago().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(!getView().getTxtMetodoPago().getText().equals(""))
+                    getModel().setMetodoDePago(getView().getTxtMetodoPago().getText());
+            }
+        });
+        getView().getTxtFormaDePago().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(!getView().getTxtFormaDePago().getText().equals(""))
+                    getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
+            }
+        });
         getView().getBtnGuardar().addActionListener(new ActionListener() {
 
             @Override
@@ -447,14 +467,14 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 
                 modelo.setValueAt(new BigDecimal(1)   , 0,  0);
                 modelo.setValueAt("Sin código"        , 0,  1);
-                modelo.setValueAt("Ventas al 16%"      , 0,  2);
+                modelo.setValueAt("Ventas al 16%"     , 0,  2);
                 modelo.setValueAt("PZA"               , 0,  3);
                 modelo.setValueAt(ventaAlDieciseis    , 0,  4);
                 modelo.setValueAt(false               , 0,  5);
                 
                 modelo.setValueAt(new BigDecimal(1)   , 1,  0);
                 modelo.setValueAt("Sin código"        , 1,  1);
-                modelo.setValueAt("Ventas al 0%"       , 1,  2);
+                modelo.setValueAt("Ventas al 0%"      , 1,  2);
                 modelo.setValueAt("PZA"               , 1,  3);
                 modelo.setValueAt(ventaAlCero         , 1,  4);
                 modelo.setValueAt(true                , 1,  5);

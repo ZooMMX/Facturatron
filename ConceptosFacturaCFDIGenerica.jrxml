@@ -43,58 +43,60 @@
 		<band splitType="Stretch"/>
 	</background>
 	<columnHeader>
-		<band height="34" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<rectangle radius="10">
-				<reportElement mode="Opaque" x="0" y="10" width="572" height="23" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="0" y="1" width="572" height="23" forecolor="#FFFFFF" backcolor="#666666"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="13" y="12" width="80" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="0" y="3" width="80" height="20" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="93" y="12" width="42" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="80" y="3" width="42" height="20" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="135" y="12" width="40" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="122" y="3" width="40" height="20" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Unidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="175" y="12" width="234" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="162" y="3" width="234" height="20" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="409" y="12" width="66" height="20" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<text><![CDATA[Valor Unitario]]></text>
+				<reportElement x="432" y="3" width="66" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[PU]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="475" y="12" width="74" height="20" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<reportElement x="498" y="3" width="74" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="3" width="36" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%IVA/%IEPS]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
 			<textField>
-				<reportElement x="135" y="0" width="40" height="15"/>
+				<reportElement x="122" y="0" width="40" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.0000">
-				<reportElement x="93" y="0" width="42" height="15"/>
+				<reportElement x="80" y="0" width="42" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cantidad}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00;(-#,##0.00)">
-				<reportElement x="475" y="0" width="74" height="15"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="13" y="15" width="550" height="1" forecolor="#000066"/>
@@ -103,24 +105,29 @@
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="13" y="0" width="80" height="15"/>
+				<reportElement x="0" y="0" width="80" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{noIdentificacion}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="550" y="0" width="22" height="15"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[" "+$F{etiquetaImpuestos}]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0.00;(-#,##0.00)">
-				<reportElement x="409" y="0" width="66" height="15"/>
+				<reportElement x="432" y="1" width="66" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorUnitario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="175" y="0" width="234" height="15"/>
+				<reportElement x="162" y="0" width="234" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="396" y="0" width="36" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{etiquetaImpuestos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(-#,##0.00)">
+				<reportElement x="498" y="0" width="74" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

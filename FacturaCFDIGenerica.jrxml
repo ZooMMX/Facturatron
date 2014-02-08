@@ -2,7 +2,13 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FacturaDigital" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="710"/>
+	<property name="ireport.y" value="285"/>
+	<subDataset name="dataset1"/>
+	<subDataset name="Impuestos">
+		<field name="importe" class="java.math.BigDecimal"/>
+		<field name="impuesto" class="java.lang.String"/>
+		<field name="tasa" class="java.math.BigDecimal"/>
+	</subDataset>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[]]>
@@ -332,9 +338,9 @@ $F{receptor}.getDomicilio().getEstado()+
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="103">
+		<band height="102">
 			<subreport>
-				<reportElement x="2" y="0" width="568" height="100"/>
+				<reportElement x="0" y="0" width="572" height="100"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{conceptosTron})]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA["ConceptosFacturaCFDIGenerica.jasper"]]></subreportExpression>
 			</subreport>
@@ -354,9 +360,9 @@ $F{receptor}.getDomicilio().getEstado()+
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="309">
+		<band height="277">
 			<staticText>
-				<reportElement x="149" y="238" width="396" height="13"/>
+				<reportElement x="149" y="209" width="396" height="13"/>
 				<textElement lineSpacing="Single"/>
 				<text><![CDATA[Cadena Original del complemento de certificación digital del SAT:]]></text>
 			</staticText>
@@ -366,96 +372,84 @@ $F{receptor}.getDomicilio().getEstado()+
 				<text><![CDATA[Sello Digital del CFDI:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="155" y="147" width="390" height="36"/>
+				<reportElement x="155" y="147" width="390" height="24"/>
 				<textElement lineSpacing="Single">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{sello}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="155" y="251" width="390" height="6"/>
+			<textField>
+				<reportElement x="155" y="222" width="390" height="24"/>
 				<textElement lineSpacing="Single">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["||1.0|"+$F{timbre}.getUUID()+"|"+(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")).format($F{timbre}.getFechaTimbrado())+"|"+$F{timbre}.getSelloCFD()+"|"+$F{timbre}.getNoCertificadoSAT()+"||"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="107" width="96" height="19" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="123" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[ Total]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="107" width="84" height="19"/>
+				<reportElement x="486" y="123" width="84" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="42" width="96" height="19" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="38" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Subtotal 16%]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="42" width="84" height="19"/>
+				<reportElement x="486" y="38" width="84" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotalGravado16}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="79" width="96" height="19" forecolor="#FFFFFF" backcolor="#666666"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
-					<font fontName="Arial"/>
-				</textElement>
-				<text><![CDATA[+ Iva (16%)]]></text>
-			</staticText>
-			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="80" width="84" height="18"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{impuestos}.getTotalImpuestosTrasladados()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement mode="Opaque" x="390" y="61" width="96" height="19" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="55" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[- Descuento]]></text>
 			</staticText>
 			<line>
-				<reportElement x="390" y="104" width="180" height="1"/>
+				<reportElement x="390" y="121" width="180" height="1"/>
 				<graphicElement>
 					<pen lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="149" y="250" width="420" height="1"/>
+				<reportElement x="149" y="221" width="420" height="1"/>
 			</line>
 			<line>
-				<reportElement x="149" y="251" width="1" height="44"/>
+				<reportElement x="149" y="222" width="1" height="24"/>
 			</line>
 			<line>
 				<reportElement x="149" y="146" width="420" height="1"/>
 			</line>
 			<line>
-				<reportElement x="149" y="146" width="1" height="36"/>
+				<reportElement x="149" y="146" width="1" height="24"/>
 			</line>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="62" width="84" height="17"/>
+				<reportElement x="486" y="55" width="84" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{descuento}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="4" width="96" height="19" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="4" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Subtotal exento]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="4" width="84" height="19"/>
+				<reportElement x="486" y="4" width="84" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotalExento}]]></textFieldExpression>
 			</textField>
@@ -476,14 +470,14 @@ $F{receptor}.getDomicilio().getEstado()+
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{importeConLetra}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="23" width="96" height="19" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="21" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Subtotal 0%]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="23" width="84" height="19"/>
+				<reportElement x="486" y="21" width="84" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotalGravado0}]]></textFieldExpression>
 			</textField>
@@ -504,7 +498,7 @@ $F{receptor}.getDomicilio().getEstado()+
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{observaciones}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="155" y="197" width="390" height="36"/>
+				<reportElement x="155" y="185" width="390" height="24"/>
 				<textElement lineSpacing="Single">
 					<font size="6"/>
 				</textElement>
@@ -518,30 +512,60 @@ $F{receptor}.getDomicilio().getEstado()+
          com.google.zxing.BarcodeFormat.QR_CODE, 170, 170))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="150" y="295" width="419" height="12"/>
+				<reportElement x="149" y="246" width="419" height="12"/>
 				<textElement lineSpacing="Single">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["No de Serie del Certificado del SAT: "+$F{timbre}.getNoCertificadoSAT()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="149" y="184" width="122" height="13"/>
+				<reportElement x="149" y="171" width="122" height="13"/>
 				<textElement lineSpacing="Single"/>
 				<text><![CDATA[Sello del SAT:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="149" y="197" width="1" height="36"/>
+				<reportElement x="149" y="184" width="1" height="24"/>
 			</line>
 			<line>
-				<reportElement x="149" y="197" width="420" height="1"/>
+				<reportElement x="149" y="184" width="420" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="6" y="275" width="138" height="32" forecolor="#999999"/>
+				<reportElement x="150" y="260" width="396" height="15" forecolor="#999999"/>
 				<textElement lineSpacing="Single">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Powered by Phesus™ ©Facturatron]]></text>
+				<text><![CDATA[Powered by Phesus™ Facturatron. http://www.phesus.com]]></text>
 			</staticText>
+			<componentElement>
+				<reportElement key="table" x="390" y="72" width="180" height="48"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Impuestos">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{impuestos}.getTraslados().getTraslado())]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="96">
+						<jr:detailCell height="11" rowSpan="1">
+							<textField>
+								<reportElement mode="Opaque" x="0" y="0" width="96" height="11" forecolor="#FFFFFF" backcolor="#666666"/>
+								<textElement>
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA["+ "+$F{impuesto}+" ("+$F{tasa}+")"]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="84">
+						<jr:detailCell height="11" rowSpan="1">
+							<textField pattern="#,##0.00">
+								<reportElement x="0" y="0" width="84" height="11"/>
+								<textElement textAlignment="Right">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{importe}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
 		</band>
 	</summary>
 </jasperReport>

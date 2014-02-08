@@ -14,6 +14,7 @@ import java.util.List;
 import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos.Concepto;
 import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
 import facturatron.lib.entities.ConceptoTron;
+import java.math.MathContext;
 
 /**
  *
@@ -28,11 +29,15 @@ public class Renglon extends Model implements Serializable {
     private String descripcion = "";
     private BigDecimal valorUniario = new BigDecimal(0d);
     private Boolean tasa0 = true;
+    private BigDecimal tasaIEPS = new BigDecimal(0d);
+    private BigDecimal ieps     = new BigDecimal(0d);
 
     public Renglon() {
         importe.setScale(2);
         cantidad.setScale(2);
         valorUniario.setScale(2);
+        tasaIEPS.setScale(2);
+        ieps.setScale(2);
     }
 
     public static List createBeanCollection(){
@@ -91,7 +96,11 @@ public class Renglon extends Model implements Serializable {
         ct1.setNoIdentificacion(c1.getNoIdentificacion());
         ct1.setUnidad(c1.getUnidad());
         ct1.setValorUnitario(c1.getValorUnitario().setScale(2,RoundingMode.HALF_EVEN));
-        ct1.setEtiquetaImpuestos(getTasa0()?"":"im");
+        //La etiqueta de impuestos está compuesta por %_IVA + "/" + %_IEPS
+        String etiquetaIVA = getTasa0()?"0":"16";
+        String etiquetaIEPS= getTasaIEPS().equals(BigDecimal.ZERO) ? "-" : getTasaIEPS().toString() ;
+        ct1.setEtiquetaImpuestos(etiquetaIVA+"/"+etiquetaIEPS);
+        ct1.setIEPS(getIEPS());
 
         return ct1;
     }
@@ -114,6 +123,8 @@ public class Renglon extends Model implements Serializable {
      * @param importe the importe to set
      */
     public void setImporte(BigDecimal importe) {
+        updateIEPS();
+        
         this.importe = importe;
     }
 
@@ -199,5 +210,36 @@ public class Renglon extends Model implements Serializable {
      */
     public void setTasa0(Boolean tasa0) {
         this.tasa0 = tasa0;
+    }
+
+    public BigDecimal getTasaIEPS() {
+        return tasaIEPS;
+    }
+
+    public void setTasaIEPS(BigDecimal tasa) {
+        tasaIEPS = tasa;
+        updateIEPS();
+    }
+
+    /**
+     * @return the ieps
+     */
+    public BigDecimal getIEPS() {
+        return ieps;
+    }
+
+    /**
+     * @param ieps the ieps to set
+     */
+    public void setIEPS(BigDecimal ieps) {
+        this.ieps = ieps;
+    }
+
+    private void updateIEPS() {
+        MathContext mc = MathContext.DECIMAL128;
+        
+        BigDecimal factorIEPS = getTasaIEPS().divide( new BigDecimal("100.00", mc), mc );
+        BigDecimal ieps1 = importe.multiply( factorIEPS );
+        this.setIEPS( ieps1 );
     }
 }

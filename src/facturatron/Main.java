@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**
- *
+ * @author Octavio Ruiz
  * @author saul
  */
 public class Main {

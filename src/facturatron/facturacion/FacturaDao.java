@@ -42,7 +42,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -200,17 +202,52 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
         Traslado t1 = of.createComprobanteImpuestosTrasladosTraslado();
         Traslado t2 = of.createComprobanteImpuestosTrasladosTraslado();
-        t1.setImporte(getIvaTrasladado());
+        
+        //Establezco la escala "6" con el fin de que en el XML las cantidades aparezcan
+        //  con los 6 dígitos decimales que establece el SAT en el Anexo 20, sin embargo
+        //  es posible que algunas de las operaciones no se hagan con una precisión de más
+        //  de dos dígitos
+        t1.setImporte(getIvaTrasladado().setScale(6));
         t1.setImpuesto("IVA");
-        t1.setTasa(new BigDecimal("16.00"));
+        t1.setTasa(new BigDecimal("16.00").setScale(6));
         list.add(t1);
-        t2.setImporte(new BigDecimal(0d));
+        t2.setImporte(new BigDecimal(0d).setScale(6));
         t2.setImpuesto("IVA");
-        t2.setTasa(new BigDecimal("0.00"));
+        t2.setTasa(new BigDecimal("0.00").setScale(6));        
         list.add(t2);
+        list.addAll(getIEPSDesglosado());
+        
         imps.setTraslados(trs);
-        imps.setTotalImpuestosTrasladados(getIvaTrasladado());
+        imps.setTotalImpuestosTrasladados(getIvaTrasladado().add( getIEPSTrasladado() ).setScale( 6 ));
         return imps;
+     }
+     
+     List<Traslado> getIEPSDesglosado() {
+         HashMap<BigDecimal, BigDecimal> hash = new HashMap<BigDecimal, BigDecimal>();
+         ObjectFactory of = new ObjectFactory();
+         
+         List<Traslado> traslados = new ArrayList<Traslado>();
+         
+         for (Renglon renglon : getRenglones()) {
+            if(hash.containsKey(renglon.getTasaIEPS())) {
+                    BigDecimal ieps = hash.get(renglon.getTasaIEPS());
+                    ieps = ieps.add( renglon.getIEPS() );
+                    hash.put(renglon.getTasaIEPS(), ieps);
+                } else
+                    hash.put(renglon.getTasaIEPS(), renglon.getIEPS());
+         }
+         for (Map.Entry<BigDecimal, BigDecimal> ieps : hash.entrySet()) {
+             //Si el IEPS fuese cero es importante no incluirlo ya que en terminos fiscales
+             //  tasa 0 podría ser distinto a no tener IEPS como pasa con el IVA
+             if(ieps.getKey().equals(BigDecimal.ZERO)) continue;
+             
+             Traslado t = of.createComprobanteImpuestosTrasladosTraslado();
+             t.setImpuesto("IEPS");
+             t.setImporte(ieps.getValue().setScale(6));
+             t.setTasa(ieps.getKey().setScale(6));
+             traslados.add(t);
+         }
+         return traslados;
      }
 
      public BigDecimal getSubtotalGravado16() {
