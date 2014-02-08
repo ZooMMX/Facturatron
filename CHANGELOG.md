@@ -1,4 +1,12 @@
-V 1.7.0 RC1. Integración CFDI
+## 1.7.0.8 (2014-02-08)
+- Soporte para IEPS
+ - Nuevos campos de IEPS en el formulario de facturación
+ - El XML ahora incluye, agrupados por tasa, todos los impuestos IEPS
+ - El PDF, al igual que el XML, agrupa por tasa y muestra cada tasa de IEPS e IVA
+- Optimización de la GUI de facturación, reduje todo el espacio desperdiciado.
+- Optimización de la plantilla genérica de facturación, reduje mucho el desperdicio de espacio para generar facturas más compactas sin sacrificar una fuente grande
+
+## 1.7.0 RC1. Integración CFDI
 
  [FEATURED] Migrado de CFD v2.2 a CFDI 3.2
 - Arquitectura de PACs modular
