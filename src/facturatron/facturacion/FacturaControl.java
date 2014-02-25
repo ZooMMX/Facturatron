@@ -30,6 +30,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.SQLException;
@@ -54,7 +55,7 @@ import org.xml.sax.SAXParseException;
 public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //solo controlador
 
   ConfigFiscalDao configFiscal;
-
+  boolean timbrado = false;
   public FacturaControl(){
       try {
           setModel(setupAndInstanceModel());
@@ -72,7 +73,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       configFiscal = new ConfigFiscalDao();
       configFiscal.load();
       dao.setAnoAprobacion(configFiscal.getAnoAprobacion());
-      dao.setNoAprobacion(configFiscal.getNoAprobacion());
+      dao.setNoAprobacion(configFiscal.getNoAprobacion());      
       dao.setNoCertificado(configFiscal.getNoCertificado());
       dao.setSerie(configFiscal.getSerie());
       dao.setFolio(configFiscal.getFolioActual());
@@ -265,7 +266,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   public void btnGuardar(){
 
     if(!validarForm()) return;
-    notifyBusy();
+    notifyBusy();    
+    timbrado = false;
     try {
         Calendar time = Calendar.getInstance();
         getModel().setCertificado("NULO");
@@ -291,6 +293,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         } else {
             getModel().persist();
         }
+        timbrado = true;
     } catch (SAXParseException e) {
         Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Datos erróneos.", e);
     } catch (PACException pa) {
@@ -300,6 +303,18 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
     } finally {
         getView().getBtnGuardar().setEnabled(true);
         notifyIdle();
+        
+        
+        /*
+        if (timbrado) {
+            // getView().getJFrameParent().dispose();
+            //getView().getJFrameParent().remove(this.getView());
+            int opc = JOptionPane.showConfirmDialog(getView(), "Desea Salir", "Seleccione una opción", JOptionPane.YES_NO_OPTION);
+            JFrame jf = getView().getJFrameParent();            
+            jf.remove(this.getView());
+            getView().setVisible(false);
+        }
+                */
     }
     
   }
@@ -330,18 +345,26 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             }
         });
         getView().getBtnGuardar().addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Factura> rep = new ArrayList<Factura>();
                 new Thread() {
                     public void run() {
                         btnGuardar();
+                        if (timbrado) {
+                            int opc = JOptionPane.showConfirmDialog(getView(), "Factura Timbrada desea cerrar la pestaña", "Alert", JOptionPane.YES_NO_OPTION);
+                            if (opc == 0) {
+                                getView().getParent().remove(getView());
+                            }
+                        }
+                        
                     }
                 }.start();
                 //  new Reporte("facturatron/factura.jasper",FacturaDao.findById(10)); //buscamos la ruta donde se encuentra el reporte jasper
                 // reporte.lanzarPreview(null);
+                
             }
+            
         });
         getView().getTabConceptos().getModel().addTableModelListener(new TableModelListener() {
 
