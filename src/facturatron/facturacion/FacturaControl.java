@@ -93,7 +93,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
           txtDesc16 = "0";
       }
       renglonesActualizados();
-  }ggit
+  }
   public void cargarCliente() {
       try {
           int id = Integer.valueOf(getView().getTxtIdCliente().getText());
