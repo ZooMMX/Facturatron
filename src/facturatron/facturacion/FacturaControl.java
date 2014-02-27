@@ -55,6 +55,7 @@ import org.xml.sax.SAXParseException;
 public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //solo controlador
 
   ConfigFiscalDao configFiscal;
+  /* se usa como bandera para determinar si se realiz'o el timbrado con el PAC */
   boolean timbrado = false;
   public FacturaControl(){
       try {
