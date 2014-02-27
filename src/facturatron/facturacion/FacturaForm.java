@@ -13,10 +13,13 @@ package facturatron.facturacion;
 
 import com.alee.laf.button.WebButton;
 import java.awt.Container;
+import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 import org.jdesktop.swingx.JXTable;
 
 /**
@@ -57,13 +60,62 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         String total = String.format("%,.2f", getModelo().getTotal());
         this.getTxtTotal().setText(total);
     }
+    
+   
 
     /** Creates new form FacturaForm */
     public FacturaForm() {
         initComponents();
+        tabConceptos.addKeyListener(new java.awt.event.KeyAdapter() {  
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent evt) {  
+                whichKeyPressed(evt);  
+            }  
+        }); 
         txtDireccion.setEditable(false);
-        tabConceptos.setSortable(false);
+        tabConceptos.setSortable(false);       
     }
+    //Metodo para intercambiar con la tecla <tab>  enter entre columnas de la tabla tabConceptos
+    private void whichKeyPressed(java.awt.event.KeyEvent evt) {  
+        int column = tabConceptos.getSelectedColumn();  
+        int row = tabConceptos.getSelectedRow();  
+        int rows = tabConceptos.getRowCount();             
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER ||  
+            evt.getKeyCode() == KeyEvent.VK_TAB){
+            if( column == 0){                  
+                tabConceptos.changeSelection(row, 1, false,  false);  
+                tabConceptos.editCellAt(row,1);                
+            }  
+            else if( column == 1){  
+                tabConceptos.changeSelection(row, 2, false,  false);  
+                tabConceptos.editCellAt(row,2);                
+            }  
+            else if( column == 2){  
+                tabConceptos.changeSelection(row, 3, false,  false);  
+                tabConceptos.editCellAt(row,3);  
+            }
+            else if( column == 3){  
+                tabConceptos.changeSelection(row, 4, false,  false);  
+                tabConceptos.editCellAt(row,4);  
+            }
+            else if (column == 4 ) {
+                tabConceptos.changeSelection(row, 5, false,  false);  
+                tabConceptos.editCellAt(row,5);
+            }
+            else if (column == 5 ) {
+                tabConceptos.changeSelection(row, 6, false,  false);  
+                tabConceptos.editCellAt(row,6);
+            }
+            else if( column == 6){  
+                if( row == (rows - 1) )  
+                    row = -1;  
+                tabConceptos.changeSelection(row + 1, 0, false,  false);  
+                tabConceptos.editCellAt(row + 1,0);  
+            }  
+            evt.consume();  
+        }
+    }
+    
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -528,7 +580,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         txtIEPS.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txtIEPS.setMinimumSize(new java.awt.Dimension(14, 24));
         txtIEPS.setPreferredSize(new java.awt.Dimension(14, 24));
-        txtIEPS.setSize(new java.awt.Dimension(0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 10;
         gridBagConstraints.gridy = 1;
@@ -729,6 +780,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
      */
     public void setTabConceptos(javax.swing.JTable tabConceptos) {
         this.tabConceptos = (JXTable) tabConceptos;
+        tabConceptos.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0, false), "selectNextColumnCell");
     }
 
     /**
