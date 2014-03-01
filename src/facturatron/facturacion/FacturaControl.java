@@ -5,6 +5,8 @@
 
 package facturatron.facturacion;
 
+import facturatron.Dominio.Configuracion;
+import static facturatron.Dominio.Configuracion.getConfig;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Persona;
 import facturatron.Dominio.Renglon;
@@ -23,16 +25,22 @@ import facturatron.omoikane.CorteZDao;
 import facturatron.datasource.RenglonTicket;
 import facturatron.datasource.Ticket;
 import facturatron.datasource.omoikane.TicketOmoikane;
+import facturatron.lib.entities.CFDv3Tron;
+import facturatron.lib.entities.ComprobanteTron;
 import java.awt.Frame;
 import java.awt.List;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +52,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.xml.bind.MarshalException;
+import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
+import mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -54,7 +65,8 @@ import org.xml.sax.SAXParseException;
 public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //solo controlador
 
   ConfigFiscalDao configFiscal;
-
+  /* se usa como bandera para determinar si se realiz'o el timbrado con el PAC */
+  boolean timbrado = false;
   public FacturaControl(){
       try {
           setModel(setupAndInstanceModel());
@@ -72,7 +84,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       configFiscal = new ConfigFiscalDao();
       configFiscal.load();
       dao.setAnoAprobacion(configFiscal.getAnoAprobacion());
-      dao.setNoAprobacion(configFiscal.getNoAprobacion());
+      dao.setNoAprobacion(configFiscal.getNoAprobacion());      
       dao.setNoCertificado(configFiscal.getNoCertificado());
       dao.setSerie(configFiscal.getSerie());
       dao.setFolio(configFiscal.getFolioActual());
@@ -265,7 +277,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   public void btnGuardar(){
 
     if(!validarForm()) return;
-    notifyBusy();
+    notifyBusy();    
+    timbrado = false;
     try {
         Calendar time = Calendar.getInstance();
         getModel().setCertificado("NULO");
@@ -291,6 +304,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         } else {
             getModel().persist();
         }
+        timbrado = true;
     } catch (SAXParseException e) {
         Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Datos erróneos.", e);
     } catch (PACException pa) {
@@ -300,10 +314,78 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
     } finally {
         getView().getBtnGuardar().setEnabled(true);
         notifyIdle();
+        
+        
+        /*
+        if (timbrado) {
+            // getView().getJFrameParent().dispose();
+            //getView().getJFrameParent().remove(this.getView());
+            int opc = JOptionPane.showConfirmDialog(getView(), "Desea Salir", "Seleccione una opción", JOptionPane.YES_NO_OPTION);
+            JFrame jf = getView().getJFrameParent();            
+            jf.remove(this.getView());
+            getView().setVisible(false);
+        }
+                */
     }
     
   }
 
+  public void btnVistaPrevia() {
+      try {
+        
+        if(getView().getTxtIdCliente().getText().equals("")) {
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.INFO, "Necesita especificar un cliente");
+            return ;
+        }  
+          
+        Calendar time = Calendar.getInstance();
+        getModel().setCertificado("NULO");
+        getModel().setEmisor((new ClienteDao()).findBy(1));
+        getModel().setEmisorSucursal((new ClienteDao()).findBy(2));
+        getModel().setFecha(time.getTime());
+        getModel().setHora(new Time(time.getTime().getTime()));
+        getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
+        getModel().setMetodoDePago(getView().getTxtMetodoPago().getText());
+        getModel().setIvaTrasladado(new BigDecimal(getView().getTxtIva().getText().replaceAll(",", "")));
+        getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
+        getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
+        getModel().setTipoDeComprobante(getView().getTipoComprobante().getEfectoString());
+        getModel().setVersion("3.2");  
+          
+        ObjectFactory of = new ObjectFactory();
+        TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            
+        timbre.setFechaTimbrado( dateFormat.parse("2000-01-01T00:00:00") );
+        timbre.setNoCertificadoSAT( "30001000000100000801" );
+        timbre.setVersion("1.0");
+        timbre.setUUID( "ad662d33-6934-459c-a128-bdf0393e0f44" );
+        timbre.setSelloSAT( "j5bSpqM3w0+shGtlmqOwqqy6+d659O78ckfstu5vTSFa+2CVMj6Awfr18x4yMLGBwk6ruYbjBIVURodEII6nJIhTTUtYQV1cbRDG9kvvhaNAakx qaSOnOnOx79nHxqFPRVoqh10CsjocS9PZkSM2jz1uwLgaF0knf1g8pjDkLYwlk=" );
+        timbre.setSelloCFD( "tOSe+Ex/wvn33YIGwtfmrJwQ31Crd7II9VcH63TGjHfxk5cfb3q9uSbDUGk9TXvo70ydOpikRVw+9B2Six0mbu3PjoPpO909oAYITrRyomdeUGJ 4vmA2/12L86EJLWpU7vlt4cL8HpkEw7TOFhSdpzb/890+jP+C1adBsHU1VHc=" );
+
+        Comprobante.Complemento complemento = of.createComprobanteComplemento();
+        complemento.getAny().add(timbre);
+        
+        Configuracion cfg = getConfig();
+        ComprobanteTron ct = getModel().toComprobanteTron();
+        CFDv3Tron cfd = new CFDv3Tron();
+        cfd.setComprobante(ct);  
+        
+        ct.setComplemento(complemento);
+
+        String serie = cfd.getComprobante().getSerie();
+        String folio = cfd.getComprobante().getFolio();
+        cfd.getComprobante().setPathLogo(cfg.getPathLogo());
+        
+        //Visor Java
+        cfd.showPreview(cfg.getPathPlantilla());
+        
+      } catch(IOException io) {
+          Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Excepción en visor PDF", io);
+      } catch (Exception ex) {
+          Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "No fue posible mostrar la vista previa", ex);
+      }
+  }
 
     @Override
     public void asignarEventos() {
@@ -330,18 +412,37 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             }
         });
         getView().getBtnGuardar().addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Factura> rep = new ArrayList<Factura>();
                 new Thread() {
                     public void run() {
                         btnGuardar();
+                        if (timbrado) {
+                            int opc = JOptionPane.showConfirmDialog(getView(), "Factura Timbrada desea cerrar la pestaña", "Alert", JOptionPane.YES_NO_OPTION);
+                            if (opc == 0) {
+                                getView().getParent().remove(getView());
+                            }
+                        }
+                        
                     }
                 }.start();
+<<<<<<< HEAD
+
+            }
+        });
+        getView().getBtnVistaPrevia().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnVistaPrevia();
+=======
                 //  new Reporte("facturatron/factura.jasper",FacturaDao.findById(10)); //buscamos la ruta donde se encuentra el reporte jasper
                 // reporte.lanzarPreview(null);
+                
+>>>>>>> FETCH_HEAD
             }
+            
         });
         getView().getTabConceptos().getModel().addTableModelListener(new TableModelListener() {
 

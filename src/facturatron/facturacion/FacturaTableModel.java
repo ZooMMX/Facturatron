@@ -49,6 +49,12 @@ public class FacturaTableModel extends AbstractTableModel {
         fireTableRowsInserted(getData().size()-1, getData().size()-1);
         fireTableDataChanged();
     }
+    
+    public void removeRow(int row) {
+        getData().remove(row);
+        fireTableRowsDeleted(row, row);
+        fireTableDataChanged();
+    }
 
     @Override
     public boolean isCellEditable(int row, int col) {
