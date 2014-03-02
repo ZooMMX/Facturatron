@@ -13,9 +13,13 @@ package facturatron.facturacion;
 
 import com.alee.laf.button.WebButton;
 import java.awt.Container;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -73,15 +77,34 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             }  
         }); 
         txtDireccion.setEditable(false);
-        tabConceptos.setSortable(false);       
+        tabConceptos.setSortable(false);    
+        
+        tabConceptos.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0, false), "selectNextColumnCell");
+        ActionMap am = tabConceptos.getActionMap();
+        am.put("selectPreviousColumnCell", new PreviousFocusHandler());    
+        am.put("selectNextColumnCell", new NextFocusHandler());  
     }
+    private class PreviousFocusHandler extends AbstractAction {
+        public void actionPerformed(ActionEvent evt) {
+            KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+            manager.focusPreviousComponent();
+        }
+    }
+
+    private class NextFocusHandler extends AbstractAction {
+        public void actionPerformed(ActionEvent evt) {
+            KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+            manager.focusNextComponent();
+        }
+    }
+
     //Metodo para intercambiar con la tecla <tab>  enter entre columnas de la tabla tabConceptos
     private void whichKeyPressed(java.awt.event.KeyEvent evt) {  
         int column = tabConceptos.getSelectedColumn();  
         int row = tabConceptos.getSelectedRow();  
         int rows = tabConceptos.getRowCount();             
         if(evt.getKeyCode() == KeyEvent.VK_ENTER ||  
-            evt.getKeyCode() == KeyEvent.VK_TAB){
+            evt.getKeyCode() == KeyEvent.VK_TAB && !evt.isShiftDown() ){
             if( column == 0){                  
                 tabConceptos.changeSelection(row, 1, false,  false);  
                 tabConceptos.editCellAt(row,1);                
@@ -113,6 +136,17 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                 tabConceptos.editCellAt(row + 1,0);  
             }  
             evt.consume();  
+        } else if((evt.getKeyCode() == KeyEvent.VK_TAB) && evt.isShiftDown()) {
+            Integer col = column;
+            switch(column) {
+                case 0:
+                    if(row-1 >= 0) { row--; col = 6; } break;
+                default:
+                    col--; break;                
+            }
+            tabConceptos.changeSelection(row, col, false,  false);  
+            tabConceptos.editCellAt(row, col);
+            evt.consume();
         }
     }
     
@@ -802,7 +836,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
      */
     public void setTabConceptos(javax.swing.JTable tabConceptos) {
         this.tabConceptos = (JXTable) tabConceptos;
-        tabConceptos.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0, false), "selectNextColumnCell");
+        
     }
 
     /**

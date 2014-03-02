@@ -47,7 +47,7 @@ public class FacturaTableModel extends AbstractTableModel {
     public void addRow() {
         getData().add(new Renglon());
         fireTableRowsInserted(getData().size()-1, getData().size()-1);
-        fireTableDataChanged();
+     
     }
     
     public void removeRow(int row) {

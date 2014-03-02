@@ -427,7 +427,6 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                         
                     }
                 }.start();
-<<<<<<< HEAD
 
             }
         });
@@ -436,11 +435,6 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             @Override
             public void actionPerformed(ActionEvent e) {
                 btnVistaPrevia();
-=======
-                //  new Reporte("facturatron/factura.jasper",FacturaDao.findById(10)); //buscamos la ruta donde se encuentra el reporte jasper
-                // reporte.lanzarPreview(null);
-                
->>>>>>> FETCH_HEAD
             }
             
         });
