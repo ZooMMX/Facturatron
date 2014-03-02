@@ -19,11 +19,7 @@ import java.util.Observer;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-<<<<<<< HEAD
-import javax.swing.table.DefaultTableModel;
-=======
 import javax.swing.KeyStroke;
->>>>>>> FETCH_HEAD
 import org.jdesktop.swingx.JXTable;
 
 /**
