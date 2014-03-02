@@ -1,10 +1,10 @@
 ## 1.7.0.9 (2014-03-02)
 - Mejoras de usabilidad en confección de factura:
-   - Navegación mediante `<tab>` (tecla tabular) entre columnas de los conceptos de una factura. Gracias a Jose Julian Abarca
+   - \#44 Navegación mediante `<tab>` (tecla tabular) entre columnas de los conceptos de una factura. Gracias a Jose Julian Abarca
    - Navegación mediante `<shift>+<tab>` entre columnas (hacia atrás)
-   - Vista previa de comprobantes
-   - Botón para eliminar renglones (partidas) de comprobante
-   - Diálogo para cerrar factura timbrada. Se lanza al confirmar timbrado y pregunta si se quiere cerrar la pestaña donde se confeccionó el CFDI. 
+   - \#43 Vista previa de comprobantes
+   - \#40 Botón para eliminar renglones (partidas) de comprobante
+   - \#42 Diálogo para cerrar factura timbrada. Se lanza al confirmar timbrado y pregunta si se quiere cerrar la pestaña donde se confeccionó el CFDI. 
 
 ## 1.7.0.8 (2014-02-08)
 - Soporte para IEPS
