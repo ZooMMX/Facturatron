@@ -1,3 +1,11 @@
+## 1.7.0.9 (2014-03-02)
+- Mejoras de usabilidad en confección de factura:
+   - Navegación mediante `<tab>` (tecla tabular) entre columnas de los conceptos de una factura. Gracias a Jose Julian Abarca
+   - Navegación mediante `<shift>+<tab>` entre columnas (hacia atrás)
+   - Vista previa de comprobantes
+   - Botón para eliminar renglones (partidas) de comprobante
+   - Diálogo para cerrar factura timbrada. Se lanza al confirmar timbrado y pregunta si se quiere cerrar la pestaña donde se confeccionó el CFDI. 
+
 ## 1.7.0.8 (2014-02-08)
 - Soporte para IEPS
  - Nuevos campos de IEPS en el formulario de facturación
@@ -8,12 +16,12 @@
 
 ## 1.7.0 RC1. Integración CFDI
 
- [FEATURED] Migrado de CFD v2.2 a CFDI 3.2
+- [FEATURED] Migrado de CFD v2.2 a CFDI 3.2
 - Arquitectura de PACs modular
 - Implementado el PAC Finkok
-- #28 Ventana de configuración de PAC
-- #29 Ventana de status de CFDIs y cancelaciones
-- #22 y #13 Mejorada la información que despliegan los errores,
+- \#28 Ventana de configuración de PAC
+- \#29 Ventana de status de CFDIs y cancelaciones
+- \#22 y #13 Mejorada la información que despliegan los errores,
 validación de formulario que da info sobre alrededor de 20 tipos de
 errores en llenado y validación de timbrado y cancelación que describe
 alrededor de otros 20 tipos de problemas. Además sembré descripciones
