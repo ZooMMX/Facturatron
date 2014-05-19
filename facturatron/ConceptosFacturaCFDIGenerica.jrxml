@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConceptosFacturaDigital" language="groovy" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f0922c5e-2789-4946-81db-d743ef1fa218">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[cantidad]]></fieldDescription>
+	</field>
+	<field name="complementoConcepto" class="mx.bigdata.sat.cfd.schema.Comprobante$Conceptos$Concepto$ComplementoConcepto">
+		<fieldDescription><![CDATA[complementoConcepto]]></fieldDescription>
+	</field>
+	<field name="cuentaPredial" class="mx.bigdata.sat.cfd.schema.Comprobante$Conceptos$Concepto$CuentaPredial">
+		<fieldDescription><![CDATA[cuentaPredial]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[descripcion]]></fieldDescription>
+	</field>
+	<field name="importe" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[importe]]></fieldDescription>
+	</field>
+	<field name="informacionAduanera" class="java.util.List">
+		<fieldDescription><![CDATA[informacionAduanera]]></fieldDescription>
+	</field>
+	<field name="noIdentificacion" class="java.lang.String">
+		<fieldDescription><![CDATA[noIdentificacion]]></fieldDescription>
+	</field>
+	<field name="parte" class="java.util.List">
+		<fieldDescription><![CDATA[parte]]></fieldDescription>
+	</field>
+	<field name="unidad" class="java.lang.String">
+		<fieldDescription><![CDATA[unidad]]></fieldDescription>
+	</field>
+	<field name="valorUnitario" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorUnitario]]></fieldDescription>
+	</field>
+	<field name="etiquetaImpuestos" class="java.lang.String">
+		<fieldDescription><![CDATA[etiquetaImpuestos]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement mode="Opaque" x="0" y="1" width="572" height="23" forecolor="#FFFFFF" backcolor="#666666" uuid="c0fbc045-f959-4690-b550-9c80123a4ebc"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="8f553c67-e0ee-4a25-88d6-d32d335fc1ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="3" width="42" height="20" forecolor="#FFFFFF" uuid="3cf9fb41-63e1-41d8-8a42-81b02334f42f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="732d73f8-ffeb-422c-aa19-e26e6dd870e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Unidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="3" width="234" height="20" forecolor="#FFFFFF" uuid="85354327-0cfb-492e-8285-3e34f95a12c2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="3" width="66" height="20" forecolor="#FFFFFF" uuid="34fff5e9-055f-4077-9bc1-f85e0278a6a3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[PU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="3" width="74" height="20" forecolor="#FFFFFF" uuid="7087a3f2-c7d9-4441-b4e4-7689e90a2e3a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="3" width="36" height="20" forecolor="#FFFFFF" uuid="0209e6da-d543-4079-ba97-2b700e7a130c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%IVA/%IEPS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="122" y="0" width="40" height="15" uuid="dd01ba4a-f252-408d-9405-b6baa509eefc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{unidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000">
+				<reportElement x="80" y="0" width="42" height="15" uuid="961ebc40-d5b3-42d5-ae44-f367e7e8d20b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="13" y="15" width="550" height="1" forecolor="#000066" uuid="89f67568-a919-4b57-a53a-cb12582a08f4"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="80" height="15" uuid="a51e47bf-6146-4546-a247-2ed48077f3c4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{noIdentificacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(-#,##0.00)">
+				<reportElement x="432" y="1" width="66" height="15" uuid="ec764377-1d33-4e23-a814-ea0b8e69181d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{valorUnitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="162" y="0" width="234" height="15" uuid="d212d431-b215-4f20-b9b8-a3645b850cdf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="396" y="0" width="36" height="15" uuid="24e5cd32-01e9-4036-b225-3608061b569e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{etiquetaImpuestos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(-#,##0.00)">
+				<reportElement x="498" y="0" width="74" height="15" uuid="f378480c-bc51-44a8-a8f7-9493d07fa892"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -17,8 +17,6 @@ import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos.Concepto;
 public class ConceptoTron extends Concepto {
     private String etiquetaImpuestos;
     private BigDecimal ieps;
-
-
     /**
      * @return the etiquetaImpuestos
      */

@@ -35,6 +35,7 @@ public class Serie extends Model implements Serializable {
      */
     public void setNoAprobacion(BigInteger noAprobacion) {
         this.noAprobacion = noAprobacion;
+        
     }
 
     /**
@@ -134,6 +135,4 @@ public class Serie extends Model implements Serializable {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-
-    
 }

@@ -16,7 +16,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package facturatron.datasource.omoikane;
+ package facturatron.datasource.omoikane;
+
+
 
 import facturatron.datasource.DatasourceException;
 import facturatron.datasource.IDatasourceService;
@@ -35,6 +37,10 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
     @Override
     public Ticket getTicket(Object id) {
         return new TicketOmoikane().getTicket(id);
+    }
+    
+    public Ticket getTickets(Object idInicial, Object idFinal) {
+        return new TicketOmoikane().getTicket(idInicial);
     }
 
     @Override

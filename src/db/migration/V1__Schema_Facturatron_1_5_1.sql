@@ -110,6 +110,15 @@ CREATE  TABLE IF NOT EXISTS `serie` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
+----------------------------------------------
+-- tabla `facturatron`.`medida`
+CREATE  TABLE IF NOT EXISTS `medida` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `nombre` VARCHAR(32) DEFAULT NULL,
+   PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = latin1;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
@@ -124,3 +133,7 @@ VALUES
 -- Insertar Emisor Matriz y Sucursal
 INSERT INTO persona (id) values(1);
 INSERT INTO persona (id) values(2 );
+
+-- Insertar Unidades por Default
+INSERT INTO medida (id, nombre) VALUES (null,'NoAplica');
+INSERT INTO medida (id, nombre) VALUES (null,'Piezas');

@@ -24,7 +24,7 @@ public class MainForm extends javax.swing.JFrame {
     public MainForm() {
         initComponents();
         this.getPanelEdicion().setAutoFocusOnTabHideClose(true);
-        this.getPanelEdicion().setAutoRequestFocus(true);
+        this.getPanelEdicion().setAutoRequestFocus(true);        
         setSize(1024, 768);
     }
 
@@ -44,6 +44,7 @@ public class MainForm extends javax.swing.JFrame {
         linkInformeMensual = new org.jdesktop.swingx.JXHyperlink();
         jXTaskPane2 = new org.jdesktop.swingx.JXTaskPane();
         linkCatalogo = new org.jdesktop.swingx.JXHyperlink();
+        linkUnidad = new org.jdesktop.swingx.JXHyperlink();
         jXTaskPane3 = new org.jdesktop.swingx.JXTaskPane();
         linkCfgFiscal = new org.jdesktop.swingx.JXHyperlink();
         linkCfgSystem = new org.jdesktop.swingx.JXHyperlink();
@@ -84,9 +85,9 @@ public class MainForm extends javax.swing.JFrame {
 
         jXTaskPaneContainer1.add(jXTaskPane1);
 
-        jXTaskPane2.setTitle("Clientes");
+        jXTaskPane2.setTitle("Catálogos");
 
-        linkCatalogo.setText("Catálogo");
+        linkCatalogo.setText("Clientes");
         linkCatalogo.setUnclickedColor(new java.awt.Color(0, 0, 0));
         linkCatalogo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,6 +95,15 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
         jXTaskPane2.getContentPane().add(linkCatalogo);
+
+        linkUnidad.setText("Unidades");
+        linkUnidad.setUnclickedColor(new java.awt.Color(0, 0, 0));
+        linkUnidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                linkUnidadActionPerformed(evt);
+            }
+        });
+        jXTaskPane2.getContentPane().add(linkUnidad);
 
         jXTaskPaneContainer1.add(jXTaskPane2);
 
@@ -133,9 +143,10 @@ public class MainForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("1.7.0.9");
+        jLabel1.setText("1.7.0.10");
         jXTaskPaneContainer1.add(jLabel1);
 
+        panelEdicion.setAutoscrolls(true);
         panelEdicion.setShowCloseButtonOnTab(true);
         panelEdicion.setShowTabButtons(true);
         panelEdicion.setTabEditingAllowed(true);
@@ -145,8 +156,8 @@ public class MainForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -156,7 +167,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+            .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 365, Short.MAX_VALUE)
         );
 
         pack();
@@ -182,6 +193,10 @@ public class MainForm extends javax.swing.JFrame {
     private void linkCfgPACActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkCfgPACActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_linkCfgPACActionPerformed
+
+    private void linkUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkUnidadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_linkUnidadActionPerformed
 
     /**
     * @param args the command line arguments
@@ -213,8 +228,17 @@ public class MainForm extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXHyperlink linkFacturasEmitidas;
     private org.jdesktop.swingx.JXHyperlink linkInformeMensual;
     private org.jdesktop.swingx.JXHyperlink linkSalir;
+    private org.jdesktop.swingx.JXHyperlink linkUnidad;
     private com.jidesoft.swing.JideTabbedPane panelEdicion;
     // End of variables declaration//GEN-END:variables
+
+    public JXHyperlink getLinkUnidad() {
+        return linkUnidad;
+    }
+
+    public void setLinkUnidad(JXHyperlink linkUnidad) {
+        this.linkUnidad = linkUnidad;
+    }
 
 
 
@@ -309,7 +333,9 @@ public class MainForm extends javax.swing.JFrame {
     public org.jdesktop.swingx.JXHyperlink getLinkCatalogo() {
         return linkCatalogo;
     }
-
+    public org.jdesktop.swingx.JXHyperlink GetlinkUnidad() {
+        return linkUnidad;        
+    }
     /**
      * @param linkCatalogo the linkCatalogo to set
      */

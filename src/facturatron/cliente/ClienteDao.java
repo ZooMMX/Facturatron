@@ -56,14 +56,13 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
                 bean.setPais(rs.getString("pais"));
                 bean.setRegimen(rs.getString("regimen"));
                 bean.setCorreoElectronico(rs.getString("correoelectronico"));
-
                 ret.add(bean);
 
              }
              return ret;
         }catch(Exception ex){
 
-            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, null, ex);
+             
 
         } finally{  //si falla o no falla se tiene que desconectar
             bd.desconectar();
