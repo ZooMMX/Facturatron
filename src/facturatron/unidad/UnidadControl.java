@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.jdesktop.swingx.JXTable;
 
 /**
  *
@@ -101,6 +102,8 @@ public class UnidadControl  extends Controller<UnidadDao, UnidadForm>{
                 notifyBusy();
                 UnidadTableModel tabModel = new UnidadTableModel();
                 getView().getTablaUnidad().setModel(tabModel);
+                getView().getTablaUnidad().setAutoResizeMode(JXTable.AUTO_RESIZE_OFF);
+                getView().getTablaUnidad().getColumnModel().getColumn(1).setPreferredWidth(160);
                 getModel().addObserver(getView());
                 getView().setModelo(getModel());
                 notifyIdle();
