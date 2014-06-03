@@ -43,8 +43,18 @@ public class ProductoControl extends Controller<ProductoDao, ProductoForm>{
         if (getView().getTxtClave().getText().isEmpty()) {
             JOptionPane.showMessageDialog(getView(), "El campo clave no puede estar vacío");
             return false;
-        }        
+        }
+        
+        if (getModel().findByNombre(getView().getTxtNombre().getText())) {
+            JOptionPane.showMessageDialog(getView(), "Existe un producto con este nombre");
+            return false;
+        }                   
+        if (getModel().findByClave(getView().getTxtClave().getText())) {
+            JOptionPane.showMessageDialog(getView(), "Existe un producto con esta clave");
+            return false;
+        }
         return true;
+        
     }
 
     @Override

@@ -52,7 +52,7 @@ public class ProductoTableModel extends AbstractTableModel {
     public void fill() {
        setData ((new ProductoDao()).findAll());       
        fireTableRowsUpdated(0, getRowCount() - 1);
-   }
+   }   
     public ArrayList<Producto> getData() {
         return  data;
     }

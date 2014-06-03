@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ArrayList;
+import org.codehaus.groovy.tools.shell.ParseCode;
 /**
  *
  * @author gnujach
@@ -100,6 +101,7 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
         }
     }
 
+    
     @Override
     public ArrayList<Producto> findAll() {
         JDBCDAOSupport bd = getBD();
@@ -126,6 +128,54 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
         }
         return null;        
     }
+    
+    public boolean findByNombre(String searchString) {
+        JDBCDAOSupport bd = getBD();
+        try {
+            bd.conectar();
+            Integer numberOfRows = 0;
+            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM producto WHERE (nombre = ? ) LIMIT 1");           
+            ps.setString(1, searchString);            
+            ResultSet rs = ps.executeQuery();            
+            if(rs.next()) {
+                numberOfRows = rs.getInt(1);
+            }            
+            if (numberOfRows > 0)
+                return true;
+            else
+                return false;                        
+        }catch (Exception ex) {
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Error al consultar producto", ex);
+        } finally {
+            bd.desconectar();
+        }
+        return true;
+    }
+    
+    public boolean findByClave(String searchString) {
+        JDBCDAOSupport bd = getBD();
+        try {
+            bd.conectar();
+            Integer numberOfRows = 0;
+            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM producto WHERE (clave = ?) LIMIT 1");
+            ps.setString(1, searchString);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                numberOfRows = rs.getInt(1);
+            }            
+            if (numberOfRows > 0)
+                return true;
+            else
+                return false;            
+        }catch (Exception ex) {
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Error al consultar producto", ex);
+        } finally {
+            bd.desconectar();
+        }
+        return true;
+    }
+    
+    
     public ArrayList<Producto> find(String searchString) {
         JDBCDAOSupport bd = getBD();
         try {
