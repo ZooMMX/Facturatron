@@ -120,6 +120,17 @@ ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = latin1;
 
+----------------------------------------------
+-- Tabla Productos
+CREATE TABLE IF NOT EXISTS `producto` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(32) DEFAULT NULL,
+  `clave` varchar(12) NOT NULL,
+  `precio` double NOT NULL,
+  `activo` tinyint(4) NOT NULL,
+  `notas` varchar(254) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
