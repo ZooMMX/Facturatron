@@ -14,6 +14,7 @@ import facturatron.config.ConfiguracionControl;
 import facturatron.facturacion.FacturaControl;
 import facturatron.facturacion.InformeMensual.InformeControl;
 import facturatron.facturacion.ListadoControl;
+import facturatron.producto.ProductoControl;
 import facturatron.unidad.UnidadControl;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.ActionEvent;
@@ -47,6 +48,7 @@ public class Main extends Controller<Model, MainForm> {
         asignarLinkAcercaDe();
         asignarLinkSalir();
         asignarLinkUnidad();
+        asignarLinkProducto();
 
     }
 
@@ -65,6 +67,11 @@ public class Main extends Controller<Model, MainForm> {
             UnidadControl fs = new UnidadControl();
             fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
             ((MainForm) getView()).addTab("Unidades", fs.getView());
+    }
+    private void productos () throws Exception {
+        ProductoControl fs = new ProductoControl();
+        fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
+        ((MainForm) getView()).addTab("Productos", fs.getView());
     }
     private void facturasEmitidas() throws Exception {
         ListadoControl lc = new ListadoControl();
@@ -196,6 +203,19 @@ public class Main extends Controller<Model, MainForm> {
                     unidades();
                 } catch (Exception ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo Unidad", ex);
+                }
+            }
+        });
+    }
+    private void asignarLinkProducto () {
+        getView().getLinkProducto().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    productos();
+                } catch (Exception ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo de Productos", ex);
                 }
             }
         });

@@ -45,6 +45,7 @@ public class MainForm extends javax.swing.JFrame {
         jXTaskPane2 = new org.jdesktop.swingx.JXTaskPane();
         linkCatalogo = new org.jdesktop.swingx.JXHyperlink();
         linkUnidad = new org.jdesktop.swingx.JXHyperlink();
+        linkProducto = new org.jdesktop.swingx.JXHyperlink();
         jXTaskPane3 = new org.jdesktop.swingx.JXTaskPane();
         linkCfgFiscal = new org.jdesktop.swingx.JXHyperlink();
         linkCfgSystem = new org.jdesktop.swingx.JXHyperlink();
@@ -104,6 +105,10 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
         jXTaskPane2.getContentPane().add(linkUnidad);
+
+        linkProducto.setText("Productos");
+        linkProducto.setUnclickedColor(new java.awt.Color(0, 0, 0));
+        jXTaskPane2.getContentPane().add(linkProducto);
 
         jXTaskPaneContainer1.add(jXTaskPane2);
 
@@ -173,6 +178,14 @@ public class MainForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public JXHyperlink getLinkProducto() {
+        return linkProducto;
+    }
+
+    public void setLinkProducto(JXHyperlink linkProducto) {
+        this.linkProducto = linkProducto;
+    }
+
     private void linkFacturasEmitidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkFacturasEmitidasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_linkFacturasEmitidasActionPerformed
@@ -227,6 +240,7 @@ public class MainForm extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXHyperlink linkFacturar;
     private org.jdesktop.swingx.JXHyperlink linkFacturasEmitidas;
     private org.jdesktop.swingx.JXHyperlink linkInformeMensual;
+    private org.jdesktop.swingx.JXHyperlink linkProducto;
     private org.jdesktop.swingx.JXHyperlink linkSalir;
     private org.jdesktop.swingx.JXHyperlink linkUnidad;
     private com.jidesoft.swing.JideTabbedPane panelEdicion;
