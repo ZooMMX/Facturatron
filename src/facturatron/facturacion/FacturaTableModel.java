@@ -46,8 +46,7 @@ public class FacturaTableModel extends AbstractTableModel {
 
     public void addRow() {
         getData().add(new Renglon());
-        fireTableRowsInserted(getData().size()-1, getData().size()-1);
-     
+        fireTableRowsInserted(getData().size()-1, getData().size()-1);     
     }
     
     public void removeRow(int row) {
@@ -148,7 +147,6 @@ public class FacturaTableModel extends AbstractTableModel {
     public void updateImporte(Renglon renglon) {
         BigDecimal cantidad = renglon.getCantidad();
         BigDecimal valor    = renglon.getValorUniario();
-
         BigDecimal importe = cantidad.multiply(valor);
         renglon.setImporte(importe);
     }

@@ -10,6 +10,7 @@ import static facturatron.Dominio.Configuracion.getConfig;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Persona;
 import facturatron.Dominio.Renglon;
+import facturatron.Dominio.Medida;
 import java.awt.event.ActionEvent;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.PersistenceException;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -52,10 +54,14 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.xml.bind.MarshalException;
+import javax.swing.JComboBox;
+import javax.swing.table.TableColumn;
 import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
 import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
 import mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital;
 import org.xml.sax.SAXParseException;
+import facturatron.unidad.UnidadDao;
+
 
 /**
  *
@@ -70,7 +76,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   public FacturaControl(){
       try {
           setModel(setupAndInstanceModel());
-          setView(new FacturaForm());
+          setView(new FacturaForm());         
           init();
           PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(this);
           popupBuscarCliente.install();
@@ -184,6 +190,13 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       AddTicketDialog dialog = new AddTicketDialog(mainJFrame);
       notifyBusy();
       new ThreadAddTicket(dialog).start();
+  }
+  
+  public void btnRango () {
+      JFrame mainJFrame = (JFrame) JFrame.getFrames()[0];
+      AddTicketRangoDialog dialog = new AddTicketRangoDialog(mainJFrame);
+      notifyBusy();
+      new ThreadRangoTicket(dialog).start();
   }
   
   public void btnFacturaDia() {
@@ -316,16 +329,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         notifyIdle();
         
         
-        /*
-        if (timbrado) {
-            // getView().getJFrameParent().dispose();
-            //getView().getJFrameParent().remove(this.getView());
-            int opc = JOptionPane.showConfirmDialog(getView(), "Desea Salir", "Seleccione una opción", JOptionPane.YES_NO_OPTION);
-            JFrame jf = getView().getJFrameParent();            
-            jf.remove(this.getView());
-            getView().setVisible(false);
-        }
-                */
+       
     }
     
   }
@@ -439,7 +443,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             
         });
         getView().getTabConceptos().getModel().addTableModelListener(new TableModelListener() {
-
+            
             @Override
             public void tableChanged(TableModelEvent e) {
                 renglonesActualizados();
@@ -456,7 +460,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             public void actionPerformed(ActionEvent e) {
                 btnAddTicket();
             }
-        });
+        });        
         getView().getBtnFacturaDia().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -484,7 +488,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getView().getTxtDescuentoTasa0().getDocument().addDocumentListener(dl);
         getView().getTxtDescuentoTasa16().getDocument().addDocumentListener(dl);
     }
-
+    
+    
     @Override
     public void enlazarModeloVista() {
         FacturaTableModel ftm = new FacturaTableModel();
@@ -492,7 +497,16 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         ftm.addRow();
         getView().getTabConceptos().setModel(ftm);
         getView().getTabConceptos().setDefaultRenderer(BigDecimal.class, new FacturaTableModel.DecimalFormatRenderer());
-        getView().setModelo(getModel());
+        getView().setModelo(getModel());        
+        UnidadDao unidadDao = new UnidadDao();
+        ArrayList<Medida> unidades =  unidadDao.findAll();
+        
+        TableColumn columnaUnidad = getView().getTabConceptos().getColumnModel().getColumn(3);
+        JComboBox comboBox = new JComboBox();
+        for (Medida unidad : unidades) {
+            comboBox.addItem(unidad.getNombre().toString());
+        }
+        columnaUnidad.setCellEditor(new DefaultCellEditor(comboBox));        
         getModel().addObserver(getView());
     }
 
@@ -538,6 +552,46 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         }
     }
     
+    private class ThreadRangoTicket extends Thread {
+
+        private final AddTicketRangoDialog dialog;
+
+        public ThreadRangoTicket(AddTicketRangoDialog dialog) {
+            this.dialog = dialog;
+        }
+
+        @Override
+        public void run() {
+            try {
+                int[] tickets;
+                tickets = new int [2];
+                tickets = dialog.lanzar();
+                if (tickets != null) {
+                    
+                    FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();                    
+                    Ticket t = DatasourceContext.instanceDatasourceInstance().getTickets(tickets[0], tickets[1]);                    
+                    for (RenglonTicket renglon : t) {
+                        modelo.setValueAt(renglon.cantidad, modelo.getRowCount() - 1, 0); //0 = Columna cantidad
+                        modelo.setValueAt(!renglon.impuestos, modelo.getRowCount() - 1, 5); //5 = Impuestos 0%
+                        modelo.setValueAt(renglon.codigo, modelo.getRowCount() - 1, 1); //1 = Código
+                        modelo.setValueAt(renglon.descripcion, modelo.getRowCount() - 1, 2); //2 = Descripción
+                        modelo.setValueAt(renglon.unidad, modelo.getRowCount() - 1, 3); //3 = Unidad
+                        modelo.setValueAt(renglon.precioUnitario, modelo.getRowCount() - 1, 4); //4 = Precio unitario con descuento
+                    }
+                }
+            } catch (DatasourceException ex) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Problema al importar datos del ticket", ex);
+            } catch (NumberFormatException nfe) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653527", nfe);
+            } catch (ArrayIndexOutOfBoundsException ae) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653528", ae);
+            } catch (PersistenceException pe) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "No se pudo conectar a la base de datos del punto de venta", pe);
+            } finally {
+                notifyIdle();
+            }
+        }
+    }
     //TODO Volverlo esta clase un handler
     private class ThreadAddCorteZ extends Thread {
 
@@ -553,7 +607,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 
                 ClienteDao clienteDao = new ClienteDao();
                 ArrayList<Persona> publicoEnGeneral = clienteDao.find("blico en general");
-                getModel().setMetodoDePago("EFECTIVO");
+                getModel().setMetodoDePago("NO IDENTIFICADO");
                 if(publicoEnGeneral.size() > 0)
                     getModel().setReceptor(publicoEnGeneral.get(0));
                 
@@ -582,6 +636,4 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             }
         }
     }
-
-
 }

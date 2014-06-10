@@ -14,6 +14,9 @@ import facturatron.config.ConfiguracionControl;
 import facturatron.facturacion.FacturaControl;
 import facturatron.facturacion.InformeMensual.InformeControl;
 import facturatron.facturacion.ListadoControl;
+import facturatron.producto.ProductoControl;
+import facturatron.unidad.UnidadControl;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -27,7 +30,9 @@ public class Main extends Controller<Model, MainForm> {
     public Main() {
         setView(new MainForm());
         getView().setVisible(true);
+        getView().setExtendedState(MAXIMIZED_BOTH);
         init();
+        
     }
 
     @Override
@@ -42,6 +47,8 @@ public class Main extends Controller<Model, MainForm> {
         asignarLinkCfgPAC();
         asignarLinkAcercaDe();
         asignarLinkSalir();
+        asignarLinkUnidad();
+        asignarLinkProducto();
 
     }
 
@@ -56,7 +63,16 @@ public class Main extends Controller<Model, MainForm> {
         fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
         ((MainForm) getView()).addTab("Clientes", fs.getView());
     }
-
+    private void unidades ()  throws Exception {
+            UnidadControl fs = new UnidadControl();
+            fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
+            ((MainForm) getView()).addTab("Unidades", fs.getView());
+    }
+    private void productos () throws Exception {
+        ProductoControl fs = new ProductoControl();
+        fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
+        ((MainForm) getView()).addTab("Productos", fs.getView());
+    }
     private void facturasEmitidas() throws Exception {
         ListadoControl lc = new ListadoControl();
         lc.setBusyHandler(new ProgressPanelBusyHandler(getView()));
@@ -174,6 +190,32 @@ public class Main extends Controller<Model, MainForm> {
                     clientes();
                 } catch (Exception ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo Catalogo", ex);
+                }
+            }
+        });
+    }
+    private void asignarLinkUnidad() {
+        getView().getLinkUnidad().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    unidades();
+                } catch (Exception ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo Unidad", ex);
+                }
+            }
+        });
+    }
+    private void asignarLinkProducto () {
+        getView().getLinkProducto().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    productos();
+                } catch (Exception ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo de Productos", ex);
                 }
             }
         });

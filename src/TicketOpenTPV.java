@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Phesus. Octavio Ruiz
+ * Copyright (C) 2013 octavioruizcastillo
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,13 +16,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package facturatron.datasource;
 
-import java.util.ArrayList;
+
+import facturatron.datasource.opentpv.*;
+import facturatron.datasource.Ticket;
+
 /**
  *
  * @author octavioruizcastillo
  */
-public class Ticket extends ArrayList<RenglonTicket> {
+public class TicketOpenTPV extends Ticket {
+    private String id;
 
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 }
