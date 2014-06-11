@@ -160,5 +160,10 @@ public class UnicentaDatasourceImpl implements IDatasourceService {
         }        
         return ticket;        
     }
+    
+    @Override
+    public void setTicketFacturado(Object id) {
+        
+    }
 }
 

@@ -135,7 +135,7 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
             ps.setString(1, searchString);
             ps.setString(2, searchString);
             ResultSet rs = ps.executeQuery();
-            ArrayList<Producto> ret = new ArrayList<>();
+            ArrayList<Producto> ret = new ArrayList<Producto>();
             Producto bean;
             while (rs.next()) {
                 bean = new Producto();

@@ -26,7 +26,7 @@ import facturatron.datasource.omoikane.OmoikaneDatasourceImpl;
  * @author octavioruizcastillo
  */
 public class DatasourceContext {
-    public static enum DATASOURCE { Omoikane, OpenTPV, Artemisa }
+    public static enum DATASOURCE { Omoikane, OpenTPV, Artemisa, Unicenta }
     public static IDatasourceService instanceDatasourceInstance() throws DatasourceException {
         Configuracion config = Configuracion.getConfig();
         if(config.getConectorDatasource() == DATASOURCE.Omoikane)
@@ -35,6 +35,8 @@ public class DatasourceContext {
             return new facturatron.datasource.opentpv.OpenTPVDatasourceImpl();
         else if(config.getConectorDatasource() == DATASOURCE.Artemisa)
             return new facturatron.datasource.artemisa.ArtemisaDatasourceImpl();
+        else if(config.getConectorDatasource() == DATASOURCE.Unicenta)
+            return new facturatron.datasource.unicenta.UnicentaDatasourceImpl();
         throw new DatasourceException("Se estableció un conector de origen de datos inválido");
     }
 }

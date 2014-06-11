@@ -152,6 +152,11 @@ public class ArtemisaDatasourceImpl implements IDatasourceService {
     }
     
     @Override
+    public Ticket getTickets(Object idInicial, Object idFinal) {
+        return getTicket(idInicial);
+    }
+    
+    @Override
     public CorteZ getCorteZ(Date fecha) throws DatasourceException {
         throw new DatasourceException("Operación no implementada para Artemisa");
     }

@@ -39,6 +39,7 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
         return new TicketOmoikane().getTicket(id);
     }
     
+    @Override
     public Ticket getTickets(Object idInicial, Object idFinal) {
         return new TicketOmoikane().getTicket(idInicial);
     }

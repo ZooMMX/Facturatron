@@ -6,8 +6,8 @@
 
 package facturatron.facturacion.PAC;
 
-import com.finkok.facturacion.stamp.IncidenciaArray;
-//import views.core.soap.services.apps.IncidenciaArray;
+//import com.finkok.facturacion.stamp.IncidenciaArray;
+import views.core.soap.services.apps.IncidenciaArray;
 
 /**
  *
