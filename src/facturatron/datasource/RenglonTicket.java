@@ -17,6 +17,7 @@ public class RenglonTicket {
     public String     descripcion;
     public String     unidad;
     public Boolean    impuestos;
+    public BigDecimal ieps;
     public BigDecimal descuento;
     public BigDecimal importe;
     
@@ -29,9 +30,10 @@ public class RenglonTicket {
                 .append("precioUnitario: ").append(precioUnitario.toPlainString()).append(", ")
                 .append("descripcion: ")   .append(descripcion)                   .append(", ")
                 .append("unidad: ")        .append(unidad)                        .append(", ")
-                .append("impuestos: ")     .append(impuestos.toString())          .append(", ")
+                .append("impuestos IVA: ") .append(impuestos.toString())          .append(", ")
+                .append("impuestos IEPS: ").append(ieps.toString())               .append(", ")
                 .append("descuento: ")     .append(descuento.toPlainString())     .append(", ")
-                .append("importe: ")       .append(importe.toPlainString())       .append(", ")
+                .append("importe: ")       .append(importe.toPlainString())      
                 .append("]");
         
         return builder.toString();

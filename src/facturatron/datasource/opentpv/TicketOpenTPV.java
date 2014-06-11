@@ -24,20 +24,6 @@ import facturatron.datasource.Ticket;
  *
  * @author octavioruizcastillo
  */
-public class TicketOpenTPV extends Ticket {
-    private String id;
+public class TicketOpenTPV extends Ticket<String> {
 
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
 }

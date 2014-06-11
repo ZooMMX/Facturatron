@@ -107,6 +107,7 @@ public class VentasJpaController extends JpaController {
         EntityManager em = null;
         try {
             em = getEntityManager();
+            
             return em.find(Ventas.class, id);
         } finally {
             if(em != null) em.close();

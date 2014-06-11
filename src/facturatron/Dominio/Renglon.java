@@ -217,6 +217,7 @@ public class Renglon extends Model implements Serializable {
     }
 
     public void setTasaIEPS(BigDecimal tasa) {
+        tasa.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         tasaIEPS = tasa;
         updateIEPS();
     }
@@ -232,14 +233,15 @@ public class Renglon extends Model implements Serializable {
      * @param ieps the ieps to set
      */
     public void setIEPS(BigDecimal ieps) {
+        ieps.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         this.ieps = ieps;
     }
 
     private void updateIEPS() {
-        MathContext mc = MathContext.DECIMAL128;
-        
+        MathContext mc = MathContext.DECIMAL64;
+       
         BigDecimal factorIEPS = getTasaIEPS().divide( new BigDecimal("100.00", mc), mc );
-        BigDecimal ieps1 = importe.multiply( factorIEPS );
+        BigDecimal ieps1 = getValorUniario().multiply(getCantidad()).multiply( factorIEPS );
         this.setIEPS( ieps1 );
     }
 }

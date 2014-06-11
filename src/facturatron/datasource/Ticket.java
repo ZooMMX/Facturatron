@@ -23,7 +23,10 @@ import java.util.ArrayList;
 /**
  *
  * @author octavioruizcastillo
+ * @param <K>
  */
-public class Ticket extends ArrayList<RenglonTicket> {
-
+public abstract class Ticket<K extends Object> extends ArrayList<RenglonTicket> {
+    protected K id;
+    public K getId() { return id; }
+    public void setId(K id) { this.id = id; }
 }

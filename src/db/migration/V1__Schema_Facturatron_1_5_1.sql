@@ -123,4 +123,4 @@ VALUES
     (0, 0, "", "", 1, 100, 1);
 -- Insertar Emisor Matriz y Sucursal
 INSERT INTO persona (id) values(1);
-INSERT INTO persona (id) values(2 );
+INSERT INTO persona (id) values(2);

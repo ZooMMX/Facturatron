@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FacturaDigital" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="285"/>
+	<property name="ireport.y" value="772"/>
 	<subDataset name="dataset1"/>
 	<subDataset name="Impuestos">
 		<field name="importe" class="java.math.BigDecimal"/>
@@ -90,7 +90,7 @@
 	<pageHeader>
 		<band height="77">
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="3" width="104" height="15" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="468" y="3" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -116,7 +116,7 @@
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{timbre}.getFechaTimbrado()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="39" width="104" height="15" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="468" y="39" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -131,7 +131,7 @@
 	<columnHeader>
 		<band height="169">
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="55" width="104" height="15" isPrintInFirstWholeBand="true" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="468" y="55" width="104" height="15" isPrintInFirstWholeBand="true" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -170,7 +170,7 @@
 				<reportElement x="277" y="125" width="181" height="1"/>
 			</line>
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="0" width="104" height="15" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="468" y="0" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -188,7 +188,7 @@
 : $F{emisor}.getExpedidoEn().getMunicipio()+", "+$F{emisor}.getExpedidoEn().getEstado()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="88" width="104" height="15" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="468" y="88" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -329,7 +329,7 @@ $F{receptor}.getDomicilio().getEstado()+
 +$F{emisor}.getExpedidoEn().getColonia()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="468" y="121" width="104" height="15" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="468" y="121" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -386,7 +386,7 @@ $F{receptor}.getDomicilio().getEstado()+
 				<textFieldExpression class="java.lang.String"><![CDATA["||1.0|"+$F{timbre}.getUUID()+"|"+(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")).format($F{timbre}.getFechaTimbrado())+"|"+$F{timbre}.getSelloCFD()+"|"+$F{timbre}.getNoCertificadoSAT()+"||"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="123" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="123" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial" size="12"/>
 				</textElement>
@@ -400,7 +400,7 @@ $F{receptor}.getDomicilio().getEstado()+
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="38" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="38" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial"/>
 				</textElement>
@@ -412,7 +412,7 @@ $F{receptor}.getDomicilio().getEstado()+
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotalGravado16}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="55" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="55" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial"/>
 				</textElement>
@@ -442,7 +442,7 @@ $F{receptor}.getDomicilio().getEstado()+
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{descuento}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="4" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="4" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial"/>
 				</textElement>
@@ -470,7 +470,7 @@ $F{receptor}.getDomicilio().getEstado()+
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{importeConLetra}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="21" width="96" height="17" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="390" y="21" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
 					<font fontName="Arial"/>
 				</textElement>
@@ -545,7 +545,7 @@ $F{receptor}.getDomicilio().getEstado()+
 					<jr:column width="96">
 						<jr:detailCell height="11" rowSpan="1">
 							<textField>
-								<reportElement mode="Opaque" x="0" y="0" width="96" height="11" forecolor="#FFFFFF" backcolor="#666666"/>
+								<reportElement mode="Opaque" x="0" y="0" width="96" height="11" forecolor="#FFFFFF" backcolor="#333333"/>
 								<textElement>
 									<font size="8"/>
 								</textElement>

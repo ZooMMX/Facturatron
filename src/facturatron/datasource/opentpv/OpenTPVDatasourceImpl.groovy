@@ -121,5 +121,7 @@ public class OpenTPVDatasourceImpl implements IDatasourceService {
         throw new DatasourceException("Operación no implementada para OpenTPV/OpenBravo");
     }
 	
+    @Override
+    public void setTicketFacturado(Object id) { }
 }
 

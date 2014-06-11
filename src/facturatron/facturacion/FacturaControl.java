@@ -20,8 +20,7 @@ import facturatron.datasource.DatasourceContext;
 import facturatron.datasource.DatasourceException;
 import facturatron.facturacion.PAC.PACException;
 import facturatron.datasource.CorteZ;
-import facturatron.omoikane.CorteZDao;
-
+import facturatron.datasource.IDatasourceService;
 import facturatron.datasource.RenglonTicket;
 import facturatron.datasource.Ticket;
 import facturatron.datasource.omoikane.TicketOmoikane;
@@ -305,6 +304,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             getModel().persist();
         }
         timbrado = true;
+        marcarTicketsFacturados();
     } catch (SAXParseException e) {
         Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Datos erróneos.", e);
     } catch (PACException pa) {
@@ -314,22 +314,18 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
     } finally {
         getView().getBtnGuardar().setEnabled(true);
         notifyIdle();
-        
-        
-        /*
-        if (timbrado) {
-            // getView().getJFrameParent().dispose();
-            //getView().getJFrameParent().remove(this.getView());
-            int opc = JOptionPane.showConfirmDialog(getView(), "Desea Salir", "Seleccione una opción", JOptionPane.YES_NO_OPTION);
-            JFrame jf = getView().getJFrameParent();            
-            jf.remove(this.getView());
-            getView().setVisible(false);
-        }
-                */
     }
     
   }
 
+  public void marcarTicketsFacturados() throws DatasourceException {
+      IDatasourceService ds = DatasourceContext.instanceDatasourceInstance();
+              
+      for(Ticket t : getModel().getTickets()) {
+          ds.setTicketFacturado(t.getId());
+      }
+  }
+  
   public void btnVistaPrevia() {
       try {
         
@@ -513,7 +509,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                     
                     FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();
                     
-                    Ticket t = DatasourceContext.instanceDatasourceInstance().getTicket(idTicket);
+                    Ticket<?> t = DatasourceContext.instanceDatasourceInstance().getTicket(idTicket);
                     
                     for (RenglonTicket renglon : t) {
                         modelo.setValueAt(renglon.cantidad, modelo.getRowCount() - 1, 0); //0 = Columna cantidad
@@ -521,8 +517,14 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                         modelo.setValueAt(renglon.codigo, modelo.getRowCount() - 1, 1); //1 = Código
                         modelo.setValueAt(renglon.descripcion, modelo.getRowCount() - 1, 2); //2 = Descripción
                         modelo.setValueAt(renglon.unidad, modelo.getRowCount() - 1, 3); //3 = Unidad
+                        modelo.setValueAt(renglon.ieps          , modelo.getRowCount() - 1, 6); //6 = % IEPS
+                        //Al editar el campo "precioUnitario" se agrega una nueva fila, por este
+                        //  "comportamiento sincronizado" coloco al final este SET
                         modelo.setValueAt(renglon.precioUnitario, modelo.getRowCount() - 1, 4); //4 = Precio unitario con descuento
+                        
                     }
+                    renglonesActualizados();
+                    FacturaControl.this.getModel().getTickets().add(t);                    
                 }
             } catch (DatasourceException ex) {
                 Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Problema al importar datos del ticket", ex);

@@ -48,10 +48,10 @@ public class TicketTest {
     public void testGetTicketData() throws DatasourceException {
         System.out.println("getTicketData");
         Integer idAlmacen = 1;
-        Integer idCaja = 5;
-        Integer idVenta = 653523;
+        Integer idCaja = 1;
+        Integer idVenta = 3275352;
         Ticket expResult = null;
-        Ticket result = DatasourceContext.instanceDatasourceInstance().getTicket("1-5-653523");
+        Ticket result = DatasourceContext.instanceDatasourceInstance().getTicket("1-1-3275352");
         //assertEquals(expResult, result);
         
     }

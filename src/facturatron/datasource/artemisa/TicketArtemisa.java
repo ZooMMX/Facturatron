@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 octavioruizcastillo @ Phesus
+ * Copyright (C) 2013 octavioruizcastillo
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,16 +16,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package facturatron.datasource;
+package facturatron.datasource.artemisa;
 
-import java.util.Date;
+import facturatron.datasource.Ticket;
 
 /**
  *
  * @author octavioruizcastillo
  */
-public interface IDatasourceService  {
-    public Ticket getTicket(Object id) throws DatasourceException;
-    public CorteZ getCorteZ(Date fecha) throws DatasourceException;
-    public void setTicketFacturado(Object id) throws DatasourceException;
+public class TicketArtemisa extends Ticket<Long> {
+    
 }

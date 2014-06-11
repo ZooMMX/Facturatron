@@ -111,7 +111,7 @@ public class ConfigDatasourceAndPACForm extends javax.swing.JPanel implements Ob
 
         jLabel5.setText("Origen / Conector:");
 
-        origenComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Conector Omoikane", "Conector OpenBravo / OpentTPV" }));
+        origenComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Conector Omoikane", "Conector OpenBravo / OpentTPV", "Conector Artemisa" }));
 
         jLabel7.setText("URL:");
 

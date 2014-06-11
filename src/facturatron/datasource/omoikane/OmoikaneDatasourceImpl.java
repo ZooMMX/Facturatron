@@ -44,5 +44,16 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
         return corte;
     }
 
+    @Override
+    public void setTicketFacturado(Object id) throws DatasourceException {
+        try {
+            TicketOmoikane ticket = new TicketOmoikane();
+            ticket.load(id);
+            ticket.setTicketFacturado(1);
+        } catch (Exception ex) {
+            throw new DatasourceException("No se pudo marcar ticket facturado", ex);
+        }
+    }
+
     
 }

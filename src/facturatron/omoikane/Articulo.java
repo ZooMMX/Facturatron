@@ -6,18 +6,28 @@
 package facturatron.omoikane;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import static org.eclipse.persistence.config.ExclusiveConnectionMode.Transactional;
 
 /**
  *
@@ -37,6 +47,10 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Articulo.findByVersion", query = "SELECT a FROM Articulo a WHERE a.version = :version"),
     @NamedQuery(name = "Articulo.findByIdGrupo", query = "SELECT a FROM Articulo a WHERE a.idGrupo = :idGrupo")})
 public class Articulo implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "esPaquete")
+    private boolean esPaquete;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +66,7 @@ public class Articulo implements Serializable {
     @Column(name = "unidad")
     private String unidad;
     @Column(name = "impuestos")
-    private Double impuestos;
+    private Double sumaImpuestos;
     @Basic(optional = false)
     @Column(name = "uModificacion")
     @Temporal(TemporalType.TIMESTAMP)
@@ -62,6 +76,19 @@ public class Articulo implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_grupo")
     private int idGrupo;
+    
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinTable(name = "articulos_Impuesto", joinColumns = @JoinColumn(name = "articulos_id_articulo", referencedColumnName = "id_articulo"))
+    private Collection<Impuesto> impuestos;
+
+    public Collection<Impuesto> getImpuestos() {
+        Collection<Impuesto> i = impuestos;
+        return i;
+    }
+
+    public void setImpuestos(Collection<Impuesto> impuestos) {
+        this.impuestos = impuestos;
+    }
 
     public Articulo() {
     }
@@ -116,12 +143,12 @@ public class Articulo implements Serializable {
         this.unidad = unidad;
     }
 
-    public Double getImpuestos() {
-        return impuestos;
+    public Double getSumaImpuestos() {
+        return sumaImpuestos;
     }
 
-    public void setImpuestos(Double impuestos) {
-        this.impuestos = impuestos;
+    public void setSumaImpuestos(Double sumaImpuestos) {
+        this.sumaImpuestos = sumaImpuestos;
     }
 
     public Date getUModificacion() {
@@ -171,6 +198,14 @@ public class Articulo implements Serializable {
     @Override
     public String toString() {
         return "facturatron.omoikane.Articulos[idArticulo=" + idArticulo + "]";
+    }
+
+    public boolean getEsPaquete() {
+        return esPaquete;
+    }
+
+    public void setEsPaquete(boolean esPaquete) {
+        this.esPaquete = esPaquete;
     }
 
 }

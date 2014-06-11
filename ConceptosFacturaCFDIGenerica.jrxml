@@ -45,7 +45,7 @@
 	<columnHeader>
 		<band height="25" splitType="Stretch">
 			<rectangle radius="10">
-				<reportElement mode="Opaque" x="0" y="1" width="572" height="23" forecolor="#FFFFFF" backcolor="#666666"/>
+				<reportElement mode="Opaque" x="0" y="1" width="572" height="23" forecolor="#FFFFFF" backcolor="#333333"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="0" y="3" width="80" height="20" forecolor="#FFFFFF"/>
@@ -78,7 +78,7 @@
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="396" y="3" width="36" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="396" y="1" width="36" height="24" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -99,7 +99,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="13" y="15" width="550" height="1" forecolor="#000066"/>
+				<reportElement positionType="Float" x="13" y="15" width="550" height="1" forecolor="#000066"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
@@ -114,8 +114,8 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorUnitario}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="162" y="0" width="234" height="15"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="162" y="0" width="234" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>

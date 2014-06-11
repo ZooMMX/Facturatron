@@ -16,6 +16,7 @@ import facturatron.Principal.Main;
 import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
+import facturatron.datasource.Ticket;
 import facturatron.email.EmailFacturaCliente;
 import facturatron.facturacion.PAC.IPACService;
 import facturatron.facturacion.PAC.PACContext;
@@ -67,6 +68,11 @@ import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
  * @author Octavio
  */
 public class FacturaDao extends Factura implements DAO<Integer,Factura>{
+    
+    /** 
+     * Relación de los tickets importados en la presente factura
+     */
+    private List<Ticket> tickets;
 
     public void validateConstraints() throws ValidationException {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -77,6 +83,13 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
            violaciones = violaciones.concat( String.format("%s: %s%n",violation.getPropertyPath(), violation.getMessage()) );
         }
         if(!violations.isEmpty()) throw new ValidationException(violaciones);
+    }
+
+    /**
+     * @return the tickets
+     */
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
     private static class FolioDuplicadoException extends Exception {
@@ -91,6 +104,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
     public FacturaDao() {
         cal.setTimeZone(tz);
+        tickets = new ArrayList<Ticket>();
     }
 
     private Configuracion getConfig() { return Configuracion.getConfig(); }     

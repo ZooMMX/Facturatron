@@ -5,6 +5,8 @@
     <class>facturatron.omoikane.Ventas</class>
     <class>facturatron.omoikane.Articulo</class>
     <class>facturatron.omoikane.VentasDetalles</class>
+    <class>facturatron.omoikane.ArticulosImpuesto</class>
+    <class>facturatron.omoikane.Impuesto</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value=""/>
       <property name="javax.persistence.jdbc.password" value=""/>

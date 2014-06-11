@@ -7,6 +7,7 @@
 package facturatron.facturacion.PAC;
 
 import facturatron.Dominio.Configuracion;
+import facturatron.facturacion.PAC.dummy.DummyServiceImpl;
 import facturatron.facturacion.PAC.facturainteligente.FacturaInteligentePACServiceImpl;
 import facturatron.facturacion.PAC.finkok.FinkokPACServiceImpl;
 
@@ -15,7 +16,7 @@ import facturatron.facturacion.PAC.finkok.FinkokPACServiceImpl;
  * @author octavioruizcastillo
  */
 public class PACContext {
-    public static enum PACS { Finkok, FacturaInteligente };
+    public static enum PACS { Finkok, FacturaInteligente, Dummy };
     
     public static IPACService instancePACService() throws PACException {
         Configuracion config = Configuracion.getConfig();
@@ -23,6 +24,8 @@ public class PACContext {
             return new FinkokPACServiceImpl();
         else if(config.getConectorPAC() == PACS.FacturaInteligente)
             return new FacturaInteligentePACServiceImpl();
+        else if(config.getConectorPAC() == PACS.Dummy)
+            return new DummyServiceImpl();
         throw new PACException("Se estableció un conector de PAC inválido");
     }
 }
