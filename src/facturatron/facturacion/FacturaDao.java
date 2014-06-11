@@ -62,6 +62,7 @@ import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos;
 import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos.Traslados;
 import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos.Traslados.Traslado;
 import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
+import org.codehaus.groovy.tools.shell.ParseCode;
 
 /**
  *
@@ -100,6 +101,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
     }
 
     Calendar cal = Calendar.getInstance();
+    
     TimeZone tz = TimeZone.getTimeZone("America/Mexico_City");
 
     public FacturaDao() {
@@ -148,11 +150,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         } catch (Exception ex) {
             throw ex;
         }
-     }
-    
-
+     }    
      public ComprobanteTron toComprobanteTron() throws Exception {
-
+        Logger LOGGER = Logger.getLogger("InfoLogging");
         MathContext mc = MathContext.DECIMAL64;
         ComprobanteTron comp = new ComprobanteTron();
                 /* CFDv32.newComprobante( new ByteArrayInputStream(getXml().getBytes("UTF-8")) );
@@ -164,18 +164,23 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         dCal.setTime(getFecha());
         Calendar tCal = Calendar.getInstance();
         tCal.setTime(getHora());
+        //tCal.add(tCal.MINUTE, Calendar.MINUTE - 5);
         dCal.set(Calendar.HOUR_OF_DAY, tCal.get(Calendar.HOUR_OF_DAY));
+        //Restamos dos minutos
         dCal.set(Calendar.MINUTE, tCal.get(Calendar.MINUTE));
+        dCal.add(Calendar.MINUTE, -2);
+        //LOGGER.info("Calendar.MINUTE "  + Calendar.MINUTE);
+         
         dCal.set(Calendar.SECOND, tCal.get(Calendar.SECOND));
-        dCal.set(Calendar.MILLISECOND, tCal.get(Calendar.MILLISECOND));
-
+        dCal.set(Calendar.MILLISECOND, tCal.get(Calendar.MILLISECOND));       
+       
         comp.setFecha(dCal.getTime());
+        //LOGGER.info("Fecha y Hora del comprobante "  + dCal.getTime().toString());
         comp.setSerie(getSerie());
         comp.setFolio(String.valueOf(getFolio()));
         comp.setFormaDePago(getFormaDePago());
         comp.setMetodoDePago(getMetodoDePago());
         comp.setLugarExpedicion(getEmisor().getMunicipio()+", "+getEmisor().getEstado());
-
         comp.setSubTotal(getSubtotal().setScale(2,RoundingMode.HALF_EVEN));
         comp.setTotal(getTotal().setScale(2,RoundingMode.HALF_EVEN));
         comp.setDescuento(getDescuentoTasa0().add(getDescuentoTasa16()));
@@ -398,19 +403,14 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         JDBCDAOSupport bd = null;
         CFDv3Tron comprobanteSelladoFirmadoTimbrado;
         
-        try {                    
-            
+        try {            
             bd = getBD();
             bd.conectar(true);
             bd.getCon().setAutoCommit(false);
-
             setFolio(SerieDao.nextId(bd.getCon()));
-
             if(findByFolio(getFolio())!=null) { throw new FolioDuplicadoException(); }
-
             comprobanteSelladoFirmadoTimbrado = sellarFirmarYTimbrar();
             timbrado = true; //Necesario para posible rollback
-
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
                     "(version,fecha,serie,folio,sello,noCertificado,noAprobacion,anoAprobacion," +
                     "formaDePago,subtotal,total,descuentoTasa0,descuentoTasa16,tipoDeComprobante,idEmisor, idReceptor," +

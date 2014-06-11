@@ -33,6 +33,7 @@ public class ClienteControl extends Controller<ClienteDao, ClienteForm> {
     public void updateListado() {
         ((ClienteTableModel)getView().getTablaCliente().getModel()).fill();
         getView().getTablaCliente().updateUI();
+        
     }
     public void btnBuscar() {
         String searchString = getView().getTxtBusqueda().getText();
@@ -55,6 +56,7 @@ public class ClienteControl extends Controller<ClienteDao, ClienteForm> {
     }
     public void btnNuevo() {
         getModel().clearDataModel();
+        getView().getTxtNombre().requestFocus();
     }
     public void btnGuardar() {
         getModel().setNombre(getView().getTxtNombre().getText());

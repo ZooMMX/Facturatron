@@ -20,6 +20,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -636,7 +637,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -679,10 +680,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                 btnGuardarActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel1.add(btnGuardar, gridBagConstraints);
+        jPanel1.add(btnGuardar, new java.awt.GridBagConstraints());
 
         javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
         jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
@@ -704,8 +702,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jXTitledPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -713,10 +710,12 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                 .addComponent(jXTitledPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(35, 35, 35)
                 .addComponent(jXTitledPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    
 
     private void txtRfcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRfcActionPerformed
         // TODO add your handling code here:
@@ -742,20 +741,20 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnObservacionesActionPerformed
 
-    private void txtDescuentoTasa16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoTasa16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescuentoTasa16ActionPerformed
-
-    private void txtDescuentoTasa0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoTasa0ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescuentoTasa0ActionPerformed
-
     private void borrarPartidaAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarPartidaAction
         if(tabConceptos.getSelectedRowCount() > 0 && tabConceptos.getRowCount() > 1) {
             Integer selected = tabConceptos.getSelectionModel().getMinSelectionIndex();
             ((FacturaTableModel)tabConceptos.getModel()).removeRow(selected);
         }
     }//GEN-LAST:event_borrarPartidaAction
+
+    private void txtDescuentoTasa0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoTasa0ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescuentoTasa0ActionPerformed
+
+    private void txtDescuentoTasa16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoTasa16ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescuentoTasa16ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -825,7 +824,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     }
 
     /**
-     * @return the tabConceptos
+     * @return the iva
      */
     public javax.swing.JTable getTabConceptos() {
         return tabConceptos;

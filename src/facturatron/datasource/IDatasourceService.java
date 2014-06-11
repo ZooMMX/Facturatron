@@ -26,6 +26,7 @@ import java.util.Date;
  */
 public interface IDatasourceService  {
     public Ticket getTicket(Object id) throws DatasourceException;
+    public Ticket getTickets(Object idInicial, Object idFinal) throws DatasourceException;
     public CorteZ getCorteZ(Date fecha) throws DatasourceException;
     public void setTicketFacturado(Object id) throws DatasourceException;
 }

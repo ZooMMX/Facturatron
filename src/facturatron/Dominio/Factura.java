@@ -97,13 +97,16 @@ public class Factura extends Model implements Serializable {
     @NotNull
     private String noCertificado;
     @NotNull
+    //private BigInteger noAprobacion         = new BigInteger("122123");
     private BigInteger noAprobacion;
     @NotNull
     private Integer anoAprobacion;
     @NotNull
     private String formaDePago               = "UNA SOLA EXHIBICIÓN";
+    //@NotNull
+    //private String metodoDePago              = " ";
     @NotNull
-    private String metodoDePago              = "";
+    private String metodoDePago              = "EFECTIVO";
     @NotNull
     private BigDecimal subtotal              = new BigDecimal("0.0");
     @NotNull

@@ -2,12 +2,12 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-CREATE SCHEMA IF NOT EXISTS `facturatron` DEFAULT CHARACTER SET latin1 ;
+CREATE SCHEMA IF NOT EXISTS `Facturatron` DEFAULT CHARACTER SET latin1 ;
 
 -- -----------------------------------------------------
--- Table `facturatron`.`persona`
+-- Table `Facturatron`.`persona`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `facturatron`.`persona` (
+CREATE  TABLE IF NOT EXISTS `Facturatron`.`persona` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `nombre` VARCHAR(255) NULL DEFAULT NULL ,
   `rfc` VARCHAR(13) NULL DEFAULT NULL ,
@@ -27,9 +27,9 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `facturatron`.`comprobante`
+-- Table `Facturatron`.`comprobante`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `facturatron`.`comprobante` (
+CREATE  TABLE IF NOT EXISTS `Facturatron`.`comprobante` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `version` VARCHAR(8) NOT NULL ,
   `fecha` DATE NOT NULL ,
@@ -58,12 +58,12 @@ CREATE  TABLE IF NOT EXISTS `facturatron`.`comprobante` (
   INDEX `fk_Comprobate_Persona2` (`idreceptor` ASC) ,
   CONSTRAINT `fk_Comprobate_Persona1`
     FOREIGN KEY (`idemisor` )
-    REFERENCES `facturatron`.`persona` (`id` )
+    REFERENCES `Facturatron`.`persona` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Comprobate_Persona2`
     FOREIGN KEY (`idreceptor` )
-    REFERENCES `facturatron`.`persona` (`id` )
+    REFERENCES `Facturatron`.`persona` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -72,9 +72,9 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `facturatron`.`concepto`
+-- Table `Facturatron`.`concepto`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `facturatron`.`concepto` (
+CREATE  TABLE IF NOT EXISTS `Facturatron`.`concepto` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `idComprobante` INT(11) NULL DEFAULT NULL ,
   `unidad` VARCHAR(45) NULL DEFAULT NULL ,
@@ -88,7 +88,7 @@ CREATE  TABLE IF NOT EXISTS `facturatron`.`concepto` (
   INDEX `fk_Concepto_Comprobate` (`idComprobante` ASC) ,
   CONSTRAINT `fk_Concepto_Comprobate`
     FOREIGN KEY (`idComprobante` )
-    REFERENCES `facturatron`.`comprobante` (`id` )
+    REFERENCES `Facturatron`.`comprobante` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -97,9 +97,9 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `facturatron`.`serie`
+-- Table `Facturatron`.`serie`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `facturatron`.`serie` (
+CREATE  TABLE IF NOT EXISTS `Facturatron`.`serie` (
   `anoAprobacion` INT(11) NOT NULL ,
   `noAprobacion` INT(11) NOT NULL ,
   `noCertificado` TEXT NOT NULL ,
