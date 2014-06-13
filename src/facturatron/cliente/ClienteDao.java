@@ -5,6 +5,7 @@
 
 package facturatron.cliente;
 
+import facturatron.DAOException;
 import facturatron.Dominio.Persona;
 import facturatron.MVC.DAO;
 import facturatron.MVC.JDBCDAOSupport;
@@ -28,7 +29,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
      }
 
     @Override
-    public ArrayList<Persona> findAll(){
+    public ArrayList<Persona> findAll() throws DAOException{
          JDBCDAOSupport bd = getBD();
          try{
 
@@ -60,14 +61,14 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
 
              }
              return ret;
-        }catch(Exception ex){
+        }catch(SQLException ex){
 
-             
+             throw new DAOException("No se fue posible hacer una consulta de clientes", ex);
 
         } finally{  //si falla o no falla se tiene que desconectar
             bd.desconectar();
         }
-        return null;
+        
      }
 
     public void getClientesInterval(int IdInicial, int nFilas){

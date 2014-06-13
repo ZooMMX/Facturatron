@@ -7,6 +7,7 @@ package facturatron.MVC;
 
 import java.sql.SQLException;
 import java.util.List;
+import facturatron.DAOException;
 
 /**
  *
@@ -16,7 +17,7 @@ public interface DAO<K,E> {
     public void persist() throws Exception;
     public void remove();
     public E findBy(K id) throws SQLException;
-    public List<E> findAll();
+    public List<E> findAll() throws DAOException;
     public JDBCDAOSupport getBD();
 
 

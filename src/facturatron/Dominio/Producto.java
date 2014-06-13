@@ -8,6 +8,7 @@ package facturatron.Dominio;
 
 import facturatron.MVC.Model;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -15,17 +16,23 @@ import java.io.Serializable;
  * @author jach
  */
 public class Producto extends Model implements Serializable {
-    private Integer id  = -1;
-    private String  clave   = "";
-    private String  nombre  = "";
-    private Double  precio = 0.0;    
-    private Boolean activo  = true;
-    private String  notas   = "";
-    public Double getPrecio() {
+    private Integer     id  = -1;
+    private String      clave   = "";
+    private String      nombre  = "";
+    private BigDecimal  precio;
+    private Boolean     activo  = true;
+    private String      notas   = "";
+    
+    public Producto() {
+        setPrecio(new BigDecimal("0"));
+    }
+    
+    public  BigDecimal getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Double precio) {
+    public void setPrecio(BigDecimal precio) {
+        precio.setScale(2);
         this.precio = precio;
     }
    

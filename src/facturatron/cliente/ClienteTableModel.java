@@ -6,8 +6,11 @@
 package facturatron.cliente;
 
 
+import facturatron.DAOException;
 import facturatron.Dominio.Persona;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.*;
 
 
@@ -36,8 +39,12 @@ public class ClienteTableModel extends AbstractTableModel {
     }
 
     public void fill() {
-        setData((new ClienteDao()).findAll());
-        fireTableRowsUpdated(0, getRowCount()-1);
+        try {
+            setData((new ClienteDao()).findAll());
+            fireTableRowsUpdated(0, getRowCount()-1);
+        } catch (DAOException ex) {
+            Logger.getLogger(ClienteTableModel.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
     }
     
     public void search(String searchString) {

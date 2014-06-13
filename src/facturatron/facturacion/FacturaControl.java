@@ -8,6 +8,7 @@ package facturatron.facturacion;
 import facturatron.Dominio.Configuracion;
 import static facturatron.Dominio.Configuracion.getConfig;
 import facturatron.Dominio.Factura;
+import facturatron.Dominio.Medida;
 import facturatron.Dominio.Persona;
 import facturatron.Dominio.Renglon;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,7 @@ import facturatron.datasource.Ticket;
 import facturatron.datasource.omoikane.TicketOmoikane;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;
+import facturatron.unidad.UnidadDao;
 import java.awt.Frame;
 import java.awt.List;
 import java.awt.event.ActionListener;
@@ -44,12 +46,15 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.PersistenceException;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.TableColumn;
 import javax.xml.bind.MarshalException;
 import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
 import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
@@ -496,9 +501,22 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getView().getTabConceptos().setModel(ftm);
         getView().getTabConceptos().setDefaultRenderer(BigDecimal.class, new FacturaTableModel.DecimalFormatRenderer());
         getView().setModelo(getModel());
+        setupUnidadesHandler();   
         getModel().addObserver(getView());
     }
 
+    private void setupUnidadesHandler() {
+        UnidadDao unidadDao = new UnidadDao();
+        ArrayList<Medida> unidades =  unidadDao.findAll();
+        
+        TableColumn columnaUnidad = getView().getTabConceptos().getColumnModel().getColumn(3);
+        JComboBox comboBox = new JComboBox();
+        for (Medida unidad : unidades) {
+            comboBox.addItem(unidad.getNombre().toString());
+        }
+        columnaUnidad.setCellEditor(new DefaultCellEditor(comboBox));
+    }
+    
     //TODO Volver ésta clase un handler
     private class ThreadAddTicket extends Thread {
 

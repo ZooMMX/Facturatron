@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.math.BigDecimal;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -135,7 +136,7 @@ public class ProductoControl extends Controller<ProductoDao, ProductoForm>{
     public void btnGuardar () {
         getModel().setNombre(getView().getTxtNombre().getText());
         getModel().setClave(getView().getTxtClave().getText());
-        getModel().setPrecio(Double.parseDouble(getView().getTxtPrecio().getText()));       
+        getModel().setPrecio(new BigDecimal(getView().getTxtPrecio().getText()));       
         getModel().setActivo(getView().getTxtActivo().isSelected());
         getModel().setNotas(getView().getTxtNotas().getText());
         try {

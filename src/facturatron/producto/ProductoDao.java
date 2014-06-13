@@ -9,6 +9,7 @@ import facturatron.Dominio.Producto;
 import facturatron.MVC.DAO;
 import facturatron.MVC.JDBCDAOSupport;
 import facturatron.facturacion.FacturaDao;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +40,7 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
             }
             ps.setString(1, getNombre());
             ps.setString(2, getClave());            
-            ps.setDouble(3, getPrecio());            
+            ps.setBigDecimal(3, getPrecio());            
             //ps.setBoolean(4, true);
             ps.setBoolean(4, getActivo());
             ps.setString(5, getNotas());
@@ -86,7 +87,7 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
             this.setId(rs.getInt("id"));
             this.setNombre(rs.getString("nombre"));
             this.setClave(rs.getString("clave"));
-            this.setPrecio(rs.getDouble("precio"));
+            this.setPrecio(rs.getBigDecimal("precio"));
             this.setActivo(rs.getBoolean("activo" ));
             this.setNotas(rs.getString("notas"));
             setChanged();
@@ -113,7 +114,7 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
                 bean.setId(rs.getInt("id"));                
                 bean.setNombre(rs.getString("nombre"));
                 bean.setClave(rs.getString("clave"));
-                bean.setPrecio(rs.getDouble("precio"));
+                bean.setPrecio(rs.getBigDecimal("precio"));
                 bean.setActivo(rs.getBoolean("activo"));
                 bean.setNotas(rs.getString("notas"));
                 ret.add(bean);
@@ -142,7 +143,7 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
                 bean.setId(rs.getInt("id"));
                 bean.setNombre(rs.getString("nombre"));
                 bean.setClave(rs.getString("clave"));
-                bean.setPrecio(rs.getDouble("precio"));
+                bean.setPrecio(rs.getBigDecimal("precio"));
                 bean.setActivo(rs.getBoolean("activo"));
                 bean.setNotas(rs.getString("notas"));
                 ret.add(bean);
@@ -164,7 +165,7 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
         setNombre(null);
         setClave(null);
         setActivo(true);
-        setPrecio(0.0);
+        setPrecio(new BigDecimal("0"));
         setNotas(null);
         setChanged();
         notifyObservers();

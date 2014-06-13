@@ -6,6 +6,7 @@
 
 package facturatron.producto;
 import facturatron.Dominio.Producto;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +29,7 @@ public class ProductoTableModel extends AbstractTableModel {
         Integer.class,
         String.class,
         String.class,
-        Double.class,
+        BigDecimal.class,
         Boolean.class,
         String.class
     };
