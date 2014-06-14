@@ -31,9 +31,9 @@ import org.jdesktop.swingx.JXTable;
  *
  * @author Octavio
  */
-public class FacturaForm extends javax.swing.JPanel implements Observer {
+public class HonorariosForm extends javax.swing.JPanel implements Observer {
 
-    private FacturaDao modelo;
+    private FacturaDao modelo;    
 
     public JFrame getJFrameParent() {
         return (JFrame) JFrame.getFrames()[0];
@@ -68,8 +68,8 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     
    
 
-    /** Creates new form FacturaForm */
-    public FacturaForm() {
+    /** Creates new form Honorarios */
+    public HonorariosForm() {
         initComponents();
         tabConceptos.addKeyListener(new java.awt.event.KeyAdapter() {  
             @Override
@@ -204,8 +204,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         jPanel1 = new javax.swing.JPanel();
         btnBorrarPartida = new javax.swing.JButton();
         btnObservaciones = new org.jdesktop.swingx.JXButton();
-        btnFacturaDia = new javax.swing.JButton();
-        btnTicket = new javax.swing.JButton();
         btnVistaPrevia = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
 
@@ -519,7 +517,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("IVA (16%):");
+        jLabel7.setText("IVA:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 1;
@@ -606,7 +604,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         jPanel2.add(txtMotivoDescuento, gridBagConstraints);
 
-        jLabel15.setText("IEPS:");
+        jLabel15.setText("ISR:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 9;
         gridBagConstraints.gridy = 1;
@@ -663,12 +661,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             }
         });
         jPanel1.add(btnObservaciones, new java.awt.GridBagConstraints());
-
-        btnFacturaDia.setText("Factura del día");
-        jPanel1.add(btnFacturaDia, new java.awt.GridBagConstraints());
-
-        btnTicket.setText("Añadir ticket");
-        jPanel1.add(btnTicket, new java.awt.GridBagConstraints());
 
         btnVistaPrevia.setText("Vista previa");
         jPanel1.add(btnVistaPrevia, new java.awt.GridBagConstraints());
@@ -744,7 +736,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     private void borrarPartidaAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarPartidaAction
         if(tabConceptos.getSelectedRowCount() > 0 && tabConceptos.getRowCount() > 1) {
             Integer selected = tabConceptos.getSelectionModel().getMinSelectionIndex();
-            ((HonorariosTableModel)tabConceptos.getModel()).removeRow(selected);
+            ((FacturaTableModel)tabConceptos.getModel()).removeRow(selected);
         }
     }//GEN-LAST:event_borrarPartidaAction
 
@@ -760,10 +752,8 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBorrarPartida;
     private com.alee.laf.button.WebButton btnBuscarCliente;
-    private javax.swing.JButton btnFacturaDia;
     private javax.swing.JButton btnGuardar;
     private org.jdesktop.swingx.JXButton btnObservaciones;
-    private javax.swing.JButton btnTicket;
     private javax.swing.JButton btnVistaPrevia;
     private javax.swing.JComboBox<TipoComprobante> comboTipoComprobante;
     private javax.swing.JLabel jLabel1;
@@ -1057,17 +1047,11 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     /**
      * @return the btnTicket
      */
-    public javax.swing.JButton getBtnTicket() {
-        return btnTicket;
-    }
-
+ 
     /**
      * @param btnTicket the btnTicket to set
      */
-    public void setBtnTicket(javax.swing.JButton btnTicket) {
-        this.btnTicket = btnTicket;
-    }
-
+   
     /**
      * @return the txtMetodoPago
      */
@@ -1082,12 +1066,8 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         this.txtMetodoPago = txtMetodoPago;
     }
 
-    /**
-     * @return the btnFacturaDia
-     */
-    public javax.swing.JButton getBtnFacturaDia() {
-        return btnFacturaDia;
-    }
+   
+  
     
     public JComboBox<TipoComprobante> getComboTipoComprobante() {
         return comboTipoComprobante;

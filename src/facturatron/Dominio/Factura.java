@@ -140,6 +140,7 @@ public class Factura extends Model implements Serializable {
     private String xml;
     @NotNull
     private ArrayList<Renglon> renglones = new ArrayList<Renglon>();
+    private BigDecimal ivaRetenido      = new BigDecimal("0.0");
 
     public Factura() {
         subtotal.setScale(2);

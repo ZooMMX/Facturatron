@@ -68,15 +68,15 @@ import facturatron.unidad.UnidadDao;
  * @author Octavio Ruiz @ Phesus
  * @author saul @ Phesus
  */
-public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //solo controlador
+public class RhonorariosControl extends Controller<FacturaDao, HonorariosForm> {  //solo controlador
 
   ConfigFiscalDao configFiscal;
   /* se usa como bandera para determinar si se realiz'o el timbrado con el PAC */
   boolean timbrado = false;
-  public FacturaControl(){
+  public RhonorariosControl(){
       try {
           setModel(setupAndInstanceModel());
-          setView(new FacturaForm());         
+          setView(new HonorariosForm());         
           init();
           PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(this);
           popupBuscarCliente.install();
@@ -197,12 +197,12 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       notifyBusy();
       new ThreadRangoTicket(dialog).start();
   }
-  
+ /* 
   public void btnFacturaDia() {
       notifyBusy();
       new ThreadAddCorteZ().start();
   }
-  
+  */
   public Boolean validarForm() {
       //Validar Forma de pago
       if( getView().getTxtFormaDePago().getText().isEmpty() ) { 
@@ -453,20 +453,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             public void actionPerformed(ActionEvent e) {
                 btnObservaciones();
             }
-        } );
-        getView().getBtnTicket().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnAddTicket();
-            }
-        });        
-        getView().getBtnFacturaDia().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnFacturaDia();
-            }
-        });
-        
+        } );              
         DocumentListener dl = new DocumentListener() {
 
             @Override
@@ -491,11 +478,11 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
     
     @Override
     public void enlazarModeloVista() {
-        FacturaTableModel ftm = new FacturaTableModel();
+        HonorariosTableModel ftm = new HonorariosTableModel();
         ftm.setData(getModel().getRenglones());
         ftm.addRow();
         getView().getTabConceptos().setModel(ftm);
-        getView().getTabConceptos().setDefaultRenderer(BigDecimal.class, new FacturaTableModel.DecimalFormatRenderer());
+        getView().getTabConceptos().setDefaultRenderer(BigDecimal.class, new HonorariosTableModel.DecimalFormatRenderer());
         getView().setModelo(getModel());        
         UnidadDao unidadDao = new UnidadDao();
         ArrayList<Medida> unidades =  unidadDao.findAll();

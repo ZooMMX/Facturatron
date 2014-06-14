@@ -18,6 +18,8 @@ import facturatron.cliente.ClienteTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -25,26 +27,38 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
+
+
 /**
  *
  * @author octavioruizcastillo
  */
 public class PopupBuscarCliente {
-    FacturaControl controller;
+    RhonorariosControl controllerHonorarios;
+    FacturaControl controllerFactura;
     TimerBusqueda  timerBusqueda;
     WebTextField   field;
     ClienteTableModel tableModel;
     WebTable          table;
     WebButtonPopup    popup;
-    
-    public PopupBuscarCliente(FacturaControl c) {
-        controller = c;
-    }
-    
-    public void install() {
-         // Button that calls for popup
-        WebButton showPopup = controller.getView().getBtnBuscarCliente();
 
+     
+    public PopupBuscarCliente(FacturaControl c) {
+        controllerFactura = c;        
+    }
+    public PopupBuscarCliente(RhonorariosControl c) {
+        controllerHonorarios = c;       
+    }
+    public void install() {
+        WebButton showPopup ;
+         // Button that calls for popup
+        if (this.controllerFactura != null) {            
+             showPopup = controllerFactura.getView().getBtnBuscarCliente();
+        }
+        else {          
+            showPopup = controllerHonorarios.getView().getBtnBuscarCliente();
+        }
+        
         // Popup itself
         popup = new WebButtonPopup ( showPopup, PopupWay.downLeft );
 
@@ -73,6 +87,15 @@ public class PopupBuscarCliente {
                 selectCliente();
             }
         });
+        //Seleccionar cliente cuando el usuario presiona doble click en el mouse
+        table.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+             if (me.getClickCount() == 2) {
+                 selectCliente();
+             }
+            }
+        });
+        
         content.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Escape");
         content.getActionMap().put("Escape", new AbstractAction() {
             @Override
@@ -115,14 +138,23 @@ public class PopupBuscarCliente {
     private void selectCliente() {
         int selected = table.getSelectedRow();
         Persona persona = tableModel.getData().get(selected);
-        controller.getView().getTxtIdCliente().setText(persona.getId().toString());
-        field.setText("");
-        buscar();
-        popup.hidePopup();
-        controller.cargarCliente();
-        controller.getView().getTxtIdCliente().requestFocus();
+        if (this.controllerFactura != null) {
+            controllerFactura.getView().getTxtIdCliente().setText(persona.getId().toString());
+            field.setText("");
+            buscar();
+            popup.hidePopup();
+            controllerFactura.cargarCliente();
+            controllerFactura.getView().getTxtIdCliente().requestFocus();
+        } else {
+            controllerHonorarios.getView().getTxtIdCliente().setText(persona.getId().toString());
+            field.setText("");
+            buscar();
+            popup.hidePopup();
+            controllerHonorarios.cargarCliente();
+            controllerHonorarios.getView().getTxtIdCliente().requestFocus();
+        }
     }
-    
+  
     private void preBuscar()
     {
         if(timerBusqueda != null && timerBusqueda.isAlive()) { timerBusqueda.cancelar(); }
@@ -158,7 +190,5 @@ public class PopupBuscarCliente {
             busquedaActiva = false;
             try { this.notify(); } catch(Exception e) {}
         }
-    }
-
-    
+    }    
 }

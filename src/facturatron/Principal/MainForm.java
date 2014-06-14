@@ -40,6 +40,7 @@ public class MainForm extends javax.swing.JFrame {
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         jXTaskPane1 = new org.jdesktop.swingx.JXTaskPane();
         linkFacturar = new org.jdesktop.swingx.JXHyperlink();
+        linkHonorarios = new org.jdesktop.swingx.JXHyperlink();
         linkFacturasEmitidas = new org.jdesktop.swingx.JXHyperlink();
         linkInformeMensual = new org.jdesktop.swingx.JXHyperlink();
         jXTaskPane2 = new org.jdesktop.swingx.JXTaskPane();
@@ -65,6 +66,15 @@ public class MainForm extends javax.swing.JFrame {
         linkFacturar.setText("Facturar");
         linkFacturar.setUnclickedColor(new java.awt.Color(0, 0, 0));
         jXTaskPane1.getContentPane().add(linkFacturar);
+
+        linkHonorarios.setText("Recibo de Honarios");
+        linkHonorarios.setUnclickedColor(new java.awt.Color(0, 0, 0));
+        linkHonorarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                linkHonorariosActionPerformed(evt);
+            }
+        });
+        jXTaskPane1.getContentPane().add(linkHonorarios);
 
         linkFacturasEmitidas.setText("Facturas Emitidas");
         linkFacturasEmitidas.setUnclickedColor(new java.awt.Color(0, 0, 0));
@@ -178,6 +188,14 @@ public class MainForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public JXHyperlink getLinkHonorarios() {
+        return linkHonorarios;
+    }
+
+    public void setLinkHonorarios(JXHyperlink linkHonorarios) {
+        this.linkHonorarios = linkHonorarios;
+    }
+
     public JXHyperlink getLinkProducto() {
         return linkProducto;
     }
@@ -211,6 +229,10 @@ public class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_linkUnidadActionPerformed
 
+    private void linkHonorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkHonorariosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_linkHonorariosActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -239,6 +261,7 @@ public class MainForm extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXHyperlink linkCfgSystem;
     private org.jdesktop.swingx.JXHyperlink linkFacturar;
     private org.jdesktop.swingx.JXHyperlink linkFacturasEmitidas;
+    private org.jdesktop.swingx.JXHyperlink linkHonorarios;
     private org.jdesktop.swingx.JXHyperlink linkInformeMensual;
     private org.jdesktop.swingx.JXHyperlink linkProducto;
     private org.jdesktop.swingx.JXHyperlink linkSalir;

@@ -14,6 +14,7 @@ import facturatron.config.ConfiguracionControl;
 import facturatron.facturacion.FacturaControl;
 import facturatron.facturacion.InformeMensual.InformeControl;
 import facturatron.facturacion.ListadoControl;
+import facturatron.facturacion.RhonorariosControl;
 import facturatron.producto.ProductoControl;
 import facturatron.unidad.UnidadControl;
 import static java.awt.Frame.MAXIMIZED_BOTH;
@@ -39,6 +40,7 @@ public class Main extends Controller<Model, MainForm> {
     public void asignarEventos() {
 
         asignarLinkFactura();
+        asignarLinkHonorarios();
         asignarLinkClientes();
         asignarLinkFacturasEmitidas();
         asignarLinkInformeMensual();
@@ -56,6 +58,12 @@ public class Main extends Controller<Model, MainForm> {
         FacturaControl fs = new FacturaControl();
         fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
         ((MainForm) getView()).addTab("Facturar", fs.getView());
+    }
+    
+    private void rHonorarios() throws Exception {
+        RhonorariosControl fs = new RhonorariosControl();
+        fs.setBusyHandler(new ProgressPanelBusyHandler(getView()));
+        ((MainForm) getView()).addTab("Recibo de Honorarios", fs.getView());
     }
 
     private void clientes() throws Exception {
@@ -142,7 +150,24 @@ public class Main extends Controller<Model, MainForm> {
             }
         });
     }
+    private void asignarLinkHonorarios() {
+        getView().getLinkHonorarios().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Thread() {
 
+                    @Override
+                    public void run() {
+                        try {
+                            rHonorarios();
+                        } catch (Exception ex) {
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Excepción en módulo de recibos de Honorarios", ex);
+                        }
+                    }
+                }.start();
+            }
+        });
+    }
     private void asignarLinkFacturasEmitidas() {
         getView().getLinkFacturasEmitidas().addActionListener(new ActionListener() {
 
