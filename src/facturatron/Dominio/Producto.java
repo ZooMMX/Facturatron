@@ -77,4 +77,7 @@ public class Producto extends Model implements Serializable {
         this.notas = notas;
     }
     
+    public String toString() {
+        return clave;
+    }
 }

@@ -213,6 +213,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="linkUnidadActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Boolean moduloActivo = facturatron.Dominio.Configuracion.getConfig().getModuloUnidadesActivo();&#xa;if(moduloActivo != null)&#xa;    linkUnidad.setVisible(moduloActivo);&#xa;"/>
+              </AuxValues>
             </Component>
             <Component class="org.jdesktop.swingx.JXHyperlink" name="linkProducto">
               <Properties>
@@ -221,6 +224,9 @@
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Boolean moduloPActivo = facturatron.Dominio.Configuracion.getConfig().getModuloProductosActivo();&#xa;if(moduloPActivo != null)&#xa;    linkProducto.setVisible(moduloPActivo);&#xa;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
           <LayoutCode>

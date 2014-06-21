@@ -40,7 +40,7 @@ public class Main {
             public void run ()
             {
                 System.out.println(Charset.defaultCharset());
-                WebLookAndFeel.install ();
+                //WebLookAndFeel.install ();
                 Locale.setDefault(Locale.US);
                 Thread.setDefaultUncaughtExceptionHandler(new UEHandler());
                 Logger.getLogger("").addHandler(new CEHandler());

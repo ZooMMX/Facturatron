@@ -38,6 +38,8 @@ public class Configuracion extends Model implements Serializable {
     private String passwordDatasource = "";
     private String urlDatasource = "";
     private DATASOURCE conectorDatasource = DATASOURCE.Omoikane;
+    private Boolean moduloProductosActivo = false;
+    private Boolean moduloUnidadesActivo  = false;
     private static final long serialVersionUID = -3524646329180295196L;
 
     private static Configuracion config;
@@ -461,5 +463,33 @@ public class Configuracion extends Model implements Serializable {
      */
     public void setPathLogo(String pathLogo) {
         this.pathLogo = pathLogo;
+    }
+
+    /**
+     * @return the moduloProductosActivo
+     */
+    public Boolean getModuloProductosActivo() {
+        return moduloProductosActivo;
+    }
+
+    /**
+     * @param moduloProductosActivo the moduloProductosActivo to set
+     */
+    public void setModuloProductosActivo(Boolean moduloProductosActivo) {
+        this.moduloProductosActivo = moduloProductosActivo;
+    }
+
+    /**
+     * @return the moduloUnidadesActivo
+     */
+    public Boolean getModuloUnidadesActivo() {
+        return moduloUnidadesActivo;
+    }
+
+    /**
+     * @param moduloUnidadesActivo the moduloUnidadesActivo to set
+     */
+    public void setModuloUnidadesActivo(Boolean moduloUnidadesActivo) {
+        this.moduloUnidadesActivo = moduloUnidadesActivo;
     }
 }

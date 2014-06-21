@@ -99,6 +99,9 @@ public class MainForm extends javax.swing.JFrame {
 
         linkUnidad.setText("Unidades");
         linkUnidad.setUnclickedColor(new java.awt.Color(0, 0, 0));
+        Boolean moduloActivo = facturatron.Dominio.Configuracion.getConfig().getModuloUnidadesActivo();
+        if(moduloActivo != null)
+        linkUnidad.setVisible(moduloActivo);
         linkUnidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 linkUnidadActionPerformed(evt);
@@ -108,6 +111,9 @@ public class MainForm extends javax.swing.JFrame {
 
         linkProducto.setText("Productos");
         linkProducto.setUnclickedColor(new java.awt.Color(0, 0, 0));
+        Boolean moduloPActivo = facturatron.Dominio.Configuracion.getConfig().getModuloProductosActivo();
+        if(moduloPActivo != null)
+        linkProducto.setVisible(moduloPActivo);
         jXTaskPane2.getContentPane().add(linkProducto);
 
         jXTaskPaneContainer1.add(jXTaskPane2);

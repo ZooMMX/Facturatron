@@ -95,6 +95,8 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
             getRbnVisorPDFJava().setSelected(getModel().getVisorPDF().equals(VISOR_PDF_JAVA));
             getRbnVisorPDFNativo().setSelected(getModel().getVisorPDF().equals(VISOR_PDF_NATIVO));
         }
+        getBoxProductos().setSelected(getModel().getModuloProductosActivo());
+        getBoxUnidades().setSelected(getModel().getModuloUnidadesActivo());
     }
 
     /**
@@ -163,6 +165,9 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
         txtCorreoRemitente = new org.jdesktop.swingx.JXTextField();
         txtTituloCorreo = new org.jdesktop.swingx.JXTextField();
         btnProbarConfiguracion = new org.jdesktop.swingx.JXButton();
+        jXTitledPanel3 = new org.jdesktop.swingx.JXTitledPanel();
+        boxUnidades = new javax.swing.JCheckBox();
+        boxProductos = new javax.swing.JCheckBox();
 
         jXTitledPanel1.setTitle("Configuración del Sistema");
         jXTitledPanel1.setTitleFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
@@ -219,7 +224,6 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
 
         btnGroupVisorPDF.add(rbnVisorPDFNativo);
         rbnVisorPDFNativo.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        rbnVisorPDFNativo.setSelected(true);
         rbnVisorPDFNativo.setText("Visor PDF Nativo");
 
         btnGroupVisorPDF.add(rbnVisorPDFJava);
@@ -332,7 +336,7 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
                                 .addComponent(rbnVisorPDFNativo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(rbnVisorPDFJava)
-                                .addGap(0, 362, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
                                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtPathPdf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -511,20 +515,24 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
                             .addComponent(txtCorreoRemitente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(pnlConfiguracionCorreoLayout.createSequentialGroup()
                         .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnProbarConfiguracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnlConfiguracionCorreoLayout.createSequentialGroup()
-                                .addComponent(txtPuertoSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbnSinSeguridad)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbnUsaSSL)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbnUsaTLS))
-                            .addComponent(txtClaveSmtp))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnProbarConfiguracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(pnlConfiguracionCorreoLayout.createSequentialGroup()
+                                        .addComponent(txtPuertoSmtp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(rbnSinSeguridad)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(rbnUsaSSL)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(rbnUsaTLS)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(pnlConfiguracionCorreoLayout.createSequentialGroup()
+                                .addComponent(txtClaveSmtp)
+                                .addGap(32, 32, 32)))
                         .addGroup(pnlConfiguracionCorreoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTituloCorreo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(scrMensajeCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE))))
+                            .addComponent(scrMensajeCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE))))
                 .addGap(9, 9, 9))
         );
         pnlConfiguracionCorreoLayout.setVerticalGroup(
@@ -564,6 +572,43 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
                         .addContainerGap())))
         );
 
+        jXTitledPanel3.setTitle("Módulos");
+
+        boxUnidades.setText("Unidades");
+        boxUnidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxUnidadesActionPerformed(evt);
+            }
+        });
+
+        boxProductos.setText("Productos");
+        boxProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxProductosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
+        jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
+        jXTitledPanel3Layout.setHorizontalGroup(
+            jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jXTitledPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(boxUnidades, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(boxProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jXTitledPanel3Layout.setVerticalGroup(
+            jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jXTitledPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(boxUnidades)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(boxProductos)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -573,14 +618,19 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jXTitledPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlConfiguracionCorreo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jXTitledPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jXTitledPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlConfiguracionCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -593,7 +643,17 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUserBdActionPerformed
 
+    private void boxUnidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxUnidadesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_boxUnidadesActionPerformed
+
+    private void boxProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxProductosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_boxProductosActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JCheckBox boxProductos;
+    public javax.swing.JCheckBox boxUnidades;
     private org.jdesktop.swingx.JXButton btnBuscarCer;
     private org.jdesktop.swingx.JXButton btnBuscarKey;
     private org.jdesktop.swingx.JXButton btnBuscarLogo;
@@ -619,6 +679,7 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
     private org.jdesktop.swingx.JXLabel jXLabel9;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel1;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel2;
+    private org.jdesktop.swingx.JXTitledPanel jXTitledPanel3;
     private org.jdesktop.swingx.JXLabel lblClaveSMTP;
     private org.jdesktop.swingx.JXLabel lblPuertoSMTP;
     private org.jdesktop.swingx.JXLabel lblServidorSMTP;
@@ -1014,5 +1075,19 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
      */
     public org.jdesktop.swingx.JXTextField getTxtPathLogo() {
         return txtPathLogo;
+    }
+
+    /**
+     * @return the boxProductos
+     */
+    public javax.swing.JCheckBox getBoxProductos() {
+        return boxProductos;
+    }
+
+    /**
+     * @return the boxUnidades
+     */
+    public javax.swing.JCheckBox getBoxUnidades() {
+        return boxUnidades;
     }
 }

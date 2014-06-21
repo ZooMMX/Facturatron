@@ -170,6 +170,8 @@ public class ConfiguracionControl extends Controller<ConfiguracionDao, Configura
         getModel().setTituloCorreo(getView().getTxtTituloCorreo().getText());
         getModel().setMensajeCorreo(getView().getTxtMensajeCorreo().getText());
         getModel().setCorreoRemitente(getView().getTxtCorreoRemitente().getText());
+        getModel().setModuloProductosActivo(getView().getBoxProductos().isSelected());
+        getModel().setModuloUnidadesActivo(getView().getBoxUnidades().isSelected());
         getModel().persist();
         JOptionPane.showMessageDialog(getView(), "Configuración actualizada");
     }

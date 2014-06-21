@@ -10,6 +10,7 @@ import static facturatron.Dominio.Configuracion.getConfig;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Medida;
 import facturatron.Dominio.Persona;
+import facturatron.Dominio.Producto;
 import facturatron.Dominio.Renglon;
 import java.awt.event.ActionEvent;
 import java.sql.Time;
@@ -25,8 +26,10 @@ import facturatron.datasource.IDatasourceService;
 import facturatron.datasource.RenglonTicket;
 import facturatron.datasource.Ticket;
 import facturatron.datasource.omoikane.TicketOmoikane;
+import facturatron.lib.Java2sAutoComboBox;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;
+import facturatron.producto.ProductoDao;
 import facturatron.unidad.UnidadDao;
 import java.awt.Frame;
 import java.awt.List;
@@ -34,6 +37,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -43,6 +48,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.PersistenceException;
@@ -54,6 +60,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.xml.bind.MarshalException;
 import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
@@ -76,13 +83,23 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
           setModel(setupAndInstanceModel());
           setView(new FacturaForm());
           init();
-          PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(this);
-          popupBuscarCliente.install();
+          setupAddons();
       } catch (SQLException ex) {
           Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Error de BD al iniciar facturación", ex);
       }
   }
 
+  private void setupAddons() {
+      Configuracion cfg = getConfig();
+      PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(this);
+      popupBuscarCliente.install();
+      
+      if(cfg.getModuloUnidadesActivo())
+        new CeldaBuscadorUnidades(this).install();
+      if(cfg.getModuloProductosActivo())
+        new CeldaBuscadorProductos(this).install();
+  }
+  
   public FacturaDao setupAndInstanceModel() throws SQLException {
       FacturaDao      dao          = new FacturaDao();
       configFiscal = new ConfigFiscalDao();
@@ -501,21 +518,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getView().getTabConceptos().setModel(ftm);
         getView().getTabConceptos().setDefaultRenderer(BigDecimal.class, new FacturaTableModel.DecimalFormatRenderer());
         getView().setModelo(getModel());
-        setupUnidadesHandler();   
         getModel().addObserver(getView());
-    }
-
-    private void setupUnidadesHandler() {
-        UnidadDao unidadDao = new UnidadDao();
-        ArrayList<Medida> unidades =  unidadDao.findAll();
-        
-        TableColumn columnaUnidad = getView().getTabConceptos().getColumnModel().getColumn(3);
-        JComboBox comboBox = new JComboBox();
-        for (Medida unidad : unidades) {
-            comboBox.addItem(unidad.getNombre().toString());
-        }
-        columnaUnidad.setCellEditor(new DefaultCellEditor(comboBox));
-    }
+    }            
     
     //TODO Volver ésta clase un handler
     private class ThreadAddTicket extends Thread {

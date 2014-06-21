@@ -124,6 +124,9 @@ public class ConfiguracionDao extends Configuracion implements DAO<Integer, Conf
             setConectorDatasource(serialObject.getConectorDatasource());
             setUrlDatasource(serialObject.getUrlDatasource());
             
+            setModuloProductosActivo(serialObject.getModuloProductosActivo());
+            setModuloUnidadesActivo(serialObject.getModuloUnidadesActivo());
+            
             setChanged();
             notifyObservers();
             return serialObject;
