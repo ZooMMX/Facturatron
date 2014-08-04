@@ -23,3 +23,10 @@ CREATE TABLE IF NOT EXISTS `producto` (
 -- Insertar Unidades por Default
 INSERT INTO medida (id, nombre) VALUES (null,'NoAplica');
 INSERT INTO medida (id, nombre) VALUES (null,'Piezas');
+
+-- Eliminar columnas obsoletas legadas de CFDv2
+ALTER TABLE serie DROP COLUMN folioInicial;
+ALTER TABLE serie DROP COLUMN folioFinal;
+ALTER TABLE serie DROP COLUMN noAprobacion;
+ALTER TABLE serie DROP COLUMN anoAprobacion;
+ALTER TABLE serie DROP COLUMN noCertificado;

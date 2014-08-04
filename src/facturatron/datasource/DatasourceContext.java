@@ -26,7 +26,7 @@ import facturatron.datasource.omoikane.OmoikaneDatasourceImpl;
  * @author octavioruizcastillo
  */
 public class DatasourceContext {
-    public static enum DATASOURCE { Omoikane, OpenTPV, Artemisa, Unicenta }
+    public static enum DATASOURCE { Omoikane, OpenTPV, Artemisa, Unicenta, Ninguno }
     public static IDatasourceService instanceDatasourceInstance() throws DatasourceException {
         Configuracion config = Configuracion.getConfig();
         if(config.getConectorDatasource() == DATASOURCE.Omoikane)

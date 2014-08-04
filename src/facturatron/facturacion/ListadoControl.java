@@ -10,6 +10,10 @@ import facturatron.MVC.Controller;
 import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
+import facturatron.datasource.DatasourceContext;
+import facturatron.datasource.DatasourceContext.DATASOURCE;
+import facturatron.datasource.DatasourceException;
+import facturatron.datasource.IDatasourceService;
 import facturatron.facturacion.PAC.IPACService;
 import facturatron.facturacion.PAC.PACContext;
 import facturatron.facturacion.PAC.PACException;
@@ -53,14 +57,23 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
 
         String confirmMsg = "¿Realmente quiere cancelar la factura folio " + factura.getFolio() + "?";
         if (JOptionPane.showConfirmDialog(getView(), confirmMsg) == JOptionPane.YES_OPTION) {
-            try {
-                factura.cancelar();
+            try {             
+                // Cancelar la factura en omoikane y con el PAC
+                factura.cancelar();                
+                // Habilitar tickets para refacturar en el datasource, siempre que haya uno
+                if(Configuracion.getConfig().getConectorDatasource() != DATASOURCE.Ninguno) {
+                    IDatasourceService ds = DatasourceContext.instanceDatasourceInstance();
+                    ds.cancelarFactura(factura.getId());
+                }   
+                // Recargar el modelo (la tabla de facturas)
                 getModel().load();
                 JOptionPane.showMessageDialog(getView(), "Factura cancelada");
             } catch (SQLException ex) {
                 Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "Error al almacenar comprobante cancelado", ex);
             } catch (PACException ex) {
                 Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "No se canceló el comprobante.", ex);
+            } catch (DatasourceException ex) {
+                Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
     }

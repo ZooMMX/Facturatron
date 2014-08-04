@@ -18,6 +18,7 @@
 
 package facturatron.datasource;
 
+import facturatron.omoikane.exceptions.TicketFacturadoException;
 import java.util.Date;
 
 /**
@@ -25,8 +26,10 @@ import java.util.Date;
  * @author octavioruizcastillo
  */
 public interface IDatasourceService  {
-    public Ticket getTicket(Object id) throws DatasourceException;
+    public Ticket getTicket(Object id) throws DatasourceException, TicketFacturadoException;
     public Ticket getTickets(Object idInicial, Object idFinal) throws DatasourceException;
     public CorteZ getCorteZ(Date fecha) throws DatasourceException;
-    public void setTicketFacturado(Object id) throws DatasourceException;
+    public void setTicketFacturado(Object idVenta, Object idFactura) throws DatasourceException;
+
+    public void cancelarFactura(Integer id) throws DatasourceException;
 }

@@ -412,35 +412,32 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             comprobanteSelladoFirmadoTimbrado = sellarFirmarYTimbrar();
             timbrado = true; //Necesario para posible rollback
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
-                    "(version,fecha,serie,folio,sello,noCertificado,noAprobacion,anoAprobacion," +
+                    "(version,fecha,serie,folio,sello," +
                     "formaDePago,subtotal,total,descuentoTasa0,descuentoTasa16,tipoDeComprobante,idEmisor, idReceptor," +
                     "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora, folioFiscal) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             ps.setString(1, getVersion());
             ps.setDate(2, new java.sql.Date(getFecha().getTime()));
             ps.setString(3, getSerie());
             ps.setLong(4, getFolio().longValue());
             ps.setString(5, getSello());
-            ps.setString(6, getNoCertificado());
-            ps.setInt(7, getNoAprobacion().intValue());
-            ps.setInt(8, getAnoAprobacion().intValue());
-            ps.setString(9, getFormaDePago());
-            ps.setBigDecimal(10, getSubtotal());
-            ps.setBigDecimal(11, getTotal());
-            ps.setBigDecimal(12, getDescuentoTasa0());
-            ps.setBigDecimal(13, getDescuentoTasa16());
-            ps.setString(14, getTipoDeComprobante());
-            ps.setInt(15, getEmisor().getId());
-            ps.setInt(16, getReceptor().getId());
-            ps.setBigDecimal(17, getIvaTrasladado());
-            ps.setString(18, getCertificado());
-            ps.setString(19, getMotivoDescuento());
-            ps.setString(20, getXml());
-            ps.setString(21, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
-            ps.setString(22, getObservaciones());
-            ps.setTime  (23, getHora());
-            ps.setString(24, getFolioFiscal());
+            ps.setString(6, getFormaDePago());
+            ps.setBigDecimal(7, getSubtotal());
+            ps.setBigDecimal(8, getTotal());
+            ps.setBigDecimal(9, getDescuentoTasa0());
+            ps.setBigDecimal(10, getDescuentoTasa16());
+            ps.setString(11, getTipoDeComprobante());
+            ps.setInt(12, getEmisor().getId());
+            ps.setInt(13, getReceptor().getId());
+            ps.setBigDecimal(14, getIvaTrasladado());
+            ps.setString(15, getCertificado());
+            ps.setString(16, getMotivoDescuento());
+            ps.setString(17, getXml());
+            ps.setString(18, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
+            ps.setString(19, getObservaciones());
+            ps.setTime  (20, getHora());
+            ps.setString(21, getFolioFiscal());
             //ps.setString(24, getMetodoDePago());
 
             ps.execute();
@@ -449,6 +446,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             keys.next();
             int idfactura = keys.getInt(1);
             keys.close();
+            setId(idfactura);
 
             for (Renglon renglon : getRenglones()) {  //
                 if(renglon.getImporte().compareTo(new BigDecimal(0d))<=0) { continue; }

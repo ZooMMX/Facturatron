@@ -16,6 +16,7 @@ import facturatron.datasource.DatasourceException;
 import facturatron.omoikane.CorteZDao;
 import facturatron.datasource.omoikane.TicketOmoikane;
 import facturatron.facturacion.FacturaDao;
+import facturatron.omoikane.exceptions.TicketFacturadoException;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Locale;
@@ -75,7 +76,7 @@ public class Main {
         }
     }
     
-    public static void prueba() throws DatasourceException {
+    public static void prueba() throws DatasourceException, TicketFacturadoException {
         Integer idAlmacen = 1;
         Integer idCaja = 2;
         Integer idVenta = 653527;

@@ -29,6 +29,7 @@ import facturatron.datasource.omoikane.TicketOmoikane;
 import facturatron.lib.Java2sAutoComboBox;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;
+import facturatron.omoikane.exceptions.TicketFacturadoException;
 import facturatron.producto.ProductoDao;
 import facturatron.unidad.UnidadDao;
 import java.awt.Frame;
@@ -104,9 +105,6 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       FacturaDao      dao          = new FacturaDao();
       configFiscal = new ConfigFiscalDao();
       configFiscal.load();
-      dao.setAnoAprobacion(configFiscal.getAnoAprobacion());
-      dao.setNoAprobacion(configFiscal.getNoAprobacion());      
-      dao.setNoCertificado(configFiscal.getNoCertificado());
       dao.setSerie(configFiscal.getSerie());
       dao.setFolio(configFiscal.getFolioActual());
 
@@ -323,21 +321,17 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setVersion("3.2");
 
         getView().getBtnGuardar().setEnabled(false);
-        Integer folio    = getModel().getFolio().intValue();
-        Integer folioMin = configFiscal.getFolioInicial();
-        Integer folioFin = configFiscal.getFolioFinal();
 
-        if(folio < folioMin  || folio > folioFin) {
-            JOptionPane.showMessageDialog(getView(), "Folio fuera de rango. Posiblemente se terminaron los folios asignados por el SAT. Revise su configuración fiscal.");
-        } else {
-            getModel().persist();
-        }
+        getModel().persist();
+        
         timbrado = true;
-        marcarTicketsFacturados();
+        marcarTicketsFacturados(getModel().getId());
     } catch (SAXParseException e) {
         Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Datos erróneos.", e);
     } catch (PACException pa) {
         Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, pa.getMessage(), pa.getCause());
+    } catch (DatasourceException de) {
+        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, de.getMessage(), de);
     } catch (Exception ex) {
         Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Error desconocido al generar factura", ex);
     } finally {
@@ -347,11 +341,11 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
     
   }
 
-  public void marcarTicketsFacturados() throws DatasourceException {
+  public void marcarTicketsFacturados(Integer idFactura) throws DatasourceException {
       IDatasourceService ds = DatasourceContext.instanceDatasourceInstance();
               
       for(Ticket t : getModel().getTickets()) {
-          ds.setTicketFacturado(t.getId());
+          ds.setTicketFacturado(t.getId(), idFactura);
       }
   }
   
@@ -447,6 +441,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                             int opc = JOptionPane.showConfirmDialog(getView(), "Factura Timbrada desea cerrar la pestaña", "Alert", JOptionPane.YES_NO_OPTION);
                             if (opc == 0) {
                                 getView().getParent().remove(getView());
+                            } else {
+                                getView().getBtnGuardar().setEnabled(false);
                             }
                         }
                         
@@ -539,6 +535,9 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                     FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();
                     
                     Ticket<?> t = DatasourceContext.instanceDatasourceInstance().getTicket(idTicket);
+                    //Comprobación de no duplicación de tickets en factura
+                    if(!esTicketApto(t))
+                        throw new TicketFacturadoException("Ticket ya agregado a ésta factura");
                     
                     for (RenglonTicket renglon : t) {
                         modelo.setValueAt(renglon.cantidad, modelo.getRowCount() - 1, 0); //0 = Columna cantidad
@@ -553,6 +552,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                         
                     }
                     renglonesActualizados();
+                    //Agrego el ticket a la relación de tickets agregados a la factura
                     FacturaControl.this.getModel().getTickets().add(t);                    
                 }
             } catch (DatasourceException ex) {
@@ -563,9 +563,19 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "ID mal escrito, el formato correcto es #-#-#. Por ejemplo 1-2-653528", ae);
             } catch (PersistenceException pe) {
                 Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "No se pudo conectar a la base de datos del punto de venta", pe);
+            } catch (TicketFacturadoException ex) {
+                Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             } finally {
                 notifyIdle();
             }
+        }
+
+        //Comprueba (secuencialmente...) si el ticket ha sido añadido previamente a la factura en edición
+        private boolean esTicketApto(Ticket<?> t) {
+            for (Ticket ticket : FacturaControl.this.getModel().getTickets()) {
+                if(ticket.getId().equals(t.getId())) return false;
+            }
+            return true;
         }
     }
     private class ThreadRangoTicket extends Thread {

@@ -107,11 +107,6 @@ public class SerieDao extends Serie implements DAO<Integer,Serie> {
             throw new Exception("No existe registro de configuración de serie de facturas");
         }
 
-        this.setAnoAprobacion(rs.getInt("anoAprobacion"));
-        this.setFolioFinal(rs.getInt("folioFinal"));
-        this.setFolioInicial(rs.getInt("folioInicial"));
-        this.setNoAprobacion(BigInteger.valueOf(rs.getLong("noAprobacion")));
-        this.setNoCertificado(rs.getString("noCertificado"));
         this.setSerie(rs.getString("serie"));
         this.setFolioActual(BigInteger.valueOf(rs.getLong("folioActual")));
         //this.setTipo(rs.getString("tipo"));
@@ -124,18 +119,10 @@ public class SerieDao extends Serie implements DAO<Integer,Serie> {
     public void persist(Connection con) throws SQLException {
 
             PreparedStatement ps;
-            ps = con.prepareStatement("update serie set anoAprobacion=?,noAprobacion=?," +
-                                              "noCertificado=?,serie=?,folioInicial=?,folioFinal=?," +
-                                              "folioActual=?");
+            ps = con.prepareStatement("update serie set serie=?, folioActual=?");
 
-            ps.setInt   (1, getAnoAprobacion());
-            ps.setLong  (2, getNoAprobacion().longValue());
-            ps.setString(3, getNoCertificado());
-            ps.setString(4, getSerie());
-            ps.setInt   (5, getFolioInicial());
-            ps.setInt   (6, getFolioFinal());
-            ps.setLong  (7, getFolioActual().longValue());
-            //ps.setString(8, getTipo());
+            ps.setString(1, getSerie());
+            ps.setLong  (2, getFolioActual().longValue());
 
             ps.execute();
     }

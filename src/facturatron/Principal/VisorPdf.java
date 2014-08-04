@@ -4,6 +4,7 @@
  */
 package facturatron.Principal;
 
+import com.alee.utils.SystemUtils;
 import facturatron.Dominio.Configuracion;
 import facturatron.config.ConfiguracionDao;
 import facturatron.config.ConfiguracionForm;
@@ -14,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import facturatron.lib.Reporte;
 import facturatron.lib.entities.ComprobanteTron;
+import org.jdesktop.swingx.util.Utilities;
 
 /**
  *
@@ -35,9 +37,15 @@ public class VisorPdf {
             throws IOException, InterruptedException {
         Configuracion configuracion = new ConfiguracionDao().load();
         if (configuracion.getVisorPDF() == null || configuracion.getVisorPDF().equals(ConfiguracionForm.VISOR_PDF_NATIVO)) {
-            Process p =
-                    Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + path);
-            p.waitFor();
+            if(SystemUtils.isWindows()) {
+                Process p =
+                        Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + path);
+                p.waitFor();
+            } else if(SystemUtils.isMac()) {
+                Process p =
+                        Runtime.getRuntime().exec("open " + path);
+                p.waitFor();
+            }
         } else if (configuracion.getVisorPDF() != null && configuracion.getVisorPDF().equals(ConfiguracionForm.VISOR_PDF_JAVA)) {
             try {
                 List<ComprobanteTron> beans = new ArrayList<ComprobanteTron>();

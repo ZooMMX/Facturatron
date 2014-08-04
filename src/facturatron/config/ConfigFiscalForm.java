@@ -35,12 +35,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
 
     @Override
     public void update(Observable o, Object arg) {
-        getTxtAnoAprobacion().setText(String.valueOf(getModel().getAnoAprobacion()));
-        getTxtNoAprobacion().setText(String.valueOf(getModel().getNoAprobacion()));
-        getTxtNoCertificado().setText(String.valueOf(getModel().getNoCertificado()));
         getTxtSerie().setText(String.valueOf(getModel().getSerie()));
-        getTxtFolioInicial().setText(String.valueOf(getModel().getFolioInicial()));
-        getTxtFolioFinal().setText(String.valueOf(getModel().getFolioFinal()));
 
         ClienteDao contrib = getModel().getContribuyente();
         getTxtCalle()       .setText(contrib.getCalle());
@@ -84,17 +79,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
 
         jXTitledPanel1 = new org.jdesktop.swingx.JXTitledPanel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        txtNoAprobacion = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
-        txtAnoAprobacion = new org.jdesktop.swingx.JXTextField();
         txtSerie = new org.jdesktop.swingx.JXTextField();
-        jLabel16 = new javax.swing.JLabel();
-        txtFolioInicial = new org.jdesktop.swingx.JXTextField();
-        jLabel17 = new javax.swing.JLabel();
-        txtFolioFinal = new org.jdesktop.swingx.JXTextField();
-        jLabel18 = new javax.swing.JLabel();
-        txtNoCertificado = new org.jdesktop.swingx.JXTextField();
         jXTitledPanel2 = new org.jdesktop.swingx.JXTitledPanel();
         jideTabbedPane1 = new com.jidesoft.swing.JideTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -153,59 +138,16 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("Serie");
 
-        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel14.setText("No. Aprobación");
-
-        txtNoAprobacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNoAprobacionActionPerformed(evt);
-            }
-        });
-
-        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel15.setText("Año Aprobación");
-
-        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel16.setText("Folio Inicial");
-
-        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel17.setText("Folio Final");
-
-        jLabel18.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel18.setText("No. Certificado");
-
         javax.swing.GroupLayout jXTitledPanel1Layout = new javax.swing.GroupLayout(jXTitledPanel1.getContentContainer());
         jXTitledPanel1.getContentContainer().setLayout(jXTitledPanel1Layout);
         jXTitledPanel1Layout.setHorizontalGroup(
             jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jXTitledPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtSerie, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNoAprobacion, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtAnoAprobacion, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
-                    .addGroup(jXTitledPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addGap(10, 10, 10)
-                        .addComponent(txtFolioInicial, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtFolioFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNoCertificado, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSerie, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                .addGap(360, 360, 360))
         );
         jXTitledPanel1Layout.setVerticalGroup(
             jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,19 +155,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                 .addContainerGap()
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jLabel14)
-                    .addComponent(txtNoAprobacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15)
-                    .addComponent(txtAnoAprobacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFolioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel17)
-                    .addComponent(txtFolioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18)
-                    .addComponent(txtNoCertificado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -337,7 +267,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -492,7 +422,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(txtNombreSuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -551,7 +481,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
             jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jideTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                .addComponent(jideTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -600,11 +530,11 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(jXTitledPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jXTitledPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jXTitledPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -623,10 +553,6 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     private void txtColoniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtColoniaActionPerformed
         // TODO add your handling code here:
 }//GEN-LAST:event_txtColoniaActionPerformed
-
-    private void txtNoAprobacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoAprobacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNoAprobacionActionPerformed
 
     private void txtColoniaSucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtColoniaSucActionPerformed
         // TODO add your handling code here:
@@ -659,11 +585,6 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
@@ -690,7 +611,6 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel2;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel3;
     private com.jidesoft.swing.JideTabbedPane jideTabbedPane1;
-    private org.jdesktop.swingx.JXTextField txtAnoAprobacion;
     private javax.swing.JTextField txtCalle;
     private javax.swing.JTextField txtCalleSuc;
     private javax.swing.JTextField txtCodigoPostal;
@@ -699,12 +619,8 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     private javax.swing.JTextField txtColoniaSuc;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtEstadoSuc;
-    private org.jdesktop.swingx.JXTextField txtFolioFinal;
-    private org.jdesktop.swingx.JXTextField txtFolioInicial;
     private javax.swing.JTextField txtMunicipio;
     private javax.swing.JTextField txtMunicipioSuc;
-    private javax.swing.JTextField txtNoAprobacion;
-    private org.jdesktop.swingx.JXTextField txtNoCertificado;
     private javax.swing.JTextField txtNoExterior;
     private javax.swing.JTextField txtNoExteriorSuc;
     private javax.swing.JTextField txtNoInterior;
@@ -726,13 +642,6 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
      */
     public org.jdesktop.swingx.JXButton getBtnGuardar() {
         return btnGuardar;
-    }
-
-    /**
-     * @return the txtAnoAprobacion
-     */
-    public org.jdesktop.swingx.JXTextField getTxtAnoAprobacion() {
-        return txtAnoAprobacion;
     }
 
     /**
@@ -764,38 +673,10 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     }
 
     /**
-     * @return the txtFolioFinal
-     */
-    public org.jdesktop.swingx.JXTextField getTxtFolioFinal() {
-        return txtFolioFinal;
-    }
-
-    /**
-     * @return the txtFolioInicial
-     */
-    public org.jdesktop.swingx.JXTextField getTxtFolioInicial() {
-        return txtFolioInicial;
-    }
-
-    /**
      * @return the txtMunicipio
      */
     public javax.swing.JTextField getTxtMunicipio() {
         return txtMunicipio;
-    }
-
-    /**
-     * @return the txtNoAprobacion
-     */
-    public javax.swing.JTextField getTxtNoAprobacion() {
-        return txtNoAprobacion;
-    }
-
-    /**
-     * @return the txtNoCertificado
-     */
-    public org.jdesktop.swingx.JXTextField getTxtNoCertificado() {
-        return txtNoCertificado;
     }
 
     /**

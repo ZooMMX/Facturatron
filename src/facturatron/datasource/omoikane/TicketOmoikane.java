@@ -20,6 +20,7 @@ import facturatron.omoikane.VentasDetalles;
 import facturatron.omoikane.VentasDetallesJpaController;
 import facturatron.omoikane.VentasJpaController;
 import facturatron.omoikane.VentasPK;
+import facturatron.omoikane.exceptions.TicketFacturadoException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -40,10 +41,11 @@ public class TicketOmoikane extends Ticket<String> {
     private Integer idAlmacen;
     private Integer idCaja;
     private Integer idVenta;
+    private Ventas  venta;
     
-    public void load(Object id) { getTicket(id); }
+    public void load(Object id) throws TicketFacturadoException { getTicket(id); }
     
-    public Ticket getTicket(Object id) {
+    public Ticket getTicket(Object id) throws TicketFacturadoException {
         
         String idString = (String) id;
         setId(idString);
@@ -52,10 +54,17 @@ public class TicketOmoikane extends Ticket<String> {
         setIdAlmacen ( Integer.valueOf(args[0]) );
         setIdCaja    ( Integer.valueOf(args[1]) );
         setIdVenta   ( Integer.valueOf(args[2]) );
-        return getTicketData(idAlmacen, idCaja, idVenta);
+        TicketOmoikane ticket = getTicketData(idAlmacen, idCaja, idVenta);
+        
+        if(ticket.venta != null 
+                && ticket.venta.getFacturada() != null 
+                && ticket.venta.getFacturada() > 0) 
+            throw new TicketFacturadoException("Ticket, nota o cuenta previamente facturado(a)");
+        
+        return ticket;
     }
     
-    public void setTicketFacturado(int estado) throws Exception {
+    public void setTicketFacturado(Integer idFactura) throws Exception {
         VentasJpaController         ventaJpa    = new VentasJpaController();
         
         String[] args = getId().split("-");
@@ -65,7 +74,7 @@ public class TicketOmoikane extends Ticket<String> {
         
         VentasPK pk = new VentasPK(idVenta, idCaja, idAlmacen);
         Ventas v = ventaJpa.findVentas(pk);
-        v.setFacturada(estado);
+        v.setFacturada(idFactura);
         
         ventaJpa.edit(v);
     }
@@ -96,17 +105,25 @@ public class TicketOmoikane extends Ticket<String> {
 
         VentasPK pk = new VentasPK(idVenta, idCaja, idAlmacen);
 
-        Ventas               ventas   = ventaJpa.findVentas(pk);
+        this.venta   = ventaJpa.findVentas(pk);
         List<VentasDetalles> detalles = detallesJpa.findByVenta(idVenta);
         
 
         for (VentasDetalles vd : detalles) {
             final RenglonTicket renglon       = new RenglonTicket();
-            final Articulo      producto      = productsJpa.findArticulos(vd.getIdArticulo());
+            Articulo      producto      = productsJpa.findArticulos(vd.getIdArticulo());
             final BigDecimal    precio        = new BigDecimal(vd.getPrecio(), mc).round(mc).setScale(4, BigDecimal.ROUND_HALF_EVEN);
             final BigDecimal    descuento     = new BigDecimal(vd.getDescuento(), mc).round(mc).setScale(4, BigDecimal.ROUND_UP);
             final BigDecimal    cantidad      = new BigDecimal(vd.getCantidad(), mc).round(mc).setScale(4, BigDecimal.ROUND_HALF_EVEN);
             final BigDecimal    subtotal      = new BigDecimal(vd.getSubtotal(), mc).round(mc).setScale(4, BigDecimal.ROUND_HALF_EVEN);
+            
+            //Producto referenciado pero no existente, se crea un dummy
+            if(producto == null) producto = new Articulo() {{
+                    setCodigo("ND");
+                    setDescripcion("Producto no existente o localizado");
+                    setUnidad("ND");
+                    setImpuestos(new ArrayList());
+                }};
                         
             //precio unitario = subtotal / cantidad
             BigDecimal pUnitario = subtotal.divide( cantidad, BigDecimal.ROUND_HALF_EVEN );

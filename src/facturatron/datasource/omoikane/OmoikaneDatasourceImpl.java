@@ -20,13 +20,20 @@
 
 
 
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import facturatron.datasource.DatasourceException;
 import facturatron.datasource.IDatasourceService;
 import facturatron.datasource.Ticket;
 import facturatron.datasource.CorteZ;
 import facturatron.omoikane.CorteZDao;
+import facturatron.omoikane.Ventas;
+import facturatron.omoikane.VentasJpaController;
+import facturatron.omoikane.exceptions.TicketFacturadoException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,13 +42,14 @@ import java.util.Date;
 public class OmoikaneDatasourceImpl implements IDatasourceService {
 
     @Override
-    public Ticket getTicket(Object id) {
+    public Ticket getTicket(Object id) throws TicketFacturadoException {
         return new TicketOmoikane().getTicket(id);
     }
     
     @Override
     public Ticket getTickets(Object idInicial, Object idFinal) {
-        return new TicketOmoikane().getTicket(idInicial);
+        //return new TicketOmoikane().getTickets(idInicial);
+        return null;
     }
 
     @Override
@@ -52,13 +60,29 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
     }
 
     @Override
-    public void setTicketFacturado(Object id) throws DatasourceException {
+    public void setTicketFacturado(Object idTicket, Object idFactura) throws DatasourceException {
         try {
             TicketOmoikane ticket = new TicketOmoikane();
-            ticket.load(id);
-            ticket.setTicketFacturado(1);
+            ticket.load(idTicket);
+            ticket.setTicketFacturado((Integer) idFactura);
         } catch (Exception ex) {
             throw new DatasourceException("No se pudo marcar ticket facturado", ex);
+        }
+    }
+
+    @Override
+    public void cancelarFactura(Integer idFactura) throws DatasourceException {
+        try {
+            VentasJpaController         ventaJpa    = new VentasJpaController();
+            List<Ventas> ventas = ventaJpa.findVentasByFactura(idFactura);
+            for (Ventas venta : ventas) {
+                venta.setFacturada(0);
+                ventaJpa.edit(venta);
+            }
+        } catch (CommunicationsException ex) {
+            throw new DatasourceException("No hay conexión con el origen de datos", ex);
+        } catch (Exception ex) {
+            throw new DatasourceException("Hubo un problema al rehabilitar tickets contenidos en la factura", ex);
         }
     }
 

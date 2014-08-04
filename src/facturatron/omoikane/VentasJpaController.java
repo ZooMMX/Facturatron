@@ -102,6 +102,21 @@ public class VentasJpaController extends JpaController {
             if(em != null) em.close();
         }
     }
+    
+    public List<Ventas> findVentasByFactura(Integer idFactura) throws CommunicationsException {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Query cq = em.createQuery("SELECT v FROM Ventas v WHERE v.facturada = :idFactura", Integer.class);
+            cq.setParameter("idFactura", idFactura);
+            
+            return cq.getResultList();
+        } catch (PersistenceException ex) {
+            throw ex;
+        } finally {
+            if(em != null) em.close();
+        }
+    }
 
     public Ventas findVentas(VentasPK id) throws PersistenceException {
         EntityManager em = null;

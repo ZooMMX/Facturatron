@@ -9,6 +9,7 @@ import facturatron.datasource.DatasourceContext;
 import facturatron.datasource.DatasourceException;
 import facturatron.datasource.Ticket;
 import facturatron.datasource.omoikane.TicketOmoikane;
+import facturatron.omoikane.exceptions.TicketFacturadoException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class TicketTest {
      * Test of getTicketData method, of class Ticket.
      */
     @Test
-    public void testGetTicketData() throws DatasourceException {
+    public void testGetTicketData() throws DatasourceException, TicketFacturadoException {
         System.out.println("getTicketData");
         Integer idAlmacen = 1;
         Integer idCaja = 1;

@@ -162,9 +162,13 @@ public class ArtemisaDatasourceImpl implements IDatasourceService {
     }
     
     @Override
-    public void setTicketFacturado(Object id) {
+    public void setTicketFacturado(Object idTicket, Object idFactura) throws DatasourceException {
         
     }
 	
+    @Override
+    public void cancelarFactura(Integer id) throws DatasourceException {
+        
+    }
 }
 
