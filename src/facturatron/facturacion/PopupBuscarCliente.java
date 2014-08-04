@@ -14,6 +14,7 @@ import com.alee.laf.text.WebTextField;
 import com.alee.managers.popup.PopupWay;
 import com.alee.managers.popup.WebButtonPopup;
 import facturatron.Dominio.Persona;
+import facturatron.MVC.Controller;
 import facturatron.cliente.ClienteTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -22,28 +23,34 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.text.View;
 
 /**
  *
  * @author octavioruizcastillo
  */
 public class PopupBuscarCliente {
-    FacturaControl controller;
+
     TimerBusqueda  timerBusqueda;
     WebTextField   field;
     ClienteTableModel tableModel;
     WebTable          table;
     WebButtonPopup    popup;
+    JTextField        txtIdCliente;
+    WebButton         botonBuscador;
+    ClienteAction     onClientSelected;
     
-    public PopupBuscarCliente(FacturaControl c) {
-        controller = c;
+    public PopupBuscarCliente(WebButton botonBuscador, ClienteAction onClientSelected) {
+        this.botonBuscador    = botonBuscador;
+        this.onClientSelected = onClientSelected;
     }
     
     public void install() {
          // Button that calls for popup
-        WebButton showPopup = controller.getView().getBtnBuscarCliente();
+        WebButton showPopup = botonBuscador;
 
         // Popup itself
         popup = new WebButtonPopup ( showPopup, PopupWay.downLeft );
@@ -115,12 +122,12 @@ public class PopupBuscarCliente {
     private void selectCliente() {
         int selected = table.getSelectedRow();
         Persona persona = tableModel.getData().get(selected);
-        controller.getView().getTxtIdCliente().setText(persona.getId().toString());
         field.setText("");
         buscar();
         popup.hidePopup();
-        controller.cargarCliente();
-        controller.getView().getTxtIdCliente().requestFocus();
+        onClientSelected.cliente = persona;
+        onClientSelected.run();
+        
     }
     
     private void preBuscar()
@@ -160,5 +167,10 @@ public class PopupBuscarCliente {
         }
     }
 
-    
+    public static abstract class ClienteAction implements Runnable {
+
+        private Persona cliente;                       
+        public void setCliente(Persona cliente) { this.cliente = cliente; }
+        public Persona getCliente() { return cliente; }
+    }
 }

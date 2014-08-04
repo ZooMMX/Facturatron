@@ -324,14 +324,28 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         notifyObservers();
      }
 
-     public ArrayList<FacturaDao> findAll(Date fechaInicial, Date fechaFinal){
+     public ArrayList<FacturaDao> findByFechaAndCliente(Date fechaInicial, Date fechaFinal, Persona cliente) {
+         return _findAll(fechaInicial, fechaFinal, cliente);
+     }
+     
+     public ArrayList<FacturaDao> findAll(Date fechaInicial, Date fechaFinal) {
+         return _findAll(fechaInicial, fechaFinal, null);
+     }
+     
+     private ArrayList<FacturaDao> _findAll(Date fechaInicial, Date fechaFinal, Persona cliente){
          JDBCDAOSupport bd = getBD();
          try {
+            //Determina si habrá búsqueda por cliente
+            Boolean isByCliente = cliente != null && cliente.getId() != null && cliente.getId() > 0;
 
             bd.conectar();
-            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM comprobante WHERE fecha >= ? and fecha <= ?");
+            String query = "SELECT * FROM comprobante WHERE fecha >= ? and fecha <= ?";
+            if(isByCliente) query += " AND idreceptor = ?";
+            PreparedStatement ps = bd.getCon().prepareStatement(query);
             ps.setDate(1, fechaInicial);
             ps.setDate(2, fechaFinal);
+            if(isByCliente) ps.setInt(3, cliente.getId());
+            
             ResultSet rs = ps.executeQuery();
             ArrayList<FacturaDao> ret = new ArrayList<FacturaDao>();
             FacturaDao bean;

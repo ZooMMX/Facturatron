@@ -17,6 +17,7 @@ import facturatron.datasource.IDatasourceService;
 import facturatron.facturacion.PAC.IPACService;
 import facturatron.facturacion.PAC.PACContext;
 import facturatron.facturacion.PAC.PACException;
+import facturatron.facturacion.PopupBuscarCliente.ClienteAction;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -32,11 +33,25 @@ import javax.swing.JOptionPane;
  *
  * @author saul, ORC
  */
-public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
+public final class ListadoControl extends Controller<ListadoModel, ListadoForm> {
 
     public ListadoControl() {
         setView(new ListadoForm());
         setModel(new ListadoModel());
+        
+        PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(
+              getView().getBtnBuscarCliente(),
+              new ClienteAction() {
+                 @Override
+                 public void run() {
+                     notifyBusy();
+                     getView().getLblCliente().setText(getCliente().getNombre());
+                     getModel().setCliente(getCliente());
+                     notifyIdle();
+                 }                  
+              }
+      );
+      popupBuscarCliente.install();
     }
 
     @Override
@@ -225,6 +240,22 @@ public class ListadoControl extends Controller<ListadoModel, ListadoForm> {
                     public void run() {
                         notifyBusy();
                         getModel().setFechaFinal(new java.sql.Date(getView().getHasta().getDate().getTime()));
+                        notifyIdle();
+                    }
+                }.start();
+            }
+        });
+        getView().getBtnAllClients().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Thread() {
+
+                    @Override
+                    public void run() {
+                        notifyBusy();
+                        getView().getLblCliente().setText("Todos los clientes");
+                        getModel().setCliente(null);
                         notifyIdle();
                     }
                 }.start();

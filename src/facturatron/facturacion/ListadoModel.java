@@ -6,6 +6,7 @@
 package facturatron.facturacion;
 
 import facturatron.Dominio.Factura;
+import facturatron.Dominio.Persona;
 import facturatron.MVC.Model;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class ListadoModel extends Model {
     private ArrayList<FacturaDao> facturas = new ArrayList<FacturaDao>();
     private Date fechaInicial  ;
     private Date fechaFinal;
+    private Persona cliente;
     private BigDecimal subtotal    = new BigDecimal(0d);
     private BigDecimal iva         = new BigDecimal(0d);
     private BigDecimal total       = new BigDecimal(0d);
@@ -32,7 +34,7 @@ public class ListadoModel extends Model {
     }
 
     public void load() {
-        setFacturas(getDao().findAll(getFechaInicial(), getFechaFinal()));
+        setFacturas(getDao().findByFechaAndCliente(getFechaInicial(), getFechaFinal(), getCliente()));
         updateSumas();
         setChanged();
         notifyObservers();
@@ -196,6 +198,21 @@ public class ListadoModel extends Model {
      */
     public void setDescuento16(BigDecimal descuento16) {
         this.descuento16 = descuento16;
+    }
+
+    /**
+     * @return the cliente
+     */
+    public Persona getCliente() {
+        return cliente;
+    }
+
+    /**
+     * @param cliente the cliente to set
+     */
+    public void setCliente(Persona cliente) {
+        this.cliente = cliente;
+        load();
     }
 
 }

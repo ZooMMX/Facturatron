@@ -26,6 +26,9 @@ public class MainForm extends javax.swing.JFrame {
         this.getPanelEdicion().setAutoFocusOnTabHideClose(true);
         this.getPanelEdicion().setAutoRequestFocus(true);        
         setSize(1024, 768);
+        this.getPanelEdicion().setShowCloseButton(true);
+        this.getPanelEdicion().setShowTabButtons(true);
+        this.getPanelEdicion().setShowCloseButtonOnTab(true);
     }
 
     /** This method is called from within the constructor to
@@ -154,12 +157,11 @@ public class MainForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("1.8-alpha.1");
+        jLabel1.setText("1.8-alpha.3");
         jXTaskPaneContainer1.add(jLabel1);
 
         panelEdicion.setAutoscrolls(true);
-        panelEdicion.setShowCloseButtonOnTab(true);
-        panelEdicion.setShowTabButtons(true);
+        panelEdicion.setShowCloseButtonOnMouseOver(true);
         panelEdicion.setTabEditingAllowed(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -176,9 +178,9 @@ public class MainForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 382, Short.MAX_VALUE)
+            .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 407, Short.MAX_VALUE)
         );
 
         pack();

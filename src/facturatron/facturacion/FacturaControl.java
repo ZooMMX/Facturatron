@@ -26,6 +26,7 @@ import facturatron.datasource.IDatasourceService;
 import facturatron.datasource.RenglonTicket;
 import facturatron.datasource.Ticket;
 import facturatron.datasource.omoikane.TicketOmoikane;
+import facturatron.facturacion.PopupBuscarCliente.ClienteAction;
 import facturatron.lib.Java2sAutoComboBox;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;
@@ -92,7 +93,17 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
 
   private void setupAddons() {
       Configuracion cfg = getConfig();
-      PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(this);
+      PopupBuscarCliente popupBuscarCliente = new PopupBuscarCliente(
+              getView().getBtnBuscarCliente(),
+              new ClienteAction() {
+                 @Override
+                 public void run() {
+                     getView().getTxtIdCliente().setText(getCliente().getId().toString());
+                     cargarCliente();
+                     getView().getTxtIdCliente().requestFocus();
+                 }                  
+              }
+      );
       popupBuscarCliente.install();
       
       if(cfg.getModuloUnidadesActivo())
