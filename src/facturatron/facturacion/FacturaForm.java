@@ -637,7 +637,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -655,7 +655,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         });
         jPanel1.add(btnBorrarPartida, new java.awt.GridBagConstraints());
 
-        btnObservaciones.setText("Ver/Editar Observaciones");
+        btnObservaciones.setText("Observaciones");
         btnObservaciones.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnObservaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -664,7 +664,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         });
         jPanel1.add(btnObservaciones, new java.awt.GridBagConstraints());
 
-        btnFacturaDia.setText("Factura del día");
+        btnFacturaDia.setText("Factura globalizada");
         jPanel1.add(btnFacturaDia, new java.awt.GridBagConstraints());
 
         btnTicket.setText("Añadir ticket");
@@ -710,7 +710,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                 .addComponent(jXTitledPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(35, 35, 35)
+                .addGap(5, 5, 5)
                 .addComponent(jXTitledPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents

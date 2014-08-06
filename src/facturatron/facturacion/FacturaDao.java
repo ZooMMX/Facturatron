@@ -140,6 +140,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             CFDFactory cfdf = new CFDFactory();
             CFDv3Tron cfd = cfdf.toCFDI(comp);
             
+            setNoCertificado(cfd.getComprobante().getNoCertificado());
+            setCertificado(cfd.getComprobante().getCertificado());
             setSello(comp.getSello());
             setXml(cfd.getXML());
             setFolioFiscal(cfd.getComprobante().getFolioFiscal());
@@ -360,8 +362,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setFolio(BigInteger.valueOf(rs.getLong("folio")));
                 bean.setSello(rs.getString("sello"));
                 bean.setNoCertificado(rs.getString("noCertificado"));
-                bean.setNoAprobacion(BigInteger.valueOf(rs.getInt("noAprobacion")));
-                bean.setAnoAprobacion(rs.getInt("anoAprobacion"));
+                //bean.setNoAprobacion(BigInteger.valueOf(rs.getInt("noAprobacion")));
+                //bean.setAnoAprobacion(rs.getInt("anoAprobacion"));
                 bean.setFormaDePago(rs.getString("formaDePago"));
                 //bean.setMetodoDePago(rs.getString( "metodoDePago" ));
                 bean.setSubtotal(rs.getBigDecimal("subtotal"));
@@ -426,32 +428,33 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             comprobanteSelladoFirmadoTimbrado = sellarFirmarYTimbrar();
             timbrado = true; //Necesario para posible rollback
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
-                    "(version,fecha,serie,folio,sello," +
+                    "(version,fecha,serie,folio,sello,noCertificado," +
                     "formaDePago,subtotal,total,descuentoTasa0,descuentoTasa16,tipoDeComprobante,idEmisor, idReceptor," +
                     "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora, folioFiscal) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             ps.setString(1, getVersion());
             ps.setDate(2, new java.sql.Date(getFecha().getTime()));
             ps.setString(3, getSerie());
             ps.setLong(4, getFolio().longValue());
             ps.setString(5, getSello());
-            ps.setString(6, getFormaDePago());
-            ps.setBigDecimal(7, getSubtotal());
-            ps.setBigDecimal(8, getTotal());
-            ps.setBigDecimal(9, getDescuentoTasa0());
-            ps.setBigDecimal(10, getDescuentoTasa16());
-            ps.setString(11, getTipoDeComprobante());
-            ps.setInt(12, getEmisor().getId());
-            ps.setInt(13, getReceptor().getId());
-            ps.setBigDecimal(14, getIvaTrasladado());
-            ps.setString(15, getCertificado());
-            ps.setString(16, getMotivoDescuento());
-            ps.setString(17, getXml());
-            ps.setString(18, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
-            ps.setString(19, getObservaciones());
-            ps.setTime  (20, getHora());
-            ps.setString(21, getFolioFiscal());
+            ps.setString(6, getNoCertificado());
+            ps.setString(7, getFormaDePago());
+            ps.setBigDecimal(8, getSubtotal());
+            ps.setBigDecimal(9, getTotal());
+            ps.setBigDecimal(10, getDescuentoTasa0());
+            ps.setBigDecimal(11, getDescuentoTasa16());
+            ps.setString(12, getTipoDeComprobante());
+            ps.setInt(13, getEmisor().getId());
+            ps.setInt(14, getReceptor().getId());
+            ps.setBigDecimal(15, getIvaTrasladado());
+            ps.setString(16, getCertificado());
+            ps.setString(17, getMotivoDescuento());
+            ps.setString(18, getXml());
+            ps.setString(19, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
+            ps.setString(20, getObservaciones());
+            ps.setTime  (21, getHora());
+            ps.setString(22, getFolioFiscal());
             //ps.setString(24, getMetodoDePago());
 
             ps.execute();
