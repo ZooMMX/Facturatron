@@ -43,6 +43,7 @@ import facturatron.Dominio.Configuracion
 import facturatron.datasource.DatasourceException
 import facturatron.datasource.RenglonTicket
 import facturatron.datasource.Ticket;
+import facturatron.datasource.TicketGlobal
 import facturatron.datasource.unicenta.TicketUnicenta
 import facturatron.datasource.CorteZ
 //import facturatron.datasource.Ticket;
@@ -169,6 +170,16 @@ public class UnicentaDatasourceImpl implements IDatasourceService {
     @Override
     public void cancelarFactura(Integer id) throws DatasourceException {
         
+    }
+    
+    @Override
+    public void setTicketsFacturados(List<Object> ventas, Object factura) throws DatasourceException{
+        
+    }
+    
+    @Override
+    public TicketGlobal getTicketGlobal(Object desde, Object hasta) throws DatasourceException {
+    
     }
 }
 

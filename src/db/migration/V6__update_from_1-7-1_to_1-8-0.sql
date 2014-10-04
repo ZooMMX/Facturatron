@@ -31,4 +31,7 @@ ALTER TABLE serie DROP COLUMN noAprobacion;
 ALTER TABLE serie DROP COLUMN anoAprobacion;
 ALTER TABLE serie DROP COLUMN noCertificado;
 ALTER TABLE comprobante DROP COLUMN noAprobacion;
-ALTER TABLE comprobante DROP COLUMN anoAprobacion;
+ALTER TABLE comprobante DROP COLUMN anoAprobacion;  
+
+-- Actualizar el tipo de columna certificado de table comprobante.
+ALTER TABLE comprobante MODIFY certificado TEXT;

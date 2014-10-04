@@ -28,8 +28,8 @@ import java.util.Date;
 public interface IDatasourceService  {
     public Ticket getTicket(Object id) throws DatasourceException, TicketFacturadoException;
     public Ticket getTickets(Object idInicial, Object idFinal) throws DatasourceException;
-    public CorteZ getCorteZ(Date fecha) throws DatasourceException;
-    public void setTicketFacturado(Object idVenta, Object idFactura) throws DatasourceException;
+    public TicketGlobal getTicketGlobal(Object desde, Object hasta) throws DatasourceException;
+    public void setTicketsFacturados(java.util.List<Object> idVenta, Object idFactura) throws DatasourceException;
 
     public void cancelarFactura(Integer id) throws DatasourceException;
 }

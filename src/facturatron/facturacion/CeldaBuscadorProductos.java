@@ -60,8 +60,7 @@ class CeldaBuscadorProductos {
 
             columnaCodigo.setCellEditor(new DefaultCellEditor(comboBox));
 
-            DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-            renderer.setToolTipText("Click para ver todos");
+            DefaultTableCellRenderer renderer = new CellRendererDotDotDot();
             columnaCodigo.setCellRenderer(renderer);
 
             comboBox.addItemListener(new ItemListener() {

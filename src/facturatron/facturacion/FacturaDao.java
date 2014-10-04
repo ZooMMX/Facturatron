@@ -228,18 +228,18 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         //  con los 6 dígitos decimales que establece el SAT en el Anexo 20, sin embargo
         //  es posible que algunas de las operaciones no se hagan con una precisión de más
         //  de dos dígitos
-        t1.setImporte(getIvaTrasladado().setScale(6));
+        t1.setImporte(getIvaTrasladado().setScale(6, RoundingMode.HALF_EVEN));
         t1.setImpuesto("IVA");
-        t1.setTasa(new BigDecimal("16.00").setScale(6));
+        t1.setTasa(new BigDecimal("16.00").setScale(6, RoundingMode.HALF_EVEN));
         list.add(t1);
-        t2.setImporte(new BigDecimal(0d).setScale(6));
+        t2.setImporte(new BigDecimal(0d).setScale(6, RoundingMode.HALF_EVEN));
         t2.setImpuesto("IVA");
-        t2.setTasa(new BigDecimal("0.00").setScale(6));        
+        t2.setTasa(new BigDecimal("0.00").setScale(6, RoundingMode.HALF_EVEN));        
         list.add(t2);
         list.addAll(getIEPSDesglosado());
         
         imps.setTraslados(trs);
-        imps.setTotalImpuestosTrasladados(getIvaTrasladado().add( getIEPSTrasladado() ).setScale( 6 ));
+        imps.setTotalImpuestosTrasladados(getIvaTrasladado().add( getIEPSTrasladado() ).setScale( 6, RoundingMode.HALF_EVEN ));
         return imps;
      }
      
@@ -264,8 +264,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
              
              Traslado t = of.createComprobanteImpuestosTrasladosTraslado();
              t.setImpuesto("IEPS");
-             t.setImporte(ieps.getValue().setScale(6));
-             t.setTasa(ieps.getKey().setScale(6));
+             t.setImporte(ieps.getValue().setScale(6,RoundingMode.HALF_EVEN));
+             t.setTasa(ieps.getKey().setScale(6,RoundingMode.HALF_EVEN));
              traslados.add(t);
          }
          return traslados;
@@ -549,8 +549,6 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setFolio(BigInteger.valueOf(rs.getLong("folio")));
             dao.setSello(rs.getString("sello"));
             dao.setNoCertificado(rs.getString("noCertificado"));
-            dao.setNoAprobacion(BigInteger.valueOf(rs.getInt("noAprobacion")));
-            dao.setAnoAprobacion(rs.getInt("anoAprobacion"));
             dao.setFormaDePago(rs.getString("formaDePago"));
             dao.setSubtotal(rs.getBigDecimal("subtotal"));
             dao.setTotal(rs.getBigDecimal("total"));

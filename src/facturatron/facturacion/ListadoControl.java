@@ -180,8 +180,11 @@ public final class ListadoControl extends Controller<ListadoModel, ListadoForm> 
                     @Override
                     public void run() {
                         notifyBusy();
-                        btnCancelarFactura();
-                        notifyIdle();
+                        try {
+                            btnCancelarFactura();
+                        } finally {
+                            notifyIdle();
+                        }
                     }
                 }.start();
             }

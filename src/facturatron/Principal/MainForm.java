@@ -78,7 +78,7 @@ public class MainForm extends javax.swing.JFrame {
         });
         jXTaskPane1.getContentPane().add(linkFacturasEmitidas);
 
-        linkInformeMensual.setText("Informe Mensual SAT");
+        linkInformeMensual.setText("Informe SAT");
         linkInformeMensual.setUnclickedColor(new java.awt.Color(0, 0, 0));
         linkInformeMensual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,7 +157,7 @@ public class MainForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("1.8-alpha.4");
+        jLabel1.setText("1.8-beta.1");
         jXTaskPaneContainer1.add(jLabel1);
 
         panelEdicion.setAutoscrolls(true);

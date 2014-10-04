@@ -95,8 +95,10 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
             getRbnVisorPDFJava().setSelected(getModel().getVisorPDF().equals(VISOR_PDF_JAVA));
             getRbnVisorPDFNativo().setSelected(getModel().getVisorPDF().equals(VISOR_PDF_NATIVO));
         }
-        getBoxProductos().setSelected(getModel().getModuloProductosActivo());
-        getBoxUnidades().setSelected(getModel().getModuloUnidadesActivo());
+        if(getModel().getModuloProductosActivo() != null)
+            getBoxProductos().setSelected(getModel().getModuloProductosActivo());
+        if(getModel().getModuloUnidadesActivo() != null)
+            getBoxUnidades().setSelected(getModel().getModuloUnidadesActivo());
     }
 
     /**
@@ -168,6 +170,7 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
         jXTitledPanel3 = new org.jdesktop.swingx.JXTitledPanel();
         boxUnidades = new javax.swing.JCheckBox();
         boxProductos = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
 
         jXTitledPanel1.setTitle("Configuración del Sistema");
         jXTitledPanel1.setTitleFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
@@ -588,6 +591,9 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
             }
         });
 
+        jLabel2.setForeground(new java.awt.Color(204, 51, 0));
+        jLabel2.setText("Experimentales");
+
         javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
         jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
         jXTitledPanel3Layout.setHorizontalGroup(
@@ -596,16 +602,19 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
                 .addContainerGap()
                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(boxUnidades, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(boxProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE))
+                    .addComponent(boxProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jXTitledPanel3Layout.setVerticalGroup(
             jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTitledPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(boxUnidades)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(boxProductos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(boxUnidades)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -665,6 +674,7 @@ public class ConfiguracionForm extends javax.swing.JPanel implements Observer, V
     private org.jdesktop.swingx.JXButton btnGuardar;
     private org.jdesktop.swingx.JXButton btnProbarConfiguracion;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private org.jdesktop.swingx.JXLabel jXLabel1;

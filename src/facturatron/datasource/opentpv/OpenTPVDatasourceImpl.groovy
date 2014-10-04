@@ -22,9 +22,9 @@ import facturatron.Dominio.Configuracion
 import facturatron.datasource.CorteZ
 import facturatron.datasource.DatasourceException
 import facturatron.datasource.IDatasourceService
-import facturatron.datasource.opentpv.TicketOpenTPV
 import facturatron.datasource.RenglonTicket
-import facturatron.datasource.Ticket;
+import facturatron.datasource.Ticket
+import facturatron.datasource.TicketGlobal
 import groovy.sql.Sql;
 
 /**
@@ -168,13 +168,22 @@ public class OpenTPVDatasourceImpl implements IDatasourceService {
     public CorteZ getCorteZ(Date fecha) throws DatasourceException {
         throw new DatasourceException("Operación no implementada para OpenTPV/OpenBravo");
     }
-	
-    @Override
-    public void setTicketFacturado(Object idTicket, Object idFactura) throws DatasourceException { }
     
     @Override
     public void cancelarFactura(Integer id) throws DatasourceException {
         
     }
+    
+    @Override
+    public void setTicketsFacturados(List<Object> ventas, Object factura) throws DatasourceException{
+        
+    }
+    
+    @Override
+    public TicketGlobal getTicketGlobal(Object desde, Object hasta) throws DatasourceException {
+    
+    }
+    
+    
 }
 

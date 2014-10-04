@@ -1,0 +1,239 @@
+<project>
+    <shortName>facturatron</shortName>
+    <fullName>Facturatron</fullName>
+    <version>1.8-beta.1</version>
+    <installerFilename>${project.shortName}-${project.version}-${platform_name}-installer.${platform_exec_suffix}</installerFilename>
+    <readmeFile>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/CHANGELOG.md</readmeFile>
+    <licenseFile>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/LICENSE</licenseFile>
+    <defaultLanguage>es</defaultLanguage>
+    <componentList>
+        <component>
+            <name>default</name>
+            <description>Cliente</description>
+            <canBeEdited>1</canBeEdited>
+            <detailedDescription>Instala el cliente de Facturatron</detailedDescription>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/dist/lib</origin>
+                        </distributionDirectory>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/dist/Facturatron.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/README.md</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/FacturaCFDIGenerica.jrxml</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/FacturaCFDIGenerica.jasper</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/ConceptosFacturaCFDIGenerica.jrxml</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/ConceptosFacturaCFDIGenerica.jasper</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/CHANGELOG.md</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/schemadb.sql</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/logoejemplo.jpg</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswin</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/bot.ico</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/Users/octavioruizcastillo/AppDev/Proyectos/Facturatron/facturatron.bat</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}/bin</destination>
+                    <name>programfilesunix</name>
+                    <platforms>linux linux-x64 linux-ia64 osx solaris-sparc solaris-intel linux-ppc linux-s390 freebsd freebsd4 freebsd6 freebsd6-x64 openbsd3 hpux aix irix-n32</platforms>
+                </folder>
+            </folderList>
+            <startMenuShortcutList>
+                <startMenuShortcut>
+                    <comment>Desinstalar Facturatron</comment>
+                    <name>Desinstalar Facturatron</name>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/uninstall.exe</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon>${installdir}/uninstall.exe</windowsIcon>
+                    <windowsPath></windowsPath>
+                </startMenuShortcut>
+            </startMenuShortcutList>
+        </component>
+        <include>
+            <file>/Users/octavioruizcastillo/Downloads/jre1.7.0_51-windows/java.xml</file>
+        </include>
+        <component>
+            <name>MySQL</name>
+            <description>Servidor</description>
+            <canBeEdited>1</canBeEdited>
+            <detailedDescription>Instala los componentes necesarios para el servidor, incluyendo la base de datos MySQL</detailedDescription>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>MySQL</description>
+                    <destination>${installdir}/mysql</destination>
+                    <name>MySQL</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <allowWildcards>1</allowWildcards>
+                            <origin>/Users/octavioruizcastillo/Downloads/mysql-5.6.16-win32/*</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <postInstallationActionList>
+                <iniFileSet>
+                    <file>${installdir}/mysql/my.ini</file>
+                    <key>socket</key>
+                    <section>mysql</section>
+                    <value>${installdir}/mysql/data/mysql.sock</value>
+                </iniFileSet>
+                <iniFileSet>
+                    <file>${installdir}/mysql/my.ini</file>
+                    <key>socket</key>
+                    <section>mysqld</section>
+                    <value>${installdir}/mysql/data/mysql.sock</value>
+                </iniFileSet>
+                <iniFileSet>
+                    <file>${installdir}/mysql/my.ini</file>
+                    <key>pid-file</key>
+                    <section>mysqld</section>
+                    <value>${installdir}/mysql/data/mysql.pid</value>
+                </iniFileSet>
+                <iniFileSet>
+                    <file>${installdir}/mysql/my.ini</file>
+                    <key>datadir</key>
+                    <section>mysqld</section>
+                    <value>${installdir}/mysql/data/</value>
+                </iniFileSet>
+                <iniFileSet>
+                    <file>${installdir}/mysql/my.ini</file>
+                    <key>log-bin</key>
+                    <section>mysqld</section>
+                    <value>${installdir}/mysql/data/mysql-bin</value>
+                </iniFileSet>
+                <iniFileSet>
+                    <file>${installdir}/mysql/my.ini</file>
+                    <key>log-error</key>
+                    <section>mysqld</section>
+                    <value>${installdir}/mysql/data/mysql-error.log</value>
+                </iniFileSet>
+                <iniFileSet>
+                    <file>${installdir}/mysql/my.ini</file>
+                    <key>slow-query-log-file</key>
+                    <section>mysqld</section>
+                    <value>${installdir}/mysql/data/mysql-slow.log</value>
+                </iniFileSet>
+                <runProgram>
+                    <explanation>Instalando servicio de MySQL</explanation>
+                    <program>${installdir.dos}\mysql\bin\mysqld.exe</program>
+                    <programArguments>--install MySQLFacturatron --defaults-file=${installdir.dos}\mysql\my.ini</programArguments>
+                    <progressText>Instalando servicio de MySQL</progressText>
+                </runProgram>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <explanation>Iniciando servicio de MySQL</explanation>
+                    <program>NET</program>
+                    <programArguments>START MySQLFacturatron</programArguments>
+                    <progressText>Iniciando servicio de MySQL</progressText>
+                    <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                    <showMessageOnError>0</showMessageOnError>
+                </runProgram>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <program>${installdir.dos}\mysql\bin\mysql.exe</program>
+                    <programArguments>-u root &lt; ${installdir.dos}\schemadb.sql</programArguments>
+                    <showMessageOnError>0</showMessageOnError>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+    </componentList>
+    <postBuildActionList>
+        <createDirectory>
+            <path>${installdir.dos}/CasaDeLasFacturas</path>
+        </createDirectory>
+    </postBuildActionList>
+    <preUninstallationActionList>
+        <runProgram>
+            <abortOnError>0</abortOnError>
+            <program>NET</program>
+            <programArguments>STOP MySQLFacturatron</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>${installdir.dos}/mysql/bin/mysqld.exe</program>
+            <programArguments>--remove MySQLFacturatron --defaults-file="${installdir.dos}/mysql/my.ini"</programArguments>
+        </runProgram>
+    </preUninstallationActionList>
+    <allowAddRemoveComponents>1</allowAddRemoveComponents>
+    <allowComponentSelection>1</allowComponentSelection>
+    <defaultUnixDirectoryPermissions>777</defaultUnixDirectoryPermissions>
+    <defaultUnixFilePermissions>777</defaultUnixFilePermissions>
+    <description>Facturatron, sistema de facturación CFDI</description>
+    <enableRollback>1</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <installationLogFile>${installdir}/install.log</installationLogFile>
+    <projectSchemaVersion>1.0</projectSchemaVersion>
+    <startMenuGroupName>${project.fullName}</startMenuGroupName>
+    <summary>Facturatron, sistema de facturación CFDI</summary>
+    <uninstallationLogFile>${installdir}/uninstall.log</uninstallationLogFile>
+    <vendor>Phesus</vendor>
+    <windowsResourceFileVersion>1.8</windowsResourceFileVersion>
+    <finalPageActionList>
+        <runProgram>
+            <program>${installdir}/facturatron-launcher.exe</program>
+            <programArguments></programArguments>
+            <progressText>Ejecutar facturatron ahora</progressText>
+            <run>0</run>
+        </runProgram>
+    </finalPageActionList>
+    <parameterList>
+        <directoryParameter>
+            <name>installdir</name>
+            <description>Installer.Parameter.installdir.description</description>
+            <explanation>Installer.Parameter.installdir.explanation</explanation>
+            <value>${env(SYSTEMDRIVE)}/${project.shortName}</value>
+            <default>${env(SYSTEMDRIVE)}/${project.shortName}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <cliOptionName>prefix</cliOptionName>
+            <mustBeWritable>1</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>30</width>
+        </directoryParameter>
+    </parameterList>
+    <platformOptionsList>
+        <platformOptions>
+            <platform></platform>
+        </platformOptions>
+    </platformOptionsList>
+</project>
+

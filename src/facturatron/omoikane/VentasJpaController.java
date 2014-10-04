@@ -32,17 +32,15 @@ public class VentasJpaController extends JpaController {
     }
 
     public void create(Ventas ventas) throws PreexistingEntityException, Exception {
-        if (ventas.getVentasPK() == null) {
-            ventas.setVentasPK(new VentasPK());
-        }
+
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(ventas);
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findVentas(ventas.getVentasPK()) != null) {
+        } catch (PersistenceException ex) {
+            if (findVentas(ventas.getId()) != null) {
                 throw new PreexistingEntityException("Ventas " + ventas + " already exists.", ex);
             }
             throw ex;
@@ -60,12 +58,87 @@ public class VentasJpaController extends JpaController {
             em.getTransaction().begin();
             ventas = em.merge(ventas);
             em.getTransaction().commit();
-        } catch (Exception ex) {
+        } catch (PersistenceException ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                VentasPK id = ventas.getVentasPK();
+                Long id = ventas.getId();
                 if (findVentas(id) == null) {
                     throw new NonexistentEntityException("The ventas with id " + id + " no longer exists.");
+                }
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    public void editMany(List<Ventas> ventasList) throws NonexistentEntityException, Exception {
+        EntityManager em = null;
+        Ventas v = null;
+        
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            for(Ventas ventas : ventasList) {
+                v = ventas;
+                ventas = em.merge(ventas);
+            }
+            em.getTransaction().commit();
+        } catch (PersistenceException ex) {
+            String msg = ex.getLocalizedMessage();
+            if(v == null) {
+                throw new Exception("ID de venta inválido");
+            }
+            if (msg == null || msg.length() == 0) {
+                Long id = v.getId();
+                if (findVentas(id) == null) {
+                    throw new NonexistentEntityException("Venta con el id " + id + " ya no existe.");
+                }
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    /**
+     * Método optimizado únicamente para cambiar el atributo "facturada" de tabla ventas
+     * @param ventasList
+     * @param facturada
+     * @throws NonexistentEntityException
+     * @throws Exception 
+     */
+    public void editManySetFacturada(List<Ventas> ventasList, Integer facturada) throws NonexistentEntityException, Exception {
+        EntityManager em = null;
+        Ventas v = null;
+        
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            for(Ventas ventas : ventasList) {
+                v = ventas;
+                Query q = em.createQuery("UPDATE Ventas v SET v.facturada = ?1 WHERE v.id = ?2");
+
+                q.setParameter(1, facturada);
+                q.setParameter(2, v.getId());
+                q.executeUpdate();
+            }
+            em.getTransaction().commit();
+        } catch (PersistenceException ex) {
+            if(em != null && em.getTransaction() != null)
+                em.getTransaction().rollback();
+            String msg = ex.getLocalizedMessage();
+            if(v == null) {
+                throw new Exception("ID de venta inválido");
+            }
+            if (msg == null || msg.length() == 0) {
+                Long id = v.getId();
+                if (findVentas(id) == null) {
+                    throw new NonexistentEntityException("Venta con el id " + id + " ya no existe.");
                 }
             }
             throw ex;
@@ -118,7 +191,7 @@ public class VentasJpaController extends JpaController {
         }
     }
 
-    public Ventas findVentas(VentasPK id) throws PersistenceException {
+    public Ventas findVentas(Long id) throws PersistenceException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -143,13 +216,13 @@ public class VentasJpaController extends JpaController {
         }
     }
     
-    public int[] getIDIntervalFromDay(Date dayIni, Date dayFin) throws DatasourceException {
-        int[] intervalo = {0,0};
+    public Long[] getIDIntervalFromDay(Date dayIni, Date dayFin) throws DatasourceException {
+        Long[] intervalo = {0l,0l};
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Query q1 = em.createQuery("SELECT min(v.ventasPK.idVenta) FROM Ventas v WHERE v.fechaHora between :dayIni and :dayFin", Integer.class);
-            Query q2 = em.createQuery("SELECT max(v.ventasPK.idVenta) FROM Ventas v WHERE v.fechaHora between :dayIni and :dayFin", Integer.class);
+            Query q1 = em.createQuery("SELECT min(v.id) FROM Ventas v WHERE v.fechaHora between :dayIni and :dayFin", Integer.class);
+            Query q2 = em.createQuery("SELECT max(v.id) FROM Ventas v WHERE v.fechaHora between :dayIni and :dayFin", Integer.class);
                         
             q1.setParameter("dayIni", dayIni);
             q1.setParameter("dayFin", dayFin);
@@ -160,8 +233,8 @@ public class VentasJpaController extends JpaController {
             if(q1.getSingleResult() == null || q2.getSingleResult() == null)
                 throw new DatasourceException("No se encontraron ventas para facturar");
             
-            intervalo[0] = ((Integer) q1.getSingleResult()).intValue();
-            intervalo[1] = ((Integer) q2.getSingleResult()).intValue();
+            intervalo[0] = ((Long) q1.getSingleResult()).longValue();
+            intervalo[1] = ((Long) q2.getSingleResult()).longValue();
             
             return intervalo;
         } catch (PersistenceException ex) {

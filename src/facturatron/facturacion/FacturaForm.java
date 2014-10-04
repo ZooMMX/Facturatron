@@ -25,6 +25,10 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import org.jdesktop.swingx.JXTable;
 
 /**
@@ -71,85 +75,21 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     /** Creates new form FacturaForm */
     public FacturaForm() {
         initComponents();
-        tabConceptos.addKeyListener(new java.awt.event.KeyAdapter() {  
+        tabConceptos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
             @Override
-            public void keyPressed(java.awt.event.KeyEvent evt) {  
-                whichKeyPressed(evt);  
-            }  
-        }); 
+            public void valueChanged(ListSelectionEvent e) {
+                tabConceptos.editCellAt(
+                        tabConceptos.getSelectedRow(),
+                        tabConceptos.getSelectedColumn()
+                );
+            }
+        });
         txtDireccion.setEditable(false);
         tabConceptos.setSortable(false);    
         
-        tabConceptos.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0, false), "selectNextColumnCell");
-        ActionMap am = tabConceptos.getActionMap();
-        am.put("selectPreviousColumnCell", new PreviousFocusHandler());    
-        am.put("selectNextColumnCell", new NextFocusHandler());  
     }
-    private class PreviousFocusHandler extends AbstractAction {
-        public void actionPerformed(ActionEvent evt) {
-            KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-            manager.focusPreviousComponent();
-        }
-    }
-
-    private class NextFocusHandler extends AbstractAction {
-        public void actionPerformed(ActionEvent evt) {
-            KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-            manager.focusNextComponent();
-        }
-    }
-
-    //Metodo para intercambiar con la tecla <tab>  enter entre columnas de la tabla tabConceptos
-    private void whichKeyPressed(java.awt.event.KeyEvent evt) {  
-        int column = tabConceptos.getSelectedColumn();  
-        int row = tabConceptos.getSelectedRow();  
-        int rows = tabConceptos.getRowCount();             
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER ||  
-            evt.getKeyCode() == KeyEvent.VK_TAB && !evt.isShiftDown() ){
-            if( column == 0){                  
-                tabConceptos.changeSelection(row, 1, false,  false);  
-                tabConceptos.editCellAt(row,1);                
-            }  
-            else if( column == 1){  
-                tabConceptos.changeSelection(row, 2, false,  false);  
-                tabConceptos.editCellAt(row,2);                
-            }  
-            else if( column == 2){  
-                tabConceptos.changeSelection(row, 3, false,  false);  
-                tabConceptos.editCellAt(row,3);  
-            }
-            else if( column == 3){  
-                tabConceptos.changeSelection(row, 4, false,  false);  
-                tabConceptos.editCellAt(row,4);  
-            }
-            else if (column == 4 ) {
-                tabConceptos.changeSelection(row, 5, false,  false);  
-                tabConceptos.editCellAt(row,5);
-            }
-            else if (column == 5 ) {
-                tabConceptos.changeSelection(row, 6, false,  false);  
-                tabConceptos.editCellAt(row,6);
-            }
-            else if( column == 6){  
-                if( row == (rows - 1) )  
-                    row = -1;  
-                tabConceptos.changeSelection(row + 1, 0, false,  false);  
-                tabConceptos.editCellAt(row + 1,0);  
-            }  
-            evt.consume();  
-        } else if((evt.getKeyCode() == KeyEvent.VK_TAB) && evt.isShiftDown()) {
-            Integer col = column;
-            switch(column) {
-                case 0:
-                    if(row-1 >= 0) { row--; col = 6; } break;
-                default:
-                    col--; break;                
-            }
-            tabConceptos.changeSelection(row, col, false,  false);  
-            tabConceptos.editCellAt(row, col);
-            evt.consume();
-        }
-    }
+    
     
 
     /** This method is called from within the constructor to

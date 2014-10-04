@@ -5,20 +5,14 @@
 
 package facturatron;
 
-import com.alee.laf.WebLookAndFeel;
 import com.googlecode.flyway.core.Flyway;
 import com.googlecode.flyway.core.api.FlywayException;
-import com.googlecode.flyway.core.api.MigrationInfo;
-import com.googlecode.flyway.core.api.MigrationState;
 import facturatron.Dominio.Configuracion;
 import facturatron.datasource.DatasourceContext;
 import facturatron.datasource.DatasourceException;
-import facturatron.omoikane.CorteZDao;
 import facturatron.datasource.omoikane.TicketOmoikane;
-import facturatron.facturacion.FacturaDao;
 import facturatron.omoikane.exceptions.TicketFacturadoException;
 import java.nio.charset.Charset;
-import java.util.Calendar;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,9 +79,4 @@ public class Main {
         System.out.println("just that");
     }
     
-    public static void prueba2() throws DatasourceException {
-        CorteZDao dao = new CorteZDao();
-        dao.load(Calendar.getInstance().getTime());
-    }
-
 }

@@ -6,12 +6,22 @@
 package facturatron.omoikane;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 /**
@@ -22,10 +32,10 @@ import javax.persistence.Table;
 @Table(name = "ventas_detalles")
 @NamedQueries({
     @NamedQuery(name = "VentasDetalles.findAll", query = "SELECT v FROM VentasDetalles v"),
-    @NamedQuery(name = "VentasDetalles.findByIdRenglon", query = "SELECT v FROM VentasDetalles v WHERE v.ventasDetallesPK.idRenglon = :idRenglon"),
-    @NamedQuery(name = "VentasDetalles.findByIdVenta", query = "SELECT v FROM VentasDetalles v WHERE v.ventasDetallesPK.idVenta = :idVenta"),
-    @NamedQuery(name = "VentasDetalles.findByIdCaja", query = "SELECT v FROM VentasDetalles v WHERE v.ventasDetallesPK.idCaja = :idCaja"),
-    @NamedQuery(name = "VentasDetalles.findByIdAlmacen", query = "SELECT v FROM VentasDetalles v WHERE v.ventasDetallesPK.idAlmacen = :idAlmacen"),
+    @NamedQuery(name = "VentasDetalles.findByIdRenglon", query = "SELECT v FROM VentasDetalles v WHERE v.idRenglon = :idRenglon"),
+    @NamedQuery(name = "VentasDetalles.findByIdVenta", query = "SELECT v FROM VentasDetalles v WHERE v.idVenta = :idVenta"),
+    @NamedQuery(name = "VentasDetalles.findByIdCaja", query = "SELECT v FROM VentasDetalles v WHERE v.idCaja = :idCaja"),
+    @NamedQuery(name = "VentasDetalles.findByIdAlmacen", query = "SELECT v FROM VentasDetalles v WHERE v.idAlmacen = :idAlmacen"),
     @NamedQuery(name = "VentasDetalles.findByIdArticulo", query = "SELECT v FROM VentasDetalles v WHERE v.idArticulo = :idArticulo"),
     @NamedQuery(name = "VentasDetalles.findByPrecio", query = "SELECT v FROM VentasDetalles v WHERE v.precio = :precio"),
     @NamedQuery(name = "VentasDetalles.findByCantidad", query = "SELECT v FROM VentasDetalles v WHERE v.cantidad = :cantidad"),
@@ -35,18 +45,33 @@ import javax.persistence.Table;
     @NamedQuery(name = "VentasDetalles.findByDescuento", query = "SELECT v FROM VentasDetalles v WHERE v.descuento = :descuento"),
     @NamedQuery(name = "VentasDetalles.findByTotal", query = "SELECT v FROM VentasDetalles v WHERE v.total = :total"),
     @NamedQuery(name = "VentasDetalles.findByIdLinea", query = "SELECT v FROM VentasDetalles v WHERE v.idLinea = :idLinea"),
-    @NamedQuery(name = "VentasDetalles.sumTotalIntervalOfIDs", query = "SELECT sum(v.total) FROM VentasDetalles v WHERE v.ventasDetallesPK.idVenta between :idinicial and :idfinal"),
-    @NamedQuery(name = "VentasDetalles.sumSubtotalIntervalOfIDs", query = "SELECT sum(v.subtotal) FROM VentasDetalles v WHERE v.ventasDetallesPK.idVenta between :idinicial and :idfinal"),
-    @NamedQuery(name = "VentasDetalles.sumImpuestosIntervalOfIDs", query = "SELECT sum(v.impuestos) FROM VentasDetalles v WHERE v.ventasDetallesPK.idVenta between :idinicial and :idfinal")})
+    
+    @NamedQuery(name = "VentasDetalles.sumTotalIntervalOfIDs", query = "SELECT sum(v.total) FROM VentasDetalles v WHERE v.venta.id between :idinicial and :idfinal"),
+    @NamedQuery(name = "VentasDetalles.sumSubtotalIntervalOfIDs", query = "SELECT sum(v.subtotal) FROM VentasDetalles v WHERE v.venta.id between :idinicial and :idfinal"),
+    @NamedQuery(name = "VentasDetalles.sumImpuestosIntervalOfIDs", query = "SELECT sum(v.impuestos) FROM VentasDetalles v WHERE v.venta.id between :idinicial and :idfinal")})
 public class VentasDetalles implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected VentasDetallesPK ventasDetallesPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_renglon")
+    private int idRenglon;
+    @ManyToOne
+    @JoinColumn(name = "id_venta")
+    private Ventas venta;
+    @Column(name = "id_venta",updatable = false,insertable = false)
+    private Long idVenta;
+    @Basic(optional = false)
+    @Column(name = "id_caja")
+    private int idCaja;
+    @Basic(optional = false)
+    @Column(name = "id_almacen")
+    private int idAlmacen;
     @Column(name = "id_articulo")
     private Integer idArticulo;
     @Basic(optional = false)
     @Column(name = "precio")
     private double precio;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "cantidad")
     private Double cantidad;
     @Column(name = "tipo_salida")
@@ -62,28 +87,16 @@ public class VentasDetalles implements Serializable {
     @Column(name = "id_linea")
     private Integer idLinea;
 
+    @ElementCollection()
+    @CollectionTable(
+            name="ventas_detalles_impuestos",
+            joinColumns=@JoinColumn(name="id_renglon")
+    )
+    @OrderColumn
+    private List<VentaDetalleImpuesto> ventaDetalleImpuestos;
+
     public VentasDetalles() {
-    }
 
-    public VentasDetalles(VentasDetallesPK ventasDetallesPK) {
-        this.ventasDetallesPK = ventasDetallesPK;
-    }
-
-    public VentasDetalles(VentasDetallesPK ventasDetallesPK, double precio) {
-        this.ventasDetallesPK = ventasDetallesPK;
-        this.precio = precio;
-    }
-
-    public VentasDetalles(int idRenglon, int idVenta, int idCaja, int idAlmacen) {
-        this.ventasDetallesPK = new VentasDetallesPK(idRenglon, idVenta, idCaja, idAlmacen);
-    }
-
-    public VentasDetallesPK getVentasDetallesPK() {
-        return ventasDetallesPK;
-    }
-
-    public void setVentasDetallesPK(VentasDetallesPK ventasDetallesPK) {
-        this.ventasDetallesPK = ventasDetallesPK;
     }
 
     public Integer getIdArticulo() {
@@ -92,6 +105,38 @@ public class VentasDetalles implements Serializable {
 
     public void setIdArticulo(Integer idArticulo) {
         this.idArticulo = idArticulo;
+    }
+
+    public int getIdRenglon() {
+        return idRenglon;
+    }
+
+    public void setIdRenglon(int idRenglon) {
+        this.idRenglon = idRenglon;
+    }
+
+    public Ventas getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Ventas venta) {
+        this.venta = venta;
+    }
+
+    public int getIdCaja() {
+        return idCaja;
+    }
+
+    public void setIdCaja(int idCaja) {
+        this.idCaja = idCaja;
+    }
+
+    public int getIdAlmacen() {
+        return idAlmacen;
+    }
+
+    public void setIdAlmacen(int idAlmacen) {
+        this.idAlmacen = idAlmacen;
     }
 
     public double getPrecio() {
@@ -126,14 +171,6 @@ public class VentasDetalles implements Serializable {
         this.subtotal = subtotal;
     }
 
-    public Double getImpuestos() {
-        return impuestos;
-    }
-
-    public void setImpuestos(Double impuestos) {
-        this.impuestos = impuestos;
-    }
-
     public Double getDescuento() {
         return descuento;
     }
@@ -158,29 +195,20 @@ public class VentasDetalles implements Serializable {
         this.idLinea = idLinea;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (ventasDetallesPK != null ? ventasDetallesPK.hashCode() : 0);
-        return hash;
+    public void setVentaDetalleImpuestos(List<VentaDetalleImpuesto> ventaDetalleImpuestos) {
+        this.ventaDetalleImpuestos = ventaDetalleImpuestos;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VentasDetalles)) {
-            return false;
-        }
-        VentasDetalles other = (VentasDetalles) object;
-        if ((this.ventasDetallesPK == null && other.ventasDetallesPK != null) || (this.ventasDetallesPK != null && !this.ventasDetallesPK.equals(other.ventasDetallesPK))) {
-            return false;
-        }
-        return true;
+    public List<VentaDetalleImpuesto> getVentaDetalleImpuestos() {
+        return ventaDetalleImpuestos;
     }
 
-    @Override
-    public String toString() {
-        return "facturatron.omoikane.VentasDetalles[ventasDetallesPK=" + ventasDetallesPK + "]";
+    public Double getImpuestos() {
+        return impuestos;
+    }
+
+    public void setImpuestos(Double impuestos) {
+        this.impuestos = impuestos;
     }
 
 }

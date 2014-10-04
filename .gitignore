@@ -57,3 +57,5 @@ configMega.dat
 installer.xml
 
 installer.xml.backup
+
+*.log

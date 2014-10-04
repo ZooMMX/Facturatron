@@ -6,14 +6,28 @@
 package facturatron.omoikane;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,9 +40,9 @@ import javax.persistence.TemporalType;
 @Table(name = "ventas")
 @NamedQueries({
     @NamedQuery(name = "Ventas.findAll", query = "SELECT v FROM Ventas v"),
-    @NamedQuery(name = "Ventas.findByIdVenta", query = "SELECT v FROM Ventas v WHERE v.ventasPK.idVenta = :idVenta"),
-    @NamedQuery(name = "Ventas.findByIdCaja", query = "SELECT v FROM Ventas v WHERE v.ventasPK.idCaja = :idCaja"),
-    @NamedQuery(name = "Ventas.findByIdAlmacen", query = "SELECT v FROM Ventas v WHERE v.ventasPK.idAlmacen = :idAlmacen"),
+    @NamedQuery(name = "Ventas.findByIdVenta", query = "SELECT v FROM Ventas v WHERE v.id = :idVenta"),
+    @NamedQuery(name = "Ventas.findByIdCaja", query = "SELECT v FROM Ventas v WHERE v.idCaja = :idCaja"),
+    @NamedQuery(name = "Ventas.findByIdAlmacen", query = "SELECT v FROM Ventas v WHERE v.idAlmacen = :idAlmacen"),
     @NamedQuery(name = "Ventas.findByIdCliente", query = "SELECT v FROM Ventas v WHERE v.idCliente = :idCliente"),
     @NamedQuery(name = "Ventas.findByFechaHora", query = "SELECT v FROM Ventas v WHERE v.fechaHora = :fechaHora"),
     @NamedQuery(name = "Ventas.findByUModificacion", query = "SELECT v FROM Ventas v WHERE v.uModificacion = :uModificacion"),
@@ -42,13 +56,34 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Ventas.findByEfectivo", query = "SELECT v FROM Ventas v WHERE v.efectivo = :efectivo"),
     @NamedQuery(name = "Ventas.findByCambio", query = "SELECT v FROM Ventas v WHERE v.cambio = :cambio"),
     @NamedQuery(name = "Ventas.findByCentecimosredondeados", query = "SELECT v FROM Ventas v WHERE v.centecimosredondeados = :centecimosredondeados"),
-    @NamedQuery(name = "Ventas.findByFolio", query = "SELECT v FROM Ventas v WHERE v.folio = :folio")})
+    @NamedQuery(name = "Ventas.findByFolio", query = "SELECT v FROM Ventas v WHERE v.folio = :folio"),
+    
+//Colección de todas las ventas en un intervalo de IDs y que no han sido facturadas
+    @NamedQuery(name = "Ventas.findByIdIntervalANDNoFacturada", query = "SELECT v FROM Ventas v WHERE v.id between :idinicial and :idfinal AND v.facturada = 0"),
+})
 public class Ventas implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected VentasPK ventasPK;
+
+    @Column(name = "id_venta")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "id_caja")
+    private int idCaja;
+
+    @Column(name = "id_almacen")
+    private int idAlmacen;
+
+    //Se usará el atributo idCliente para establecer el cliente relacionado, por causas de comodidad y performance, esa es la
+    //  razón de usar updatable e insertable = false
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "id_cliente", updatable = false, insertable = false)
+    private Cliente cliente;
+
     @Column(name = "id_cliente")
-    private Integer idCliente;
+    private Integer idCliente = 1;
+
     @Basic(optional = false)
     @Column(name = "fecha_hora")
     @Temporal(TemporalType.TIMESTAMP)
@@ -60,7 +95,9 @@ public class Ventas implements Serializable {
     @Column(name = "facturada")
     private Integer facturada;
     @Column(name = "completada")
-    private Integer completada;
+    private Boolean completada;
+
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "subtotal")
     private Double subtotal;
     @Column(name = "descuento")
@@ -83,44 +120,53 @@ public class Ventas implements Serializable {
     private double centecimosredondeados;
     @Basic(optional = false)
     @Column(name = "folio")
-    private long folio;
+    private Long folio;
+
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "venta")
+    List<VentasDetalles> items;
+
+    public void addItem(VentasDetalles item) {
+        if(getItems() == null) {
+            setItems(new ArrayList<VentasDetalles>());
+        }
+        items.add(item);
+        item.setVenta(this);
+    }
 
     public Ventas() {
     }
 
-    public Ventas(VentasPK ventasPK) {
-        this.ventasPK = ventasPK;
+    public Long getId() {
+        return id;
     }
 
-    public Ventas(VentasPK ventasPK, Date fechaHora, Date uModificacion, byte[] eliminar, int idUsuario, double efectivo, double cambio, double centecimosredondeados, long folio) {
-        this.ventasPK = ventasPK;
-        this.fechaHora = fechaHora;
-        this.uModificacion = uModificacion;
-        this.idUsuario = idUsuario;
-        this.efectivo = efectivo;
-        this.cambio = cambio;
-        this.centecimosredondeados = centecimosredondeados;
-        this.folio = folio;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Ventas(int idVenta, int idCaja, int idAlmacen) {
-        this.ventasPK = new VentasPK(idVenta, idCaja, idAlmacen);
+    public int getIdCaja() {
+        return idCaja;
     }
 
-    public VentasPK getVentasPK() {
-        return ventasPK;
+    public void setIdCaja(int idCaja) {
+        this.idCaja = idCaja;
     }
 
-    public void setVentasPK(VentasPK ventasPK) {
-        this.ventasPK = ventasPK;
+    public int getIdAlmacen() {
+        return idAlmacen;
     }
 
-    public Integer getIdCliente() {
-        return idCliente;
+    public void setIdAlmacen(int idAlmacen) {
+        this.idAlmacen = idAlmacen;
     }
 
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Date getFechaHora() {
@@ -139,6 +185,16 @@ public class Ventas implements Serializable {
         this.uModificacion = uModificacion;
     }
 
+    @PrePersist
+    protected void onCreate() {
+        setUModificacion( new Timestamp(Calendar.getInstance().getTime().getTime()) );
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        setUModificacion(new Timestamp(Calendar.getInstance().getTime().getTime()));
+    }
+
     public Integer getFacturada() {
         return facturada;
     }
@@ -147,14 +203,14 @@ public class Ventas implements Serializable {
         this.facturada = facturada;
     }
 
-    public Integer getCompletada() {
+    public Boolean getCompletada() {
         return completada;
     }
 
-    public void setCompletada(Integer completada) {
+    public void setCompletada(Boolean completada) {
         this.completada = completada;
     }
-    
+
     public Double getSubtotal() {
         return subtotal;
     }
@@ -219,29 +275,36 @@ public class Ventas implements Serializable {
         this.centecimosredondeados = centecimosredondeados;
     }
 
-    public long getFolio() {
+    public Long getFolio() {
         return folio;
     }
 
-    public void setFolio(long folio) {
+    public void setFolio(Long folio) {
         this.folio = folio;
     }
+
+    public List<VentasDetalles> getItems() {
+        if(items == null) items = new ArrayList<VentasDetalles>();
+        return items;
+    }
+
+    public void setItems(List<VentasDetalles> lvd) { items = lvd; }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ventasPK != null ? ventasPK.hashCode() : 0);
+        hash += id;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+
         if (!(object instanceof Ventas)) {
             return false;
         }
         Ventas other = (Ventas) object;
-        if ((this.ventasPK == null && other.ventasPK != null) || (this.ventasPK != null && !this.ventasPK.equals(other.ventasPK))) {
+        if (this.id == other.id) {
             return false;
         }
         return true;
@@ -249,7 +312,16 @@ public class Ventas implements Serializable {
 
     @Override
     public String toString() {
-        return "facturatron.omoikane.Ventas[ventasPK=" + ventasPK + "]";
+        return "javaapplication1.LegacyVenta[ legacyVentaPK=" + id + " ]";
+    }
+
+
+    public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
     }
 
 }

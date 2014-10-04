@@ -43,8 +43,6 @@ public class ImpuestoJpaController extends JpaController implements Serializable
         return emf.createEntityManager();
     }
 
-    private EntityManagerFactory emf = null;
-
 
     public void create(Impuesto impuesto) {
         EntityManager em = null;

@@ -12,14 +12,11 @@ import facturatron.datasource.RenglonTicket;
 import facturatron.datasource.Ticket;
 import facturatron.omoikane.Articulo;
 import facturatron.omoikane.ArticulosJpaController;
-import facturatron.datasource.CorteZ;
-import facturatron.omoikane.CorteZDao;
 import facturatron.omoikane.Impuesto;
 import facturatron.omoikane.Ventas;
 import facturatron.omoikane.VentasDetalles;
 import facturatron.omoikane.VentasDetallesJpaController;
 import facturatron.omoikane.VentasJpaController;
-import facturatron.omoikane.VentasPK;
 import facturatron.omoikane.exceptions.TicketFacturadoException;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -40,7 +37,7 @@ public class TicketOmoikane extends Ticket<String> {
     
     private Integer idAlmacen;
     private Integer idCaja;
-    private Integer idVenta;
+    private Long idVenta;
     private Ventas  venta;
     
     public void load(Object id) throws TicketFacturadoException { getTicket(id); }
@@ -49,11 +46,7 @@ public class TicketOmoikane extends Ticket<String> {
         
         String idString = (String) id;
         setId(idString);
-        
-        String[] args = idString.split("-");
-        setIdAlmacen ( Integer.valueOf(args[0]) );
-        setIdCaja    ( Integer.valueOf(args[1]) );
-        setIdVenta   ( Integer.valueOf(args[2]) );
+                
         TicketOmoikane ticket = getTicketData(idAlmacen, idCaja, idVenta);
         
         if(ticket.venta != null 
@@ -67,13 +60,7 @@ public class TicketOmoikane extends Ticket<String> {
     public void setTicketFacturado(Integer idFactura) throws Exception {
         VentasJpaController         ventaJpa    = new VentasJpaController();
         
-        String[] args = getId().split("-");
-        setIdAlmacen ( Integer.valueOf(args[0]) );
-        setIdCaja    ( Integer.valueOf(args[1]) );
-        setIdVenta   ( Integer.valueOf(args[2]) );
-        
-        VentasPK pk = new VentasPK(idVenta, idCaja, idAlmacen);
-        Ventas v = ventaJpa.findVentas(pk);
+        Ventas v = ventaJpa.findVentas(idVenta);
         v.setFacturada(idFactura);
         
         ventaJpa.edit(v);
@@ -95,7 +82,7 @@ public class TicketOmoikane extends Ticket<String> {
         return map;
     }
     
-    public TicketOmoikane getTicketData(Integer idAlmacen, Integer idCaja, Integer idVenta) {
+    public TicketOmoikane getTicketData(Integer idAlmacen, Integer idCaja, Long idVenta) {
 
         MathContext                 mc          = MathContext.DECIMAL64;
         TicketOmoikane              ticket      = this; //new TicketOmoikane();
@@ -103,9 +90,8 @@ public class TicketOmoikane extends Ticket<String> {
         VentasDetallesJpaController detallesJpa = new VentasDetallesJpaController();
         ArticulosJpaController      productsJpa = new ArticulosJpaController();
 
-        VentasPK pk = new VentasPK(idVenta, idCaja, idAlmacen);
-
-        this.venta   = ventaJpa.findVentas(pk);
+        
+        this.venta   = ventaJpa.findVentas(idVenta);
         List<VentasDetalles> detalles = detallesJpa.findByVenta(idVenta);
         
 
@@ -178,14 +164,14 @@ public class TicketOmoikane extends Ticket<String> {
     /**
      * @return the idVenta
      */
-    public Integer getIdVenta() {
+    public Long getIdVenta() {
         return idVenta;
     }
 
     /**
      * @param idVenta the idVenta to set
      */
-    public void setIdVenta(Integer idVenta) {
+    public void setIdVenta(Long idVenta) {
         this.idVenta = idVenta;
     }
 
@@ -197,6 +183,13 @@ public class TicketOmoikane extends Ticket<String> {
     @Override
     public void setId(String id) {
         this.id = id;
+        String[] args = id.split("-");
+        setIdAlmacen ( Integer.valueOf(args[0]) );
+        setIdCaja    ( Integer.valueOf(args[1]) );
+        setIdVenta   ( Long.valueOf(args[2]) );
     }
     
+    public Ventas getVenta() {
+        return venta;
+    }
 }

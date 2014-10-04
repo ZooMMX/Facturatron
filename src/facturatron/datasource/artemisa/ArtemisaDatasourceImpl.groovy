@@ -23,6 +23,7 @@ import facturatron.datasource.CorteZ
 import facturatron.datasource.DatasourceException
 import facturatron.datasource.IDatasourceService
 import facturatron.datasource.RenglonTicket
+import facturatron.datasource.TicketGlobal
 import facturatron.datasource.Ticket
 import groovy.sql.Sql;
 
@@ -169,6 +170,16 @@ public class ArtemisaDatasourceImpl implements IDatasourceService {
     @Override
     public void cancelarFactura(Integer id) throws DatasourceException {
         
+    }
+    
+    @Override
+    public void setTicketsFacturados(List<Object> ventas, Object factura) throws DatasourceException{
+        
+    }
+    
+    @Override
+    public TicketGlobal getTicketGlobal(Object desde, Object hasta) throws DatasourceException {
+    
     }
 }
 

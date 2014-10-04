@@ -53,11 +53,9 @@ class CeldaBuscadorUnidades {
             comboBox.setDataList(medidas);
             comboBox.setMaximumRowCount(5);
 
+            columnaUnidad.setCellRenderer(new CellRendererDotDotDot());
             columnaUnidad.setCellEditor(new DefaultCellEditor(comboBox));
 
-            DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-            renderer.setToolTipText("Click para ver todos");
-            columnaUnidad.setCellRenderer(renderer);
         }
     
     }

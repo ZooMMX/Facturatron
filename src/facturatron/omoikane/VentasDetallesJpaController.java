@@ -7,8 +7,13 @@ package facturatron.omoikane;
 
 import facturatron.omoikane.exceptions.NonexistentEntityException;
 import facturatron.omoikane.exceptions.PreexistingEntityException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -31,9 +36,7 @@ public class VentasDetallesJpaController extends JpaController {
     }
 
     public void create(VentasDetalles ventasDetalles) throws PreexistingEntityException, Exception {
-        if (ventasDetalles.getVentasDetallesPK() == null) {
-            ventasDetalles.setVentasDetallesPK(new VentasDetallesPK());
-        }
+        
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -41,7 +44,7 @@ public class VentasDetallesJpaController extends JpaController {
             em.persist(ventasDetalles);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findVentasDetalles(ventasDetalles.getVentasDetallesPK()) != null) {
+            if (findVentasDetalles(ventasDetalles.getIdRenglon()) != null) {
                 throw new PreexistingEntityException("VentasDetalles " + ventasDetalles + " already exists.", ex);
             }
             throw ex;
@@ -62,7 +65,7 @@ public class VentasDetallesJpaController extends JpaController {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                VentasDetallesPK id = ventasDetalles.getVentasDetallesPK();
+                int id = ventasDetalles.getIdRenglon();
                 if (findVentasDetalles(id) == null) {
                     throw new NonexistentEntityException("The ventasDetalles with id " + id + " no longer exists.");
                 }
@@ -75,7 +78,7 @@ public class VentasDetallesJpaController extends JpaController {
         }
     }
 
-    public void destroy(VentasDetallesPK id) throws NonexistentEntityException {
+    public void destroy(int id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -83,7 +86,7 @@ public class VentasDetallesJpaController extends JpaController {
             VentasDetalles ventasDetalles;
             try {
                 ventasDetalles = em.getReference(VentasDetalles.class, id);
-                ventasDetalles.getVentasDetallesPK();
+                ventasDetalles.getIdRenglon();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The ventasDetalles with id " + id + " no longer exists.", enfe);
             }
@@ -120,7 +123,7 @@ public class VentasDetallesJpaController extends JpaController {
         }
     }
 
-    public List<VentasDetalles> findByVenta(Integer idVenta) {
+    public List<VentasDetalles> findByVenta(Long idVenta) {
         EntityManager em = getEntityManager();
         try {
 
@@ -132,7 +135,7 @@ public class VentasDetallesJpaController extends JpaController {
         }
     }
 
-    public VentasDetalles findVentasDetalles(VentasDetallesPK id) {
+    public VentasDetalles findVentasDetalles(int id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(VentasDetalles.class, id);
@@ -154,44 +157,132 @@ public class VentasDetallesJpaController extends JpaController {
         }
     }
     
-    public SumaVentas sumaVentasDetalles(int desdeID, int hastaID) {
+    public List<Object[]> getIdsNoFacturados(String desde, String hasta) {
         EntityManager em = getEntityManager();
         try {
 
-            TypedQuery<Double> q = em.createNamedQuery("VentasDetalles.sumImpuestosIntervalOfIDs", Double.class);
-            q.setParameter("idinicial", desdeID);
-            q.setParameter("idfinal"  , hastaID);
-            Double sumaImpuestos = q.getSingleResult();
+            Query q = em.createNativeQuery(
+                    "		SELECT \n" +
+                    "			v.id_almacen, v.id_caja, v.id_venta\n" +
+                    "		FROM \n" +
+                    "			ventas v, \n" +
+                    "			ventas_detalles vd \n" +
+                    "		WHERE \n" +
+                    "				v.id_venta = vd.id_venta \n" +
+                    "			AND\n" +
+                    "				v.facturada = 0\n" +
+                    "			AND\n" +
+                    "				vd.id_linea NOT IN (SELECT id_linea FROM lineas_dual)\n" +
+                    "			AND \n" +
+                    "				v.fecha_hora BETWEEN ?1 AND ?2  \n" +
+                    "		GROUP BY v.id_venta\n"
+                    );
             
-            q = em.createNamedQuery("VentasDetalles.sumTotalIntervalOfIDs", Double.class);
-            q.setParameter("idinicial", desdeID);
-            q.setParameter("idfinal"  , hastaID);
-            Double sumaTotal = q.getSingleResult();
+            q.setParameter(1, desde);
+            q.setParameter(2, hasta);
+            List<Object[]> ventas = q.getResultList();
+            return ventas;
+        } finally {
+            em.close();
+        }
+        
+    }
+    
+    public List<SumaVentas> sumaVentasDetalles(String desde, String hasta) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createNativeQuery(
+                    "select\n" +
+                    "	imps.imps, \n" +
+                    "	sum(imps.subtotal*imps.factor),\n" +
+                    "	sum(imps.descuento*imps.factor)\n" +
+                    "	FROM (\n" +
+                    "		select \n" +
+                    "		vd.id_renglon, \n" +
+                    "		if(\n" +
+                    "			v.facturada = 0, \n" +
+                    "				if(\n" +
+                    "					EXISTS(SELECT id_linea FROM lineas_dual WHERE id_linea = vd.id_linea),\n" +
+                    "					0,\n" +
+                    "					1\n" +
+                    "				), \n" +
+                    "				if(\n" +
+                    "					EXISTS(SELECT id_linea FROM lineas_dual WHERE id_linea = vd.id_linea),\n" +
+                    "					-1,\n" +
+                    "					0\n" +
+                    "				)\n" +
+                    "			) factor,\n" +
+                    "		vd.subtotal subtotal,\n" +
+                    "		vd.descuento descuento,\n" +
+                    "		GROUP_CONCAT(vdi.impuestoId ORDER BY vdi.impuestoId ASC) imps \n" +
+                    "	    FROM \n" +
+                    "	    ventas v, \n" +
+                    "	    	ventas_detalles vd \n" +
+                    "	        LEFT JOIN ventas_detalles_impuestos vdi ON vd.id_renglon = vdi.id_renglon  \n" +
+                    "	        WHERE \n" +
+                    "	        	v.id_venta = vd.id_venta \n" +
+                    "	        AND \n" +
+                    "	        	v.fecha_hora BETWEEN ?1 AND ?2  \n" +
+                    "	        	GROUP BY vd.id_renglon\n" +
+                    "	        ) imps \n" +
+                    "	GROUP BY imps.imps;"
+            );
+            q.setParameter(1, desde);
+            q.setParameter(2, hasta);
+            List<Object[]> ventas = q.getResultList();
+            ImpuestoJpaController impuestoJpa = new ImpuestoJpaController();
+            List<SumaVentas> gruposSumas = new ArrayList();
             
-            Double sumaSubtotal = sumaTotal - sumaImpuestos;
-
-            SumaVentas sumaVentas = new SumaVentas(sumaSubtotal, sumaImpuestos, sumaTotal);
-            return sumaVentas;
+            for (Object[] grupoVentas : ventas) {
+                try {
+                    List<Impuesto> impuestosList = new ArrayList<Impuesto>();
+                    
+                    //Si hay impuestos los definimos
+                    if(grupoVentas[0] != null) {
+                    String grupoImpuestos = new String((byte[]) grupoVentas[0], "US-ASCII");
+                        for (String stringIdImpuesto : grupoImpuestos.split(",")) {
+                            Long idImpuesto = Long.valueOf(stringIdImpuesto);
+                            Impuesto i = impuestoJpa.findImpuesto(idImpuesto);
+                            impuestosList.add(i);
+                        }      
+                    } 
+                    SumaVentas sm = new SumaVentas(
+                            new BigDecimal((Double)grupoVentas[1]), 
+                            new BigDecimal((Double)grupoVentas[2]), 
+                            impuestosList);
+                    gruposSumas.add(sm);
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(VentasDetallesJpaController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+            
+            return gruposSumas;
         } finally {
             em.close();
         }
     }
+    
     public class SumaVentas {
-        public SumaVentas(Double s, Double i, Double t) {
-            total     = new BigDecimal( t );
-            subtotal  = new BigDecimal( s );
-            impuestos = new BigDecimal( i );
+        
+        final public List<Impuesto> impuestos;
+        public List<Long> ids;
+        public SumaVentas(BigDecimal subtotal, BigDecimal descuentos, List<Impuesto> impuestos) {
+            this.impuestos = impuestos;
+            this.descuentos = descuentos;
+            this.subtotal  = subtotal;
         } 
-        public BigDecimal total, impuestos, subtotal;
+        public BigDecimal descuentos, subtotal;
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb
                     .append("[Subtotal: ").append(subtotal).append(", ")
                     .append("Impustos: ").append(impuestos).append(", ")
-                    .append("Total: ").append(total)
+                    .append("Descuentos: ").append(descuentos)
                     .append("]");
             return sb.toString();
         }
+                
     }
 
 }

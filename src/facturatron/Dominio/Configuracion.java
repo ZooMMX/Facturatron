@@ -12,22 +12,22 @@ import java.io.Serializable;
  */
 public class Configuracion extends Model implements Serializable {
 
-    private String pathKey = "";
-    private String pathCer = "";
+    private String pathKey = ".\\";
+    private String pathCer = ".\\";
     private String passCer = "";
-    private String urlBd = "";
-    private String userBd = "";
+    private String urlBd = "jdbc:mysql://localhost/facturatron";
+    private String userBd = "root";
     private String passBd = "";
-    private String pathPdf = "";
-    private String pathLogo = "";
-    private String pathPlantilla = "";
-    private String pathXml = "";
+    private String pathPdf = ".\\CasaDeLasFacturas\\CFDI_";
+    private String pathLogo = ".\\logoejemplo.jpg";
+    private String pathPlantilla = ".\\FacturaCFDIGenerica.jasper";
+    private String pathXml = ".\\CasaDeLasFacturas\\CFDI_";
     private String smtpHost = "";
     private String usuarioSmtp = "";
     private String claveSmtp = "";
     private String seguridad = "";
     private String puertoSmtp = "25";
-    private String visorPDF = "";
+    private String visorPDF = "VISOR_NATIVO";
     private String correoRemitente = "";
     private String tituloCorreo = "";
     private String mensajeCorreo = "";
@@ -476,6 +476,8 @@ public class Configuracion extends Model implements Serializable {
      * @param moduloProductosActivo the moduloProductosActivo to set
      */
     public void setModuloProductosActivo(Boolean moduloProductosActivo) {
+        //Rechaza cambios a valor nulo
+        if(moduloProductosActivo == null) return;
         this.moduloProductosActivo = moduloProductosActivo;
     }
 
@@ -490,6 +492,8 @@ public class Configuracion extends Model implements Serializable {
      * @param moduloUnidadesActivo the moduloUnidadesActivo to set
      */
     public void setModuloUnidadesActivo(Boolean moduloUnidadesActivo) {
+        //Rechaza cambios a valor nulo
+        if(moduloUnidadesActivo == null) return;
         this.moduloUnidadesActivo = moduloUnidadesActivo;
     }
 }
