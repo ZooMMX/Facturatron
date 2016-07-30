@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FacturaDigital" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FacturaDigital" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="76c4b628-4c7d-4150-9730-050336c19109">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="772"/>
-	<subDataset name="dataset1"/>
-	<subDataset name="Impuestos">
+	<subDataset name="dataset1" uuid="b6384fba-5cf8-4e2b-a367-5fbfafd4b92d"/>
+	<subDataset name="Impuestos" uuid="d0785c79-8ced-48e5-9284-83a9d9a29285">
 		<field name="importe" class="java.math.BigDecimal"/>
 		<field name="impuesto" class="java.lang.String"/>
 		<field name="tasa" class="java.math.BigDecimal"/>
@@ -84,483 +85,576 @@
 	<field name="importeConLetra" class="java.lang.String"/>
 	<field name="observaciones" class="java.lang.String"/>
 	<field name="pathLogo" class="java.lang.String"/>
+	<field name="ticketInfo" class="java.lang.String"/>
 	<background>
 		<band/>
 	</background>
 	<pageHeader>
 		<band height="77">
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="3" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="468" y="3" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333" uuid="05d0e13e-5502-4aed-a7cd-83a4d38b1dd8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Fecha/Hora]]></text>
 			</staticText>
 			<textField pattern="yyyy-MM-dd&apos;T&apos;HH:mm:ss">
-				<reportElement x="468" y="18" width="104" height="18"/>
-				<textElement textAlignment="Right" lineSpacing="Single">
+				<reportElement x="468" y="18" width="104" height="18" uuid="51901c02-3582-42a0-8c55-2b0f9fd8c5f4"/>
+				<textElement textAlignment="Right">
 					<font size="9"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="5" y="64" width="453" height="13"/>
-				<textElement textAlignment="Center" lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Folio fiscal: "+$F{timbre}.getUUID()]]></textFieldExpression>
+				<reportElement x="5" y="64" width="453" height="13" uuid="b9fc777e-0286-4fbf-8f2e-b60271d87f58"/>
+				<textElement textAlignment="Center">
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Folio fiscal: "+$F{timbre}.getUUID()]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd&apos;T&apos;HH:mm:ss">
-				<reportElement x="468" y="54" width="104" height="20"/>
-				<textElement textAlignment="Right" lineSpacing="Single">
+				<reportElement x="468" y="54" width="104" height="20" uuid="85529531-ea0a-4f44-ba58-3a779769bb70"/>
+				<textElement textAlignment="Right">
 					<font size="9"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{timbre}.getFechaTimbrado()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{timbre}.getFechaTimbrado()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="39" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="468" y="39" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333" uuid="b803c10a-6b01-4ab1-abb7-6a21d5480e96"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Fecha/Hora certificación]]></text>
 			</staticText>
 			<image>
-				<reportElement x="5" y="3" width="453" height="61"/>
-				<imageExpression class="java.lang.String"><![CDATA[$F{pathLogo}]]></imageExpression>
+				<reportElement x="5" y="3" width="453" height="61" uuid="2f625bb7-cf8b-4135-9f32-49d04d98f343"/>
+				<imageExpression><![CDATA[$F{pathLogo}]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="169">
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="55" width="104" height="15" isPrintInFirstWholeBand="true" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="468" y="55" width="104" height="15" isPrintInFirstWholeBand="true" forecolor="#FFFFFF" backcolor="#333333" uuid="5697f9b7-8ace-4490-8e88-ffc6ec027d89"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Certificado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="43" y="1" width="69" height="20"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="43" y="1" width="69" height="20" uuid="8ce7ac45-badd-439b-8da5-392838dfc27b"/>
+				<textElement>
 					<font size="14"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[CLIENTE]]></text>
 			</staticText>
 			<line>
-				<reportElement x="5" y="10" width="1" height="115"/>
+				<reportElement x="5" y="10" width="1" height="115" uuid="74869b95-2dfc-42b9-a697-b26aa93457fb"/>
 			</line>
 			<line>
-				<reportElement x="5" y="125" width="189" height="1"/>
+				<reportElement x="5" y="125" width="189" height="1" uuid="93c167ae-313b-4cf7-a765-37936703bccd"/>
 			</line>
 			<line>
-				<reportElement x="6" y="10" width="38" height="1"/>
+				<reportElement x="6" y="10" width="38" height="1" uuid="24ca6779-c689-4026-abdc-193e54bcd00a"/>
 			</line>
 			<line>
-				<reportElement x="276" y="11" width="1" height="115"/>
+				<reportElement x="276" y="11" width="1" height="115" uuid="a7c23106-67cf-4b21-b940-96bbcc44326f"/>
 			</line>
 			<line>
-				<reportElement x="276" y="10" width="38" height="1"/>
+				<reportElement x="276" y="10" width="38" height="1" uuid="e31bf6c1-30ff-4fdc-b921-4c1f08811385"/>
 			</line>
 			<staticText>
-				<reportElement x="313" y="2" width="77" height="19"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="313" y="2" width="77" height="19" uuid="cce3a8eb-0109-414b-adb0-8d40de457678"/>
+				<textElement>
 					<font size="14"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[MATRIZ]]></text>
 			</staticText>
 			<line>
-				<reportElement x="277" y="125" width="181" height="1"/>
+				<reportElement x="277" y="125" width="181" height="1" uuid="23acd891-9d34-41a7-a5ec-b4502a51b35e"/>
 			</line>
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="0" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="468" y="0" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333" uuid="24d0c9f6-06a1-4bd9-9345-e4f0d64cc2a0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Expedido en]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement x="468" y="15" width="104" height="40">
+				<reportElement x="468" y="15" width="104" height="40" uuid="e40703a2-b4fb-452f-9e7d-4860f7d44eea">
 					<property name="a" value="&quot;prueba&quot;"/>
 				</reportElement>
-				<textElement textAlignment="Right" lineSpacing="Single">
+				<textElement textAlignment="Right">
 					<font size="9"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{emisor}.getExpedidoEn()==null)
+				<textFieldExpression><![CDATA[($F{emisor}.getExpedidoEn()==null)
 ? $F{emisor}.getDomicilioFiscal().getMunicipio()+", "+$F{emisor}.getDomicilioFiscal().getEstado()
 : $F{emisor}.getExpedidoEn().getMunicipio()+", "+$F{emisor}.getExpedidoEn().getEstado()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="468" y="88" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="468" y="88" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333" uuid="26001788-9393-4819-b49b-001db8a444f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Serie/Folio]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="468" y="103" width="104" height="18"/>
-				<textElement textAlignment="Right" lineSpacing="Single">
+				<reportElement x="468" y="103" width="104" height="18" uuid="a8eb29fa-1ff3-4477-9cd7-4991354d926a"/>
+				<textElement textAlignment="Right">
 					<font size="9"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{serie}==null?"":$F{serie})+" "
+				<textFieldExpression><![CDATA[($F{serie}==null?"":$F{serie})+" "
 +$F{folio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="35" width="171" height="15"/>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getRfc()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="468" y="70" width="104" height="18"/>
-				<textElement textAlignment="Right" lineSpacing="Single">
-					<font size="9"/>
+				<reportElement x="287" y="35" width="171" height="15" uuid="de152874-639d-41f5-8ea1-8f61d5333102"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{noCertificado}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getRfc()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="50" width="171" height="15"/>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getDomicilioFiscal().getCalle()]]></textFieldExpression>
+				<reportElement x="468" y="70" width="104" height="18" uuid="fd52a859-703e-4811-a6af-0ce7d1f1803f"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noCertificado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="80" width="171" height="15"/>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getDomicilioFiscal().getColonia()+", CP. "
+				<reportElement x="287" y="50" width="171" height="15" uuid="087c9957-8760-41fe-a26b-8da899c9f897"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getDomicilioFiscal().getCalle()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="287" y="80" width="171" height="15" uuid="9a961e4e-3d54-459c-8be6-34f593be1ca6"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getDomicilioFiscal().getColonia()+", CP. "
 +$F{emisor}.getDomicilioFiscal().getCodigoPostal()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="95" width="171" height="15"/>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getDomicilioFiscal().getMunicipio()+", "
+				<reportElement x="287" y="95" width="171" height="15" uuid="2cc51bc7-078b-4a90-a1c2-79be2f0edbcc"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getDomicilioFiscal().getMunicipio()+", "
 +$F{emisor}.getDomicilioFiscal().getEstado()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="110" width="171" height="15"/>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getDomicilioFiscal().getPais()]]></textFieldExpression>
+				<reportElement x="287" y="110" width="171" height="15" uuid="4f96c1b2-bf75-4b2b-ba11-614b32e37e40"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getDomicilioFiscal().getPais()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="65" width="171" height="15"/>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["No ext: "
+				<reportElement x="287" y="65" width="171" height="15" uuid="8c4609c4-9ecc-4f5f-abb5-6c7f76b318aa"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No ext: "
 +$F{emisor}.getDomicilioFiscal().getNoExterior()+", No int: "
 +$F{emisor}.getDomicilioFiscal().getNoInterior()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="14" y="44" width="252" height="36"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="14" y="44" width="252" height="36" uuid="21ffb2d7-b33d-4983-9684-78a08f3eebda"/>
+				<textElement>
 					<font size="9"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{receptor}.getDomicilio().getCalle()+" No ext: "+$F{receptor}.getDomicilio().getNoExterior()+", No int: "
+				<textFieldExpression><![CDATA[""+$F{receptor}.getDomicilio().getCalle()+" No ext: "+$F{receptor}.getDomicilio().getNoExterior()+", No int: "
 +$F{receptor}.getDomicilio().getNoInterior()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="14" y="80" width="252" height="45"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="14" y="80" width="252" height="45" uuid="5b094b2a-a717-4bd7-bb52-c1304b5c07b7"/>
+				<textElement>
 					<font size="9"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{receptor}.getDomicilio().getColonia()+", CP. "+
+				<textFieldExpression><![CDATA[""+$F{receptor}.getDomicilio().getColonia()+", CP. "+
 $F{receptor}.getDomicilio().getCodigoPostal()+
 ". "+$F{receptor}.getDomicilio().getMunicipio()+", "+
 $F{receptor}.getDomicilio().getEstado()+
 ". "+$F{receptor}.getDomicilio().getPais()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="14" y="138" width="202" height="15">
+				<reportElement x="14" y="138" width="202" height="15" uuid="8e768dd2-7c66-4373-aa4e-d3a62a5680c5">
 					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
 				</reportElement>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getNombre()]]></textFieldExpression>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="216" y="138" width="101" height="15">
+				<reportElement x="216" y="138" width="101" height="15" uuid="e6fc9f38-1e65-4cfd-acd3-0fac8e3c7a29">
 					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
 				</reportElement>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getRfc()]]></textFieldExpression>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getRfc()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="27" y="126" width="77" height="13"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="27" y="126" width="77" height="13" uuid="717dec48-5079-40bd-b34d-b856b0db90c7"/>
+				<textElement>
 					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[SUCURSAL]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="14" y="153" width="202" height="15">
+				<reportElement x="14" y="153" width="202" height="15" uuid="6656ab1e-009a-4bed-abe9-6f0c0792603b">
 					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
 				</reportElement>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getExpedidoEn().getMunicipio()+", "
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getExpedidoEn().getMunicipio()+", "
 +$F{emisor}.getExpedidoEn().getEstado()+", CP. "
 +$F{emisor}.getExpedidoEn().getCodigoPostal()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="216" y="153" width="354" height="15">
+				<reportElement x="216" y="153" width="354" height="15" uuid="b6a6503e-f00a-4c19-896d-451285131aff">
 					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
 				</reportElement>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getExpedidoEn().getPais()]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="5" y="131" width="1" height="36"/>
-			</line>
-			<line>
-				<reportElement x="5" y="131" width="23" height="1"/>
-			</line>
-			<textField>
-				<reportElement x="14" y="21" width="252" height="23"/>
-				<textElement lineSpacing="Single">
-					<font size="9"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{receptor}.getNombre()+". RFC "+$F{receptor}.getRfc()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getExpedidoEn().getPais()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="5" y="131" width="1" height="36" uuid="7f136daf-57f2-404f-a1d9-1993f6676529"/>
+			</line>
+			<line>
+				<reportElement x="5" y="131" width="23" height="1" uuid="89091c59-eaaa-4e93-ba4c-895ce64fe216"/>
+			</line>
+			<textField>
+				<reportElement x="14" y="21" width="252" height="23" uuid="ef389c09-4052-4b52-93e7-255c1807631b"/>
+				<textElement>
+					<font size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{receptor}.getNombre()+". RFC "+$F{receptor}.getRfc()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="20" width="171" height="15"/>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getNombre()]]></textFieldExpression>
+				<reportElement x="287" y="20" width="171" height="15" uuid="fdb13d44-d8b6-470c-bcb3-2e0ccee96ded"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="317" y="138" width="253" height="15">
+				<reportElement x="317" y="138" width="253" height="15" uuid="a874f696-0d78-42f7-9ac1-712414eec116">
 					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
 				</reportElement>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{emisor}.getExpedidoEn().getCalle()+
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{emisor}.getExpedidoEn().getCalle()+
 " No ext: "
 +$F{emisor}.getExpedidoEn().getNoExterior()+", No int: "
 +$F{emisor}.getExpedidoEn().getNoInterior()+", Col. "
 +$F{emisor}.getExpedidoEn().getColonia()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="468" y="121" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="468" y="121" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333" uuid="154ddfb9-ae28-45b8-ba4a-ba405e358fec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Tipo: "+$F{tipoDeComprobante}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Tipo: "+$F{tipoDeComprobante}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="102">
+		<band height="92">
 			<subreport>
-				<reportElement x="0" y="0" width="572" height="100"/>
+				<reportElement x="0" y="0" width="572" height="70" uuid="1601c499-46a7-4333-9c48-80fe656cfdd5"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{conceptosTron})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA["ConceptosFacturaCFDIGenerica.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["ConceptosFacturaCFDIGenerica.jasper"]]></subreportExpression>
 			</subreport>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="14" y="70" width="558" height="20" uuid="9c8bfe40-62e3-4527-b1cf-19369839a6db">
+					<printWhenExpression><![CDATA[$F{ticketInfo}!=null&&!$F{ticketInfo}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Información de tickets (folio:importe,): "+$F{ticketInfo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="35">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="2" y="0" width="568" height="34" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Center" lineSpacing="Single">
+				<reportElement x="2" y="0" width="568" height="34" isPrintWhenDetailOverflows="true" uuid="53a79deb-02bc-4d84-88c8-c7f6b10315b4"/>
+				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Forma de pago: "+$F{formaDePago}+" Método de pago: "+$F{metodoDePago}+". Efectos fiscales al pago.\n"
+				<textFieldExpression><![CDATA["Forma de pago: "+$F{formaDePago}+" Método de pago: "+$F{metodoDePago}+". Efectos fiscales al pago.\n"
 + $F{emisor}.getRegimenFiscal().get(0).getRegimen() +".\n"
 +"Este documento es una representación impresa de un CFDI"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="277">
+		<band height="277" splitType="Immediate">
 			<staticText>
-				<reportElement x="149" y="209" width="396" height="13"/>
-				<textElement lineSpacing="Single"/>
+				<reportElement x="149" y="209" width="396" height="13" uuid="833233db-f25a-4685-aec3-3e483305e990"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
 				<text><![CDATA[Cadena Original del complemento de certificación digital del SAT:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="149" y="133" width="127" height="13"/>
-				<textElement lineSpacing="Single"/>
+				<reportElement x="149" y="133" width="127" height="13" uuid="48463efe-bd20-4d1c-a07a-6f4528ea3dc6"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
 				<text><![CDATA[Sello Digital del CFDI:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="155" y="147" width="390" height="24"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="155" y="147" width="390" height="24" uuid="14bee5d3-0a9c-484a-b9f0-667fbcebb023"/>
+				<textElement>
 					<font size="6"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{sello}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sello}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="155" y="222" width="390" height="24"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="155" y="222" width="390" height="24" uuid="25d8886b-1051-4105-8bbc-67035b465ebb"/>
+				<textElement>
 					<font size="6"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["||1.0|"+$F{timbre}.getUUID()+"|"+(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")).format($F{timbre}.getFechaTimbrado())+"|"+$F{timbre}.getSelloCFD()+"|"+$F{timbre}.getNoCertificadoSAT()+"||"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["||1.0|"+$F{timbre}.getUUID()+"|"+(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")).format($F{timbre}.getFechaTimbrado())+"|"+$F{timbre}.getSelloCFD()+"|"+$F{timbre}.getNoCertificadoSAT()+"||"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="123" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="390" y="123" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333" uuid="962fb48d-2117-4c3e-817e-42c6f80f51c7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[ Total]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="123" width="84" height="17"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement x="486" y="123" width="84" height="17" uuid="53cb4f72-955c-49f3-bba5-8554a3e66229"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="38" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="390" y="38" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333" uuid="5667119c-3ae5-49ae-9269-b7c826de9f5d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Subtotal 16%]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="38" width="84" height="17"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotalGravado16}]]></textFieldExpression>
+				<reportElement x="486" y="38" width="84" height="17" uuid="d3d9b85d-fdf1-423b-b063-4e4328458471"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotalGravado16}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="55" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="390" y="55" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333" uuid="ae4219d4-3192-4937-9be1-ded558013749"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[- Descuento]]></text>
 			</staticText>
 			<line>
-				<reportElement x="390" y="121" width="180" height="1"/>
+				<reportElement x="390" y="121" width="180" height="1" uuid="cccaf8c2-e4f9-4c1a-ba3b-a820ac71e722"/>
 				<graphicElement>
 					<pen lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="149" y="221" width="420" height="1"/>
+				<reportElement x="149" y="221" width="420" height="1" uuid="60dee36b-ea04-4580-a9c4-f6e6badd6a19"/>
 			</line>
 			<line>
-				<reportElement x="149" y="222" width="1" height="24"/>
+				<reportElement x="149" y="222" width="1" height="24" uuid="32dd1c09-4892-4d24-95aa-dcac28693c82"/>
 			</line>
 			<line>
-				<reportElement x="149" y="146" width="420" height="1"/>
+				<reportElement x="149" y="146" width="420" height="1" uuid="5127f3a2-705d-4adc-8979-2d48a5ce40ea"/>
 			</line>
 			<line>
-				<reportElement x="149" y="146" width="1" height="24"/>
+				<reportElement x="149" y="146" width="1" height="24" uuid="a76ad85b-9b88-4f63-b662-ebfaafd948e9"/>
 			</line>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="55" width="84" height="17"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{descuento}]]></textFieldExpression>
+				<reportElement x="486" y="55" width="84" height="17" uuid="31e26515-6da9-4d77-9ca4-e0498ee73036"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descuento}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="4" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="390" y="4" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333" uuid="5d774885-c35a-4cf5-9933-51fd09c7f4e4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Subtotal exento]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="4" width="84" height="17"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotalExento}]]></textFieldExpression>
+				<reportElement x="486" y="4" width="84" height="17" uuid="2bcf63c7-ee48-4f2f-822d-e9d39c67521d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotalExento}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="5" y="16" width="1" height="31"/>
+				<reportElement x="5" y="16" width="1" height="31" uuid="fdeb06b0-8449-4af7-a434-dc29b0684560"/>
 			</line>
 			<staticText>
-				<reportElement x="5" y="4" width="82" height="13"/>
-				<textElement lineSpacing="Single"/>
+				<reportElement x="5" y="4" width="82" height="13" uuid="fe6047ac-8277-4a84-9671-78bcb1a8c4b6"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
 				<text><![CDATA[Importe con letra:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="5" y="16" width="375" height="1"/>
+				<reportElement x="5" y="16" width="375" height="1" uuid="0c761429-39c5-40ee-a264-02e9fe96cc04"/>
 			</line>
 			<textField>
-				<reportElement x="9" y="21" width="371" height="40"/>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{importeConLetra}]]></textFieldExpression>
+				<reportElement x="9" y="21" width="371" height="40" uuid="ab345b21-a10a-4f03-bed4-02dfa2ba34f1"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importeConLetra}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="390" y="21" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="390" y="21" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333" uuid="3da49188-a5cf-424a-9e19-188ac326597d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Subtotal 0%]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="486" y="21" width="84" height="17"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotalGravado0}]]></textFieldExpression>
+				<reportElement x="486" y="21" width="84" height="17" uuid="ec16082a-67e8-4775-8798-1063dc1f288c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotalGravado0}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="5" y="74" width="1" height="31"/>
+				<reportElement x="5" y="74" width="1" height="31" uuid="fa6a2d39-9204-4d30-9462-563cadd9ba85"/>
 			</line>
 			<staticText>
-				<reportElement x="5" y="62" width="82" height="13"/>
-				<textElement lineSpacing="Single"/>
+				<reportElement x="5" y="62" width="82" height="13" uuid="1e0b0784-7c1b-44a8-a206-04ac7641728f"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
 				<text><![CDATA[Observaciones:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="5" y="74" width="375" height="1"/>
+				<reportElement x="5" y="74" width="375" height="1" uuid="dfa9cbdc-b513-40af-be29-0025cca8b9f2"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="9" y="79" width="371" height="51"/>
-				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{observaciones}]]></textFieldExpression>
+				<reportElement x="9" y="79" width="371" height="51" uuid="1d3125f9-2d74-4ea3-adbd-3d4544c6f8d1"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="155" y="185" width="390" height="24"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="155" y="185" width="390" height="24" uuid="85be087c-7902-4fc9-ba15-1907dac0a37f"/>
+				<textElement>
 					<font size="6"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{timbre}.getSelloSAT()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{timbre}.getSelloSAT()]]></textFieldExpression>
 			</textField>
 			<image scaleImage="Clip" hAlign="Center" vAlign="Middle">
-				<reportElement x="4" y="135" width="140" height="140"/>
-				<imageExpression class="java.awt.Image"><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+				<reportElement x="4" y="135" width="140" height="140" uuid="162d2ee7-8c9f-4c9e-8f34-701e5e8a7634"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
      new com.google.zxing.qrcode.QRCodeWriter().encode(
          $F{qrstring},
          com.google.zxing.BarcodeFormat.QR_CODE, 170, 170))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="149" y="246" width="419" height="12"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="149" y="246" width="419" height="12" uuid="e07ef454-abad-4b71-be64-acb2010d63b1"/>
+				<textElement>
 					<font size="9"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["No de Serie del Certificado del SAT: "+$F{timbre}.getNoCertificadoSAT()]]></textFieldExpression>
+				<textFieldExpression><![CDATA["No de Serie del Certificado del SAT: "+$F{timbre}.getNoCertificadoSAT()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="149" y="171" width="122" height="13"/>
-				<textElement lineSpacing="Single"/>
+				<reportElement x="149" y="171" width="122" height="13" uuid="2a8e3546-6b8a-442f-9370-2803ac2bb27b"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
 				<text><![CDATA[Sello del SAT:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="149" y="184" width="1" height="24"/>
+				<reportElement x="149" y="184" width="1" height="24" uuid="71da2a68-51c8-4016-a05a-92ff7f4be679"/>
 			</line>
 			<line>
-				<reportElement x="149" y="184" width="420" height="1"/>
+				<reportElement x="149" y="184" width="420" height="1" uuid="57963eb1-c096-4cbe-ae67-0f3ada909d14"/>
 			</line>
 			<staticText>
-				<reportElement x="150" y="260" width="396" height="15" forecolor="#999999"/>
-				<textElement lineSpacing="Single">
+				<reportElement x="150" y="260" width="396" height="15" forecolor="#999999" uuid="40041607-9224-4ad9-a5f2-fb888ad7b480"/>
+				<textElement>
 					<font size="12" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Powered by Phesus™ Facturatron. http://www.phesus.com]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement key="table" x="390" y="72" width="180" height="48"/>
+				<reportElement key="table" x="390" y="72" width="180" height="48" uuid="d96c3104-502c-4899-8084-d0164d72eba1"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Impuestos">
+					<datasetRun subDataset="Impuestos" uuid="46a4c460-4bb3-4ac5-b7bb-fa7beeb2c112">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{impuestos}.getTraslados().getTraslado())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="96">
+					<jr:column width="96" uuid="103ff38b-1cc2-4e3f-bd15-448bf439e4bd">
 						<jr:detailCell height="11" rowSpan="1">
 							<textField>
-								<reportElement mode="Opaque" x="0" y="0" width="96" height="11" forecolor="#FFFFFF" backcolor="#333333"/>
+								<reportElement mode="Opaque" x="0" y="0" width="96" height="11" forecolor="#FFFFFF" backcolor="#333333" uuid="4cb845e9-691f-43a9-b4b1-1720f76bfd0a"/>
 								<textElement>
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression class="java.lang.String"><![CDATA["+ "+$F{impuesto}+" ("+$F{tasa}+")"]]></textFieldExpression>
+								<textFieldExpression><![CDATA["+ "+$F{impuesto}+" ("+$F{tasa}+")"]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="84">
+					<jr:column width="84" uuid="8d5d7547-5645-4877-8338-4737b6d04803">
 						<jr:detailCell height="11" rowSpan="1">
 							<textField pattern="#,##0.00">
-								<reportElement x="0" y="0" width="84" height="11"/>
+								<reportElement x="0" y="0" width="84" height="11" uuid="b4bb9e41-9af0-471d-9fc0-b7057482d45c"/>
 								<textElement textAlignment="Right">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{importe}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

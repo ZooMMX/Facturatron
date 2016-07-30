@@ -36,6 +36,7 @@ public class ConfigFiscalControl extends Controller<ConfigFiscalDao, ConfigFisca
         if(JOptionPane.showConfirmDialog(getView(), "¿Está seguro de guardar los cambios?")==JOptionPane.YES_OPTION) {
             try {
                 getModel().setSerie(getView().getTxtSerie().getText());
+                getModel().setFolioActual(new BigInteger(getView().getTxtSiguienteFolio().getText()));
 
                 getModelContrib().setNombre(getView().getTxtNombre().getText());
                 getModelContrib().setRfc(getView().getTxtRfc().getText());

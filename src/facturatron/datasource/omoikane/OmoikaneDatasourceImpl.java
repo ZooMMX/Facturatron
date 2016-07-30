@@ -23,8 +23,8 @@
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import facturatron.datasource.DatasourceException;
 import facturatron.datasource.IDatasourceService;
-import facturatron.datasource.Ticket;
 import facturatron.datasource.RenglonTicket;
+import facturatron.datasource.Ticket;
 import facturatron.datasource.TicketGlobal;
 import facturatron.omoikane.Impuesto;
 import facturatron.omoikane.Ventas;
@@ -34,6 +34,7 @@ import facturatron.omoikane.VentasJpaController;
 import facturatron.omoikane.exceptions.TicketFacturadoException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -107,9 +108,18 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
             String id = ((Integer) idEnGlobal[0]).toString() + "-" +
                         ((Integer) idEnGlobal[1]).toString() + "-" +
                         ((Integer) idEnGlobal[2]).toString();
+            
+            //Construyo el formato por defecto del folio de ticket de Omoikane
+            String folio = ((Integer) idEnGlobal[0]).toString() + "-" +
+                           ((Integer) idEnGlobal[1]).toString() + "-" +
+                           ((BigInteger) idEnGlobal[3]).toString();
 
+            BigDecimal importe = new BigDecimal((Double) idEnGlobal[4]);
+            
             TicketOmoikane ticketEnGlobal = new TicketOmoikane();
             ticketEnGlobal.setId(id);
+            ticketEnGlobal.setFolio(folio);
+            ticketEnGlobal.setImporte(importe);            
             ticketsEnGlobal.add(ticketEnGlobal);
         }
         

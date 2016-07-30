@@ -156,6 +156,9 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       }
   }
 
+  /**
+   * Actualiza las sumas y la información de tickets
+   */
   public void renglonesActualizados() {
       MathContext mc = MathContext.DECIMAL128;
 
@@ -201,6 +204,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       getModel().setIvaTrasladado(iva);
       getModel().setIEPSTrasladado(ieps);
       getModel().setTotal(total);
+
 
   }
   public void btnObservaciones() {
@@ -285,10 +289,11 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
           }
           //Validar valor unitario
           BigDecimal valor = renglon.getValorUniario();
-          if(valor != null && valor.compareTo(new BigDecimal(0)) <= 0) {
-              JOptionPane.showMessageDialog(getView(), "La columna PU (precio unitario) tiene un contenido inválido en la fila " + filas);
+          /*
+          if(valor != null) {
+              JOptionPane.showMessageDialog(getView(), valor.toPlainString()+"---La columna PU (precio unitario) tiene un contenido inválido en la fila " + filas);
               return false;
-          }                  
+          } */                 
           //Validar unidad
           String unidad = renglon.getUnidad();
           if(unidad != null && unidad.isEmpty()) {
@@ -340,7 +345,6 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setVersion("3.2");
 
         getView().getBtnGuardar().setEnabled(false);
-
         getModel().persist();
         
         timbrado = true;
@@ -369,6 +373,28 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       }
       
       ds.setTicketsFacturados(idsTickets, idFactura);
+  }
+  
+  public void updateTicketInfo() {
+      NumberFormat nf = NumberFormat.getNumberInstance();
+      nf.setMinimumFractionDigits(2);
+      nf.setMaximumFractionDigits(2);
+      
+      StringBuilder ticketInfo = new StringBuilder("");
+      
+      Boolean first = true;
+      for(Ticket t : getModel().getTickets()) {
+          if(first) 
+              first = false; 
+          else
+              ticketInfo.append(", "); 
+          ticketInfo.append(t.getFolio());
+          ticketInfo.append(":");
+          ticketInfo.append(nf.format(t.getImporte()));
+
+      }
+      
+      getModel().setTicketInfo(ticketInfo.toString());
   }
   
   public void btnVistaPrevia() {
@@ -537,6 +563,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getView().getTabConceptos().setDefaultRenderer(BigDecimal.class, new FacturaTableModel.DecimalFormatRenderer());
         getView().setModelo(getModel());
         getModel().addObserver(getView());
+        getView().setTableWidth(); // Establecer anchos de columnas
     }            
     
     //TODO Volver ésta clase un handler
@@ -720,6 +747,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 
                 //Por defecto hago un refresco manual de las sumas
                 renglonesActualizados();
+                      
+                updateTicketInfo(); //Concatena información de cada ticket en attr ticketInfo
                               
                 JOptionPane.showMessageDialog(getView(), "Por favor verifique que los datos de la factura del día sean correctos antes de guardarla.");
 

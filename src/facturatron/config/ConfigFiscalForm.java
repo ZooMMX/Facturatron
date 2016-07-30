@@ -36,6 +36,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     @Override
     public void update(Observable o, Object arg) {
         getTxtSerie().setText(String.valueOf(getModel().getSerie()));
+        getTxtSiguienteFolio().setText(String.valueOf(getModel().getFolioActual()));
 
         ClienteDao contrib = getModel().getContribuyente();
         getTxtCalle()       .setText(contrib.getCalle());
@@ -80,6 +81,8 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         jXTitledPanel1 = new org.jdesktop.swingx.JXTitledPanel();
         jLabel13 = new javax.swing.JLabel();
         txtSerie = new org.jdesktop.swingx.JXTextField();
+        jLabel14 = new javax.swing.JLabel();
+        txtSiguienteFolio = new org.jdesktop.swingx.JXTextField();
         jXTitledPanel2 = new org.jdesktop.swingx.JXTitledPanel();
         jideTabbedPane1 = new com.jidesoft.swing.JideTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -138,6 +141,9 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("Serie");
 
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel14.setText("Siguiente folio");
+
         javax.swing.GroupLayout jXTitledPanel1Layout = new javax.swing.GroupLayout(jXTitledPanel1.getContentContainer());
         jXTitledPanel1.getContentContainer().setLayout(jXTitledPanel1Layout);
         jXTitledPanel1Layout.setHorizontalGroup(
@@ -147,6 +153,10 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSiguienteFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jXTitledPanel1Layout.setVerticalGroup(
@@ -155,7 +165,9 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                 .addContainerGap()
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(txtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14)
+                    .addComponent(txtSiguienteFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -242,26 +254,26 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                     .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPais, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtMunicipio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtCodigoPostal, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtColonia, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtCalle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                    .addComponent(txtPais)
+                    .addComponent(txtEstado)
+                    .addComponent(txtMunicipio, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtCodigoPostal)
+                    .addComponent(txtColonia)
+                    .addComponent(txtCalle, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtTelefono)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtNoExterior, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel11)
                         .addGap(18, 18, 18)
-                        .addComponent(txtNoInterior, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                        .addComponent(txtNoInterior))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtRfc, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                        .addComponent(txtRfc)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel30)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRegimen, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)))
+                        .addComponent(txtRegimen)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -402,21 +414,21 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                     .addComponent(jLabel24))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPaisSuc, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtEstadoSuc, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtMunicipioSuc, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtCodigoPostalSuc, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtColoniaSuc, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtCalleSuc, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtNombreSuc, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtRfcSuc, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(txtTelefonoSuc, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                    .addComponent(txtPaisSuc)
+                    .addComponent(txtEstadoSuc)
+                    .addComponent(txtMunicipioSuc, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtCodigoPostalSuc)
+                    .addComponent(txtColoniaSuc)
+                    .addComponent(txtCalleSuc, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtNombreSuc, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtRfcSuc)
+                    .addComponent(txtTelefonoSuc)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtNoExteriorSuc, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel29)
                         .addGap(18, 18, 18)
-                        .addComponent(txtNoInteriorSuc, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)))
+                        .addComponent(txtNoInteriorSuc)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -474,7 +486,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
             jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jideTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jideTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jXTitledPanel2Layout.setVerticalGroup(
@@ -528,10 +540,10 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jXTitledPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jXTitledPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jXTitledPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -584,6 +596,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
@@ -632,6 +645,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     private javax.swing.JTextField txtRfc;
     private javax.swing.JTextField txtRfcSuc;
     private org.jdesktop.swingx.JXTextField txtSerie;
+    private org.jdesktop.swingx.JXTextField txtSiguienteFolio;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtTelefonoSuc;
     // End of variables declaration//GEN-END:variables
@@ -718,7 +732,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
      */
     public org.jdesktop.swingx.JXTextField getTxtSerie() {
         return txtSerie;
-    }
+    }   
 
     /**
      * @return the txtTelefono
@@ -816,6 +830,13 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
 
     public javax.swing.JTextField getTxtRegimen() {
         return txtRegimen;
+    }
+
+    /**
+     * @return the txtSiguienteFolio
+     */
+    public org.jdesktop.swingx.JXTextField getTxtSiguienteFolio() {
+        return txtSiguienteFolio;
     }
 
 }

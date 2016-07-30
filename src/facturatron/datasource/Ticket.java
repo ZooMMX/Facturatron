@@ -18,6 +18,7 @@
 
 package facturatron.datasource;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 /**
  *
@@ -28,4 +29,12 @@ public abstract class Ticket<K extends Object> extends ArrayList<RenglonTicket> 
     protected K id;
     public K getId() { return id; }
     public void setId(K id) { this.id = id; }
+    
+    protected BigDecimal importe = new BigDecimal("0.00");
+    public BigDecimal getImporte() { return importe; }    
+    public void setImporte(BigDecimal importe) { this.importe = importe; }
+    
+    protected String folio;
+    public String getFolio() { return folio; }
+    public void setFolio(String folio) { this.folio = folio; }
 }

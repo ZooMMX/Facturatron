@@ -106,7 +106,7 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
         JDBCDAOSupport bd = getBD();
         try {
             bd.conectar();
-            ResultSet rs = bd.getStmt().executeQuery("SELECT * FROM producto ");
+            ResultSet rs = bd.getStmt().executeQuery("SELECT * FROM producto WHERE activo = 1");
             ArrayList<Producto> ret = new ArrayList<Producto>();
             Producto bean;
             while (rs.next()) {
@@ -131,7 +131,7 @@ public class ProductoDao extends Producto implements DAO <Integer, Producto>{
         JDBCDAOSupport bd = getBD();
         try {
             bd.conectar();
-            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM producto WHERE (nombre like ? OR clave like ?) LIMIT 25");
+            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM producto WHERE (nombre like ? OR clave like ?) AND activo = 1 LIMIT 25");
             searchString = "%"+searchString+"%";
             ps.setString(1, searchString);
             ps.setString(2, searchString);

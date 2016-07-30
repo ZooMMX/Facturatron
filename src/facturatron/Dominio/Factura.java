@@ -48,6 +48,20 @@ public class Factura extends Model implements Serializable {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+    
+     /**
+     * @return the ticket info
+     */
+    public String getTicketInfo() {
+        return ticketInfo;
+    }
+
+    /**
+     * @param ticket info the ticket info to set
+     */
+    public void setTicketInfo(String ticketInfo) {
+        this.ticketInfo = ticketInfo;
+    }
 
     /**
      * @return the hora
@@ -119,7 +133,8 @@ public class Factura extends Model implements Serializable {
     private Estado estadoComprobante     = Estado.VIGENTE;
     @NotNull
     private String observaciones         = "";
-
+    @NotNull
+    private String ticketInfo            = "";
     @NotNull
     private String tipoDeComprobante;
     @NotNull

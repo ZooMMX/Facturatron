@@ -31,6 +31,7 @@ public class ComprobanteTron extends Comprobante {
     private String importeConLetra;
     private String observaciones;
     private String pathLogo;
+    private String ticketInfo;
 
     public ComprobanteTron(Comprobante c) {
         super.setAddenda(c.getAddenda());
@@ -223,6 +224,20 @@ public class ComprobanteTron extends Comprobante {
      */
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+    
+    /**
+     * @return the ticket info
+     */
+    public String getTicketInfo() {
+        return ticketInfo;
+    }
+
+    /**
+     * @param ticket info the ticket info to set
+     */
+    public void setTicketInfo(String ticketInfo) {
+        this.ticketInfo = ticketInfo;
     }
 
     public TimbreFiscalDigital getTimbre() {

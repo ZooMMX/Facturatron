@@ -22,10 +22,29 @@ public class Reporte {
     {
         try {
             InputStream stream = cargarPlantilla(reporteJasper);
-            jp         = JasperFillManager.fillReport(stream, new java.util.HashMap(), new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(beans));
+            JasperReport jr;
+            if(getExtension(reporteJasper).equalsIgnoreCase("jrxml"))
+            {
+                //Compilar el jrxml
+                jr = JasperCompileManager.compileReport(stream);
+                jp = JasperFillManager.fillReport(jr, new java.util.HashMap(), new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(beans));
+            } else {
+                //El reporte ya estaba compilado (.jasper)
+                jp = JasperFillManager.fillReport(stream, new java.util.HashMap(), new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(beans));                
+            }                
+
         } catch(Exception e) {
             throw e;
         }
+    }
+    
+    private String getExtension(String path) {
+        String extension = "";
+        int i = path.lastIndexOf('.');
+        if (i > 0) {
+            extension = path.substring(i+1);
+        }
+        return extension;
     }
 
 

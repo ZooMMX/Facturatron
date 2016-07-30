@@ -25,6 +25,7 @@ import facturatron.datasource.IDatasourceService
 import facturatron.datasource.RenglonTicket
 import facturatron.datasource.Ticket
 import facturatron.datasource.TicketGlobal
+import facturatron.omoikane.exceptions.TicketFacturadoException
 import groovy.sql.Sql;
 
 /**
@@ -74,12 +75,14 @@ public class OpenTPVDatasourceImpl implements IDatasourceService {
     }
     
     @Override
-    public Ticket getTicket(Object idObj) throws DatasourceException {
+    public Ticket getTicket(Object idObj) throws DatasourceException, TicketFacturadoException {
         TicketOpenTPV ticket = new TicketOpenTPV();     
         try {
             conectar();
             String id = (String) idObj;
             def ticketResultSet = sql.firstRow( 'SELECT * FROM tickets WHERE ticketid=?' , [ id ]);
+            if(ticketResultSet == null)
+                throw new DatasourceException("Ticket no encontrado (${id})");
 
             ticket.setId( ticketResultSet.id );
 

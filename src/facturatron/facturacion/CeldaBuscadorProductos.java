@@ -18,16 +18,16 @@
 
 package facturatron.facturacion;
 
-import facturatron.Dominio.Producto;
-import facturatron.lib.Java2sAutoComboBox;
-import facturatron.producto.ProductoDao;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import javax.swing.DefaultCellEditor;
-import javax.swing.table.DefaultTableCellRenderer;
+import facturatron.facturacion.controles.BuscadorProductosController;
+import facturatron.facturacion.controles.BuscadorProductosView;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.TableColumn;
 
 /**
@@ -36,57 +36,74 @@ import javax.swing.table.TableColumn;
  */
 class CeldaBuscadorProductos {
     
-        FacturaControl fc;
+    FacturaControl fc;
         
-        public CeldaBuscadorProductos(FacturaControl fc) {
-            this.fc = fc;
+    public CeldaBuscadorProductos(FacturaControl fc) {
+        this.fc = fc;
+    }
+
+    public void install() {
+
+        TableColumn columnaCodigo = fc.getView().getTabConceptos().getColumnModel().getColumn(1);            
+
+        ProductoCellEditor editor = new ProductoCellEditor(fc.getView().getTabConceptos());
+        columnaCodigo.setCellEditor(editor);   
+        columnaCodigo.setCellRenderer(new CellRendererDotDotDot());
+
+   }
+    
+    class ProductoCellEditor extends CellEditorDotDotDot {
+
+        public ProductoCellEditor(JTable table) {
+            super(table);
+        }
+
+        @Override
+        protected void editCell(JTable table, int row, int column) {
+            String oldValor = (String) table.getValueAt(row, column);            
+            String newValor = showTextEditDialog("Descripción", table, row, 300, 150, oldValor);
+            
+            if(newValor != null)
+                table.setValueAt(newValor, row, column);
         }
         
-        public void install() {
-            ProductoDao productoDao = new ProductoDao();
-            ArrayList<Producto> productos =  productoDao.findAll();
-            final HashMap<String, Producto> pMap = new HashMap<String, Producto>();
+        private String showTextEditDialog(final String dialogTitle,
+			JTable table, final int row, final int width, final int height, final String textToEdit) {
 
-            TableColumn columnaCodigo = fc.getView().getTabConceptos().getColumnModel().getColumn(1);
+            // This panel holds the only edit control
+            BuscadorProductosController controller = new BuscadorProductosController();
+            BuscadorProductosView panel = controller.getView();
 
-            for (Producto p : productos) {
-                pMap.put(p.getClave(), p);
+            // Use JOptionPane for a pane-less (ha!) way to create a
+            // dialog in just a few lines. Also get system L&F.
+            JOptionPane optPane = new JOptionPane();
+            optPane.setMessage(panel);
+            optPane.setMessageType(JOptionPane.PLAIN_MESSAGE);
+            optPane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
+            JDialog dialog = optPane.createDialog(
+                            fc.getView(), dialogTitle);
+            // This resizable setting is critical;
+            // by default the dialog is quite small
+            dialog.setResizable(true);
+
+            // Show it already!
+            dialog.setVisible(true);
+
+            // Get the value and decide if it was "OK"
+            Object selectedValue = optPane.getValue();
+            int n = -1;
+            if (selectedValue != null && selectedValue instanceof Integer)
+                    n = ((Integer) selectedValue).intValue();
+            String result = null;
+            if (n == JOptionPane.OK_OPTION) {                    
+                    result = controller.getCodigoSeleccionado();
+                    table.setValueAt(controller.getDescripcionSeleccionado(), row, 2);
+                    table.setValueAt(controller.getPrecioUnitario(), row, 4);
             }
 
-            final Java2sAutoComboBox comboBox = new Java2sAutoComboBox(productos);
-            comboBox.setDataList(productos);
-            comboBox.setMaximumRowCount(5);
-            comboBox.setStrict(false);
-
-            columnaCodigo.setCellEditor(new DefaultCellEditor(comboBox));
-
-            DefaultTableCellRenderer renderer = new CellRendererDotDotDot();
-            columnaCodigo.setCellRenderer(renderer);
-
-            comboBox.addItemListener(new ItemListener() {
-
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if(e.getStateChange() == ItemEvent.SELECTED) {
-                        int fila = fc.getView().getTabConceptos().getSelectedRow();
-                        String clave = (String) e.getItem();
-                        //Por defecto busca el producto por clave en un hashmap
-                        Producto p   = pMap.get(clave);
-                        FacturaTableModel tableModel = (FacturaTableModel) fc.getView().getTabConceptos().getModel();
-
-                        //Si no hay celda seleccionada ignoramos silenciosamente la acción
-                        if(fila == -1) return;
-                        if(p == null) { 
-                            //Si no hay productos vacía las celdas correspondientes
-                            tableModel.setValueAt("", fila, 2);
-                            tableModel.setValueAt(new BigDecimal(0), fila, 4);
-                        } else {
-                            //Rellena las celdas con los datos del producto
-                            tableModel.setValueAt(p.getNombre(), fila, 2);
-                            tableModel.setValueAt(p.getPrecio(), fila, 4);
-                        }
-                    }
-                }
-            });
-        }
+            // Might be good text, might be null
+            return result;
+	}
+        
     }
+}

@@ -163,7 +163,7 @@ public class VentasDetallesJpaController extends JpaController {
 
             Query q = em.createNativeQuery(
                     "		SELECT \n" +
-                    "			v.id_almacen, v.id_caja, v.id_venta\n" +
+                    "			v.id_almacen, v.id_caja, v.id_venta, v.folio, v.total\n" +
                     "		FROM \n" +
                     "			ventas v, \n" +
                     "			ventas_detalles vd \n" +
@@ -175,7 +175,8 @@ public class VentasDetallesJpaController extends JpaController {
                     "				vd.id_linea NOT IN (SELECT id_linea FROM lineas_dual)\n" +
                     "			AND \n" +
                     "				v.fecha_hora BETWEEN ?1 AND ?2  \n" +
-                    "		GROUP BY v.id_venta\n"
+                    "		GROUP BY v.id_venta \n" +
+                    "           ORDER BY v.id_caja ASC \n" 
                     );
             
             q.setParameter(1, desde);

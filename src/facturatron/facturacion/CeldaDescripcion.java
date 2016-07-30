@@ -6,18 +6,29 @@ import facturatron.facturacion.FacturaControl;
 import facturatron.lib.Java2sAutoComboBox;
 import facturatron.unidad.UnidadDao;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.ArrayList;
+import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 /*
@@ -54,23 +65,96 @@ public class CeldaDescripcion {
             
             TableColumn columnaDescripcion = fc.getView().getTabConceptos().getColumnModel().getColumn(2);            
 
-            //CellRendererDotDotDot prueba = new CellRendererDotDotDot();
-            //columnaDescripcion.setCellRenderer(prueba);
-            CellEditorDotDotDot editor = new CeldaDescripcionEditor(fc.getView().getTabConceptos());
+            CeldaDescripcionEditor editor = new CeldaDescripcionEditor(fc.getView().getTabConceptos());
             columnaDescripcion.setCellEditor(editor);            
             
        }
-            
-    private class CeldaDescripcionEditor extends CellEditorDotDotDot {
+        
+     class CeldaDescripcionEditor extends AbstractCellEditor implements TableCellEditor {
 
-        public CeldaDescripcionEditor(JTable table) {
-            super(table);
+        JButton moreButton;
+        private JTable table;
+        private int row;
+        private int column;
+        JLabel label;
+        
+         public CeldaDescripcionEditor(JTable table) {
+            super();
+            moreButton = new JButton("...");
+            moreButton.setMinimumSize(new Dimension(15,10));
+            moreButton.setPreferredSize(new Dimension(15,10));
+            moreButton.setMaximumSize(new Dimension(15,10));
+
+            moreButton.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    editCell(CeldaDescripcionEditor.this.table, 
+                            CeldaDescripcionEditor.this.row, 
+                            CeldaDescripcionEditor.this.column);
+                }
+            });
+
+            this.table = table;
+            label = new JLabel();
         }
+
         @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
+        int rowIndex, int vColIndex) {
+                       
+            this.table = table; 
+            this.row = rowIndex; 
+            this.column = vColIndex;
+
+            // Build a little panel to hold the controls
+            JPanel panel = new JPanel();
+            panel.addFocusListener(new FocusAdapter() {
+
+                @Override
+                public void focusGained(FocusEvent e) {
+                    super.focusGained(e); //To change body of generated methods, choose Tools | Templates.
+                    label.requestFocus();
+                }
+
+            });
+            panel.setLayout(new BorderLayout());
+            //panel.setFocusable(true);
+
+            // Color appropriately for selection status
+            if (isSelected) {
+                    panel.setForeground(table.getSelectionForeground());
+                    panel.setBackground(table.getSelectionBackground());
+            } else {
+                    panel.setForeground(table.getForeground());
+                    panel.setBackground(table.getBackground());
+            }
+
+            panel.add(moreButton, BorderLayout.EAST);
+
+            // Add the original JLabel renderer
+            label.setText((String) getCellEditorValue());
+            label.setMinimumSize(new Dimension(150,10));
+            panel.add(label, BorderLayout.CENTER);                
+
+            // The panel should be displayed
+            return panel;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            String valor = (String) table.getValueAt(row, column);
+            return valor;
+        }
+        
         protected void editCell(JTable table, int row, int column) {
-            String oldValor = (String) table.getValueAt(row, column);
+            
+            String oldValor = (String) table.getValueAt(row, column);            
             String newValor = showTextEditDialog("Descripción", 300, 150, oldValor);
-            table.setValueAt(newValor, row, column);
+            
+            if(newValor != null)
+                table.setValueAt(newValor, row, column);
         }
         
         private String showTextEditDialog(final String dialogTitle,
@@ -81,6 +165,7 @@ public class CeldaDescripcion {
             BorderLayout layout = new BorderLayout();
             panel.setLayout(layout);
             JTextArea textArea = new JTextArea();
+
             textArea.setText(textToEdit);
             // Use a scroll pane so the text area can be scrolled
             JScrollPane jsp = new JScrollPane(textArea) {
@@ -121,4 +206,6 @@ public class CeldaDescripcion {
             return result;
 	}
     }
+            
+
 }

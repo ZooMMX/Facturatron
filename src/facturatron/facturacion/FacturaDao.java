@@ -188,6 +188,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setDescuento(getDescuentoTasa0().add(getDescuentoTasa16()));
         comp.setTipoDeComprobante(getTipoDeComprobante());
         comp.setObservaciones(getObservaciones());
+        comp.setTicketInfo(getTicketInfo());
         Persona emSucursal = getEmisorSucursal();
         if(emSucursal.getEstado().isEmpty()) { emSucursal = null; }
         comp.setEmisor(getEmisor().toEmisor(emSucursal));

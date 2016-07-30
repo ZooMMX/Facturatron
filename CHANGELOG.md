@@ -1,3 +1,7 @@
+## 1.8 (2014-10-03)
+
+- 
+
 ## 1.7.0.9 (2014-03-02)
 - Mejoras de usabilidad en confección de factura:
    - \#44 Navegación mediante `<tab>` (tecla tabular) entre columnas de los conceptos de una factura. Gracias a Jose Julian Abarca

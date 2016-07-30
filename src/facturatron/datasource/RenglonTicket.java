@@ -6,6 +6,7 @@
 package facturatron.datasource;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @author octavioruizcastillo
@@ -20,6 +21,11 @@ public class RenglonTicket {
     public BigDecimal ieps;
     public BigDecimal descuento;
     public BigDecimal importe;
+    
+    public RenglonTicket() {
+        ieps = new BigDecimal("0.00");
+        ieps     .setScale(2, RoundingMode.HALF_EVEN);
+    }
     
     public String toString() {
         StringBuilder builder = new StringBuilder();

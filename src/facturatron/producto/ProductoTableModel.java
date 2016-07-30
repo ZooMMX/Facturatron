@@ -40,7 +40,7 @@ public class ProductoTableModel extends AbstractTableModel {
     public void search(String searchString) {
         setData ((new ProductoDao().find(searchString)));
         try {
-            fireTableRowsUpdated(0, getRowCount() -1);
+            fireTableDataChanged();
         } catch (Exception ex){
             Logger.getLogger(ProductoDao.class.getName()).log(Level.SEVERE, "Error al consultar producto", ex);
         }

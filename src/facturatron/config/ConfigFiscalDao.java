@@ -130,6 +130,7 @@ public class ConfigFiscalDao extends SerieDao implements DAO<Integer,Serie>, Obs
 
     public void loadSerie() {
         super.loadSerie();
+        
     }
 
 

@@ -56,12 +56,13 @@ public class MainForm extends javax.swing.JFrame {
         linkCfgAcercaDe = new org.jdesktop.swingx.JXHyperlink();
         linkSalir = new org.jdesktop.swingx.JXHyperlink();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         panelEdicion = new com.jidesoft.swing.JideTabbedPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Facturatron");
 
-        jXTaskPaneContainer1.setBackground(new java.awt.Color(255, 255, 255));
+        jXTaskPaneContainer1.setBackground(new java.awt.Color(50, 80, 80));
 
         jXTaskPane1.setTitle("Facturas");
 
@@ -157,8 +158,13 @@ public class MainForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("1.8-beta.1");
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jXTaskPaneContainer1.add(jLabel1);
+
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("1.8-beta.4");
+        jXTaskPaneContainer1.add(jLabel2);
 
         panelEdicion.setAutoscrolls(true);
         panelEdicion.setShowCloseButtonOnMouseOver(true);
@@ -178,9 +184,9 @@ public class MainForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                .addComponent(panelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 407, Short.MAX_VALUE)
+            .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -236,6 +242,7 @@ public class MainForm extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane1;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane2;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane3;

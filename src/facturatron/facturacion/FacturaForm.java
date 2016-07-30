@@ -86,11 +86,18 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             }
         });
         txtDireccion.setEditable(false);
-        tabConceptos.setSortable(false);    
+        tabConceptos.setSortable(false);  
         
     }
     
-    
+    public void setTableWidth() {                
+        tabConceptos.getColumn(0).setMaxWidth(110);
+        tabConceptos.getColumn(2).setPreferredWidth(400);
+        tabConceptos.getColumn(4).setMaxWidth(110);
+        tabConceptos.getColumn(5).setMaxWidth(100);
+        tabConceptos.getColumn(6).setMaxWidth(110);
+        tabConceptos.getColumn(7).setMaxWidth(110);
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.
