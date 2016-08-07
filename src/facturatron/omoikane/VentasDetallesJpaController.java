@@ -240,7 +240,12 @@ public class VentasDetallesJpaController extends JpaController {
                     
                     //Si hay impuestos los definimos
                     if(grupoVentas[0] != null) {
-                    String grupoImpuestos = new String((byte[]) grupoVentas[0], "US-ASCII");
+                        String grupoImpuestos;
+                        //Grupoventas puede venir de la BD como String o como Byte[], aquí se ocupa de ambos casos
+                        if(grupoVentas[0] instanceof byte[])
+                            grupoImpuestos = new String((byte[]) grupoVentas[0], "US-ASCII");
+                        else
+                            grupoImpuestos = (String) grupoVentas[0];
                         for (String stringIdImpuesto : grupoImpuestos.split(",")) {
                             Long idImpuesto = Long.valueOf(stringIdImpuesto);
                             Impuesto i = impuestoJpa.findImpuesto(idImpuesto);
