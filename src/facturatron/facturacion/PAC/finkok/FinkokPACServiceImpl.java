@@ -4,14 +4,14 @@
  */
 package facturatron.facturacion.PAC.finkok;
 
-import com.finkok.facturacion.cancel.Application;
-import com.finkok.facturacion.cancel.CancelSOAP;
-import com.finkok.facturacion.cancel.CancelaCFDResult;
-import com.finkok.facturacion.cancel.Folio;
-import com.finkok.facturacion.cancel.FolioArray;
-import com.finkok.facturacion.cancel.ReceiptResult;
-import com.finkok.facturacion.cancel.StringArray;
-import com.finkok.facturacion.cancel.UUIDS;
+import com.finkok.cancel.Application;
+import com.finkok.cancel.CancelSOAP;
+import com.finkok.cancel.CancelaCFDResult;
+import com.finkok.cancel.Folio;
+import com.finkok.cancel.FolioArray;
+import com.finkok.cancel.ReceiptResult;
+import com.finkok.cancel.StringArray;
+import com.finkok.cancel.UUIDS;
 import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
 import facturatron.facturacion.DefaultDistribucionHandler;
@@ -40,14 +40,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Complemento;
-import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
-import mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Complemento;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
+import mx.bigdata.sat.cfdi.v33.schema.TimbreFiscalDigital;
 import mx.bigdata.sat.security.KeyLoader;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMWriter;
-import views.core.soap.services.apps.AcuseRecepcionCFDI;
-import views.core.soap.services.apps.QueryPendingResult;
+import com.finkok.stamp.AcuseRecepcionCFDI;
+import com.finkok.stamp.QueryPendingResult;
+import com.finkok.stamp.StampSOAP;
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import java.util.GregorianCalendar;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import mx.bigdata.sat.security.KeyLoaderEnumeration;
+import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 
 /**
  *
@@ -88,7 +95,13 @@ public class FinkokPACServiceImpl implements IPACService {
             TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();
             
             Date fechaTimbre = dateFormat.parse( acuse.getFecha().getValue() );
-            timbre.setFechaTimbrado( fechaTimbre );
+            //Convierto fechaTimbre a XMLGregorianCalendar
+            {
+                GregorianCalendar gc = new GregorianCalendar();
+                gc.setTime(fechaTimbre);
+                XMLGregorianCalendar xmlFechaTimbre = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+                timbre.setFechaTimbrado( xmlFechaTimbre );
+            }
             timbre.setNoCertificadoSAT(acuse.getNoCertificadoSAT().getValue());
             timbre.setVersion("1.0");
             timbre.setUUID(acuse.getUUID().getValue());
@@ -97,7 +110,7 @@ public class FinkokPACServiceImpl implements IPACService {
 
             Complemento complemento = of.createComprobanteComplemento();
             complemento.getAny().add(timbre);
-            cfdi.getComprobante().setComplemento(complemento);
+            cfdi.getComprobante().getComplemento().add(complemento);
             
         } catch (ParseException ex) {
             throw new PACException( "ParseException en fecha de timbre del proveedor finkok", ex);
@@ -118,8 +131,8 @@ public class FinkokPACServiceImpl implements IPACService {
     private static final Logger LOG = Logger.getLogger(FinkokPACServiceImpl.class.getName());
 
     private static AcuseRecepcionCFDI stamp(byte[] xml, java.lang.String username, java.lang.String password) throws FinkokIncidenciasException {
-        com.finkok.facturacion.stamp.StampSOAP service = new com.finkok.facturacion.stamp.StampSOAP();
-        com.finkok.facturacion.stamp.Application port = service.getApplication();
+        StampSOAP service = new StampSOAP();
+        com.finkok.stamp.Application port = (com.finkok.stamp.Application) service.getApplication();
         AcuseRecepcionCFDI acuseCFDI = port.stamp(xml, username, password);
         
         if (acuseCFDI.getIncidencias() != null && acuseCFDI.getIncidencias().getValue().getIncidencia().size() > 0) {
@@ -136,7 +149,7 @@ public class FinkokPACServiceImpl implements IPACService {
             CancelSOAP cancelSOAP = new CancelSOAP();
             Application application = cancelSOAP.getApplication();
 
-            com.finkok.facturacion.cancel.ObjectFactory ob = new com.finkok.facturacion.cancel.ObjectFactory();
+            com.finkok.cancel.ObjectFactory ob = new com.finkok.cancel.ObjectFactory();
 
             UUIDS uuids = ob.createUUIDS(); 
             StringArray stringArray = ob.createStringArray();
@@ -154,9 +167,17 @@ public class FinkokPACServiceImpl implements IPACService {
             String passKey = config.getpassCer();
             URI URIKey = new URI("file:///"+config.getpathKey().replace("\\", "/"));
             URI URICer = new URI("file:///"+config.getpathCer().replace("\\", "/"));
-            PrivateKey key = KeyLoader.loadPKCS8PrivateKey(new FileInputStream(new File( URIKey )), passKey );
-            X509Certificate cert = KeyLoader
-              .loadX509Certificate(new FileInputStream(new File( URICer )));
+            
+            PrivateKey key = KeyLoaderFactory.createInstance(
+                KeyLoaderEnumeration.PRIVATE_KEY_LOADER,
+                new FileInputStream(new File( URIKey )),
+                passKey
+            ).getKey();
+            
+            X509Certificate cert = cert = KeyLoaderFactory.createInstance(
+                KeyLoaderEnumeration.PUBLIC_KEY_LOADER,
+                new FileInputStream(new File( URICer ))
+            ).getKey();            
 
             //Convertir certificado a PEM (incluye transformación a Base64) y a bytes
             StringWriter sw = new StringWriter();
@@ -222,8 +243,8 @@ public class FinkokPACServiceImpl implements IPACService {
     public IStatusTimbre getStatusTimbre(Factura comprobante) {
         Configuracion config = Configuracion.getConfig();
         
-        com.finkok.facturacion.stamp.StampSOAP service = new com.finkok.facturacion.stamp.StampSOAP();
-        com.finkok.facturacion.stamp.Application port = service.getApplication();
+        com.finkok.stamp.StampSOAP service = new com.finkok.stamp.StampSOAP();
+        com.finkok.stamp.Application port = service.getApplication();
         final QueryPendingResult result = port.queryPending(
                 config.getUsuarioPAC(), 
                 config.getPasswordPAC(),
@@ -274,7 +295,7 @@ public class FinkokPACServiceImpl implements IPACService {
         CancelSOAP cancelSOAP = new CancelSOAP();
         Application cancelApp = cancelSOAP.getApplication();
         
-        final com.finkok.facturacion.cancel.QueryPendingResult result = cancelApp.queryPendingCancellation(
+        final com.finkok.cancel.QueryPendingResult result = cancelApp.queryPendingCancellation(
                 config.getUsuarioPAC(), 
                 config.getPasswordPAC(),
                 comprobante.getFolioFiscal()

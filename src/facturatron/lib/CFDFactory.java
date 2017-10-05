@@ -16,12 +16,15 @@ import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
-import mx.bigdata.sat.security.KeyLoader;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;
 import java.net.URI;
-import mx.bigdata.sat.cfdi.CFDv32;
+import mx.bigdata.sat.cfdi.CFDv33;
+import mx.bigdata.sat.security.KeyLoader;
+import mx.bigdata.sat.security.KeyLoaderEnumeration;
+import mx.bigdata.sat.security.PrivateKeyLoader;
+import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 
 /**
  *
@@ -52,8 +55,8 @@ public class CFDFactory {
         cfdtron.setComprobante(comprobante);
         cfdtron.setXML(baos.toString());
         
-        cfdtron = timbrar(cfdtron);
-        CFDv32 cfdi = new CFDv32(cfdtron.getComprobante());
+        cfdtron = timbrar(cfdtron);        
+        CFDv33 cfdi = new CFDv33(cfdtron.getComprobante());
         baos.reset();
         ps.flush();
         if(sellar) {
@@ -73,12 +76,19 @@ public class CFDFactory {
         comprobante.setURIKey(new URI("file:///"+cfg.getpathKey().replace("\\", "/")));
         comprobante.setURICer(new URI("file:///"+cfg.getpathCer().replace("\\", "/")));
             
-        PrivateKey key = KeyLoader.loadPKCS8PrivateKey(new FileInputStream(new File(comprobante.getURIKey())),
-                comprobante.getPassKey());
-        X509Certificate cert = KeyLoader
-                .loadX509Certificate(new FileInputStream(new File(comprobante.getURICer())));
         
-        CFDv32 cfd = new CFDv32(comprobante);
+        PrivateKey key = KeyLoaderFactory.createInstance(
+                KeyLoaderEnumeration.PRIVATE_KEY_LOADER,
+                new FileInputStream(new File(comprobante.getURIKey())),
+                comprobante.getPassKey()
+        ).getKey();
+
+        X509Certificate cert = cert = KeyLoaderFactory.createInstance(
+                KeyLoaderEnumeration.PUBLIC_KEY_LOADER,
+                new FileInputStream(new File(comprobante.getURICer()))
+        ).getKey();
+        
+        CFDv33 cfd = new CFDv33(comprobante);
         Comprobante sellado;
         comprobante.getCadenaOriginal();
         

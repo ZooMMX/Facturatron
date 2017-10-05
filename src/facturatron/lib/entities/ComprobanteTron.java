@@ -7,12 +7,12 @@ package facturatron.lib.entities;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
 
 import facturatron.lib.NumeroConLetra;
 import java.text.DecimalFormat;
-import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
-import mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
+import mx.bigdata.sat.cfdi.v33.schema.TimbreFiscalDigital;
 
 /**
  *
@@ -36,28 +36,21 @@ public class ComprobanteTron extends Comprobante {
     public ComprobanteTron(Comprobante c) {
         super.setAddenda(c.getAddenda());
         super.setCertificado(c.getCertificado());
-        super.setComplemento(c.getComplemento());
         super.setConceptos(c.getConceptos());
         super.setCondicionesDePago(c.getCondicionesDePago());
         super.setDescuento(c.getDescuento());
         super.setEmisor(c.getEmisor());
         super.setFecha(c.getFecha());
-        super.setFechaFolioFiscalOrig(c.getFechaFolioFiscalOrig());
         super.setFolio(c.getFolio());
-        super.setFolioFiscalOrig(c.getFolioFiscalOrig());
-        super.setFormaDePago(c.getFormaDePago());
+        super.setFormaPago(c.getFormaPago());
         super.setImpuestos(c.getImpuestos());
         super.setLugarExpedicion(c.getLugarExpedicion());
-        super.setMetodoDePago(c.getMetodoDePago());
+        super.setMetodoPago(c.getMetodoPago());
         super.setMoneda(c.getMoneda());
-        super.setMontoFolioFiscalOrig(c.getMontoFolioFiscalOrig());
-        super.setMotivoDescuento(c.getMotivoDescuento());
         super.setNoCertificado(c.getNoCertificado());
-        super.setNumCtaPago(c.getNumCtaPago());
         super.setReceptor(c.getReceptor());
         super.setSello(c.getSello());
         super.setSerie(c.getSerie());
-        super.setSerieFolioFiscalOrig(c.getSerieFolioFiscalOrig());
         super.setSubTotal(c.getSubTotal());
         super.setTipoCambio(c.getTipoCambio());
         super.setTipoDeComprobante(c.getTipoDeComprobante());
@@ -241,7 +234,7 @@ public class ComprobanteTron extends Comprobante {
     }
 
     public TimbreFiscalDigital getTimbre() {
-        for (Object object : getComplemento().getAny()) {
+        for (Object object : getComplemento()) {
             if(object instanceof TimbreFiscalDigital) return (TimbreFiscalDigital) object;
         }
         return null;
@@ -251,12 +244,13 @@ public class ComprobanteTron extends Comprobante {
         return getTimbre().getUUID();
     }
     
-    public void addTimbreFiscalDigital(TimbreFiscalDigital timbre) {
+    public void addTimbreFiscalDigital(TimbreFiscalDigital timbre) {        
         ObjectFactory of = new ObjectFactory();
-        if( getComplemento() == null ) 
-            setComplemento(of.createComprobanteComplemento());
         
-        getComplemento().getAny().add(timbre);
+        Complemento timbreComplemento = of.createComprobanteComplemento();
+        timbreComplemento.getAny().add(timbre);
+        
+        getComplemento().add(timbreComplemento);
     }
     
     public String getQrstring() {

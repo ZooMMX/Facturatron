@@ -7,9 +7,9 @@ package facturatron.lib.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos.Concepto;
-import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Conceptos;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Conceptos.Concepto;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
 
 /**
  *

@@ -24,6 +24,7 @@ import facturatron.datasource.DatasourceException
 import facturatron.datasource.IDatasourceService
 import facturatron.datasource.RenglonTicket
 import facturatron.datasource.TicketGlobal
+import facturatron.omoikane.exceptions.TicketFacturadoException
 import facturatron.datasource.Ticket
 import groovy.sql.Sql;
 
@@ -90,7 +91,7 @@ public class ArtemisaDatasourceImpl implements IDatasourceService {
     }
     
     @Override
-    public Ticket getTicket(Object idObj) throws DatasourceException {
+    public Ticket getTicket(Object idObj) throws DatasourceException, TicketFacturadoException {
         TicketArtemisa ticket = new TicketArtemisa();
         try {
             conectar();
@@ -157,14 +158,14 @@ public class ArtemisaDatasourceImpl implements IDatasourceService {
         return getTicket(idInicial);
     }
     
-    @Override
+    
     public CorteZ getCorteZ(Date fecha) throws DatasourceException {
         throw new DatasourceException("Operación no implementada para Artemisa");
     }
     
     @Override
     public void setTicketFacturado(Object idTicket, Object idFactura) throws DatasourceException {
-        
+        throw new DatasourceException("Operación no implementada para Artemisa");
     }
 	
     @Override

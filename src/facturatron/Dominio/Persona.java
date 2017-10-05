@@ -7,12 +7,10 @@ package facturatron.Dominio;
 
 import facturatron.MVC.Model;
 import java.io.Serializable;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Emisor;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Emisor.RegimenFiscal;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Receptor;
-import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
-import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
-import mx.bigdata.sat.cfdi.v32.schema.TUbicacionFiscal;
+import mx.bigdata.sat.cfdi.v33.schema.CPais;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Emisor;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Receptor;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
 
 /**
  *
@@ -42,34 +40,35 @@ public class Persona extends Model implements Serializable {
         emisor.setNombre(getNombre());
         emisor.setRfc(getRfc());
 
-        TUbicacionFiscal uf = of.createTUbicacionFiscal();
-        uf.setCalle(getCalle());
-        uf.setCodigoPostal(getCodigoPostal());
-        uf.setColonia(getColonia());
-        uf.setEstado(getEstado());
-        uf.setReferencia("Vacío");
-        uf.setMunicipio(getMunicipio());
-        uf.setNoExterior(getNoExterior());
-        uf.setNoInterior(getNoInterior());
-        uf.setPais(getPais());
-        emisor.setDomicilioFiscal(uf);
+        //Deprecated. Se quitó en CFDI 3.3
+        //TUbicacionFiscal uf = of.createTUbicacionFiscal();
+        //uf.setCalle(getCalle());
+        //uf.setCodigoPostal(getCodigoPostal());
+        //uf.setColonia(getColonia());
+        //uf.setEstado(getEstado());
+        //uf.setReferencia("Vacío");
+        //uf.setMunicipio(getMunicipio());
+        //uf.setNoExterior(getNoExterior());
+        //uf.setNoInterior(getNoInterior());
+        //uf.setPais(getPais());
+        //emisor.setDomicilioFiscal(uf);
 
-        RegimenFiscal rf = new RegimenFiscal();
-        rf.setRegimen(getRegimen());
-        emisor.getRegimenFiscal().add(rf);
+        //RegimenFiscal rf = new RegimenFiscal();
+        //rf.setRegimen(getRegimen());
+        emisor.setRegimenFiscal(getRegimen());
 
-        if(sucursal != null) {
-            TUbicacion u = of.createTUbicacion();
-            u.setCalle(sucursal.getCalle());
-            u.setCodigoPostal(sucursal.getCodigoPostal());
-            u.setColonia(sucursal.getColonia());
-            u.setEstado(sucursal.getEstado());
-            u.setMunicipio(sucursal.getMunicipio());
-            u.setNoExterior(sucursal.getNoExterior());
-            u.setNoInterior(sucursal.getNoInterior());
-            u.setPais(sucursal.getPais());
-            emisor.setExpedidoEn(u);
-        }
+        //if(sucursal != null) {
+        //    TUbicacion u = of.createTUbicacion();
+        //    u.setCalle(sucursal.getCalle());
+        //    u.setCodigoPostal(sucursal.getCodigoPostal());
+        //    u.setColonia(sucursal.getColonia());
+        //    u.setEstado(sucursal.getEstado());
+        //    u.setMunicipio(sucursal.getMunicipio());
+        //    u.setNoExterior(sucursal.getNoExterior());
+        //    u.setNoInterior(sucursal.getNoInterior());
+        //    u.setPais(sucursal.getPais());
+        //    emisor.setExpedidoEn(u);
+        //}
         
         return emisor;
     }
@@ -79,18 +78,22 @@ public class Persona extends Model implements Serializable {
         Receptor receptor = of.createComprobanteReceptor();
         receptor.setNombre(getNombre());
         receptor.setRfc(getRfc());
-        TUbicacion uf = of.createTUbicacion();
-        uf.setCalle(getCalle());
-        uf.setCodigoPostal(getCodigoPostal());
-        uf.setColonia(getColonia());
-        uf.setEstado(getEstado());
-        uf.setReferencia("Vacío");
-        uf.setMunicipio(getMunicipio());
-        uf.setLocalidad(getLocalidad());
-        uf.setNoExterior(getNoExterior());
-        uf.setNoInterior(getNoInterior());
-        uf.setPais(getPais());
-        receptor.setDomicilio(uf);
+        receptor.setResidenciaFiscal(CPais.valueOf(getPais()));
+        //El campo usoCFDI se llenará al realizar la factura
+        //Campos que ya no se usan:
+        //TUbicacion uf = of.createTUbicacion();
+        //uf.setCalle(getCalle());
+        //uf.setCodigoPostal(getCodigoPostal());
+        //uf.setColonia(getColonia());
+        //uf.setEstado(getEstado());
+        //uf.setReferencia("Vacío");
+        //uf.setMunicipio(getMunicipio());
+        //uf.setLocalidad(getLocalidad());
+        //uf.setNoExterior(getNoExterior());
+        //uf.setNoInterior(getNoInterior());
+        //uf.setPais(getPais());
+        
+        //receptor.setDomicilio(uf);
 
         return receptor;
     }

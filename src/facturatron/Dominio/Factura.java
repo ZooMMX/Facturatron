@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.NotNull;
+import mx.bigdata.sat.cfdi.v33.schema.CMetodoPago;
+import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
 
 /**
  *
@@ -116,11 +118,9 @@ public class Factura extends Model implements Serializable {
     @NotNull
     private Integer anoAprobacion;
     @NotNull
-    private String formaDePago               = "UNA SOLA EXHIBICIÓN";
-    //@NotNull
-    //private String metodoDePago              = " ";
+    private String formaDePago               = "EFECTIVO";
     @NotNull
-    private String metodoDePago              = "EFECTIVO";
+    private CMetodoPago metodoDePago         = CMetodoPago.PUE;
     @NotNull
     private BigDecimal subtotal              = new BigDecimal("0.0");
     @NotNull
@@ -136,7 +136,7 @@ public class Factura extends Model implements Serializable {
     @NotNull
     private String ticketInfo            = "";
     @NotNull
-    private String tipoDeComprobante;
+    private CTipoDeComprobante tipoDeComprobante;
     @NotNull
     private Persona emisor               = new Persona();
     @NotNull
@@ -352,14 +352,14 @@ public class Factura extends Model implements Serializable {
     /**
      * @return the formaDePago
      */
-    public String getMetodoDePago() {
+    public CMetodoPago getMetodoDePago() {
         return metodoDePago;
     }
 
     /**
      * @param formaDePago the formaDePago to set
      */
-    public void setMetodoDePago(String metodoDePago) {
+    public void setMetodoDePago(CMetodoPago metodoDePago) {
         this.metodoDePago = metodoDePago;
     }
 
@@ -367,14 +367,14 @@ public class Factura extends Model implements Serializable {
     /**
      * @return the tipoDeComprobante
      */
-    public String getTipoDeComprobante() {
+    public CTipoDeComprobante getTipoDeComprobante() {
         return tipoDeComprobante;
     }
 
     /**
      * @param tipoDeComprobante the tipoDeComprobante to set
      */
-    public void setTipoDeComprobante(String tipoDeComprobante) {
+    public void setTipoDeComprobante(CTipoDeComprobante tipoDeComprobante) {
         this.tipoDeComprobante = tipoDeComprobante;
     }
 

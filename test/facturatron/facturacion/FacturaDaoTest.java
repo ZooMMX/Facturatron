@@ -16,7 +16,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

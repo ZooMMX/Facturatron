@@ -183,6 +183,11 @@ public class OpenTPVDatasourceImpl implements IDatasourceService {
     }
     
     @Override
+    public void setTicketFacturado(Object idTicket, Object idFactura) throws DatasourceException {
+        throw new DatasourceException("Operación no implementada para OpenTPV");
+    }
+    
+    @Override
     public TicketGlobal getTicketGlobal(Object desde, Object hasta) throws DatasourceException {
     
     }

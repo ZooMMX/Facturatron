@@ -26,11 +26,11 @@ import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mx.bigdata.sat.cfdi.CFDv32;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Complemento;
-import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
-import mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital;
+import mx.bigdata.sat.cfdi.CFDv33;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Complemento;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
+import mx.bigdata.sat.cfdi.v33.schema.TimbreFiscalDigital;
 import sun.misc.BASE64Decoder;
 
 /**
@@ -84,8 +84,8 @@ public class FacturaInteligentePACServiceImpl implements IPACService {
                 String xmlTimbradoString = respuesta.getString().get(3);                
                 
                 InputStream is = new ByteArrayInputStream( xmlTimbradoString.getBytes() );
-                Comprobante compTimbrado = CFDv32.newComprobante( is );
-                for (Object complemento : compTimbrado.getComplemento().getAny()) {
+                Comprobante compTimbrado = CFDv33.newComprobante( is );
+                for (Object complemento : compTimbrado.getComplemento()) {
                     if(complemento instanceof TimbreFiscalDigital) {
                         TimbreFiscalDigital timbre = (TimbreFiscalDigital) complemento;
                         return timbre;

@@ -16,4 +16,14 @@
       <property name="javax.persistence.jdbc.user" value=""/>
     </properties>
   </persistence-unit>
+  <persistence-unit name="samplePU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>facturatron.facturacion.Product</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/sample"/>
+      <property name="javax.persistence.jdbc.user" value="app"/>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+      <property name="javax.persistence.jdbc.password" value="app"/>
+    </properties>
+  </persistence-unit>
 </persistence>

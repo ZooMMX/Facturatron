@@ -29,8 +29,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
-import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
 
     /**
      * Adaptador de datos de formato ComprobanteTron a FacturaInteligente. Los atributos están previamente
@@ -79,25 +78,24 @@ import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
             
             ArrayOfString array  = new ArrayOfString();
             List<String> datos   = array.getString();
-            TUbicacion domicilio = receptor.getDomicilio();
-            String localidad     = domicilio.getLocalidad(); 
-            
+                        
             datos.add(0, receptor.getNombre());
             datos.add(1, "");
             datos.add(2, "");
             datos.add(3, "");
             datos.add(4, receptor.getRfc());
             datos.add(5, receptor.getNombre());
-            datos.add(6, domicilio.getCalle());
-            datos.add(7, domicilio.getNoExterior());
-            datos.add(8, domicilio.getNoInterior());
-            datos.add(9, domicilio.getColonia());
-            datos.add(10, localidad == null ? "" : localidad);
-            datos.add(11, domicilio.getReferencia());
-            datos.add(12, domicilio.getMunicipio());
-            datos.add(13, domicilio.getEstado());
-            datos.add(14, domicilio.getPais());
-            datos.add(15, domicilio.getCodigoPostal());
+            //Campos comentados ya no se usan en CFDI 3.3
+            //datos.add(6, domicilio.getCalle());
+            //datos.add(7, domicilio.getNoExterior());
+            //datos.add(8, domicilio.getNoInterior());
+            //datos.add(9, domicilio.getColonia());
+            //datos.add(10, localidad == null ? "" : localidad);
+            //datos.add(11, domicilio.getReferencia());
+            //datos.add(12, domicilio.getMunicipio());
+            //datos.add(13, domicilio.getEstado());
+            //datos.add(14, domicilio.getPais());
+            //datos.add(15, domicilio.getCodigoPostal());
             
             return array;
         }
@@ -143,23 +141,21 @@ import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
             BigDecimal totalImpTrasladados = comprobante.getImpuestos().getTotalImpuestosTrasladados();
             BigDecimal zero                = new BigDecimal(0);
             String     condicionesDePago   = comprobante.getCondicionesDePago();
-            String     motivoDescuento     = comprobante.getMotivoDescuento();
-            String     moneda              = comprobante.getMoneda();
-            String     tipoCambio          = comprobante.getTipoCambio();
-            String     numCtaPago          = comprobante.getNumCtaPago();
-            String     folioFiscalOrig     = comprobante.getFolioFiscalOrig();
-            String     serieFolioFiscalOrig= comprobante.getSerieFolioFiscalOrig();
-            Date       fechaFolioFiscalOrig= comprobante.getFechaFolioFiscalOrig();
-            BigDecimal montoFolioFiscalOrig= comprobante.getMontoFolioFiscalOrig();
+            String     moneda              = comprobante.getMoneda().toString();
+            String     tipoCambio          = comprobante.getTipoCambio().toString();
+            String     folioFiscalOrig     = comprobante.getFolioFiscal();
+            String     serieFolioFiscalOrig= comprobante.getSerie();
+            Date       fechaFolioFiscalOrig= comprobante.getFecha().toGregorianCalendar().getTime();
+            BigDecimal montoFolioFiscalOrig= comprobante.getTotal();
             
             datos.add(0,  claveCFDI);
-            datos.add(1,  comprobante.getFormaDePago());
+            datos.add(1,  comprobante.getFormaPago());
             datos.add(2,  "");
             datos.add(3,  condicionesDePago == null ? "" : condicionesDePago);
-            datos.add(4,  comprobante.getMetodoDePago());
+            datos.add(4,  comprobante.getMetodoPago().toString());
             datos.add(5,  df.format( comprobante.getDescuento() ));
             datos.add(6,  "0");
-            datos.add(7,  motivoDescuento == null ? ""    : motivoDescuento);
+            //7, Motivos descuento ya no se usa
             datos.add(8,  moneda          == null ? "MXN" : moneda );
             datos.add(9,  tipoCambio      == null ? ""    : tipoCambio);
             datos.add(10, "");
@@ -169,7 +165,7 @@ import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
             datos.add(14, df.format( comprobante.getTotal() ));
             datos.add(15, comprobante.getImporteConLetra());
             datos.add(16, comprobante.getLugarExpedicion());
-            datos.add(17, numCtaPago           == null ? "" : numCtaPago);
+            //17, numCtaPago ya no se usa
             datos.add(18, folioFiscalOrig      == null ? "" : folioFiscalOrig);
             datos.add(19, serieFolioFiscalOrig == null ? "" : serieFolioFiscalOrig);
             datos.add(20, fechaFolioFiscalOrig == null ? "" : sdf.format( fechaFolioFiscalOrig ));
@@ -281,7 +277,7 @@ import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
                 final String[] cadena = {
                     traslado.getImpuesto(),
                     traslado.getImpuesto(),
-                    df.format( traslado.getTasa() ),
+                    df.format( traslado.getTasaOCuota()),
                     df.format( traslado.getImporte() )
                 };
                 datos.add( "|" + Joiner.on("|").join(cadena) + "|" );

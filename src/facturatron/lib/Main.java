@@ -5,6 +5,7 @@
 
 package facturatron.lib;
 
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import facturatron.Dominio.Renglon;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;
@@ -17,20 +18,26 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos.Concepto;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Emisor;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos.Traslados;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos.Traslados.Traslado;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Receptor;
-import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
-import mx.bigdata.sat.cfdi.v32.schema.TUbicacion;
-import mx.bigdata.sat.cfdi.v32.schema.TUbicacionFiscal;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Conceptos;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Conceptos.Concepto;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Emisor;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos.Traslados;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos.Traslados.Traslado;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Receptor;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
-import mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital;
+import java.util.GregorianCalendar;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import mx.bigdata.sat.cfdi.v33.schema.CMetodoPago;
+import mx.bigdata.sat.cfdi.v33.schema.CPais;
+import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
+import mx.bigdata.sat.cfdi.v33.schema.CUsoCFDI;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v33.schema.TimbreFiscalDigital;
 
 /**
  *
@@ -116,39 +123,38 @@ public class Main {
         
         ObjectFactory of = new ObjectFactory();
         TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             
-        timbre.setFechaTimbrado( dateFormat.parse("2012-01-02T20:20:00") );
+        timbre.setFechaTimbrado( DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar(2012,1,2,20,20,0)));
         timbre.setNoCertificadoSAT( "30001000000100000801" );
         timbre.setVersion("1.0");
-        timbre.setUUID( "ad662d33-6934-459c-a128-bdf0393e0f44" );
+        timbre.setUUID( "ad662d33-6934-459c-a128-bdf0393ef44" );
         timbre.setSelloSAT( "j5bSpqM3w0+shGtlmqOwqqy6+d659O78ckfstu5vTSFa+2CVMj6Awfr18x4yMLGBwk6ruYbjBIVURodEII6nJIhTTUtYQV1cbRDG9kvvhaNAakx qaSOnOnOx79nHxqFPRVoqh10CsjocS9PZkSM2jz1uwLgaF0knf1g8pjDkLYwlk=" );
         timbre.setSelloCFD( "tOSe+Ex/wvn33YIGwtfmrJwQ31Crd7II9VcH63TGjHfxk5cfb3q9uSbDUGk9TXvo70ydOpikRVw+9B2Six0mbu3PjoPpO909oAYITrRyomdeUGJ 4vmA2/12L86EJLWpU7vlt4cL8HpkEw7TOFhSdpzb/890+jP+C1adBsHU1VHc=" );
 
         Comprobante.Complemento complemento = of.createComprobanteComplemento();
         complemento.getAny().add(timbre);
-        comps[0].setComplemento(complemento);
+        comps[0].getComplemento().add(complemento);
         return comps;
     }
-    private static facturatron.lib.entities.ComprobanteTron createComprobante() {
+    private static facturatron.lib.entities.ComprobanteTron createComprobante() throws DatatypeConfigurationException {
         ObjectFactory of = new ObjectFactory();
         facturatron.lib.entities.ComprobanteTron comp = new facturatron.lib.entities.ComprobanteTron();
-        comp.setVersion("3.2");
-        comp.setFecha(new Date());
+        comp.setVersion("3.3");
+        comp.setFecha(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
         comp.setSerie("A");
         comp.setFolio("2");
-        comp.setFormaDePago("UNA SOLA EXHIBICION");
+        comp.setFormaPago("UNA SOLA EXHIBICION");
         comp.setSubTotal(new BigDecimal("2000.00"));
         comp.setTotal(new BigDecimal("2320.00"));
         comp.setDescuento(new BigDecimal("0.00"));
-        comp.setTipoDeComprobante("ingreso");
+        comp.setTipoDeComprobante(CTipoDeComprobante.I);
         comp.setEmisor(createEmisor(of));
         comp.setReceptor(createReceptor(of));
         comp.setConceptos(createConceptos(of).toConceptos());        
         comp.setConceptosTron(createConceptos(of));
         
         comp.setImpuestos(createImpuestos(of));
-        comp.setMetodoDePago("EFECTIVO");
+        comp.setMetodoPago(CMetodoPago.PUE); //Pago en una sola exhibición
         comp.setLugarExpedicion("Tlatlauquitepec, Puebla");
         comp.setCertificado(null);
 
@@ -158,29 +164,8 @@ public class Main {
         Emisor emisor = of.createComprobanteEmisor();
         emisor.setNombre("ASOCIACION DE AGRICULTORES DEL DISTRITO DE RIEGO 004 DON MARTIN COAHUILA Y NUEVO LEON AC");
         emisor.setRfc("AAD990814BP7");
-        TUbicacionFiscal uf = of.createTUbicacionFiscal();
-        uf.setCalle("Av. Hidalgo");
-        uf.setCodigoPostal("06300");
-        uf.setColonia("Guerrero");
-        uf.setEstado("Distrito Federal");
-        uf.setReferencia("En el centro de la ciudad de M\u00E9xico");
-        uf.setMunicipio("Cuauhtemoc");
-        uf.setNoExterior("77");
-        uf.setPais("Mexico");
         
-        emisor.setDomicilioFiscal(uf);
-        TUbicacion u = of.createTUbicacion();
-        u.setCalle("AV. UNIVERSIDAD");
-        u.setCodigoPostal("03910");
-        u.setColonia("OXTOPULCO");
-        u.setEstado("DISTRITO FEDERAL");
-        u.setNoExterior("1858");
-        u.setPais("Mexico");
-        emisor.setExpedidoEn(u); 
-        
-        Emisor.RegimenFiscal rf = new Emisor.RegimenFiscal();
-        rf.setRegimen("Persona física con actividad empresarial");
-        emisor.getRegimenFiscal().add(rf);
+        emisor.setRegimenFiscal("Persona física con actividad empresarial");
         return emisor;
     }
 
@@ -188,16 +173,9 @@ public class Main {
         Receptor receptor = of.createComprobanteReceptor();
         receptor.setNombre("JUAN PEREZ PEREZ");
         receptor.setRfc("PEPJ8001019Q8");
-        TUbicacion uf = of.createTUbicacion();
-        uf.setCalle("AV UNIVERSIDAD");
-        uf.setCodigoPostal("04360");
-        uf.setColonia("COPILCO UNIVERSIDAD");
-        uf.setEstado("DISTRITO FEDERAL");
-        uf.setMunicipio("COYOACAN");
-        uf.setNoExterior("16 EDF 3");
-        uf.setNoInterior("DPTO 101");
-        uf.setPais("Mexico");
-        receptor.setDomicilio(uf);
+        
+        receptor.setUsoCFDI(CUsoCFDI.G_01);
+        receptor.setResidenciaFiscal(CPais.MEX);
         return receptor;
     }
     
@@ -242,18 +220,18 @@ public class Main {
         List<Traslado> list = trs.getTraslado();
         Traslado t1 = of.createComprobanteImpuestosTrasladosTraslado();
         t1.setImporte(new BigDecimal("20.00"));
-        t1.setImpuesto("IVA");
-        t1.setTasa(new BigDecimal("16.00"));
+        t1.setImpuesto("002"); //002 = IVA
+        t1.setTasaOCuota(new BigDecimal("16.00"));
         list.add(t1);
         Traslado t2 = of.createComprobanteImpuestosTrasladosTraslado();
         t2.setImporte(new BigDecimal("22.07"));
-        t2.setImpuesto("IEPS");
-        t2.setTasa(new BigDecimal("25.00"));
+        t2.setImpuesto("003"); //003 = IEPS
+        t2.setTasaOCuota(new BigDecimal("25.00"));
         list.add(t2);
         Traslado t3 = of.createComprobanteImpuestosTrasladosTraslado();
         t3.setImporte(new BigDecimal("4.00"));
-        t3.setImpuesto("IEPS");
-        t3.setTasa(new BigDecimal("8.00"));
+        t3.setImpuesto("003"); //003 = IEPS
+        t3.setTasaOCuota(new BigDecimal("8.00"));
         list.add(t3);
         imps.setTraslados(trs);
         imps.setTotalImpuestosTrasladados(new BigDecimal("46.07"));

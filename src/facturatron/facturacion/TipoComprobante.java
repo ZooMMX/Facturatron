@@ -18,6 +18,8 @@
 
 package facturatron.facturacion;
 
+import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
+
 /**
  *
  * @author octavioruizcastillo
@@ -32,20 +34,16 @@ public enum TipoComprobante {
     TipoComprobante(String d, EfectoComprobante e) {
         efecto = e;
         descripcion = d;
-    }
+    }      
     
-    public EfectoComprobante getEfectoComprobante() {
-        return efecto;
-    }
-    
-    public String getEfectoString() throws Exception {
+    public CTipoDeComprobante getEfectoComprobante() throws Exception {
         switch(efecto) {
             case INGRESO:
-                return "ingreso";
+                return CTipoDeComprobante.I;
             case EGRESO:
-                return "egreso";
+                return CTipoDeComprobante.E;
             case TRASLADO:
-                return "traslado";
+                return CTipoDeComprobante.T;
             default:
                 throw new Exception("Tipo de comprobante inválido");
         }

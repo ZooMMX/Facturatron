@@ -6,6 +6,7 @@
 package facturatron.facturacion;
 
 import com.alee.laf.label.WebLabel;
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import facturatron.Dominio.Configuracion;
 import static facturatron.Dominio.Configuracion.getConfig;
 import facturatron.Dominio.Factura;
@@ -66,10 +67,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.xml.datatype.XMLGregorianCalendar;
+import mx.bigdata.sat.cfdi.v33.schema.CMetodoPago;
+import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
 
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
-import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
-import mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
+import mx.bigdata.sat.cfdi.v33.schema.TimbreFiscalDigital;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -337,12 +341,15 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setFecha(time.getTime());
         getModel().setHora(new Time(time.getTime().getTime()));
         getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
-        getModel().setMetodoDePago(getView().getTxtMetodoPago().getText());
+        getModel().setMetodoDePago(CMetodoPago.fromValue( getView().getTxtMetodoPago().getText()) );
         getModel().setIvaTrasladado(new BigDecimal(getView().getTxtIva().getText().replaceAll(",", "")));
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
-        getModel().setTipoDeComprobante(getView().getTipoComprobante().getEfectoString());
-        getModel().setVersion("3.2");
+        
+        //Tomo la primera letra para hacerlo retrocompatible, antes se usaba "INGRESO" ahora "I", "EGRESO" ahora "E", etc.
+        CTipoDeComprobante tipo = getView().getTipoComprobante().getEfectoComprobante(); 
+        getModel().setTipoDeComprobante(tipo);
+        getModel().setVersion("3.3");
 
         getView().getBtnGuardar().setEnabled(false);
         getModel().persist();
@@ -412,18 +419,19 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setFecha(time.getTime());
         getModel().setHora(new Time(time.getTime().getTime()));
         getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
-        getModel().setMetodoDePago(getView().getTxtMetodoPago().getText());
+        getModel().setMetodoDePago(CMetodoPago.fromValue( getView().getTxtMetodoPago().getText() ));
         getModel().setIvaTrasladado(new BigDecimal(getView().getTxtIva().getText().replaceAll(",", "")));
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
-        getModel().setTipoDeComprobante(getView().getTipoComprobante().getEfectoString());
-        getModel().setVersion("3.2");  
+        
+        CTipoDeComprobante tipo = getView().getTipoComprobante().getEfectoComprobante(); 
+        getModel().setTipoDeComprobante(tipo);
+        getModel().setVersion("3.3");  
           
         ObjectFactory of = new ObjectFactory();
-        TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            
-        timbre.setFechaTimbrado( dateFormat.parse("2000-01-01T00:00:00") );
+        TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();       
+        
+        timbre.setFechaTimbrado( XMLGregorianCalendarImpl.createDateTime(200, 1, 1, 0, 0, 0) );
         timbre.setNoCertificadoSAT( "30001000000100000801" );
         timbre.setVersion("1.0");
         timbre.setUUID( "ad662d33-6934-459c-a128-bdf0393e0f44" );
@@ -438,7 +446,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         CFDv3Tron cfd = new CFDv3Tron();
         cfd.setComprobante(ct);  
         
-        ct.setComplemento(complemento);
+        ct.getComplemento().add(complemento);
 
         String serie = cfd.getComprobante().getSerie();
         String folio = cfd.getComprobante().getFolio();
@@ -468,7 +476,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             @Override
             public void focusLost(FocusEvent e) {
                 if(!getView().getTxtMetodoPago().getText().equals(""))
-                    getModel().setMetodoDePago(getView().getTxtMetodoPago().getText());
+                    getModel().setMetodoDePago(CMetodoPago.fromValue( getView().getTxtMetodoPago().getText()) );
             }
         });
         getView().getTxtFormaDePago().addFocusListener(new FocusAdapter() {

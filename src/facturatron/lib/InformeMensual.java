@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.EnumMap;
 import java.util.Iterator;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Emisor;
+import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Emisor;
 
 /**
  * Clase encargada de la generación del reporte mensual de acuerdo al anexo 20.
@@ -141,11 +142,11 @@ public class InformeMensual {
         String edoComprobante = String.format("%s", comp.isEstadoComprobante() ? "1" : "0");
         String tipoComprobante = "";
 
-        if (comp.getTipoDeComprobante().toUpperCase().equals("INGRESO")) {
+        if (comp.getTipoDeComprobante() == CTipoDeComprobante.I) {
             tipoComprobante = "I";
-        } else if (comp.getTipoDeComprobante().toUpperCase().equals("EGRESO")) {
+        } else if (comp.getTipoDeComprobante() == CTipoDeComprobante.E) {
             tipoComprobante = "E";
-        } else if (comp.getTipoDeComprobante().toUpperCase().equals("TRASLADO")) {
+        } else if (comp.getTipoDeComprobante() == CTipoDeComprobante.T) {
             tipoComprobante = "T";
         } else {
             throw new Exception("Tipo de comprobante desconocido");
@@ -155,7 +156,7 @@ public class InformeMensual {
         String fechaHora = formatter.format(comp.getFecha());
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(comp.getFecha());
+        calendar.setTime(comp.getFecha().toGregorianCalendar().getTime());
         //Utilizo String.format en lugar de conversión o casting porqué en éste tipo de reportes suele necesitarse
         //  modificar el formato de algunos campos o llenarlos de ceros, etc.
         String serie = comp.getSerie();

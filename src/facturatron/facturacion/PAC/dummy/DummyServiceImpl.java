@@ -18,6 +18,7 @@
 
 package facturatron.facturacion.PAC.dummy;
 
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import facturatron.Dominio.Factura;
 import facturatron.facturacion.DefaultDistribucionHandler;
 import facturatron.facturacion.IDistribucionHandler;
@@ -28,10 +29,13 @@ import facturatron.lib.entities.CFDv3Tron;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
-import mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
+import mx.bigdata.sat.cfdi.v33.schema.TimbreFiscalDigital;
 
 /**
  *
@@ -45,9 +49,13 @@ public class DummyServiceImpl implements IPACService {
         ObjectFactory of = new ObjectFactory();
         TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        try {
-            timbre.setFechaTimbrado( dateFormat.parse("2012-01-02T20:20:00") );
+        try { 
+            GregorianCalendar gc = new GregorianCalendar();
+            gc.setTime( dateFormat.parse("2012-01-02T20:20:00") );
+            timbre.setFechaTimbrado( DatatypeFactory.newInstance().newXMLGregorianCalendar(gc) );
         } catch (ParseException ex) {
+            Logger.getLogger(DummyServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DatatypeConfigurationException ex) {
             Logger.getLogger(DummyServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         timbre.setNoCertificadoSAT( "30001000000100000801" );

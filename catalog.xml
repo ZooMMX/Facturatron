@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="https://www.appfacturainteligente.com/ConexionRemotaCFDI32/ConexionRemota32.asmx?WSDL" uri="xml-resources/web-service-references/ConexionRemota32/wsdl/www.appfacturainteligente.com/ConexionRemotaCFDI32/ConexionRemota32.asmx.wsdl"/>
+    <system systemId="file:/Users/octavioruizcastillo/Library/Application%20Support/NetBeans/8.2/config/WebServices/cancel-wsdl/catalog/cancel.wsdl" uri="xml-resources/web-service-references/cancel/wsdl/cancel.wsdl"/>
+    <system systemId="file:/Users/octavioruizcastillo/Library/Application%20Support/NetBeans/8.2/config/WebServices/stamp-wsdl/catalog/stamp.wsdl" uri="xml-resources/web-service-references/stamp/wsdl/stamp.wsdl"/>
+    <system systemId="file:/Users/octavioruizcastillo/Library/Application%20Support/NetBeans/8.2/config/WebServices/ConexionRemota32-asmx-wsdl/catalog/ConexionRemota32.asmx.wsdl" uri="xml-resources/web-service-references/ConexionRemota32.asmx/wsdl/ConexionRemota32.asmx.wsdl"/>
     <system systemId="http://demo-facturacion.finkok.com/servicios/soap/stamp.wsdl" uri="xml-resources/web-service-references/stamp/wsdl/demo-facturacion.finkok.com/servicios/soap/stamp.wsdl"/>
     <system systemId="http://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl" uri="xml-resources/web-service-references/cancel/wsdl/demo-facturacion.finkok.com/servicios/soap/cancel.wsdl"/>
-    <system systemId="https://www.appfacturainteligente.com/ConexionRemotaCFDI32/ConexionRemota32.asmx?WSDL" uri="xml-resources/web-service-references/ConexionRemota32/wsdl/www.appfacturainteligente.com/ConexionRemotaCFDI32/ConexionRemota32.asmx.wsdl"/>
 </catalog>

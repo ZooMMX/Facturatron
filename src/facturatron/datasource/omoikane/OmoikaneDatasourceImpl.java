@@ -21,6 +21,7 @@
 
 
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+import facturatron.datasource.CorteZ;
 import facturatron.datasource.DatasourceException;
 import facturatron.datasource.IDatasourceService;
 import facturatron.datasource.RenglonTicket;
@@ -168,6 +169,16 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
         } catch (Exception ex) {
             throw new DatasourceException("Hubo un problema al rehabilitar tickets contenidos en la factura", ex);
         }
+    }
+
+    @Override
+    public void setTicketFacturado(Object idTicket, Object idFactura) throws DatasourceException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public CorteZ getCorteZ(Date fecha) throws DatasourceException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     

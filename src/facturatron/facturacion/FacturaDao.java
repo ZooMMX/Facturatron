@@ -6,6 +6,7 @@
 package facturatron.facturacion;
 
 
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Persona;
@@ -43,6 +44,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,12 +58,16 @@ import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.xml.bind.MarshalException;
-import mx.bigdata.sat.cfdi.CFDv32;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos.Traslados;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Impuestos.Traslados.Traslado;
-import mx.bigdata.sat.cfdi.v32.schema.ObjectFactory;
+import javax.xml.datatype.DatatypeFactory;
+import mx.bigdata.sat.cfdi.CFDv33;
+import mx.bigdata.sat.cfdi.v33.schema.CMetodoPago;
+import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
+import mx.bigdata.sat.cfdi.v33.schema.CTipoFactor;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos.Traslados;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos.Traslados.Traslado;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
 import org.codehaus.groovy.tools.shell.ParseCode;
 
 /**
@@ -176,12 +182,14 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         dCal.set(Calendar.SECOND, tCal.get(Calendar.SECOND));
         dCal.set(Calendar.MILLISECOND, tCal.get(Calendar.MILLISECOND));       
        
-        comp.setFecha(dCal.getTime());
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(dCal.getTime());        
+        comp.setFecha(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
         //LOGGER.info("Fecha y Hora del comprobante "  + dCal.getTime().toString());
         comp.setSerie(getSerie());
         comp.setFolio(String.valueOf(getFolio()));
-        comp.setFormaDePago(getFormaDePago());
-        comp.setMetodoDePago(getMetodoDePago());
+        comp.setFormaPago(getFormaDePago());
+        comp.setMetodoPago(getMetodoDePago());
         comp.setLugarExpedicion(getEmisor().getMunicipio()+", "+getEmisor().getEstado());
         comp.setSubTotal(getSubtotal().setScale(2,RoundingMode.HALF_EVEN));
         comp.setTotal(getTotal().setScale(2,RoundingMode.HALF_EVEN));
@@ -231,11 +239,13 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         //  de dos dígitos
         t1.setImporte(getIvaTrasladado().setScale(6, RoundingMode.HALF_EVEN));
         t1.setImpuesto("IVA");
-        t1.setTasa(new BigDecimal("16.00").setScale(6, RoundingMode.HALF_EVEN));
+        t1.setTipoFactor(CTipoFactor.TASA);
+        t1.setTasaOCuota(new BigDecimal("16.00").setScale(6, RoundingMode.HALF_EVEN));
         list.add(t1);
         t2.setImporte(new BigDecimal(0d).setScale(6, RoundingMode.HALF_EVEN));
         t2.setImpuesto("IVA");
-        t2.setTasa(new BigDecimal("0.00").setScale(6, RoundingMode.HALF_EVEN));        
+        t2.setTipoFactor(CTipoFactor.TASA);
+        t2.setTasaOCuota(new BigDecimal("0.00").setScale(6, RoundingMode.HALF_EVEN));        
         list.add(t2);
         list.addAll(getIEPSDesglosado());
         
@@ -266,7 +276,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
              Traslado t = of.createComprobanteImpuestosTrasladosTraslado();
              t.setImpuesto("IEPS");
              t.setImporte(ieps.getValue().setScale(6,RoundingMode.HALF_EVEN));
-             t.setTasa(ieps.getKey().setScale(6,RoundingMode.HALF_EVEN));
+             t.setTasaOCuota(ieps.getKey().setScale(6,RoundingMode.HALF_EVEN));
+             t.setTipoFactor(CTipoFactor.TASA);
              traslados.add(t);
          }
          return traslados;
@@ -321,7 +332,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
      }
      
      @Override
-     public void setMetodoDePago(String metodoDePago) {
+     public void setMetodoDePago(CMetodoPago metodoDePago) {
         super.setMetodoDePago(metodoDePago);
         setChanged();
         notifyObservers();
@@ -371,7 +382,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setTotal(rs.getBigDecimal("total"));
                 bean.setDescuentoTasa0(rs.getBigDecimal("descuentoTasa0"));
                 bean.setDescuentoTasa16(rs.getBigDecimal("descuentoTasa16"));
-                bean.setTipoDeComprobante(rs.getString("tipoDeComprobante"));
+                //Tomo la primera letra para hacerlo retrocompatible, antes se usaba "INGRESO" ahora "I", "EGRESO" ahora "E", etc.
+                CTipoDeComprobante tipo = CTipoDeComprobante.fromValue(rs.getString("tipoDeComprobante").substring(0,1)); 
+                bean.setTipoDeComprobante(tipo);
                 bean.setEmisor((new ClienteDao()).findBy(rs.getInt("idemisor")));
                 bean.setReceptor((new ClienteDao()).findBy(rs.getInt("idReceptor")));
                 bean.setIvaTrasladado(rs.getBigDecimal("ivaTrasladado"));
@@ -445,7 +458,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setBigDecimal(9, getTotal());
             ps.setBigDecimal(10, getDescuentoTasa0());
             ps.setBigDecimal(11, getDescuentoTasa16());
-            ps.setString(12, getTipoDeComprobante());
+            ps.setString(12, getTipoDeComprobante().value());
             ps.setInt(13, getEmisor().getId());
             ps.setInt(14, getReceptor().getId());
             ps.setBigDecimal(15, getIvaTrasladado());
@@ -555,7 +568,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setTotal(rs.getBigDecimal("total"));
             dao.setDescuentoTasa0(rs.getBigDecimal("descuentoTasa0"));
             dao.setDescuentoTasa16(rs.getBigDecimal("descuentoTasa16"));
-            dao.setTipoDeComprobante(rs.getString("tipoDeComprobante"));
+            //Tomo la primera letra para hacerlo retrocompatible, antes se usaba "INGRESO" ahora "I", "EGRESO" ahora "E", etc.
+            CTipoDeComprobante tipo = CTipoDeComprobante.fromValue(rs.getString("tipoDeComprobante").substring(0,1)); 
+            dao.setTipoDeComprobante(tipo);
             dao.setEmisor((new ClienteDao()).findBy(rs.getInt("idemisor")));
             dao.setReceptor((new ClienteDao()).findBy(rs.getInt("idReceptor")));
             dao.setIvaTrasladado(rs.getBigDecimal("ivaTrasladado"));

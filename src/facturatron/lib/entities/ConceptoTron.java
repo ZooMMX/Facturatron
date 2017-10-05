@@ -6,7 +6,7 @@
 package facturatron.lib.entities;
 
 import java.math.BigDecimal;
-import mx.bigdata.sat.cfdi.v32.schema.Comprobante.Conceptos.Concepto;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Conceptos.Concepto;
 
 
 
