@@ -10,10 +10,13 @@ import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl
 import facturatron.Dominio.Configuracion;
 import static facturatron.Dominio.Configuracion.getConfig;
 import facturatron.Dominio.Factura;
+import facturatron.Dominio.FormaDePago;
 import facturatron.Dominio.Medida;
+import facturatron.Dominio.MetodoDePagoEnum;
 import facturatron.Dominio.Persona;
 import facturatron.Dominio.Producto;
 import facturatron.Dominio.Renglon;
+import facturatron.Dominio.UsoCFDIEnum;
 import java.awt.event.ActionEvent;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -131,19 +134,6 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       return dao;
   }
 
-  public void txtDescuentoChanged() {
-      String txtDesc0  = getView().getTxtDescuentoTasa0().getText();
-      String txtDesc16 = getView().getTxtDescuentoTasa16().getText();
-            
-      try {
-          getModel().setDescuentoTasa0 (new BigDecimal(txtDesc0 .replaceAll(",", "")));
-          getModel().setDescuentoTasa16(new BigDecimal(txtDesc16.replaceAll(",", "")));
-      } catch(NumberFormatException nfe) {
-          txtDesc0  = "0";
-          txtDesc16 = "0";
-      }
-      renglonesActualizados();
-  }
   public void cargarCliente() {
       try {
           int id = Integer.valueOf(getView().getTxtIdCliente().getText());
@@ -170,43 +160,27 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       BigDecimal iva         = new BigDecimal("0.00", mc);
       BigDecimal ieps        = new BigDecimal("0.00", mc);
       BigDecimal total       = new BigDecimal("0.00", mc);
-      BigDecimal descuento0  = new BigDecimal("0.00", mc);
-      BigDecimal descuento16 = new BigDecimal("16.00", mc);
-      BigDecimal importe0    = new BigDecimal("0.00", mc);
-      BigDecimal importe16   = new BigDecimal("0.00", mc);
+      BigDecimal descuento   = new BigDecimal("0.00", mc);
 
       subtotal   .setScale(2);
       iva        .setScale(2);
       ieps       .setScale(2);
       total      .setScale(2);
-      descuento0 .setScale(2);
-      descuento16.setScale(2);
-      importe0   .setScale(2);
-      importe16  .setScale(2);
+      descuento  .setScale(2);
 
       for (Renglon renglon : getModel().getRenglones()) {
-          if(renglon.getTasa0()) {
-              importe0 = importe0.add(renglon.getImporte());
-          } else {
-              importe16 = importe16.add(renglon.getImporte());
-          }
+          descuento= descuento.add ( renglon.getDescuento() );
+          iva      = iva.add( renglon.getIVA() );
           ieps     = ieps.add( renglon.getIEPS() );
-          subtotal = subtotal.add(renglon.getImporte());
+          subtotal = subtotal.add(renglon.getSubtotal());
       }
 
-      descuento0 = getModel().getDescuentoTasa0();
-      descuento16= getModel().getDescuentoTasa16();
-
-      if(descuento0  .compareTo(importe0)  < 0) { importe0  = importe0 .subtract(descuento0 ); }
-      if(descuento16 .compareTo(importe16) < 0) { importe16 = importe16.subtract(descuento16); }
-
-      iva        = importe16.multiply(new BigDecimal("0.16"), mc);
-      total      = importe0.add(importe16, mc).add(iva, mc);
-      total      = total.add( ieps , mc );
+      total      = total.add( ieps , mc ).add( iva, mc ).add( subtotal, mc ).subtract( descuento, mc );
       
       getModel().setSubtotal(subtotal);
       getModel().setIvaTrasladado(iva);
       getModel().setIEPSTrasladado(ieps);
+      getModel().setDescuento(descuento);
       getModel().setTotal(total);
 
 
@@ -246,13 +220,13 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   
   public Boolean validarForm() {
       //Validar Forma de pago
-      if( getView().getTxtFormaDePago().getText().isEmpty() ) { 
+      if( getView().getjComboBoxFormaPago().getSelectedItem() == null ) { 
           JOptionPane.showMessageDialog(getView(), "El campo forma de pago no puede estar vacío");
           return false;
       }
       
       //Validar Metodo de pago
-      if( getView().getTxtMetodoPago().getText().isEmpty() ) { 
+      if( getView().getComboMetodoDePago() == null) { 
           JOptionPane.showMessageDialog(getView(), "El campo método de pago no puede estar vacío");
           return false;
       }
@@ -340,11 +314,12 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setEmisorSucursal((new ClienteDao()).findBy(2));
         getModel().setFecha(time.getTime());
         getModel().setHora(new Time(time.getTime().getTime()));
-        getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
-        getModel().setMetodoDePago(CMetodoPago.fromValue( getView().getTxtMetodoPago().getText()) );
+        getModel().setFormaDePago((FormaDePago) getView().getjComboBoxFormaPago().getSelectedItem());
+        getModel().setMetodoDePago((MetodoDePagoEnum) getView().getComboMetodoDePago().getSelectedItem());
         getModel().setIvaTrasladado(new BigDecimal(getView().getTxtIva().getText().replaceAll(",", "")));
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
+        getModel().getReceptor().setUsoCFDI((UsoCFDIEnum) getView().getComboUsoCFDI().getSelectedItem());
         
         //Tomo la primera letra para hacerlo retrocompatible, antes se usaba "INGRESO" ahora "I", "EGRESO" ahora "E", etc.
         CTipoDeComprobante tipo = getView().getTipoComprobante().getEfectoComprobante(); 
@@ -418,11 +393,13 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setEmisorSucursal((new ClienteDao()).findBy(2));
         getModel().setFecha(time.getTime());
         getModel().setHora(new Time(time.getTime().getTime()));
-        getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
-        getModel().setMetodoDePago(CMetodoPago.fromValue( getView().getTxtMetodoPago().getText() ));
+        getModel().setFormaDePago((FormaDePago) getView().getjComboBoxFormaPago().getSelectedItem());
+        getModel().setMetodoDePago((MetodoDePagoEnum) getView().getComboMetodoDePago().getSelectedItem());
         getModel().setIvaTrasladado(new BigDecimal(getView().getTxtIva().getText().replaceAll(",", "")));
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
+        //El USO del CFDI se guarda a nivel de comprobante y luego se aplica al receptor        
+        getModel().getReceptor().setUsoCFDI( UsoCFDIEnum.D_03 );
         
         CTipoDeComprobante tipo = getView().getTipoComprobante().getEfectoComprobante(); 
         getModel().setTipoDeComprobante(tipo);
@@ -431,9 +408,9 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         ObjectFactory of = new ObjectFactory();
         TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();       
         
-        timbre.setFechaTimbrado( XMLGregorianCalendarImpl.createDateTime(200, 1, 1, 0, 0, 0) );
+        timbre.setFechaTimbrado( XMLGregorianCalendarImpl.createDateTime(2000, 1, 1, 0, 0, 0) );
         timbre.setNoCertificadoSAT( "30001000000100000801" );
-        timbre.setVersion("1.0");
+        timbre.setVersion("1.1");
         timbre.setUUID( "ad662d33-6934-459c-a128-bdf0393e0f44" );
         timbre.setSelloSAT( "j5bSpqM3w0+shGtlmqOwqqy6+d659O78ckfstu5vTSFa+2CVMj6Awfr18x4yMLGBwk6ruYbjBIVURodEII6nJIhTTUtYQV1cbRDG9kvvhaNAakx qaSOnOnOx79nHxqFPRVoqh10CsjocS9PZkSM2jz1uwLgaF0knf1g8pjDkLYwlk=" );
         timbre.setSelloCFD( "tOSe+Ex/wvn33YIGwtfmrJwQ31Crd7II9VcH63TGjHfxk5cfb3q9uSbDUGk9TXvo70ydOpikRVw+9B2Six0mbu3PjoPpO909oAYITrRyomdeUGJ 4vmA2/12L86EJLWpU7vlt4cL8HpkEw7TOFhSdpzb/890+jP+C1adBsHU1VHc=" );
@@ -472,18 +449,25 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             }
             
         });
-        getView().getTxtMetodoPago().addFocusListener(new FocusAdapter() {
+        getView().getComboMetodoDePago().addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                if(!getView().getTxtMetodoPago().getText().equals(""))
-                    getModel().setMetodoDePago(CMetodoPago.fromValue( getView().getTxtMetodoPago().getText()) );
+                if(getView().getComboMetodoDePago().getSelectedItem()!=null)
+                    getModel().setMetodoDePago((MetodoDePagoEnum) getView().getComboMetodoDePago().getSelectedItem());
             }
         });
-        getView().getTxtFormaDePago().addFocusListener(new FocusAdapter() {
+        getView().getjComboBoxFormaPago().addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                if(!getView().getTxtFormaDePago().getText().equals(""))
-                    getModel().setFormaDePago(getView().getTxtFormaDePago().getText());
+                if(getView().getjComboBoxFormaPago().getSelectedItem()!=null)
+                    getModel().setFormaDePago((FormaDePago) getView().getjComboBoxFormaPago().getSelectedItem());
+            }
+        });
+        getView().getComboUsoCFDI().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(getView().getComboUsoCFDI().getSelectedItem()!=null)
+                    getModel().getReceptor().setUsoCFDI((UsoCFDIEnum) getView().getComboUsoCFDI().getSelectedItem());
             }
         });
         getView().getBtnGuardar().addActionListener(new ActionListener() {
@@ -541,6 +525,10 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
             }
         });
         
+        /* Este bloque desencadenaba cambios cuando los descuentos eran decididos por campos globales,
+                al cambiar un descuento global se recalculaban varios campos, entre ellos los impuestos.
+            Lo dejo aquí por que puede ser de interés general. */
+        /*
         DocumentListener dl = new DocumentListener() {
 
             @Override
@@ -560,6 +548,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         };
         getView().getTxtDescuentoTasa0().getDocument().addDocumentListener(dl);
         getView().getTxtDescuentoTasa16().getDocument().addDocumentListener(dl);
+        */
     }
 
     @Override
@@ -600,22 +589,28 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                         BigDecimal cantidad = renglon.cantidad;
                         BigDecimal ieps     = renglon.ieps;
                         BigDecimal precioUni= renglon.precioUnitario;
+                        BigDecimal descuento= renglon.descuento;
                         cantidad .setScale(2, RoundingMode.HALF_EVEN);
                         ieps     .setScale(2, RoundingMode.HALF_EVEN);
                         precioUni.setScale(2, RoundingMode.HALF_EVEN);
+                        descuento.setScale(2, RoundingMode.HALF_EVEN);
                         cantidad .round(MathContext.DECIMAL64);
                         ieps     .round(MathContext.DECIMAL64);
                         precioUni.round(MathContext.DECIMAL64);
+                        descuento.round(MathContext.DECIMAL64);                        
                         
-                        modelo.setValueAt(cantidad           , modelo.getRowCount() - 1, 0); //0 = Columna cantidad
-                        modelo.setValueAt(!renglon.impuestos , modelo.getRowCount() - 1, 5); //5 = Impuestos 0%
-                        modelo.setValueAt(renglon.codigo     , modelo.getRowCount() - 1, 1); //1 = Código
-                        modelo.setValueAt(renglon.descripcion, modelo.getRowCount() - 1, 2); //2 = Descripción
-                        modelo.setValueAt(renglon.unidad     , modelo.getRowCount() - 1, 3); //3 = Unidad
-                        modelo.setValueAt(ieps               , modelo.getRowCount() - 1, 6); //6 = % IEPS
+                        modelo.setValueAt(cantidad                  , modelo.getRowCount() - 1, 0); //0 = Columna cantidad                        
+                        modelo.setValueAt(!renglon.impuestos        , modelo.getRowCount() - 1, 7); //7 = Impuestos 0%
+                        modelo.setValueAt(renglon.codigo            , modelo.getRowCount() - 1, 1); //1 = Código
+                        modelo.setValueAt(renglon.claveProductoSAT  , modelo.getRowCount() - 1, 2); //2 = Clave producto SAT
+                        modelo.setValueAt(renglon.descripcion       , modelo.getRowCount() - 1, 3); //3 = Descripción
+                        modelo.setValueAt(renglon.unidad            , modelo.getRowCount() - 1, 4); //4 = Unidad
+                        modelo.setValueAt(renglon.claveUnidadSAT    , modelo.getRowCount() - 1, 5); //5 = Clave Unidad SAT
+                        modelo.setValueAt(ieps                      , modelo.getRowCount() - 1, 8); //8 = % IEPS
+                        modelo.setValueAt(descuento                 , modelo.getRowCount() - 1, 9); //9 = Descuento
                         //Al editar el campo "precioUnitario" se agrega una nueva fila, por este
                         //  "comportamiento sincronizado" coloco al final este SET
-                        modelo.setValueAt(precioUni          , modelo.getRowCount() - 1, 4); //4 = Precio unitario con descuento                        
+                        modelo.setValueAt(precioUni                 , modelo.getRowCount() - 1, 6); //6 = Precio unitario con descuento
                     }
                     
                     //Agrego el ticket a la relación de tickets agregados a la factura
@@ -664,12 +659,18 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                     Ticket<?> t = DatasourceContext.instanceDatasourceInstance().getTickets(tickets[0], tickets[1]);                    
                     
                     for (RenglonTicket renglon : t) {
-                        modelo.setValueAt(renglon.cantidad, modelo.getRowCount() - 1, 0); //0 = Columna cantidad
-                        modelo.setValueAt(!renglon.impuestos, modelo.getRowCount() - 1, 5); //5 = Impuestos 0%
-                        modelo.setValueAt(renglon.codigo, modelo.getRowCount() - 1, 1); //1 = Código
-                        modelo.setValueAt(renglon.descripcion, modelo.getRowCount() - 1, 2); //2 = Descripción
-                        modelo.setValueAt(renglon.unidad, modelo.getRowCount() - 1, 3); //3 = Unidad
-                        modelo.setValueAt(renglon.precioUnitario, modelo.getRowCount() - 1, 4); //4 = Precio unitario con descuento
+                        modelo.setValueAt(renglon.cantidad          , modelo.getRowCount() - 1, 0); //0 = Columna cantidad
+                        modelo.setValueAt(!renglon.impuestos        , modelo.getRowCount() - 1, 7); //7 = Impuestos 0%
+                        modelo.setValueAt(renglon.codigo            , modelo.getRowCount() - 1, 1); //1 = Código
+                        modelo.setValueAt(renglon.claveProductoSAT  , modelo.getRowCount() - 1, 2); //2 = Clave producto SAT
+                        modelo.setValueAt(renglon.descripcion       , modelo.getRowCount() - 1, 3); //3 = Descripción
+                        modelo.setValueAt(renglon.unidad            , modelo.getRowCount() - 1, 4); //4 = Unidad
+                        modelo.setValueAt(renglon.claveUnidadSAT    , modelo.getRowCount() - 1, 5); //5 = Clave Unidad SAT
+                        modelo.setValueAt(renglon.ieps              , modelo.getRowCount() - 1, 8); //8 = % IEPS
+                        modelo.setValueAt(renglon.descuento         , modelo.getRowCount() - 1, 9); //9 = Descuento
+                        //Al editar el campo "precioUnitario" se agrega una nueva fila, por este
+                        //  "comportamiento sincronizado" coloco al final este SET
+                        modelo.setValueAt(renglon.precioUnitario    , modelo.getRowCount() - 1, 6); //6 = Precio unitario con descuento
                     }
                 }
             } catch (DatasourceException ex) {
@@ -715,38 +716,31 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();                    
                     
                 //Representa los montos de descuento sobre ventas con IVA a tasa 0%
-                BigDecimal descuentos0  = new BigDecimal("0", MathContext.DECIMAL64);
-                //Representa los montos de descuento sobre ventas con IVA a tasa 16% 
-                BigDecimal descuentos16 = new BigDecimal("0", MathContext.DECIMAL64);
-                
-                descuentos0 .setScale(2, RoundingMode.HALF_EVEN);
-                descuentos16.setScale(2, RoundingMode.HALF_EVEN);
+                BigDecimal descuentos   = new BigDecimal("0", MathContext.DECIMAL64);
                 
                 //Llenar el formulario de facturación con información del ticket
                 Ticket<String> ticket = facturaGlobalizada.getResumenGlobal();
                 for (RenglonTicket renglon : ticket) {
-                    modelo.setValueAt(renglon.cantidad, modelo.getRowCount() - 1, 0); //0 = Columna cantidad
-                        modelo.setValueAt(!renglon.impuestos, modelo.getRowCount() - 1, 5); //5 = Impuestos 0%
-                        modelo.setValueAt(renglon.codigo, modelo.getRowCount() - 1, 1); //1 = Código
-                        modelo.setValueAt(renglon.descripcion, modelo.getRowCount() - 1, 2); //2 = Descripción
-                        modelo.setValueAt(renglon.unidad, modelo.getRowCount() - 1, 3); //3 = Unidad
-                        modelo.setValueAt(renglon.ieps          , modelo.getRowCount() - 1, 6); //6 = % IEPS
-                        //Al editar el campo "precioUnitario" se agrega una nueva fila, por este
-                        //  "comportamiento sincronizado" coloco al final este SET
-                        modelo.setValueAt(renglon.precioUnitario, modelo.getRowCount() - 1, 4); //4 = Precio unitario con descuento
+                    modelo.setValueAt(renglon.cantidad          , modelo.getRowCount() - 1, 0); //0 = Columna cantidad
+                    modelo.setValueAt(!renglon.impuestos        , modelo.getRowCount() - 1, 7); //7 = Impuestos 0%
+                    modelo.setValueAt(renglon.codigo            , modelo.getRowCount() - 1, 1); //1 = Código
+                    modelo.setValueAt(renglon.claveProductoSAT  , modelo.getRowCount() - 1, 2); //2 = Clave producto SAT
+                    modelo.setValueAt(renglon.descripcion       , modelo.getRowCount() - 1, 3); //3 = Descripción
+                    modelo.setValueAt(renglon.unidad            , modelo.getRowCount() - 1, 4); //4 = Unidad
+                    modelo.setValueAt(renglon.claveUnidadSAT    , modelo.getRowCount() - 1, 5); //5 = Clave Unidad SAT
+                    modelo.setValueAt(renglon.ieps              , modelo.getRowCount() - 1, 8); //8 = % IEPS
+                    modelo.setValueAt(renglon.descuento         , modelo.getRowCount() - 1, 9); //9 = Descuento
+                    //Al editar el campo "precioUnitario" se agrega una nueva fila, por este
+                    //  "comportamiento sincronizado" coloco al final este SET
+                    modelo.setValueAt(renglon.precioUnitario    , modelo.getRowCount() - 1, 6); //6 = Precio unitario con descuento
                         
-                        if(!renglon.impuestos) 
-                            descuentos0 = descuentos0.add(renglon.descuento, MathContext.DECIMAL64);
-                        else
-                            descuentos16 = descuentos16.add(renglon.descuento, MathContext.DECIMAL64);
                 }
                 NumberFormat nf = NumberFormat.getIntegerInstance();
                 nf.setGroupingUsed(true);
                 nf.setMinimumFractionDigits(2);
                 nf.setMaximumFractionDigits(2);
                 
-                getView().getTxtDescuentoTasa0() .setText(nf.format(descuentos0));
-                getView().getTxtDescuentoTasa16().setText(nf.format(descuentos16));
+                getView().getTxtDescuento() .setText(nf.format(descuentos));
                 
                 //Agrego los tickets a la relación de tickets en la factura
                 for (Ticket ticket1 : facturaGlobalizada.getTickets()) {

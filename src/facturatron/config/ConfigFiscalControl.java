@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import mx.bigdata.sat.cfdi.v33.schema.CPais;
 
 /**
  *
@@ -48,7 +49,7 @@ public class ConfigFiscalControl extends Controller<ConfigFiscalDao, ConfigFisca
                 getModelContrib().setEstado(getView().getTxtEstado().getText());
                 getModelContrib().setNoExterior(getView().getTxtNoExterior().getText());
                 getModelContrib().setNoInterior(getView().getTxtNoInterior().getText());
-                getModelContrib().setPais(getView().getTxtPais().getText());
+                getModelContrib().setPais((CPais) getView().getjComboBoxPais().getSelectedItem());
                 getModelContrib().setRegimen(getView().getTxtRegimen().getText());
 
                 getModelContribSuc().setNombre("NA");
@@ -61,7 +62,7 @@ public class ConfigFiscalControl extends Controller<ConfigFiscalDao, ConfigFisca
                 getModelContribSuc().setEstado(getView().getTxtEstadoSuc().getText());
                 getModelContribSuc().setNoExterior(getView().getTxtNoExteriorSuc().getText());
                 getModelContribSuc().setNoInterior(getView().getTxtNoInteriorSuc().getText());
-                getModelContribSuc().setPais(getView().getTxtPaisSuc().getText());
+                getModelContribSuc().setPais((CPais) getView().getjComboBoxPaisSuc().getSelectedItem());
 
                 getModel().persist();
                 JOptionPane.showMessageDialog(getView(), "Cambios hechos");

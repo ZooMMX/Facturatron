@@ -164,10 +164,9 @@
                               <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="1"/>
                               <Component id="jLabel30" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txtRegimen" max="32767" attributes="0"/>
-                              <Component id="txtPais" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtEstado" alignment="0" max="32767" attributes="1"/>
                               <Component id="txtMunicipio" alignment="1" max="32767" attributes="1"/>
                               <Component id="txtCodigoPostal" alignment="0" max="32767" attributes="0"/>
@@ -184,6 +183,7 @@
                               </Group>
                               <Component id="txtRfc" alignment="0" max="32767" attributes="2"/>
                               <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jComboBoxPais" pref="569" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -241,7 +241,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtPais" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jComboBoxPais" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -336,8 +336,6 @@
                     <Property name="text" type="java.lang.String" value="Pa&#xed;s"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtPais">
-                </Component>
                 <Component class="javax.swing.JTextField" name="txtNoInterior">
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel11">
@@ -398,6 +396,19 @@
                     <Property name="verticalAlignment" type="int" value="1"/>
                   </Properties>
                 </Component>
+                <Component class="javax.swing.JComboBox" name="jComboBoxPais">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new javax.swing.DefaultComboBoxModel(CPais.values())" type="code"/>
+                    </Property>
+                    <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="CPais.MEX" type="code"/>
+                    </Property>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;CPais&gt;"/>
+                  </AuxValues>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel2">
@@ -430,9 +441,8 @@
                               <Component id="jLabel28" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel24" alignment="0" min="-2" max="-2" attributes="1"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtPaisSuc" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtEstadoSuc" alignment="0" max="32767" attributes="1"/>
                               <Component id="txtMunicipioSuc" alignment="1" max="32767" attributes="1"/>
                               <Component id="txtCodigoPostalSuc" alignment="0" max="32767" attributes="0"/>
@@ -446,8 +456,9 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="jLabel29" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="txtNoInteriorSuc" max="32767" attributes="2"/>
+                                  <Component id="txtNoInteriorSuc" pref="400" max="32767" attributes="2"/>
                               </Group>
+                              <Component id="jComboBoxPaisSuc" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -486,9 +497,9 @@
                               <Component id="jLabel24" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jLabel25" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtMunicipioSuc" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtMunicipioSuc" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -505,9 +516,9 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel28" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtPaisSuc" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jComboBoxPaisSuc" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="59" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -593,8 +604,6 @@
                     <Property name="text" type="java.lang.String" value="Pa&#xed;s"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtPaisSuc">
-                </Component>
                 <Component class="javax.swing.JTextField" name="txtNoExteriorSuc">
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel29">
@@ -643,6 +652,19 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNombreSucActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="jComboBoxPaisSuc">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new javax.swing.DefaultComboBoxModel(CPais.values())" type="code"/>
+                    </Property>
+                    <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="CPais.MEX" type="code"/>
+                    </Property>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;CPais&gt;"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>

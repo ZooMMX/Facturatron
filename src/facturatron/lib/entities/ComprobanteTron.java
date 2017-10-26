@@ -5,12 +5,14 @@
 
 package facturatron.lib.entities;
 
+import facturatron.Dominio.UsoCFDIEnum;
 import java.math.BigDecimal;
 import java.net.URI;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
 
 import facturatron.lib.NumeroConLetra;
 import java.text.DecimalFormat;
+import mx.bigdata.sat.cfdi.v33.schema.CUsoCFDI;
 import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
 import mx.bigdata.sat.cfdi.v33.schema.TimbreFiscalDigital;
 
@@ -234,8 +236,9 @@ public class ComprobanteTron extends Comprobante {
     }
 
     public TimbreFiscalDigital getTimbre() {
-        for (Object object : getComplemento()) {
-            if(object instanceof TimbreFiscalDigital) return (TimbreFiscalDigital) object;
+        for (Complemento complemento : getComplemento()) {
+            for(Object object : complemento.getAny())
+                if(object instanceof TimbreFiscalDigital) return (TimbreFiscalDigital) object;
         }
         return null;
     }

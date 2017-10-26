@@ -59,7 +59,7 @@ public class DummyServiceImpl implements IPACService {
             Logger.getLogger(DummyServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         timbre.setNoCertificadoSAT( "30001000000100000801" );
-        timbre.setVersion("1.0");
+        timbre.setVersion("1.1");
         timbre.setUUID( "ad662d33-6934-459c-a128-bdf0393e0f44" );
         timbre.setSelloSAT( "j5bSpqM3w0+shGtlmqOwqqy6+d659O78ckfstu5vTSFa+2CVMj6Awfr18x4yMLGBwk6ruYbjBIVURodEII6nJIhTTUtYQV1cbRDG9kvvhaNAakx qaSOnOnOx79nHxqFPRVoqh10CsjocS9PZkSM2jz1uwLgaF0knf1g8pjDkLYwlk=" );
         timbre.setSelloCFD( "tOSe+Ex/wvn33YIGwtfmrJwQ31Crd7II9VcH63TGjHfxk5cfb3q9uSbDUGk9TXvo70ydOpikRVw+9B2Six0mbu3PjoPpO909oAYITrRyomdeUGJ 4vmA2/12L86EJLWpU7vlt4cL8HpkEw7TOFhSdpzb/890+jP+C1adBsHU1VHc=" );

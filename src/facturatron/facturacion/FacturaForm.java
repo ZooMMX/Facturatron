@@ -12,6 +12,8 @@
 package facturatron.facturacion;
 
 import com.alee.laf.button.WebButton;
+import facturatron.Dominio.FormaDePago;
+import facturatron.Dominio.MetodoDePagoEnum;
 import facturatron.Dominio.UsoCFDIEnum;
 import java.awt.Container;
 import java.awt.KeyboardFocusManager;
@@ -38,6 +40,48 @@ import org.jdesktop.swingx.JXTable;
  */
 public class FacturaForm extends javax.swing.JPanel implements Observer {
 
+    /**
+     * @return the comboMetodoDePago
+     */
+    public javax.swing.JComboBox<MetodoDePagoEnum> getComboMetodoDePago() {
+        return comboMetodoDePago;
+    }
+
+    /**
+     * @param comboMetodoDePago the comboMetodoDePago to set
+     */
+    public void setComboMetodoDePago(javax.swing.JComboBox<MetodoDePagoEnum> comboMetodoDePago) {
+        this.comboMetodoDePago = comboMetodoDePago;
+    }
+
+    /**
+     * @return the comboUsoCFDI
+     */
+    public javax.swing.JComboBox<TipoComprobante> getComboUsoCFDI() {
+        return comboUsoCFDI;
+    }
+
+    /**
+     * @param comboUsoCFDI the comboUsoCFDI to set
+     */
+    public void setComboUsoCFDI(javax.swing.JComboBox<TipoComprobante> comboUsoCFDI) {
+        this.comboUsoCFDI = comboUsoCFDI;
+    }
+
+    /**
+     * @return the jComboBoxFormaPago
+     */
+    public javax.swing.JComboBox<FormaDePago> getjComboBoxFormaPago() {
+        return jComboBoxFormaPago;
+    }
+
+    /**
+     * @param jComboBoxFormaPago the jComboBoxFormaPago to set
+     */
+    public void setjComboBoxFormaPago(javax.swing.JComboBox<FormaDePago> jComboBoxFormaPago) {
+        this.jComboBoxFormaPago = jComboBoxFormaPago;
+    }
+
     private FacturaDao modelo;
 
     public JFrame getJFrameParent() {
@@ -48,8 +92,8 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     public void update(Observable o, Object arg) {
         this.getTxtSerie().setText(getModelo().getSerie());
         this.getTxtFolio().setText(String.format("%d", getModelo().getFolio()));
-        this.getTxtFormaDePago().setText(getModelo().getFormaDePago());
-        this.getTxtMetodoPago().setText(getModelo().getMetodoDePago().toString());
+        this.getjComboBoxFormaPago().setSelectedItem(getModelo().getFormaDePago());
+        this.getComboMetodoDePago().setSelectedItem(getModelo().getMetodoDePago());
         
         this.getTxtNombre().setText(String.valueOf(getModelo().getReceptor().getNombre()));
         this.getTxtRfc().setText(String.valueOf(getModelo().getReceptor().getRfc()));
@@ -65,8 +109,9 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         String iva  = String.format("%,.2f", getModelo().getIvaTrasladado());
         this.getTxtIva().setText(iva);
         String ieps = String.format("%,.2f", getModelo().getIEPSTrasladado());
-        this.getTxtIEPS().setText(ieps)
-                ;
+        this.getTxtIEPS().setText(ieps);
+        String descuento = String.format("%,.2f", getModelo().getDescuento());
+        this.getTxtDescuento().setText(descuento);
         String total = String.format("%,.2f", getModelo().getTotal());
         this.getTxtTotal().setText(total);
     }
@@ -93,11 +138,15 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     
     public void setTableWidth() {                
         tabConceptos.getColumn(0).setMaxWidth(110);
-        tabConceptos.getColumn(2).setPreferredWidth(400);
+        tabConceptos.getColumn(1).setMaxWidth(110);
+        tabConceptos.getColumn(2).setMaxWidth(140);
+        tabConceptos.getColumn(3).setPreferredWidth(400);
         tabConceptos.getColumn(4).setMaxWidth(110);
-        tabConceptos.getColumn(5).setMaxWidth(100);
+        tabConceptos.getColumn(5).setMaxWidth(110);
         tabConceptos.getColumn(6).setMaxWidth(110);
         tabConceptos.getColumn(7).setMaxWidth(110);
+        tabConceptos.getColumn(8).setMaxWidth(110);
+        tabConceptos.getColumn(9).setMaxWidth(110);
     }
 
     /** This method is called from within the constructor to
@@ -110,9 +159,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        samplePUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("samplePU").createEntityManager();
-        productQuery = java.beans.Beans.isDesignTime() ? null : samplePUEntityManager.createQuery("SELECT p FROM Product p");
-        productList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : productQuery.getResultList();
         jXTitledPanel2 = new org.jdesktop.swingx.JXTitledPanel();
         jLabel9 = new javax.swing.JLabel();
         txtIdCliente = new javax.swing.JFormattedTextField();
@@ -126,30 +172,28 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         jLabel4 = new javax.swing.JLabel();
         txtSerie = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtFormaDePago = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDireccion = new javax.swing.JTextArea();
         comboTipoComprobante = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
-        txtMetodoPago = new javax.swing.JTextField();
         btnBuscarCliente = new com.alee.laf.button.WebButton();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        comboTipoComprobante1 = new javax.swing.JComboBox<>();
+        comboUsoCFDI = new javax.swing.JComboBox<>();
+        jComboBoxFormaPago = new javax.swing.JComboBox<>();
+        comboMetodoDePago = new javax.swing.JComboBox<>();
         jXTitledPanel1 = new org.jdesktop.swingx.JXTitledPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabConceptos = new org.jdesktop.swingx.JXTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        txtDescuentoTasa16 = new javax.swing.JFormattedTextField();
+        txtDescuento = new javax.swing.JFormattedTextField();
         jLabel13 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
         txtIva = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtSubtotal = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtDescuentoTasa0 = new javax.swing.JFormattedTextField();
-        jLabel8 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtMotivoDescuento = new javax.swing.JFormattedTextField();
         jLabel15 = new javax.swing.JLabel();
@@ -227,12 +271,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel14.setText("Método de pago:");
 
-        txtMetodoPago.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMetodoPagoActionPerformed(evt);
-            }
-        });
-
         btnBuscarCliente.setText("Buscar");
         btnBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -246,11 +284,21 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel17.setText("Forma:");
 
-        comboTipoComprobante1.setModel(new javax.swing.DefaultComboBoxModel(UsoCFDIEnum.values()));
-        comboTipoComprobante1.setSelectedItem(TipoComprobante.FACTURA);
-        comboTipoComprobante1.addActionListener(new java.awt.event.ActionListener() {
+        comboUsoCFDI.setModel(new javax.swing.DefaultComboBoxModel(UsoCFDIEnum.values()));
+        comboUsoCFDI.setSelectedItem(TipoComprobante.FACTURA);
+        comboUsoCFDI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboTipoComprobante1ActionPerformed(evt);
+                comboUsoCFDIActionPerformed(evt);
+            }
+        });
+
+        jComboBoxFormaPago.setModel(new javax.swing.DefaultComboBoxModel(FormaDePago.values()));
+
+        comboMetodoDePago.setModel(new javax.swing.DefaultComboBoxModel(MetodoDePagoEnum.values()));
+        comboMetodoDePago.setSelectedItem(MetodoDePagoEnum.PUE);
+        comboMetodoDePago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboMetodoDePagoActionPerformed(evt);
             }
         });
 
@@ -260,24 +308,26 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jXTitledPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtNombre))
-                        .addGroup(jXTitledPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE))
-                        .addGroup(jXTitledPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtRfc)))
-                    .addGroup(jXTitledPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMetodoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtRfc)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel2Layout.createSequentialGroup()
+                        .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jXTitledPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2))
+                            .addGroup(jXTitledPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNombre))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jXTitledPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(comboMetodoDePago, 0, 471, Short.MAX_VALUE)))
+                        .addGap(7, 7, 7)))
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -289,7 +339,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel2Layout.createSequentialGroup()
-                                .addComponent(txtIdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                                .addComponent(txtIdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtFolio)
@@ -301,8 +351,8 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboTipoComprobante1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtFormaDePago)))))
+                            .addComponent(comboUsoCFDI, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxFormaPago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
         jXTitledPanel2Layout.setVerticalGroup(
             jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -334,21 +384,21 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                     .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboMetodoDePago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                                 .addGap(1, 1, 1)
-                                .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtMetodoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(txtFormaDePago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboBoxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jXTitledPanel2Layout.createSequentialGroup()
                         .addGap(2, 2, 2)
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboTipoComprobante1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(comboUsoCFDI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -380,7 +430,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("Descuento Tasa 16:");
+        jLabel12.setText("Descuento:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -389,13 +439,13 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         jPanel2.add(jLabel12, gridBagConstraints);
 
-        txtDescuentoTasa16.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        txtDescuentoTasa16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtDescuentoTasa16.setMinimumSize(new java.awt.Dimension(14, 24));
-        txtDescuentoTasa16.setPreferredSize(new java.awt.Dimension(14, 24));
-        txtDescuentoTasa16.addActionListener(new java.awt.event.ActionListener() {
+        txtDescuento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        txtDescuento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtDescuento.setMinimumSize(new java.awt.Dimension(14, 24));
+        txtDescuento.setPreferredSize(new java.awt.Dimension(14, 24));
+        txtDescuento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescuentoTasa16ActionPerformed(evt);
+                txtDescuentoActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -406,7 +456,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
-        jPanel2.add(txtDescuentoTasa16, gridBagConstraints);
+        jPanel2.add(txtDescuento, gridBagConstraints);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -483,36 +533,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         jPanel2.add(jLabel6, gridBagConstraints);
 
-        txtDescuentoTasa0.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        txtDescuentoTasa0.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtDescuentoTasa0.setMinimumSize(new java.awt.Dimension(14, 24));
-        txtDescuentoTasa0.setPreferredSize(new java.awt.Dimension(14, 24));
-        txtDescuentoTasa0.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescuentoTasa0ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
-        jPanel2.add(txtDescuentoTasa0, gridBagConstraints);
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("Descuento Tasa 0:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
-        jPanel2.add(jLabel8, gridBagConstraints);
-
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Motivo Descuento:");
@@ -567,7 +587,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -616,7 +636,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
         jXTitledPanel3Layout.setHorizontalGroup(
             jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 839, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1338, Short.MAX_VALUE)
         );
         jXTitledPanel3Layout.setVerticalGroup(
             jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -655,10 +675,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboTipoComprobanteActionPerformed
 
-    private void txtMetodoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMetodoPagoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMetodoPagoActionPerformed
-
     private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarClienteActionPerformed
@@ -678,21 +694,21 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         }
     }//GEN-LAST:event_borrarPartidaAction
 
-    private void txtDescuentoTasa0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoTasa0ActionPerformed
+    private void txtDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescuentoTasa0ActionPerformed
-
-    private void txtDescuentoTasa16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoTasa16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescuentoTasa16ActionPerformed
+    }//GEN-LAST:event_txtDescuentoActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
 
-    private void comboTipoComprobante1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoComprobante1ActionPerformed
+    private void comboUsoCFDIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboUsoCFDIActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_comboTipoComprobante1ActionPerformed
+    }//GEN-LAST:event_comboUsoCFDIActionPerformed
+
+    private void comboMetodoDePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMetodoDePagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboMetodoDePagoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -703,8 +719,10 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     private org.jdesktop.swingx.JXButton btnObservaciones;
     private javax.swing.JButton btnTicket;
     private javax.swing.JButton btnVistaPrevia;
+    private javax.swing.JComboBox<MetodoDePagoEnum> comboMetodoDePago;
     private javax.swing.JComboBox<TipoComprobante> comboTipoComprobante;
-    private javax.swing.JComboBox<TipoComprobante> comboTipoComprobante1;
+    private javax.swing.JComboBox<TipoComprobante> comboUsoCFDI;
+    private javax.swing.JComboBox<FormaDePago> jComboBoxFormaPago;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -720,7 +738,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -729,19 +746,13 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel1;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel2;
     private org.jdesktop.swingx.JXTitledPanel jXTitledPanel3;
-    private java.util.List<facturatron.facturacion.Product> productList;
-    private javax.persistence.Query productQuery;
-    private javax.persistence.EntityManager samplePUEntityManager;
     private org.jdesktop.swingx.JXTable tabConceptos;
-    private javax.swing.JFormattedTextField txtDescuentoTasa0;
-    private javax.swing.JFormattedTextField txtDescuentoTasa16;
+    private javax.swing.JFormattedTextField txtDescuento;
     private javax.swing.JTextArea txtDireccion;
     private javax.swing.JTextField txtFolio;
-    private javax.swing.JTextField txtFormaDePago;
     private javax.swing.JTextField txtIEPS;
     private javax.swing.JFormattedTextField txtIdCliente;
     private javax.swing.JTextField txtIva;
-    private javax.swing.JTextField txtMetodoPago;
     private javax.swing.JFormattedTextField txtMotivoDescuento;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtRfc;
@@ -785,28 +796,15 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     /**
      * @return the txtDescuento
      */
-    public javax.swing.JFormattedTextField getTxtDescuentoTasa0() {
-        return txtDescuentoTasa0;
-    }
-
-    /**
-     * @param txtDescuento the txtDescuento to set
-     */
-    public void setTxtDescuentoTasa0(javax.swing.JFormattedTextField txtDescuentoTasa0) {
-        this.txtDescuentoTasa0 = txtDescuentoTasa0;
-    }
-    /**
-     * @return the txtDescuento
-     */
     public javax.swing.JFormattedTextField getTxtDescuentoTasa16() {
-        return txtDescuentoTasa16;
+        return getTxtDescuento();
     }
 
     /**
      * @param txtDescuento the txtDescuento to set
      */
     public void setTxtDescuentoTasa16(javax.swing.JFormattedTextField txtDescuentoTasa16) {
-        this.txtDescuentoTasa16 = txtDescuentoTasa16;
+        this.setTxtDescuento(txtDescuentoTasa16);
     }
 
     /**
@@ -836,21 +834,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     public void setTxtFolio(javax.swing.JTextField txtFolio) {
         this.txtFolio = txtFolio;
     }
-
-    /**
-     * @return the txtFormaDePago
-     */
-    public javax.swing.JTextField getTxtFormaDePago() {
-        return txtFormaDePago;
-    }
-
-    /**
-     * @param txtFormaDePago the txtFormaDePago to set
-     */
-    public void setTxtFormaDePago(javax.swing.JTextField txtFormaDePago) {
-        this.txtFormaDePago = txtFormaDePago;
-    }
-
+    
     /**
      * @return the txtIdCliente
      */
@@ -1013,20 +997,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     }
 
     /**
-     * @return the txtMetodoPago
-     */
-    public javax.swing.JTextField getTxtMetodoPago() {
-        return txtMetodoPago;
-    }
-
-    /**
-     * @param txtMetodoPago the txtMetodoPago to set
-     */
-    public void setTxtMetodoPago(javax.swing.JTextField txtMetodoPago) {
-        this.txtMetodoPago = txtMetodoPago;
-    }
-
-    /**
      * @return the btnFacturaDia
      */
     public javax.swing.JButton getBtnFacturaDia() {
@@ -1050,5 +1020,19 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     
     public javax.swing.JButton getBtnVistaPrevia() {
         return btnVistaPrevia;
+    }
+
+    /**
+     * @return the txtDescuento
+     */
+    public javax.swing.JFormattedTextField getTxtDescuento() {
+        return txtDescuento;
+    }
+
+    /**
+     * @param txtDescuento the txtDescuento to set
+     */
+    public void setTxtDescuento(javax.swing.JFormattedTextField txtDescuento) {
+        this.txtDescuento = txtDescuento;
     }
 }

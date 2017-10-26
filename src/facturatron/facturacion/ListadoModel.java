@@ -74,18 +74,16 @@ public class ListadoModel extends Model {
     }
 
     private void updateSumas() {
-        BigDecimal sub, imp, tot, des0, des16;
+        BigDecimal sub, imp, tot, des;
         sub   = new BigDecimal(0d);
         imp   = new BigDecimal(0d);
         tot   = new BigDecimal(0d);
-        des0  = new BigDecimal(0d);
-        des16 = new BigDecimal(0d);
+        des   = new BigDecimal(0d);
         for (Factura factura : this.facturas) {
             sub   = sub.add(factura.getSubtotal());
             imp   = imp.add(factura.getIvaTrasladado());
             tot   = tot.add(factura.getTotal());
-            des0  = des0.add(factura.getDescuentoTasa0());
-            des16 = des16.add(factura.getDescuentoTasa16());
+            des   = des.add(factura.getDescuento());
         }
         setSubtotal(sub);
         setIva(imp);

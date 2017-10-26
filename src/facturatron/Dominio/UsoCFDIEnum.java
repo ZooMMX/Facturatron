@@ -20,31 +20,32 @@ package facturatron.Dominio;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
+import mx.bigdata.sat.cfdi.v33.schema.CUsoCFDI;
 
 public enum UsoCFDIEnum {
 
-    G01("Adquisición de mercancias"),
-    G02("Devoluciones, descuentos o bonificaciones"),
-    G03("Gastos en general"),
-    I01("Construcciones"),
-    I02("Mobilario y equipo de oficina por inversiones"),
-    I03("Equipo de transporte"),
-    I04("Equipo de computo y accesorios"),
-    I05("Dados, troqueles, moldes, matrices y herramental"),
-    I06("Comunicaciones telefónicas"),
-    I07("Comunicaciones satelitales"),
-    I08("Otra maquinaria y equipo"),
-    D01("Honorarios médicos, dentales y gastos hospitalarios."),
-    D02("Gastos médicos por incapacidad o discapacidad"),
-    D03("Gastos funerales."),
-    D04("Donativos."),
-    D05("Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)."),
-    D06("Aportaciones voluntarias al SAR."),
-    D07("Primas por seguros de gastos médicos."),
-    D08("Gastos de transportación escolar obligatoria."),
-    D09("Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones."),
-    D10("Pagos por servicios educativos (colegiaturas)"),
-    P01("Por definir");
+    G_01("Adquisición de mercancias"),
+    G_02("Devoluciones, descuentos o bonificaciones"),
+    G_03("Gastos en general"),
+    I_01("Construcciones"),
+    I_02("Mobilario y equipo de oficina por inversiones"),
+    I_03("Equipo de transporte"),
+    I_04("Equipo de computo y accesorios"),
+    I_05("Dados, troqueles, moldes, matrices y herramental"),
+    I_06("Comunicaciones telefónicas"),
+    I_07("Comunicaciones satelitales"),
+    I_08("Otra maquinaria y equipo"),
+    D_01("Honorarios médicos, dentales y gastos hospitalarios."),
+    D_02("Gastos médicos por incapacidad o discapacidad"),
+    D_03("Gastos funerales."),
+    D_04("Donativos."),
+    D_05("Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)."),
+    D_06("Aportaciones voluntarias al SAR."),
+    D_07("Primas por seguros de gastos médicos."),
+    D_08("Gastos de transportación escolar obligatoria."),
+    D_09("Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones."),
+    D_10("Pagos por servicios educativos (colegiaturas)"),
+    P_01("Por definir");
     
     String descripcion;
 
@@ -54,6 +55,10 @@ public enum UsoCFDIEnum {
    
     public String toString() {
         return descripcion;
+    }
+    
+    public CUsoCFDI getSatConstant() {
+        return CUsoCFDI.valueOf(name());
     }
 
 }

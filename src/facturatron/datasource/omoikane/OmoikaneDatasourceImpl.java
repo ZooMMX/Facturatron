@@ -27,6 +27,7 @@ import facturatron.datasource.IDatasourceService;
 import facturatron.datasource.RenglonTicket;
 import facturatron.datasource.Ticket;
 import facturatron.datasource.TicketGlobal;
+import facturatron.facturacion.ListadoControl;
 import facturatron.omoikane.Impuesto;
 import facturatron.omoikane.Ventas;
 import facturatron.omoikane.VentasDetallesJpaController;
@@ -149,7 +150,8 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
                 ventas.add(venta);
             }
             //Método optimizado, únicamente sirve para ésto            
-            ventaJpa.editManySetFacturada(ventas, (Integer) idFactura);
+            if(ventas.size() > 0)
+                ventaJpa.editManySetFacturada(ventas, (Integer) idFactura);
         } catch (Exception ex) {
             throw new DatasourceException("No se pudo marcar ticket facturado", ex);
         }
@@ -167,7 +169,10 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
         } catch (CommunicationsException ex) {
             throw new DatasourceException("No hay conexión con el origen de datos", ex);
         } catch (Exception ex) {
-            throw new DatasourceException("Hubo un problema al rehabilitar tickets contenidos en la factura", ex);
+            if(ex.getMessage().contains("Unable to acquire a connection"))
+                    throw new DatasourceException("Revisa los datos de conexión a la BD de Omoikane", ex);
+                else
+                    throw new DatasourceException("Hubo un problema al rehabilitar tickets contenidos en la factura", ex);
         }
     }
 

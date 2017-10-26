@@ -87,7 +87,7 @@ public final class ListadoControl extends Controller<ListadoModel, ListadoForm> 
                 Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "Error al almacenar comprobante cancelado", ex);
             } catch (PACException ex) {
                 Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, "No se canceló el comprobante.", ex);
-            } catch (DatasourceException ex) {
+            } catch (DatasourceException ex) {                
                 Logger.getLogger(ListadoControl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
         }

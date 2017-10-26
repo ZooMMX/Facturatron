@@ -50,9 +50,13 @@ import com.finkok.stamp.AcuseRecepcionCFDI;
 import com.finkok.stamp.QueryPendingResult;
 import com.finkok.stamp.StampSOAP;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import facturatron.Misc;
 import java.util.GregorianCalendar;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
 import mx.bigdata.sat.security.KeyLoaderEnumeration;
 import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 
@@ -90,23 +94,20 @@ public class FinkokPACServiceImpl implements IPACService {
                     config.getUsuarioPAC(), 
                     config.getPasswordPAC());
             
-            ObjectFactory of = new ObjectFactory();
+            //El acuse traé una copia completa ya timbrada del CFDI lista para enviarse.
             
-            TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();
             
+            ObjectFactory of = new ObjectFactory();            
+            TimbreFiscalDigital timbre = of.createTimbreFiscalDigital();            
             Date fechaTimbre = dateFormat.parse( acuse.getFecha().getValue() );
             //Convierto fechaTimbre a XMLGregorianCalendar
-            {
-                GregorianCalendar gc = new GregorianCalendar();
-                gc.setTime(fechaTimbre);
-                XMLGregorianCalendar xmlFechaTimbre = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
-                timbre.setFechaTimbrado( xmlFechaTimbre );
-            }
+            timbre.setFechaTimbrado( Misc.dateToXMLGregorianCalendar(fechaTimbre) );
             timbre.setNoCertificadoSAT(acuse.getNoCertificadoSAT().getValue());
-            timbre.setVersion("1.0");
+            timbre.setVersion("1.1");
             timbre.setUUID(acuse.getUUID().getValue());
             timbre.setSelloSAT(acuse.getSatSeal().getValue());
             timbre.setSelloCFD(cfdi.getComprobante().getSello());
+            timbre.setRfcProvCertif("FIN1203015JA");
 
             Complemento complemento = of.createComprobanteComplemento();
             complemento.getAny().add(timbre);
@@ -132,6 +133,7 @@ public class FinkokPACServiceImpl implements IPACService {
 
     private static AcuseRecepcionCFDI stamp(byte[] xml, java.lang.String username, java.lang.String password) throws FinkokIncidenciasException {
         StampSOAP service = new StampSOAP();
+        
         com.finkok.stamp.Application port = (com.finkok.stamp.Application) service.getApplication();
         AcuseRecepcionCFDI acuseCFDI = port.stamp(xml, username, password);
         
@@ -145,7 +147,7 @@ public class FinkokPACServiceImpl implements IPACService {
     @Override
     public Boolean cancelar(Factura comprobante) throws PACException {
         try {
-            initializeBCProvider();
+                        initializeBCProvider();
             CancelSOAP cancelSOAP = new CancelSOAP();
             Application application = cancelSOAP.getApplication();
 
@@ -167,17 +169,9 @@ public class FinkokPACServiceImpl implements IPACService {
             String passKey = config.getpassCer();
             URI URIKey = new URI("file:///"+config.getpathKey().replace("\\", "/"));
             URI URICer = new URI("file:///"+config.getpathCer().replace("\\", "/"));
-            
-            PrivateKey key = KeyLoaderFactory.createInstance(
-                KeyLoaderEnumeration.PRIVATE_KEY_LOADER,
-                new FileInputStream(new File( URIKey )),
-                passKey
-            ).getKey();
-            
-            X509Certificate cert = cert = KeyLoaderFactory.createInstance(
-                KeyLoaderEnumeration.PUBLIC_KEY_LOADER,
-                new FileInputStream(new File( URICer ))
-            ).getKey();            
+            PrivateKey key = ClassicKeyLoader.loadPKCS8PrivateKey(new FileInputStream(new File( URIKey )), passKey );
+            X509Certificate cert = ClassicKeyLoader
+              .loadX509Certificate(new FileInputStream(new File( URICer )));
 
             //Convertir certificado a PEM (incluye transformación a Base64) y a bytes
             StringWriter sw = new StringWriter();
@@ -196,7 +190,7 @@ public class FinkokPACServiceImpl implements IPACService {
             byte[] keyBytes = sw2.toString().getBytes("UTF-8");
 
             //Obtener RFC del emisor
-            String rfcEmisor = comprobante.getEmisor().getRfc();        
+            String rfcEmisor = comprobante.getEmisor().getRfc();              
 
             //---- Invocar método de cancelación ---
             CancelaCFDResult acuse = application.cancel(uuids, userFinkok, passFinkok, rfcEmisor, certificadoBytes, keyBytes, true);
@@ -249,7 +243,7 @@ public class FinkokPACServiceImpl implements IPACService {
                 config.getUsuarioPAC(), 
                 config.getPasswordPAC(),
                 comprobante.getFolioFiscal()
-                );
+                ); 
         
         IStatusTimbre returnable = new IStatusTimbre() {
 

@@ -23,19 +23,25 @@ public class FacturaTableModel extends AbstractTableModel {
     //Algunos procesos pueden depender del orden de éstas columnas. Por ejemplo añadir tickets desde omoikane
     String[] columnNames = {"Cantidad",
                         "Código",
+                        "Clave Producto SAT",
                         "Descripción",
                         "Unidad",
+                        "Clave Unidad SAT",
                         "PU",
                         "IVA Tasa 0%",
                         "% IEPS",
+                        "Descuento",
                         "Importe"};
     Class[] columnClasses = {
         BigDecimal.class,
         String.class,
         String.class,
         String.class,
+        String.class,
+        String.class,
         BigDecimal.class,
         Boolean.class,
+        BigDecimal.class,
         BigDecimal.class,
         BigDecimal.class
     };
@@ -58,7 +64,7 @@ public class FacturaTableModel extends AbstractTableModel {
     @Override
     public boolean isCellEditable(int row, int col) {
         
-        return (col != 7);
+        return (col != 10);
     }
 
     @Override
@@ -85,16 +91,22 @@ public class FacturaTableModel extends AbstractTableModel {
             case 1:
                 return fila.getNoIdentificacion();
             case 2:
-                return fila.getDescripcion();
+                return fila.getClaveProductoSat();
             case 3:
-                return fila.getUnidad();
+                return fila.getDescripcion();
             case 4:
-                return fila.getValorUniario();
+                return fila.getUnidad();
             case 5:
-                return fila.getTasa0();
+                return fila.getClaveUnidadSat();
             case 6:
-                return fila.getTasaIEPS();
+                return fila.getValorUniario();
             case 7:
+                return fila.getTasa0();
+            case 8:
+                return fila.getTasaIEPS();
+            case 9:
+                return fila.getDescuento();
+            case 10:
                 return fila.getImporte();
         }
         return null;
@@ -123,31 +135,45 @@ public class FacturaTableModel extends AbstractTableModel {
                 fila.setNoIdentificacion((String) value);
                 break;
             case 2:
-                fila.setDescripcion((String) value);
+                fila.setClaveProductoSat((String) value);
                 break;
             case 3:
-                fila.setUnidad((String) value);
+                fila.setDescripcion((String) value);
                 break;
             case 4:
+                fila.setUnidad((String) value);
+                break;
+            case 5:
+                fila.setClaveUnidadSat((String) value);
+                break;
+            case 6:
                 fila.setValorUniario((BigDecimal)value);
                 updateImporte(fila);
                 break;
-            case 5:
+            case 7:
                 fila.setTasa0((Boolean) value);
                 break;
-            case 6:
+            case 8:
                 fila.setTasaIEPS((BigDecimal) value);
                 break;
+            case 9:
+                fila.setDescuento((BigDecimal) value);
+                updateImporte(fila);
+                break;
         }
-        if(row == getRowCount()-1 && col == getColumnCount()-4) {
+        if(row == getRowCount()-1 && col == getColumnCount()-5) { //Crear nueva fila cuando se esté en la columna PU de la última fila
             addRow();
         }
         fireTableCellUpdated(row, col);
     }
     public void updateImporte(Renglon renglon) {
-        BigDecimal cantidad = renglon.getCantidad();
-        BigDecimal valor    = renglon.getValorUniario();
-        BigDecimal importe = cantidad.multiply(valor);
+        BigDecimal cantidad  = renglon.getCantidad();
+        BigDecimal valor     = renglon.getValorUniario();
+        BigDecimal descuento = renglon.getDescuento();
+        BigDecimal subtotal  = cantidad.multiply(valor);
+        //BigDecimal importe   = subtotal.subtract(descuento);
+        BigDecimal importe   = subtotal; //Resulta que para el SAT el Importe en realidad es el subtotal (sin descuento).
+        renglon.setSubtotal(subtotal);
         renglon.setImporte(importe);
     }
 

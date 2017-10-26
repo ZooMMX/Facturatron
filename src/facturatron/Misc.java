@@ -8,6 +8,11 @@ package facturatron;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
 import java.io.PrintStream;
+import java.util.GregorianCalendar;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  *
@@ -24,4 +29,13 @@ public class Misc {
 
             return salida;
         }
+    
+    public static XMLGregorianCalendar dateToXMLGregorianCalendar(java.util.Date date) throws DatatypeConfigurationException {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(date);
+        XMLGregorianCalendar xmlgc = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+        xmlgc.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
+        xmlgc.setMillisecond(DatatypeConstants.FIELD_UNDEFINED);
+        return xmlgc;
+    }
 }

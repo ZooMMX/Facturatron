@@ -33,7 +33,7 @@ public class ConceptosTron extends ArrayList<ConceptoTron> {
         for (Concepto concepto : conceptos.getConcepto()) {
             ConceptoTron ct = new ConceptoTron();
             
-            ct.setCantidad(concepto.getCantidad());
+                        ct.setCantidad(concepto.getCantidad());
             ct.setComplementoConcepto(concepto.getComplementoConcepto());
             ct.setCuentaPredial(concepto.getCuentaPredial());
             ct.setDescripcion(concepto.getDescripcion());

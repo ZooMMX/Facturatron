@@ -38,9 +38,17 @@ public class Main {
                 //WebLookAndFeel.install ();
                 Locale.setDefault(Locale.US);
                 Thread.setDefaultUncaughtExceptionHandler(new UEHandler());
+                
+                //Log SOAP JAX-WS communications 
+                System.setProperty("com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump", "true");
+                System.setProperty("com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe.dump", "true");
+                System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "true");
+                System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dump", "true");
+                
                 Logger.getLogger("").addHandler(new CEHandler());
                 facturatron.Principal.Main frame = new facturatron.Principal.Main();
                 checkDBMigrations();
+                
             }
         } );        
         

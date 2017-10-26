@@ -14,12 +14,27 @@ package facturatron.cliente;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.table.DefaultTableModel;
+import mx.bigdata.sat.cfdi.v33.schema.CPais;
 
 /**
  *
  * @author saul
  */
 public class ClienteForm extends javax.swing.JPanel implements Observer {
+
+    /**
+     * @return the jComboBoxPais
+     */
+    public javax.swing.JComboBox<CPais> getjComboBoxPais() {
+        return jComboBoxPais;
+    }
+
+    /**
+     * @param jComboBoxPais the jComboBoxPais to set
+     */
+    public void setjComboBoxPais(javax.swing.JComboBox<CPais> jComboBoxPais) {
+        this.jComboBoxPais = jComboBoxPais;
+    }
 
     private ClienteDao modelo;
 
@@ -39,7 +54,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         getTxtNoExterior()  .setText(getModelo().getNoExterior());
         getTxtNoInterior()  .setText(getModelo().getNoInterior());
         getTxtNombre()      .setText(getModelo().getNombre());
-        getTxtPais()        .setText(getModelo().getPais());
+        getjComboBoxPais()  .setSelectedItem(getModelo().getPais());
         getTxtRfc()         .setText(getModelo().getRfc());
         getTxtTelefono()    .setText(getModelo().getTelefono());
         getTxtCorreoElectronico().setText(getModelo().getCorreoElectronico());
@@ -82,13 +97,13 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         jLabel11 = new javax.swing.JLabel();
         txtNoInterior = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        txtPais = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         txtCorreoElectronico = new javax.swing.JTextField();
         txtCodigoPostal = new javax.swing.JTextField();
         txtRfc = new javax.swing.JTextField();
+        jComboBoxPais = new javax.swing.JComboBox<>();
         jXTitledPanel1 = new org.jdesktop.swingx.JXTitledPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaCliente = new javax.swing.JTable();
@@ -170,8 +185,6 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         jLabel12.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel12.setText("País");
 
-        txtPais.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-
         btnGuardar.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -202,6 +215,9 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
 
         txtRfc.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
+        jComboBoxPais.setModel(new javax.swing.DefaultComboBoxModel(CPais.values()));
+        jComboBoxPais.setSelectedItem(CPais.MEX);
+
         javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
         jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
         jXTitledPanel3Layout.setHorizontalGroup(
@@ -227,7 +243,6 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                             .addComponent(txtTelefono)
                             .addComponent(txtCalle)
                             .addComponent(txtColonia)
-                            .addComponent(txtPais)
                             .addComponent(txtCorreoElectronico)
                             .addGroup(jXTitledPanel3Layout.createSequentialGroup()
                                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -240,7 +255,8 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                                 .addGap(4, 4, 4)
                                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNoInterior)
-                                    .addComponent(txtEstado)))))
+                                    .addComponent(txtEstado)))
+                            .addComponent(jComboBoxPais, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jXTitledPanel3Layout.createSequentialGroup()
                         .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -253,7 +269,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel3Layout.createSequentialGroup()
-                                .addComponent(txtRfc)
+                                .addComponent(txtRfc, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -305,13 +321,13 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                    .addComponent(jLabel12)
+                    .addComponent(jComboBoxPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jXTitledPanel1.setTitle("Listado Clientes");
@@ -360,7 +376,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -372,7 +388,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -420,6 +436,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private org.jdesktop.swingx.JXButton btnNuevo;
+    private javax.swing.JComboBox<CPais> jComboBoxPais;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -448,7 +465,6 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JTextField txtNoExterior;
     private javax.swing.JTextField txtNoInterior;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtPais;
     private javax.swing.JTextField txtRfc;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
@@ -613,19 +629,6 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         this.txtNombre = txtNombre;
     }
 
-    /**
-     * @return the txtPais
-     */
-    public javax.swing.JTextField getTxtPais() {
-        return txtPais;
-    }
-
-    /**
-     * @param txtPais the txtPais to set
-     */
-    public void setTxtPais(javax.swing.JTextField txtPais) {
-        this.txtPais = txtPais;
-    }
 
     /**
      * @return the txtRfc

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FacturaDigital" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="76c4b628-4c7d-4150-9730-050336c19109">
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-10-08T19:25:30 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FacturaDigital" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="95c7b92a-04bb-453f-a18a-3cb00551d262">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="772"/>
@@ -8,7 +9,7 @@
 	<subDataset name="Impuestos" uuid="d0785c79-8ced-48e5-9284-83a9d9a29285">
 		<field name="importe" class="java.math.BigDecimal"/>
 		<field name="impuesto" class="java.lang.String"/>
-		<field name="tasa" class="java.math.BigDecimal"/>
+		<field name="tasaOCuota" class="java.math.BigDecimal"/>
 	</subDataset>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
@@ -17,7 +18,7 @@
 	<field name="condicionesDePago" class="java.lang.String">
 		<fieldDescription><![CDATA[condicionesDePago]]></fieldDescription>
 	</field>
-	<field name="fecha" class="java.util.Date">
+	<field name="fecha" class="javax.xml.datatype.XMLGregorianCalendar">
 		<fieldDescription><![CDATA[fecha]]></fieldDescription>
 	</field>
 	<field name="noCertificado" class="java.lang.String">
@@ -26,17 +27,17 @@
 	<field name="tipoDeComprobante" class="java.lang.String">
 		<fieldDescription><![CDATA[tipoDeComprobante]]></fieldDescription>
 	</field>
-	<field name="conceptos" class="mx.bigdata.sat.cfdi.v32.schema.Comprobante$Conceptos">
+	<field name="conceptos" class="mx.bigdata.sat.cfdi.v33.schema.Comprobante$Conceptos">
 		<fieldDescription><![CDATA[conceptos]]></fieldDescription>
 	</field>
-	<field name="receptor" class="mx.bigdata.sat.cfdi.v32.schema.Comprobante$Receptor">
+	<field name="receptor" class="mx.bigdata.sat.cfdi.v33.schema.Comprobante$Receptor">
 		<fieldDescription><![CDATA[receptor]]></fieldDescription>
 	</field>
 	<field name="certificado" class="java.lang.String">
 		<fieldDescription><![CDATA[certificado]]></fieldDescription>
 	</field>
-	<field name="formaDePago" class="java.lang.String">
-		<fieldDescription><![CDATA[formaDePago]]></fieldDescription>
+	<field name="formaPago" class="java.lang.String">
+		<fieldDescription><![CDATA[formaPago]]></fieldDescription>
 	</field>
 	<field name="folio" class="java.lang.String">
 		<fieldDescription><![CDATA[folio]]></fieldDescription>
@@ -44,8 +45,11 @@
 	<field name="serie" class="java.lang.String">
 		<fieldDescription><![CDATA[serie]]></fieldDescription>
 	</field>
-	<field name="metodoDePago" class="java.lang.String">
-		<fieldDescription><![CDATA[metodoDePago]]></fieldDescription>
+	<field name="lugarExpedicion" class="java.lang.String">
+		<fieldDescription><![CDATA[lugarExpedicion]]></fieldDescription>
+	</field>
+	<field name="metodoPago" class="java.lang.String">
+		<fieldDescription><![CDATA[metodoPago]]></fieldDescription>
 	</field>
 	<field name="subTotal" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[subTotal]]></fieldDescription>
@@ -53,13 +57,13 @@
 	<field name="sello" class="java.lang.String">
 		<fieldDescription><![CDATA[sello]]></fieldDescription>
 	</field>
-	<field name="emisor" class="mx.bigdata.sat.cfdi.v32.schema.Comprobante$Emisor">
+	<field name="emisor" class="mx.bigdata.sat.cfdi.v33.schema.Comprobante$Emisor">
 		<fieldDescription><![CDATA[emisor]]></fieldDescription>
 	</field>
-	<field name="impuestos" class="mx.bigdata.sat.cfdi.v32.schema.Comprobante$Impuestos">
+	<field name="impuestos" class="mx.bigdata.sat.cfdi.v33.schema.Comprobante$Impuestos">
 		<fieldDescription><![CDATA[impuestos]]></fieldDescription>
 	</field>
-	<field name="timbre" class="mx.bigdata.sat.cfdi.v32.schema.TimbreFiscalDigital">
+	<field name="timbre" class="mx.bigdata.sat.cfdi.v33.schema.TimbreFiscalDigital">
 		<fieldDescription><![CDATA[timbre]]></fieldDescription>
 	</field>
 	<field name="qrstring" class="java.lang.String">
@@ -105,7 +109,7 @@
 					<font size="9"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fecha}.toGregorianCalendar().getTime()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="5" y="64" width="453" height="13" uuid="b9fc777e-0286-4fbf-8f2e-b60271d87f58"/>
@@ -120,7 +124,7 @@
 					<font size="9"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{timbre}.getFechaTimbrado()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{timbre}.getFechaTimbrado().toGregorianCalendar().getTime()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="468" y="39" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333" uuid="b803c10a-6b01-4ab1-abb7-6a21d5480e96"/>
@@ -196,9 +200,7 @@
 					<font size="9"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{emisor}.getExpedidoEn()==null)
-? $F{emisor}.getDomicilioFiscal().getMunicipio()+", "+$F{emisor}.getDomicilioFiscal().getEstado()
-: $F{emisor}.getExpedidoEn().getMunicipio()+", "+$F{emisor}.getExpedidoEn().getEstado()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{lugarExpedicion}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="468" y="88" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333" uuid="26001788-9393-4819-b49b-001db8a444f3"/>
@@ -237,39 +239,35 @@
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[""+$F{emisor}.getDomicilioFiscal().getCalle()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="287" y="80" width="171" height="15" uuid="9a961e4e-3d54-459c-8be6-34f593be1ca6"/>
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[""+$F{emisor}.getDomicilioFiscal().getColonia()+", CP. "
-+$F{emisor}.getDomicilioFiscal().getCodigoPostal()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="287" y="95" width="171" height="15" uuid="2cc51bc7-078b-4a90-a1c2-79be2f0edbcc"/>
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[""+$F{emisor}.getDomicilioFiscal().getMunicipio()+", "
-+$F{emisor}.getDomicilioFiscal().getEstado()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="287" y="110" width="171" height="15" uuid="4f96c1b2-bf75-4b2b-ba11-614b32e37e40"/>
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[""+$F{emisor}.getDomicilioFiscal().getPais()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="287" y="65" width="171" height="15" uuid="8c4609c4-9ecc-4f5f-abb5-6c7f76b318aa"/>
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["No ext: "
-+$F{emisor}.getDomicilioFiscal().getNoExterior()+", No int: "
-+$F{emisor}.getDomicilioFiscal().getNoInterior()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="14" y="44" width="252" height="36" uuid="21ffb2d7-b33d-4983-9684-78a08f3eebda"/>
@@ -277,8 +275,7 @@
 					<font size="9"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[""+$F{receptor}.getDomicilio().getCalle()+" No ext: "+$F{receptor}.getDomicilio().getNoExterior()+", No int: "
-+$F{receptor}.getDomicilio().getNoInterior()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="14" y="80" width="252" height="45" uuid="5b094b2a-a717-4bd7-bb52-c1304b5c07b7"/>
@@ -286,25 +283,17 @@
 					<font size="9"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[""+$F{receptor}.getDomicilio().getColonia()+", CP. "+
-$F{receptor}.getDomicilio().getCodigoPostal()+
-". "+$F{receptor}.getDomicilio().getMunicipio()+", "+
-$F{receptor}.getDomicilio().getEstado()+
-". "+$F{receptor}.getDomicilio().getPais()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="14" y="138" width="202" height="15" uuid="8e768dd2-7c66-4373-aa4e-d3a62a5680c5">
-					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
-				</reportElement>
+				<reportElement x="14" y="138" width="202" height="15" uuid="8e768dd2-7c66-4373-aa4e-d3a62a5680c5"/>
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{emisor}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="216" y="138" width="101" height="15" uuid="e6fc9f38-1e65-4cfd-acd3-0fac8e3c7a29">
-					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
-				</reportElement>
+				<reportElement x="216" y="138" width="101" height="15" uuid="e6fc9f38-1e65-4cfd-acd3-0fac8e3c7a29"/>
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
@@ -319,24 +308,18 @@ $F{receptor}.getDomicilio().getEstado()+
 				<text><![CDATA[SUCURSAL]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="14" y="153" width="202" height="15" uuid="6656ab1e-009a-4bed-abe9-6f0c0792603b">
-					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
-				</reportElement>
+				<reportElement x="14" y="153" width="202" height="15" uuid="6656ab1e-009a-4bed-abe9-6f0c0792603b"/>
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[""+$F{emisor}.getExpedidoEn().getMunicipio()+", "
-+$F{emisor}.getExpedidoEn().getEstado()+", CP. "
-+$F{emisor}.getExpedidoEn().getCodigoPostal()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="216" y="153" width="354" height="15" uuid="b6a6503e-f00a-4c19-896d-451285131aff">
-					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
-				</reportElement>
+				<reportElement x="216" y="153" width="354" height="15" uuid="b6a6503e-f00a-4c19-896d-451285131aff"/>
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[""+$F{emisor}.getExpedidoEn().getPais()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="5" y="131" width="1" height="36" uuid="7f136daf-57f2-404f-a1d9-1993f6676529"/>
@@ -360,17 +343,11 @@ $F{receptor}.getDomicilio().getEstado()+
 				<textFieldExpression><![CDATA[""+$F{emisor}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="317" y="138" width="253" height="15" uuid="a874f696-0d78-42f7-9ac1-712414eec116">
-					<printWhenExpression><![CDATA[$F{emisor}.getExpedidoEn()!=null]]></printWhenExpression>
-				</reportElement>
+				<reportElement x="317" y="138" width="253" height="15" uuid="a874f696-0d78-42f7-9ac1-712414eec116"/>
 				<textElement>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[""+$F{emisor}.getExpedidoEn().getCalle()+
-" No ext: "
-+$F{emisor}.getExpedidoEn().getNoExterior()+", No int: "
-+$F{emisor}.getExpedidoEn().getNoInterior()+", Col. "
-+$F{emisor}.getExpedidoEn().getColonia()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Opaque" x="468" y="121" width="104" height="15" forecolor="#FFFFFF" backcolor="#333333" uuid="154ddfb9-ae28-45b8-ba4a-ba405e358fec"/>
@@ -378,7 +355,7 @@ $F{receptor}.getDomicilio().getEstado()+
 					<font fontName="Arial" size="10"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Tipo: "+$F{tipoDeComprobante}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Tipo: "+facturatron.facturacion.TipoComprobante.fromSatConstant($F{tipoDeComprobante})]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -414,9 +391,9 @@ $F{receptor}.getDomicilio().getEstado()+
 					<font size="9" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Forma de pago: "+$F{formaDePago}+" Método de pago: "+$F{metodoDePago}+". Efectos fiscales al pago.\n"
-+ $F{emisor}.getRegimenFiscal().get(0).getRegimen() +".\n"
-+"Este documento es una representación impresa de un CFDI"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Forma de pago: "+facturatron.Dominio.FormaDePago.fromSatConstant($F{formaPago})+" Método de pago: "+facturatron.Dominio.MetodoDePagoEnum.valueOf($F{metodoPago})+". Efectos fiscales al pago.\n"
++ $F{emisor}.getRegimenFiscal() +".\n"
++"Este documento es una representación impresa de un CFDI versión 3.3"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
@@ -450,7 +427,7 @@ $F{receptor}.getDomicilio().getEstado()+
 					<font size="6"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["||1.0|"+$F{timbre}.getUUID()+"|"+(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")).format($F{timbre}.getFechaTimbrado())+"|"+$F{timbre}.getSelloCFD()+"|"+$F{timbre}.getNoCertificadoSAT()+"||"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["||1.1|"+$F{timbre}.getUUID()+"|"+(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")).format($F{timbre}.getFechaTimbrado().toGregorianCalendar().getTime())+"|"+$F{timbre}.getSelloCFD()+"|"+$F{timbre}.getNoCertificadoSAT()+"||"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="390" y="123" width="96" height="17" forecolor="#FFFFFF" backcolor="#333333" uuid="962fb48d-2117-4c3e-817e-42c6f80f51c7"/>
@@ -631,7 +608,9 @@ $F{receptor}.getDomicilio().getEstado()+
 				<text><![CDATA[Powered by Phesus™ Facturatron. http://www.phesus.com]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement key="table" x="390" y="72" width="180" height="48" uuid="d96c3104-502c-4899-8084-d0164d72eba1"/>
+				<reportElement key="table" x="390" y="72" width="180" height="48" uuid="d96c3104-502c-4899-8084-d0164d72eba1">
+					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
+				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Impuestos" uuid="46a4c460-4bb3-4ac5-b7bb-fa7beeb2c112">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{impuestos}.getTraslados().getTraslado())]]></dataSourceExpression>
@@ -643,7 +622,7 @@ $F{receptor}.getDomicilio().getEstado()+
 								<textElement>
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA["+ "+$F{impuesto}+" ("+$F{tasa}+")"]]></textFieldExpression>
+								<textFieldExpression><![CDATA["+ "+facturatron.Dominio.TipoImpuestoEnum.fromSatConstant($F{impuesto})+" ("+$F{tasaOCuota}.multiply(new BigDecimal('100'))+")"]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

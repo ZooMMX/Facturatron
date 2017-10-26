@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import mx.bigdata.sat.cfdi.v33.schema.CPais;
 
 /**
  *
@@ -69,7 +70,7 @@ public class ClienteControl extends Controller<ClienteDao, ClienteForm> {
         getModel().setEstado(getView().getTxtEstado().getText());
         getModel().setNoExterior(getView().getTxtNoExterior().getText());
         getModel().setNoInterior(getView().getTxtNoInterior().getText());
-        getModel().setPais(getView().getTxtPais().getText());
+        getModel().setPais((CPais) getView().getjComboBoxPais().getSelectedItem());
         getModel().setCorreoElectronico(getView().getTxtCorreoElectronico().getText());
 
         try {

@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ArrayList;
+import mx.bigdata.sat.cfdi.v33.schema.CPais;
 
 /**
  *
@@ -54,7 +55,10 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
                 bean.setEstado(rs.getString("estado"));
                 bean.setNoExterior(rs.getString("noExterior"));
                 bean.setNoInterior(rs.getString("noInterior"));
-                bean.setPais(rs.getString("pais"));
+                String pais = rs.getString("pais").equalsIgnoreCase("México")?"MEX":rs.getString("pais"); //Por retrocompatibilidad, antes "MEX" era "México"
+                pais = pais.equalsIgnoreCase("Mexico")?"MEX":pais; //Por retrocompatibilidad, antes "MEX" era "México"
+                pais = pais.isEmpty() ? "MEX" : pais;
+                bean.setPais(CPais.valueOf(pais));
                 bean.setRegimen(rs.getString("regimen"));
                 bean.setCorreoElectronico(rs.getString("correoelectronico"));
                 ret.add(bean);
@@ -100,7 +104,7 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             ps.setString(8, getEstado());
             ps.setString(9, getNoExterior());
             ps.setString(10, getNoInterior());
-            ps.setString(11, getPais());
+            ps.setString(11, getPais().value());
             ps.setString(12, getRegimen());
             ps.setString(13, getCorreoElectronico());
 
@@ -176,7 +180,10 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             this.setEstado(rs.getString("estado"));
             this.setNoExterior(rs.getString("noExterior"));
             this.setNoInterior(rs.getString("noInterior"));
-            this.setPais(rs.getString("pais"));
+            String pais = rs.getString("pais").equalsIgnoreCase("México")?"MEX":rs.getString("pais"); //Por retrocompatibilidad, antes "MEX" era "México"
+            pais = pais.equalsIgnoreCase("Mexico")?"MEX":pais; //Por retrocompatibilidad, antes "MEX" era "México"
+            pais = pais.isEmpty() ? "MEX" : pais;
+            this.setPais(CPais.valueOf(pais));
             this.setRegimen(rs.getString("regimen"));
             this.setCorreoElectronico(rs.getString("correoelectronico"));
 
@@ -225,7 +232,10 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
                 bean.setEstado(rs.getString("estado"));
                 bean.setNoExterior(rs.getString("noExterior"));
                 bean.setNoInterior(rs.getString("noInterior"));
-                bean.setPais(rs.getString("pais"));
+                String pais = rs.getString("pais").equalsIgnoreCase("México")?"MEX":rs.getString("pais"); //Por retrocompatibilidad, antes "MEX" era "México"
+                pais = pais.equalsIgnoreCase("Mexico")?"MEX":pais; //Por retrocompatibilidad, antes "MEX" era "México"
+                pais = pais.isEmpty() ? "MEX" : pais;
+                bean.setPais(CPais.valueOf(pais));
                 bean.setRegimen(rs.getString("regimen"));
                 bean.setCorreoElectronico(rs.getString("correoelectronico"));
 

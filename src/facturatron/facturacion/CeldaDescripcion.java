@@ -63,7 +63,7 @@ public class CeldaDescripcion {
         
         public void install() {
             
-            TableColumn columnaDescripcion = fc.getView().getTabConceptos().getColumnModel().getColumn(2);            
+            TableColumn columnaDescripcion = fc.getView().getTabConceptos().getColumnModel().getColumn(3);            
 
             CeldaDescripcionEditor editor = new CeldaDescripcionEditor(fc.getView().getTabConceptos());
             columnaDescripcion.setCellEditor(editor);            

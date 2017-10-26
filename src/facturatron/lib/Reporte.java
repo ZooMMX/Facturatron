@@ -24,7 +24,7 @@ public class Reporte {
             InputStream stream = cargarPlantilla(reporteJasper);
             JasperReport jr;
             if(getExtension(reporteJasper).equalsIgnoreCase("jrxml"))
-            {
+            {  
                 //Compilar el jrxml
                 jr = JasperCompileManager.compileReport(stream);
                 jp = JasperFillManager.fillReport(jr, new java.util.HashMap(), new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(beans));
@@ -50,9 +50,11 @@ public class Reporte {
 
     public InputStream cargarPlantilla(String archivoReporte) throws Exception
     {
-        InputStream stream = new FileInputStream(archivoReporte);
-        if(stream == null) { throw new Exception("Plantilla de reporte no encontrada. " + archivoReporte); }
-        return stream;
+        try{
+            InputStream stream = new FileInputStream(archivoReporte);
+            return stream;
+        } catch(FileNotFoundException fnfe) { throw new Exception("Plantilla de reporte no encontrada. " + archivoReporte); }
+        
     }
     public void toPDFFile(String pdfFile) throws JRException
     {

@@ -8,6 +8,7 @@ package facturatron.Dominio;
 import facturatron.MVC.Model;
 import java.io.Serializable;
 import mx.bigdata.sat.cfdi.v33.schema.CPais;
+import mx.bigdata.sat.cfdi.v33.schema.CUsoCFDI;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Emisor;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Receptor;
 import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
@@ -29,9 +30,10 @@ public class Persona extends Model implements Serializable {
     private String estado       = "";
     private String noExterior   = "";
     private String noInterior   = "";
-    private String pais         = "";
+    private CPais pais          = CPais.MEX;
     private String regimen      = "NA";
     private String correoElectronico = "";
+    private UsoCFDIEnum usoCFDI;
 
 
     public Emisor toEmisor(Persona sucursal) {
@@ -77,9 +79,9 @@ public class Persona extends Model implements Serializable {
         ObjectFactory of = new ObjectFactory();
         Receptor receptor = of.createComprobanteReceptor();
         receptor.setNombre(getNombre());
-        receptor.setRfc(getRfc());
-        receptor.setResidenciaFiscal(CPais.valueOf(getPais()));
-        //El campo usoCFDI se llenará al realizar la factura
+        receptor.setRfc(getRfc());        
+        receptor.setUsoCFDI(getUsoCFDI().getSatConstant());
+        
         //Campos que ya no se usan:
         //TUbicacion uf = of.createTUbicacion();
         //uf.setCalle(getCalle());
@@ -257,14 +259,14 @@ public class Persona extends Model implements Serializable {
     /**
      * @return the pais
      */
-    public String getPais() {
+    public CPais getPais() {
         return pais;
     }
 
     /**
      * @param pais the pais to set
      */
-    public void setPais(String pais) {
+    public void setPais(CPais pais) {
         this.pais = pais;
     }
 
@@ -302,5 +304,13 @@ public class Persona extends Model implements Serializable {
      */
     public void setLocalidad(String localidad) {
         this.localidad = localidad;
+    }
+
+    public UsoCFDIEnum getUsoCFDI() {
+        return usoCFDI;
+    }
+
+    public void setUsoCFDI(UsoCFDIEnum usoCFDI) {
+        this.usoCFDI = usoCFDI;
     }
 }

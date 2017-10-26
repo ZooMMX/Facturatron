@@ -118,17 +118,15 @@ public class Factura extends Model implements Serializable {
     @NotNull
     private Integer anoAprobacion;
     @NotNull
-    private String formaDePago               = "EFECTIVO";
+    private FormaDePago formaDePago          = FormaDePago.EFECTIVO;
     @NotNull
-    private CMetodoPago metodoDePago         = CMetodoPago.PUE;
+    private MetodoDePagoEnum metodoDePago    = MetodoDePagoEnum.PUE;
     @NotNull
     private BigDecimal subtotal              = new BigDecimal("0.0");
     @NotNull
     private BigDecimal total                 = new BigDecimal("0.0");
     @NotNull
-    private BigDecimal descuentoTasa0        = new BigDecimal("0.0");
-    @NotNull
-    private BigDecimal descuentoTasa16       = new BigDecimal("0.0");
+    private BigDecimal descuento             = new BigDecimal("0.0");
     @NotNull
     private Estado estadoComprobante     = Estado.VIGENTE;
     @NotNull
@@ -159,8 +157,7 @@ public class Factura extends Model implements Serializable {
     public Factura() {
         subtotal.setScale(2);
         total.setScale(2);
-        descuentoTasa0.setScale(2);
-        descuentoTasa16.setScale(2);
+
     }
     
   public static List createBeanCollection(){
@@ -338,28 +335,28 @@ public class Factura extends Model implements Serializable {
     /**
      * @return the formaDePago
      */
-    public String getFormaDePago() {
+    public FormaDePago getFormaDePago() {
         return formaDePago;
     }
 
     /**
      * @param formaDePago the formaDePago to set
      */
-    public void setFormaDePago(String formaDePago) {
+    public void setFormaDePago(FormaDePago formaDePago) {
         this.formaDePago = formaDePago;
     }
 
     /**
      * @return the formaDePago
      */
-    public CMetodoPago getMetodoDePago() {
+    public MetodoDePagoEnum getMetodoDePago() {
         return metodoDePago;
     }
 
     /**
      * @param formaDePago the formaDePago to set
      */
-    public void setMetodoDePago(CMetodoPago metodoDePago) {
+    public void setMetodoDePago(MetodoDePagoEnum metodoDePago) {
         this.metodoDePago = metodoDePago;
     }
 
@@ -458,34 +455,6 @@ public class Factura extends Model implements Serializable {
     }
 
     /**
-     * @return the descuento
-     */
-    public BigDecimal getDescuentoTasa0() {
-        return descuentoTasa0;
-    }
-
-    /**
-     * @param descuento the descuento to set
-     */
-    public void setDescuentoTasa0(BigDecimal descuento) {
-        this.descuentoTasa0 = descuento;
-    }
-
-    /**
-     * @return the descuento
-     */
-    public BigDecimal getDescuentoTasa16() {
-        return descuentoTasa16;
-    }
-
-    /**
-     * @param descuento the descuento to set
-     */
-    public void setDescuentoTasa16(BigDecimal descuento) {
-        this.descuentoTasa16 = descuento;
-    }
-
-    /**
      * @return the motivoDescuento
      */
     public String getMotivoDescuento() {
@@ -525,6 +494,20 @@ public class Factura extends Model implements Serializable {
      */
     public void setEmisorSucursal(Persona emisorSucursal) {
         this.emisorSucursal = emisorSucursal;
+    }
+
+    /**
+     * @return the descuento
+     */
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    /**
+     * @param descuento the descuento to set
+     */
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
     }
     
 }

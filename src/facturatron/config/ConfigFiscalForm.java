@@ -15,12 +15,41 @@ import facturatron.MVC.ViewInterface;
 import facturatron.cliente.ClienteDao;
 import java.util.Observable;
 import java.util.Observer;
+import mx.bigdata.sat.cfdi.v33.schema.CPais;
 
 /**
  *
  * @author Octavio
  */
 public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, ViewInterface<ConfigFiscalDao> {
+
+    /**
+     * @return the jComboBoxPais
+     */
+    public javax.swing.JComboBox<CPais> getjComboBoxPais() {
+        return jComboBoxPais;
+    }
+
+    /**
+     * @param jComboBoxPais the jComboBoxPais to set
+     */
+    public void setjComboBoxPais(javax.swing.JComboBox<CPais> jComboBoxPais) {
+        this.jComboBoxPais = jComboBoxPais;
+    }
+
+    /**
+     * @return the jComboBoxPaisSuc
+     */
+    public javax.swing.JComboBox<CPais> getjComboBoxPaisSuc() {
+        return jComboBoxPaisSuc;
+    }
+
+    /**
+     * @param jComboBoxPaisSuc the jComboBoxPaisSuc to set
+     */
+    public void setjComboBoxPaisSuc(javax.swing.JComboBox<CPais> jComboBoxPaisSuc) {
+        this.jComboBoxPaisSuc = jComboBoxPaisSuc;
+    }
 
     ConfigFiscalDao model;
 
@@ -47,7 +76,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         getTxtNoExterior()  .setText(contrib.getNoExterior());
         getTxtNoInterior()  .setText(contrib.getNoInterior());
         getTxtNombre()      .setText(contrib.getNombre());
-        getTxtPais()        .setText(contrib.getPais());
+        getjComboBoxPais()  .setSelectedItem(contrib.getPais());
         getTxtRfc()         .setText(contrib.getRfc());
         getTxtTelefono()    .setText(contrib.getTelefono());
         getTxtRegimen()     .setText(contrib.getRegimen());
@@ -63,7 +92,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
             getTxtNoExteriorSuc()  .setText(contribSuc.getNoExterior());
             getTxtNoInteriorSuc()  .setText(contribSuc.getNoInterior());
             getTxtNombreSuc()      .setText(contrib.getNombre());
-            getTxtPaisSuc()        .setText(contribSuc.getPais());
+            getjComboBoxPaisSuc()  .setSelectedItem(contribSuc.getPais());
             getTxtRfcSuc()         .setText(contrib.getRfc());
             getTxtTelefonoSuc()    .setText(contribSuc.getTelefono());
         }
@@ -96,7 +125,6 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        txtPais = new javax.swing.JTextField();
         txtNoInterior = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         txtNoExterior = new javax.swing.JTextField();
@@ -111,6 +139,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         jLabel30 = new javax.swing.JLabel();
         txtRegimen = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jComboBoxPais = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -122,7 +151,6 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        txtPaisSuc = new javax.swing.JTextField();
         txtNoExteriorSuc = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         txtNoInteriorSuc = new javax.swing.JTextField();
@@ -134,6 +162,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         txtTelefonoSuc = new javax.swing.JTextField();
         txtRfcSuc = new javax.swing.JTextField();
         txtNombreSuc = new javax.swing.JTextField();
+        jComboBoxPaisSuc = new javax.swing.JComboBox<>();
         jXTitledPanel3 = new org.jdesktop.swingx.JXTitledPanel();
         btnGuardar = new org.jdesktop.swingx.JXButton();
 
@@ -239,6 +268,9 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
         jLabel1.setText("Usar valor del catálogo c_RegimenFiscal ");
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        jComboBoxPais.setModel(new javax.swing.DefaultComboBoxModel(CPais.values()));
+        jComboBoxPais.setSelectedItem(CPais.MEX);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -262,7 +294,6 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtRegimen)
-                    .addComponent(txtPais)
                     .addComponent(txtEstado)
                     .addComponent(txtMunicipio, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtCodigoPostal)
@@ -277,7 +308,8 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                         .addGap(18, 18, 18)
                         .addComponent(txtNoInterior, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE))
                     .addComponent(txtRfc)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBoxPais, 0, 569, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -323,7 +355,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(txtPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel30)
@@ -401,6 +433,9 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
             }
         });
 
+        jComboBoxPaisSuc.setModel(new javax.swing.DefaultComboBoxModel(CPais.values()));
+        jComboBoxPaisSuc.setSelectedItem(CPais.MEX);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -420,9 +455,8 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                     .addComponent(jLabel27)
                     .addComponent(jLabel28)
                     .addComponent(jLabel24))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPaisSuc)
                     .addComponent(txtEstadoSuc)
                     .addComponent(txtMunicipioSuc, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtCodigoPostalSuc)
@@ -436,7 +470,8 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel29)
                         .addGap(18, 18, 18)
-                        .addComponent(txtNoInteriorSuc)))
+                        .addComponent(txtNoInteriorSuc, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
+                    .addComponent(jComboBoxPaisSuc, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -466,9 +501,9 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                     .addComponent(txtColoniaSuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel24))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel25)
-                    .addComponent(txtMunicipioSuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMunicipioSuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel26)
@@ -482,8 +517,8 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel28)
-                    .addComponent(txtPaisSuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jComboBoxPaisSuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 59, Short.MAX_VALUE))
         );
 
         jideTabbedPane1.addTab("Sucursal", jPanel2);
@@ -600,6 +635,8 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXButton btnGuardar;
+    private javax.swing.JComboBox<CPais> jComboBoxPais;
+    private javax.swing.JComboBox<CPais> jComboBoxPaisSuc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -648,8 +685,6 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     private javax.swing.JTextField txtNoInteriorSuc;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNombreSuc;
-    private javax.swing.JTextField txtPais;
-    private javax.swing.JTextField txtPaisSuc;
     private javax.swing.JTextField txtRegimen;
     private javax.swing.JTextField txtRfc;
     private javax.swing.JTextField txtRfcSuc;
@@ -720,13 +755,6 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
      */
     public javax.swing.JTextField getTxtNombre() {
         return txtNombre;
-    }
-
-    /**
-     * @return the txtPais
-     */
-    public javax.swing.JTextField getTxtPais() {
-        return txtPais;
     }
 
     /**
@@ -808,14 +836,7 @@ public class ConfigFiscalForm extends javax.swing.JPanel implements Observer, Vi
     public javax.swing.JTextField getTxtNombreSuc() {
         return txtNombreSuc;
     }
-
-    /**
-     * @return the txtPaisSuc
-     */
-    public javax.swing.JTextField getTxtPaisSuc() {
-        return txtPaisSuc;
-    }
-
+    
     /**
      * @return the txtRfcSuc
      */

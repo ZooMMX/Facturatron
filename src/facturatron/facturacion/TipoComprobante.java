@@ -25,15 +25,17 @@ import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
  * @author octavioruizcastillo
  */
 public enum TipoComprobante {
-    FACTURA("Factura", EfectoComprobante.INGRESO), 
-    NOTA_DE_CREDITO("Nota de crédito", EfectoComprobante.EGRESO);
+    FACTURA("Factura", EfectoComprobante.INGRESO, CTipoDeComprobante.I), 
+    NOTA_DE_CREDITO("Nota de crédito", EfectoComprobante.EGRESO, CTipoDeComprobante.E);
     
     private final EfectoComprobante efecto;
     private final String descripcion;
+    private final CTipoDeComprobante tipoSat;
     
-    TipoComprobante(String d, EfectoComprobante e) {
+    TipoComprobante(String d, EfectoComprobante e, CTipoDeComprobante tipoSat) {
         efecto = e;
         descripcion = d;
+        this.tipoSat = tipoSat;
     }      
     
     public CTipoDeComprobante getEfectoComprobante() throws Exception {
@@ -47,6 +49,24 @@ public enum TipoComprobante {
             default:
                 throw new Exception("Tipo de comprobante inválido");
         }
+    }
+    
+    public static TipoComprobante fromSatConstant(String text) {
+        for (TipoComprobante b : TipoComprobante.values()) {
+          if (b.tipoSat == CTipoDeComprobante.fromValue(text)) {
+            return b;
+          }
+        }
+        return null;
+    }
+    
+    public static TipoComprobante fromSatConstant(CTipoDeComprobante tipo) {
+        for (TipoComprobante b : TipoComprobante.values()) {
+          if (b.tipoSat == tipo) {
+            return b;
+          }
+        }
+        return null;
     }
     
     @Override

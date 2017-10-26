@@ -15,6 +15,10 @@ import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Conceptos.Concepto;
 import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
 import facturatron.lib.entities.ConceptoTron;
 import java.math.MathContext;
+import java.util.HashMap;
+import java.util.Map;
+import mx.bigdata.sat.cfdi.v33.schema.CTipoFactor;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
 
 /**
  *
@@ -23,14 +27,18 @@ import java.math.MathContext;
 public class Renglon extends Model implements Serializable {
     private Integer id;
     private String unidad = "";
+    private String claveUnidadSat = "";
     private String noIdentificacion = "";
+    private String claveProductoSat = "";
     private BigDecimal importe  = new BigDecimal(0d);
+    private BigDecimal subtotal  = new BigDecimal(0d);
     private BigDecimal cantidad = new BigDecimal(0d);
     private String descripcion = "";
     private BigDecimal valorUniario = new BigDecimal(0d);
     private Boolean tasa0 = true;
     private BigDecimal tasaIEPS = new BigDecimal(0d);
     private BigDecimal ieps     = new BigDecimal(0d);
+    private BigDecimal descuento= new BigDecimal(0d);
 
     public Renglon() {
         importe.setScale(2);
@@ -38,6 +46,7 @@ public class Renglon extends Model implements Serializable {
         valorUniario.setScale(2);
         tasaIEPS.setScale(2);
         ieps.setScale(2);
+        subtotal.setScale(2);
     }
 
     public static List createBeanCollection(){
@@ -82,6 +91,12 @@ public class Renglon extends Model implements Serializable {
         c1.setDescripcion(getDescripcion());
         //c1.setValorUnitario(new BigDecimal(getValorUniario()).round(mc));
         c1.setValorUnitario(getValorUniario());
+        c1.setClaveUnidad( getUnidad() );
+        c1.setClaveProdServ( getNoIdentificacion() );
+        c1.setImpuestos(getImpuestos());
+        c1.setClaveProdServ(getClaveProductoSat());
+        c1.setClaveUnidad(getClaveUnidadSat());
+        c1.setDescuento(getDescuento());
         return c1;
     }
 
@@ -101,6 +116,10 @@ public class Renglon extends Model implements Serializable {
         String etiquetaIEPS= getTasaIEPS().equals(BigDecimal.ZERO) ? "-" : getTasaIEPS().toString() ;
         ct1.setEtiquetaImpuestos(etiquetaIVA+"/"+etiquetaIEPS);
         ct1.setIEPS(getIEPS());
+        ct1.setClaveProdServ(c1.getClaveProdServ());
+        ct1.setClaveUnidad(c1.getClaveUnidad());
+        ct1.setImpuestos(c1.getImpuestos());
+        ct1.setDescuento(c1.getDescuento().setScale(2,RoundingMode.HALF_EVEN));
 
         return ct1;
     }
@@ -226,7 +245,7 @@ public class Renglon extends Model implements Serializable {
      * @return the ieps
      */
     public BigDecimal getIEPS() {
-        return ieps;
+        return getIeps();
     }
 
     /**
@@ -234,7 +253,7 @@ public class Renglon extends Model implements Serializable {
      */
     public void setIEPS(BigDecimal ieps) {
         ieps.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-        this.ieps = ieps;
+        this.setIeps(ieps);
     }
 
     private void updateIEPS() {
@@ -244,4 +263,132 @@ public class Renglon extends Model implements Serializable {
         BigDecimal ieps1 = getValorUniario().multiply(getCantidad()).multiply( factorIEPS );
         this.setIEPS( ieps1 );
     }
+    
+    //Calcula el IVA de este renglón
+    public BigDecimal getIVA() {
+        MathContext mc = MathContext.DECIMAL64;
+        if(getTasa0()) {
+              return new BigDecimal("0.00", mc);
+          } else {
+              return getImporte().multiply(new BigDecimal("0.16"), mc);
+          }               
+    }
+
+    private Concepto.Impuestos getImpuestos() {
+        MathContext mc = MathContext.DECIMAL64;
+        
+        ObjectFactory of = new ObjectFactory();
+        Concepto.Impuestos imps = of.createComprobanteConceptosConceptoImpuestos();
+        Concepto.Impuestos.Traslados trs = of.createComprobanteConceptosConceptoImpuestosTraslados();
+        List<Concepto.Impuestos.Traslados.Traslado> list = trs.getTraslado();
+
+        Concepto.Impuestos.Traslados.Traslado t1 = of.createComprobanteConceptosConceptoImpuestosTrasladosTraslado();
+        
+        //Establezco la escala "6" con el fin de que en el XML las cantidades aparezcan
+        //  con los 6 dígitos decimales que establece el SAT en el Anexo 20, sin embargo
+        //  es posible que algunas de las operaciones no se hagan con una precisión de más
+        //  de dos dígitos
+        //Update Oct/2017. Las nuevas reglas indican que se debe establecer como máximo el
+        //  número de deciimales que soporta la moneda, en pesos mexicanos eso es 2
+        //Agrega IVA
+        if(getTasa0()) {   
+            t1.setBase(getImporte().setScale(2, RoundingMode.HALF_EVEN));
+            t1.setImporte(new BigDecimal(0d).setScale(2, RoundingMode.HALF_EVEN));
+            t1.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
+            t1.setTipoFactor(CTipoFactor.TASA);
+            t1.setTasaOCuota(new BigDecimal("0.00").setScale(6, RoundingMode.HALF_EVEN));        
+            list.add(t1);
+        } else {            
+            t1.setBase(getImporte().setScale(2, RoundingMode.HALF_EVEN));
+            t1.setImporte(getIVA().setScale(2, RoundingMode.HALF_EVEN));
+            t1.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
+            t1.setTipoFactor(CTipoFactor.TASA);
+            t1.setTasaOCuota(new BigDecimal("0.1600").setScale(6, RoundingMode.HALF_EVEN));
+            list.add(t1);
+        }
+        //Agrega IEPS
+        if(!getTasaIEPS().equals(BigDecimal.ZERO)) {
+            Concepto.Impuestos.Traslados.Traslado t2 = of.createComprobanteConceptosConceptoImpuestosTrasladosTraslado();
+            t1.setBase(getImporte().setScale(2, RoundingMode.HALF_EVEN));
+            t2.setImpuesto("003"); // Catálogo c_Impuesto: 003 = IEPS
+            t2.setImporte(getIEPS().setScale(6,RoundingMode.HALF_EVEN));
+            t2.setTasaOCuota(getTasaIEPS().divide(new BigDecimal("100", mc)).setScale(6,RoundingMode.HALF_EVEN)); //Lo divido entre 100 porque en CFDIv3.3 Tasa en realidad es un factor
+            t2.setTipoFactor(CTipoFactor.TASA);
+            list.add(t2);
+        }
+       
+        imps.setTraslados(trs);        
+        return imps;
+     }
+
+    /**
+     * @return the claveUnidadSat
+     */
+    public String getClaveUnidadSat() {
+        return claveUnidadSat;
+    }
+
+    /**
+     * @param claveUnidadSat the claveUnidadSat to set
+     */
+    public void setClaveUnidadSat(String claveUnidadSat) {
+        this.claveUnidadSat = claveUnidadSat;
+    }
+
+    /**
+     * @return the claveProductoSat
+     */
+    public String getClaveProductoSat() {
+        return claveProductoSat;
+    }
+
+    /**
+     * @param claveProductoSat the claveProductoSat to set
+     */
+    public void setClaveProductoSat(String claveProductoSat) {
+        this.claveProductoSat = claveProductoSat;
+    }
+
+    /**
+     * @return the ieps
+     */
+    public BigDecimal getIeps() {
+        return ieps;
+    }
+
+    /**
+     * @param ieps the ieps to set
+     */
+    public void setIeps(BigDecimal ieps) {
+        this.ieps = ieps;
+    }
+
+    /**
+     * @return the descuento
+     */
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    /**
+     * @param descuento the descuento to set
+     */
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+
+    /**
+     * @return the subtotal
+     */
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    /**
+     * @param subtotal the subtotal to set
+     */
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+     
 }

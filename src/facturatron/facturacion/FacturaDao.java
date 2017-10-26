@@ -9,10 +9,14 @@ package facturatron.facturacion;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
+import facturatron.Dominio.FormaDePago;
+import facturatron.Dominio.MetodoDePagoEnum;
 import facturatron.Dominio.Persona;
 import facturatron.Dominio.Renglon;
+import facturatron.Dominio.UsoCFDIEnum;
 import facturatron.MVC.DAO;
 import facturatron.MVC.JDBCDAOSupport;
+import facturatron.Misc;
 import facturatron.Principal.Main;
 import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
@@ -58,9 +62,13 @@ import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.xml.bind.MarshalException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import mx.bigdata.sat.cfdi.CFDv33;
 import mx.bigdata.sat.cfdi.v33.schema.CMetodoPago;
+import mx.bigdata.sat.cfdi.v33.schema.CMoneda;
 import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
 import mx.bigdata.sat.cfdi.v33.schema.CTipoFactor;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
@@ -68,6 +76,7 @@ import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos.Traslados;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos.Traslados.Traslado;
 import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
+import mx.bigdata.sat.common.comercioexterior.schema.CINCOTERM;
 import org.codehaus.groovy.tools.shell.ParseCode;
 
 /**
@@ -150,7 +159,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             setCertificado(cfd.getComprobante().getCertificado());
             setSello(comp.getSello());
             setXml(cfd.getXML());
-            setFolioFiscal(cfd.getComprobante().getFolioFiscal());
+             setFolioFiscal(cfd.getComprobante().getFolioFiscal());
             
             return cfd;
         } catch (URISyntaxException u) {
@@ -182,21 +191,21 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         dCal.set(Calendar.SECOND, tCal.get(Calendar.SECOND));
         dCal.set(Calendar.MILLISECOND, tCal.get(Calendar.MILLISECOND));       
        
-        GregorianCalendar gc = new GregorianCalendar();
-        gc.setTime(dCal.getTime());        
-        comp.setFecha(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+        XMLGregorianCalendar xmlgc = Misc.dateToXMLGregorianCalendar(dCal.getTime());        
+        comp.setFecha(xmlgc);
         //LOGGER.info("Fecha y Hora del comprobante "  + dCal.getTime().toString());
         comp.setSerie(getSerie());
         comp.setFolio(String.valueOf(getFolio()));
-        comp.setFormaPago(getFormaDePago());
-        comp.setMetodoPago(getMetodoDePago());
-        comp.setLugarExpedicion(getEmisor().getMunicipio()+", "+getEmisor().getEstado());
+        comp.setFormaPago(getFormaDePago().toSatConstant());
+        comp.setMetodoPago(getMetodoDePago().getSatConstant());
+        comp.setLugarExpedicion(getEmisor().getCodigoPostal());
         comp.setSubTotal(getSubtotal().setScale(2,RoundingMode.HALF_EVEN));
         comp.setTotal(getTotal().setScale(2,RoundingMode.HALF_EVEN));
-        comp.setDescuento(getDescuentoTasa0().add(getDescuentoTasa16()));
+        comp.setDescuento(getDescuento());
         comp.setTipoDeComprobante(getTipoDeComprobante());
         comp.setObservaciones(getObservaciones());
         comp.setTicketInfo(getTicketInfo());
+        comp.setMoneda(CMoneda.MXN);
         Persona emSucursal = getEmisorSucursal();
         if(emSucursal.getEstado().isEmpty()) { emSucursal = null; }
         comp.setEmisor(getEmisor().toEmisor(emSucursal));
@@ -237,20 +246,28 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         //  con los 6 dígitos decimales que establece el SAT en el Anexo 20, sin embargo
         //  es posible que algunas de las operaciones no se hagan con una precisión de más
         //  de dos dígitos
-        t1.setImporte(getIvaTrasladado().setScale(6, RoundingMode.HALF_EVEN));
-        t1.setImpuesto("IVA");
-        t1.setTipoFactor(CTipoFactor.TASA);
-        t1.setTasaOCuota(new BigDecimal("16.00").setScale(6, RoundingMode.HALF_EVEN));
-        list.add(t1);
-        t2.setImporte(new BigDecimal(0d).setScale(6, RoundingMode.HALF_EVEN));
-        t2.setImpuesto("IVA");
-        t2.setTipoFactor(CTipoFactor.TASA);
-        t2.setTasaOCuota(new BigDecimal("0.00").setScale(6, RoundingMode.HALF_EVEN));        
-        list.add(t2);
+        //Update Oct/2017. Las nuevas reglas indican que se debe establecer como máximo el
+        //  número de deciimales que soporta la moneda, en pesos mexicanos eso es 2
+        if(getIvaTrasladado().compareTo(BigDecimal.ZERO) > 0) {
+            t1.setImporte(getIvaTrasladado().setScale(2, RoundingMode.HALF_EVEN));
+            t1.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
+            t1.setTipoFactor(CTipoFactor.TASA);
+            t1.setTasaOCuota(new BigDecimal("0.1600").setScale(6, RoundingMode.HALF_EVEN));
+            list.add(t1);
+        }
+        //¿Algún renglón tiene tasa 0%? entonces agregamos este concepto al listado global de impuestos
+        //  Se descartan los renglones en los que la cantidad sea CERO 0.
+        if(getRenglones().stream().anyMatch(predicate->predicate.getCantidad().compareTo(BigDecimal.ZERO)>0&predicate.getTasa0())) { 
+            t2.setImporte(new BigDecimal(0d).setScale(2, RoundingMode.HALF_EVEN));
+            t2.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
+            t2.setTipoFactor(CTipoFactor.TASA);
+            t2.setTasaOCuota(new BigDecimal("0.00").setScale(6, RoundingMode.HALF_EVEN));        
+            list.add(t2);
+        }
         list.addAll(getIEPSDesglosado());
-        
+       
         imps.setTraslados(trs);
-        imps.setTotalImpuestosTrasladados(getIvaTrasladado().add( getIEPSTrasladado() ).setScale( 6, RoundingMode.HALF_EVEN ));
+        imps.setTotalImpuestosTrasladados(getIvaTrasladado().add( getIEPSTrasladado() ).setScale( 2, RoundingMode.HALF_EVEN ));
         return imps;
      }
      
@@ -274,7 +291,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
              if(ieps.getKey().equals(BigDecimal.ZERO)) continue;
              
              Traslado t = of.createComprobanteImpuestosTrasladosTraslado();
-             t.setImpuesto("IEPS");
+             t.setImpuesto("003"); // Catálogo c_Impuesto: 003 = IEPS
              t.setImporte(ieps.getValue().setScale(6,RoundingMode.HALF_EVEN));
              t.setTasaOCuota(ieps.getKey().setScale(6,RoundingMode.HALF_EVEN));
              t.setTipoFactor(CTipoFactor.TASA);
@@ -310,20 +327,6 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         notifyObservers();
      }
 
-    @Override
-     public void setDescuentoTasa0(BigDecimal descuento) {
-         super.setDescuentoTasa0(descuento);
-         setChanged();
-         notifyObservers();
-     }
-
-    @Override
-     public void setDescuentoTasa16(BigDecimal descuento) {
-         super.setDescuentoTasa16(descuento);
-         setChanged();
-         notifyObservers();
-     }
-
      @Override
      public void setReceptor(Persona receptor) {
         super.setReceptor(receptor);
@@ -332,7 +335,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
      }
      
      @Override
-     public void setMetodoDePago(CMetodoPago metodoDePago) {
+     public void setMetodoDePago(MetodoDePagoEnum metodoDePago) {
         super.setMetodoDePago(metodoDePago);
         setChanged();
         notifyObservers();
@@ -376,12 +379,11 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setNoCertificado(rs.getString("noCertificado"));
                 //bean.setNoAprobacion(BigInteger.valueOf(rs.getInt("noAprobacion")));
                 //bean.setAnoAprobacion(rs.getInt("anoAprobacion"));
-                bean.setFormaDePago(rs.getString("formaDePago"));
+                bean.setFormaDePago(FormaDePago.valueOf( rs.getString("formaDePago") ));
+                bean.setDescuento( rs.getBigDecimal("descuento") );
                 //bean.setMetodoDePago(rs.getString( "metodoDePago" ));
                 bean.setSubtotal(rs.getBigDecimal("subtotal"));
                 bean.setTotal(rs.getBigDecimal("total"));
-                bean.setDescuentoTasa0(rs.getBigDecimal("descuentoTasa0"));
-                bean.setDescuentoTasa16(rs.getBigDecimal("descuentoTasa16"));
                 //Tomo la primera letra para hacerlo retrocompatible, antes se usaba "INGRESO" ahora "I", "EGRESO" ahora "E", etc.
                 CTipoDeComprobante tipo = CTipoDeComprobante.fromValue(rs.getString("tipoDeComprobante").substring(0,1)); 
                 bean.setTipoDeComprobante(tipo);
@@ -394,6 +396,11 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE")?Estado.VIGENTE:Estado.CANCELADO);
                 bean.setObservaciones(rs.getString("observaciones"));
                 bean.setFolioFiscal(rs.getString("folioFiscal"));
+                //El USO del CFDI se guarda a nivel de comprobante y luego se aplica al receptor
+                String usoCFDIString = rs.getString("USO_CFDI");
+                //Por default si un registro no contiene este valor (CFDIv32) entonces se pondrá como gastos en general = D_03
+                UsoCFDIEnum usoCFDI = usoCFDIString == null ? UsoCFDIEnum.D_03 : UsoCFDIEnum.valueOf(usoCFDIString);
+                bean.getReceptor().setUsoCFDI( usoCFDI );
                 ret.add(bean);
 
              }
@@ -443,8 +450,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             timbrado = true; //Necesario para posible rollback
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
                     "(version,fecha,serie,folio,sello,noCertificado," +
-                    "formaDePago,subtotal,total,descuentoTasa0,descuentoTasa16,tipoDeComprobante,idEmisor, idReceptor," +
-                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora, folioFiscal) " +
+                    "formaDePago,subtotal,total,descuento,tipoDeComprobante,idEmisor, idReceptor," +
+                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora, folioFiscal, USO_CFDI) " +
                     "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             ps.setString(1, getVersion());
@@ -453,22 +460,22 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             ps.setLong(4, getFolio().longValue());
             ps.setString(5, getSello());
             ps.setString(6, getNoCertificado());
-            ps.setString(7, getFormaDePago());
+            ps.setString(7, getFormaDePago().name());
             ps.setBigDecimal(8, getSubtotal());
             ps.setBigDecimal(9, getTotal());
-            ps.setBigDecimal(10, getDescuentoTasa0());
-            ps.setBigDecimal(11, getDescuentoTasa16());
-            ps.setString(12, getTipoDeComprobante().value());
-            ps.setInt(13, getEmisor().getId());
-            ps.setInt(14, getReceptor().getId());
-            ps.setBigDecimal(15, getIvaTrasladado());
-            ps.setString(16, getCertificado());
-            ps.setString(17, getMotivoDescuento());
-            ps.setString(18, getXml());
-            ps.setString(19, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
-            ps.setString(20, getObservaciones());
-            ps.setTime  (21, getHora());
-            ps.setString(22, getFolioFiscal());
+            ps.setBigDecimal(10, getDescuento());
+            ps.setString(11, getTipoDeComprobante().value());
+            ps.setInt(12, getEmisor().getId());
+            ps.setInt(13, getReceptor().getId());
+            ps.setBigDecimal(14, getIvaTrasladado());
+            ps.setString(15, getCertificado());
+            ps.setString(16, getMotivoDescuento());
+            ps.setString(17, getXml());
+            ps.setString(18, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
+            ps.setString(19, getObservaciones());
+            ps.setTime  (20, getHora());
+            ps.setString(21, getFolioFiscal()); 
+            ps.setString(22, getReceptor().getUsoCFDI().getSatConstant().name());  // USO CFDI es un atributo de Receptor pero yo lo guardo a nivel de Comprobante
             //ps.setString(24, getMetodoDePago());
 
             ps.execute();
@@ -482,7 +489,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             for (Renglon renglon : getRenglones()) {  //
                 if(renglon.getImporte().compareTo(new BigDecimal(0d))<=0) { continue; }
                 ps = bd.getCon().prepareStatement("insert into concepto (idComprobante,unidad,noIdentificacion,importe," +
-                        "cantidad,descripcion,valorunitario,tasa0) VALUES (?,?,?,?,?,?,?,?)");
+                        "cantidad,descripcion,valorunitario,tasa0,descuento,CLAVE_UNIDAD_SAT,CLAVE_PRODUCTO_SAT) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
                 ps.setInt(1, idfactura);
                 ps.setString(2, renglon.getUnidad());
                 ps.setString(3, renglon.getNoIdentificacion());
@@ -491,6 +498,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 ps.setString(6, renglon.getDescripcion());
                 ps.setBigDecimal(7, renglon.getValorUniario());
                 ps.setInt(8, renglon.getTasa0()?1:0);
+                ps.setBigDecimal(9, renglon.getDescuento());
+                ps.setString(10, renglon.getClaveUnidadSat());
+                ps.setString(11, renglon.getClaveProductoSat());
                 ps.execute();
             }
             //Distribuir (xml, pdf, mail) utilizando el handler apropiado para el PAC seleccionado
@@ -503,6 +513,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             if(bd != null && timbrado) { rollBackTimbre(this); }
             throw ex;
         } catch (Exception ex) {
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Error al sellar, timbrar, guardar o hacer el PDF de la factura!", ex);
             if(bd != null && timbrado) { rollBackTimbre(this); }
             throw ex;
         } finally {
@@ -547,6 +558,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         return null;
     }
 
+    //Recupera un Comprobante Fiscal de la Base de datos
     @Override
     public Factura findBy(Integer id) {
      try {
@@ -563,11 +575,10 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setFolio(BigInteger.valueOf(rs.getLong("folio")));
             dao.setSello(rs.getString("sello"));
             dao.setNoCertificado(rs.getString("noCertificado"));
-            dao.setFormaDePago(rs.getString("formaDePago"));
+            dao.setFormaDePago(FormaDePago.valueOf( rs.getString("formaDePago") ));
             dao.setSubtotal(rs.getBigDecimal("subtotal"));
             dao.setTotal(rs.getBigDecimal("total"));
-            dao.setDescuentoTasa0(rs.getBigDecimal("descuentoTasa0"));
-            dao.setDescuentoTasa16(rs.getBigDecimal("descuentoTasa16"));
+            dao.setDescuento(rs.getBigDecimal("descuento"));
             //Tomo la primera letra para hacerlo retrocompatible, antes se usaba "INGRESO" ahora "I", "EGRESO" ahora "E", etc.
             CTipoDeComprobante tipo = CTipoDeComprobante.fromValue(rs.getString("tipoDeComprobante").substring(0,1)); 
             dao.setTipoDeComprobante(tipo);
@@ -580,6 +591,11 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE")?Estado.VIGENTE:Estado.CANCELADO);
             dao.setObservaciones(rs.getString("observaciones"));
             dao.setFolioFiscal(rs.getString("folioFiscal"));
+            //El USO del CFDI se guarda a nivel de comprobante y luego se aplica al receptor
+            String usoCFDIString = rs.getString("USO_CFDI");
+            //Por default si un registro no contiene este valor (CFDIv32) entonces se pondrá como gastos en general = D_03
+            UsoCFDIEnum usoCFDI = usoCFDIString == null ? UsoCFDIEnum.D_03 : UsoCFDIEnum.valueOf(usoCFDIString);
+            dao.getReceptor().setUsoCFDI( usoCFDI );
 
             rs = bd.getStmt().executeQuery("select * from concepto where id = "+id);//
             ArrayList <Renglon> renglones = new ArrayList <Renglon>();
@@ -594,6 +610,9 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 rb.setDescripcion(rs.getString("descripcion"));
                 rb.setValorUniario(rs.getBigDecimal("valorUnitario"));
                 rb.setTasa0(rs.getInt("tasa0")==1);
+                rb.setDescuento(rs.getBigDecimal("descuento"));
+                rb.setClaveUnidadSat(rs.getString("CLAVE_UNIDAD_SAT"));
+                rb.setClaveProductoSat(rs.getString("CLAVE_UNIDAD_SAT"));
                 renglones.add(rb);
             }
             dao.setRenglones(renglones);
