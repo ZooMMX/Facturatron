@@ -18,7 +18,7 @@ public class MetodoDePagoTest {
      */
     @Test
     public void testEnumMetodoDePago() throws Exception {
-        MetodoDePago mp = MetodoDePago.DEPOSITO;
+        MetodoDePagoEnum mp = MetodoDePagoEnum.PPD;
         /*if(mp.toString() != "Depósito en cuenta") {
             throw new Exception("Error en test, msj. de enum incorrecto");
         }*/

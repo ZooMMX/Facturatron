@@ -14,14 +14,19 @@ import com.finkok.stamp.IncidenciaArray;
  */
 public class FinkokIncidenciasException extends PACException {
     IncidenciaArray incidenciaArray;
+    String mensaje;
     public FinkokIncidenciasException(IncidenciaArray ia) {
         super("Incidencia envíada por el proveedor Finkok al intentar timbrar la factura");
-        incidenciaArray = ia;
+        mensaje="<html>Ocurrieron uno o más errores:<br>1. "+ia.getIncidencia().get(0).getMensajeIncidencia().getValue()+"<br>";
+        for(int i=1;i<ia.getIncidencia().size();i++){
+            mensaje+=(i+1)+". "+ia.getIncidencia().get(i).getMensajeIncidencia().getValue()+"<br>";
+        }
+        mensaje+="</html>";
     }
     
     @Override
     public String getMessage() {
-        return incidenciaArray.getIncidencia().get(0).getMensajeIncidencia().getValue();
+        return mensaje;
     }
     
 }

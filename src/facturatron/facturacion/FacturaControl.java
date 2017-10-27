@@ -130,6 +130,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       configFiscal.load();
       dao.setSerie(configFiscal.getSerie());
       dao.setFolio(configFiscal.getFolioActual());
+      dao.getEmisor().setRegimen(configFiscal.getContribuyente().getRegimen());
 
       return dao;
   }
@@ -304,6 +305,16 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   
   public void btnGuardar(){
 
+    if(getModel().getEmisor().getRegimen()==null||getModel().getEmisor().getRegimen().isEmpty()||getModel().getEmisor().getRegimen().contentEquals("NA")){
+        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "El régimen fiscal del emisor no debe estar vacío!");
+        return;
+    }
+    
+    if(getModel().getReceptor().getRegimen()==null||getModel().getReceptor().getRegimen().isEmpty()||getModel().getReceptor().getRegimen().contentEquals("NA")){
+        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "El régimen fiscal del receptor no debe estar vacío!");
+        return;
+    }
+        
     if(!validarForm()) return;
     notifyBusy();    
     timbrado = false;
@@ -328,6 +339,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
 
         getView().getBtnGuardar().setEnabled(false);
         getModel().persist();
+        
         
         timbrado = true;
         marcarTicketsFacturados(getModel().getId());

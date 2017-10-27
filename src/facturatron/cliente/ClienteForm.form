@@ -29,7 +29,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jXTitledPanel1" max="32767" attributes="0"/>
-                  <Component id="jXTitledPanel3" alignment="0" pref="497" max="32767" attributes="2"/>
+                  <Component id="jXTitledPanel3" alignment="0" pref="759" max="32767" attributes="2"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -84,7 +84,6 @@
                               <Component id="txtTelefono" max="32767" attributes="1"/>
                               <Component id="txtCalle" max="32767" attributes="1"/>
                               <Component id="txtColonia" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtCorreoElectronico" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="txtNoExterior" pref="200" max="32767" attributes="2"/>
@@ -102,6 +101,13 @@
                                   </Group>
                               </Group>
                               <Component id="jComboBoxPais" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="txtCorreoElectronico" min="-2" pref="383" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txtRegimen" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -118,7 +124,7 @@
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtRfc" pref="90" max="32767" attributes="1"/>
+                                  <Component id="txtRfc" pref="352" max="32767" attributes="1"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel6" min="-2" max="-2" attributes="1"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -191,6 +197,8 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txtCorreoElectronico" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtRegimen" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="23" max="32767" attributes="0"/>
               </Group>
@@ -428,6 +436,16 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;CPais&gt;"/>
           </AuxValues>
         </Component>
+        <Component class="javax.swing.JLabel" name="jLabel14">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="R&#xe9;gimen:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtRegimen">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtRegimenActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="org.jdesktop.swingx.JXTitledPanel" name="jXTitledPanel1">
@@ -441,7 +459,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane2" alignment="0" pref="481" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" alignment="0" pref="743" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>

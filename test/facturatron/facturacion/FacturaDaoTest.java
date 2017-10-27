@@ -154,7 +154,7 @@ public class FacturaDaoTest {
         System.out.println("setDescuentoTasa0");
         BigDecimal descuento = null;
         FacturaDao instance = new FacturaDao();
-        instance.setDescuentoTasa0(descuento);
+        instance.setDescuento(descuento);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -167,7 +167,7 @@ public class FacturaDaoTest {
         System.out.println("setDescuentoTasa16");
         BigDecimal descuento = null;
         FacturaDao instance = new FacturaDao();
-        instance.setDescuentoTasa16(descuento);
+        instance.setDescuento(descuento);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

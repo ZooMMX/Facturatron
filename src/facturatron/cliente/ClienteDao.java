@@ -180,9 +180,15 @@ public class ClienteDao extends Persona implements DAO<Integer,Persona> {
             this.setEstado(rs.getString("estado"));
             this.setNoExterior(rs.getString("noExterior"));
             this.setNoInterior(rs.getString("noInterior"));
-            String pais = rs.getString("pais").equalsIgnoreCase("México")?"MEX":rs.getString("pais"); //Por retrocompatibilidad, antes "MEX" era "México"
-            pais = pais.equalsIgnoreCase("Mexico")?"MEX":pais; //Por retrocompatibilidad, antes "MEX" era "México"
-            pais = pais.isEmpty() ? "MEX" : pais;
+            String pais;
+            //País viene vacío?
+            pais=rs.getString("pais")==null?"MEX":rs.getString("pais");          
+            
+            //País viene como México o Mexico? (versiones viejas)
+            pais = pais.equalsIgnoreCase("México")?"MEX":pais;
+            pais = pais.equalsIgnoreCase("Mexico")?"MEX":pais; //Por retrocompatibilidad, antes "MEX" era "México"  
+             //Por retrocompatibilidad, antes "MEX" era "México"
+            
             this.setPais(CPais.valueOf(pais));
             this.setRegimen(rs.getString("regimen"));
             this.setCorreoElectronico(rs.getString("correoelectronico"));

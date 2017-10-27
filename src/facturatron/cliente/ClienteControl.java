@@ -72,6 +72,7 @@ public class ClienteControl extends Controller<ClienteDao, ClienteForm> {
         getModel().setNoInterior(getView().getTxtNoInterior().getText());
         getModel().setPais((CPais) getView().getjComboBoxPais().getSelectedItem());
         getModel().setCorreoElectronico(getView().getTxtCorreoElectronico().getText());
+        getModel().setRegimen(getView().getTxtRegimen().getText());
 
         try {
             getModel().persist();

@@ -23,6 +23,20 @@ import mx.bigdata.sat.cfdi.v33.schema.CPais;
 public class ClienteForm extends javax.swing.JPanel implements Observer {
 
     /**
+     * @return the txtRegimen
+     */
+    public javax.swing.JTextField getTxtRegimen() {
+        return txtRegimen;
+    }
+
+    /**
+     * @param txtRegimen the txtRegimen to set
+     */
+    public void setTxtRegimen(javax.swing.JTextField txtRegimen) {
+        this.txtRegimen = txtRegimen;
+    }
+
+    /**
      * @return the jComboBoxPais
      */
     public javax.swing.JComboBox<CPais> getjComboBoxPais() {
@@ -46,18 +60,19 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        getTxtCalle()       .setText(getModelo().getCalle());
-        getTxtCodigoPostal().setText(getModelo().getCodigoPostal());
-        getTxtColonia()     .setText(getModelo().getColonia());
-        getTxtEstado()      .setText(getModelo().getEstado());
-        getTxtMunicipio()   .setText(getModelo().getMunicipio());
-        getTxtNoExterior()  .setText(getModelo().getNoExterior());
-        getTxtNoInterior()  .setText(getModelo().getNoInterior());
-        getTxtNombre()      .setText(getModelo().getNombre());
-        getjComboBoxPais()  .setSelectedItem(getModelo().getPais());
-        getTxtRfc()         .setText(getModelo().getRfc());
-        getTxtTelefono()    .setText(getModelo().getTelefono());
-        getTxtCorreoElectronico().setText(getModelo().getCorreoElectronico());
+        getTxtCalle()               .setText(getModelo().getCalle());
+        getTxtCodigoPostal()        .setText(getModelo().getCodigoPostal());
+        getTxtColonia()             .setText(getModelo().getColonia());
+        getTxtEstado()              .setText(getModelo().getEstado());
+        getTxtMunicipio()           .setText(getModelo().getMunicipio());
+        getTxtNoExterior()          .setText(getModelo().getNoExterior());
+        getTxtNoInterior()          .setText(getModelo().getNoInterior());
+        getTxtNombre()              .setText(getModelo().getNombre());
+        getjComboBoxPais()          .setSelectedItem(getModelo().getPais());
+        getTxtRfc()                 .setText(getModelo().getRfc());
+        getTxtTelefono()            .setText(getModelo().getTelefono());
+        getTxtCorreoElectronico()   .setText(getModelo().getCorreoElectronico());
+        getTxtRegimen()             .setText(getModelo().getRegimen());
     }
 
 
@@ -104,6 +119,8 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         txtCodigoPostal = new javax.swing.JTextField();
         txtRfc = new javax.swing.JTextField();
         jComboBoxPais = new javax.swing.JComboBox<>();
+        jLabel14 = new javax.swing.JLabel();
+        txtRegimen = new javax.swing.JTextField();
         jXTitledPanel1 = new org.jdesktop.swingx.JXTitledPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaCliente = new javax.swing.JTable();
@@ -218,6 +235,14 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         jComboBoxPais.setModel(new javax.swing.DefaultComboBoxModel(CPais.values()));
         jComboBoxPais.setSelectedItem(CPais.MEX);
 
+        jLabel14.setText("Régimen:");
+
+        txtRegimen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRegimenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
         jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
         jXTitledPanel3Layout.setHorizontalGroup(
@@ -243,7 +268,6 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                             .addComponent(txtTelefono)
                             .addComponent(txtCalle)
                             .addComponent(txtColonia)
-                            .addComponent(txtCorreoElectronico)
                             .addGroup(jXTitledPanel3Layout.createSequentialGroup()
                                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(txtNoExterior, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
@@ -256,7 +280,13 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNoInterior)
                                     .addComponent(txtEstado)))
-                            .addComponent(jComboBoxPais, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jComboBoxPais, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jXTitledPanel3Layout.createSequentialGroup()
+                                .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtRegimen))))
                     .addGroup(jXTitledPanel3Layout.createSequentialGroup()
                         .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -269,7 +299,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel3Layout.createSequentialGroup()
-                                .addComponent(txtRfc, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                .addComponent(txtRfc, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -326,7 +356,9 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13))
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel14)
+                    .addComponent(txtRegimen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -359,7 +391,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
             .addGroup(jXTitledPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jXTitledPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE)
                     .addGroup(jXTitledPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -388,7 +420,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jXTitledPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE))
+                    .addComponent(jXTitledPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 759, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -430,6 +462,10 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void txtRegimenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRegimenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRegimenActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
@@ -442,6 +478,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -465,6 +502,7 @@ public class ClienteForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JTextField txtNoExterior;
     private javax.swing.JTextField txtNoInterior;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtRegimen;
     private javax.swing.JTextField txtRfc;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables

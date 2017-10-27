@@ -207,7 +207,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setTicketInfo(getTicketInfo());
         comp.setMoneda(CMoneda.MXN);
         Persona emSucursal = getEmisorSucursal();
-        if(emSucursal.getEstado().isEmpty()) { emSucursal = null; }
+        String estado=emSucursal.getEstado()==null?"":emSucursal.getEstado();
+        if(estado.isEmpty()) { emSucursal = null; }
         comp.setEmisor(getEmisor().toEmisor(emSucursal));
         comp.setReceptor(getReceptor().toReceptor());
         ConceptosTron cTron = getConceptosTron();
