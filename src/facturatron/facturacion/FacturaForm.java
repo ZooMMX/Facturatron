@@ -206,6 +206,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         btnTicket = new javax.swing.JButton();
         btnVistaPrevia = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
+        btnFacturasRelacionadas = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(640, 480));
 
@@ -326,7 +327,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jXTitledPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboMetodoDePago, 0, 471, Short.MAX_VALUE)))
+                                .addComponent(comboMetodoDePago, 0, 389, Short.MAX_VALUE)))
                         .addGap(7, 7, 7)))
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jXTitledPanel2Layout.createSequentialGroup()
@@ -339,7 +340,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel2Layout.createSequentialGroup()
-                                .addComponent(txtIdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+                                .addComponent(txtIdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtFolio)
@@ -632,11 +633,19 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         });
         jPanel1.add(btnGuardar, new java.awt.GridBagConstraints());
 
+        btnFacturasRelacionadas.setText("Facturas Relacionadas");
+        btnFacturasRelacionadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFacturasRelacionadasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnFacturasRelacionadas, new java.awt.GridBagConstraints());
+
         javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
         jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);
         jXTitledPanel3Layout.setHorizontalGroup(
             jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1338, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jXTitledPanel3Layout.setVerticalGroup(
             jXTitledPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -710,11 +719,16 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboMetodoDePagoActionPerformed
 
+    private void btnFacturasRelacionadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturasRelacionadasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFacturasRelacionadasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBorrarPartida;
     private com.alee.laf.button.WebButton btnBuscarCliente;
     private javax.swing.JButton btnFacturaDia;
+    private javax.swing.JButton btnFacturasRelacionadas;
     private javax.swing.JButton btnGuardar;
     private org.jdesktop.swingx.JXButton btnObservaciones;
     private javax.swing.JButton btnTicket;

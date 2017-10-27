@@ -193,6 +193,13 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       if(newObs != null) { observaciones = newObs; }
       getModel().setObservaciones(observaciones);
   }
+  
+  public void btnFacturasRelacionadas(){
+      String facturasRelacionadas="";
+      FacturasRelacionadasDialog dialog = new FacturasRelacionadasDialog(getView().getJFrameParent(), facturasRelacionadas);
+      String newObs = dialog.lanzar();
+      if(newObs != null) { facturasRelacionadas = newObs; }
+  }
   /*
    * Éste método no importa el importe de cada renglón ni de la venta general, su cálculo es responsabilidad de los modelos
    * de la factura
