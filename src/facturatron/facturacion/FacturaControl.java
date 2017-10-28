@@ -195,10 +195,16 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
   }
   
   public void btnFacturasRelacionadas(){
-      String facturasRelacionadas="";
-      FacturasRelacionadasDialog dialog = new FacturasRelacionadasDialog(getView().getJFrameParent(), facturasRelacionadas);
-      String newObs = dialog.lanzar();
-      if(newObs != null) { facturasRelacionadas = newObs; }
+      String facturasRelacionadas=getModel().getFacturasRelacionadas()==null?"":getModel().getFacturasRelacionadas();
+      String tipoRelacionDeFacturasRelacionadas=getModel().getTipoRelacionDeFacturaRelacionada()==null||getModel().getTipoRelacionDeFacturaRelacionada().contentEquals("")?"1":getModel().getTipoRelacionDeFacturaRelacionada();
+      FacturasRelacionadasDialog dialog = new FacturasRelacionadasDialog(getView().getJFrameParent(), facturasRelacionadas, tipoRelacionDeFacturasRelacionadas);
+      java.util.List<String> newObs = dialog.lanzar();
+      if(newObs != null) { 
+          facturasRelacionadas = newObs.get(0); 
+          tipoRelacionDeFacturasRelacionadas = newObs.get(1);       
+      }
+      getModel().setTipoRelacionDeFacturaRelacionada(tipoRelacionDeFacturasRelacionadas);
+      getModel().setFacturasRelacionadas(facturasRelacionadas);
   }
   /*
    * Éste método no importa el importe de cada renglón ni de la venta general, su cálculo es responsabilidad de los modelos
@@ -531,6 +537,12 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 btnObservaciones();
             }
         } );
+        getView().getBtnFacturasRelacionadas().addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                btnFacturasRelacionadas();
+            }
+        });
         getView().getBtnTicket().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

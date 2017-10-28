@@ -1049,4 +1049,18 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     public void setTxtDescuento(javax.swing.JFormattedTextField txtDescuento) {
         this.txtDescuento = txtDescuento;
     }
+
+    /**
+     * @return the btnFacturasRelacionadas
+     */
+    public javax.swing.JButton getBtnFacturasRelacionadas() {
+        return btnFacturasRelacionadas;
+    }
+
+    /**
+     * @param btnFacturasRelacionadas the btnFacturasRelacionadas to set
+     */
+    public void setBtnFacturasRelacionadas(javax.swing.JButton btnFacturasRelacionadas) {
+        this.btnFacturasRelacionadas = btnFacturasRelacionadas;
+    }
 }

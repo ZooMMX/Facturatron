@@ -131,6 +131,10 @@ public class Factura extends Model implements Serializable {
     private Estado estadoComprobante     = Estado.VIGENTE;
     @NotNull
     private String observaciones         = "";
+    private String facturasRelacionadas  = "";
+    private String tipoRelacionDeFacturaRelacionada  = "";
+    @NotNull
+    private String usoCfdi="";
     @NotNull
     private String ticketInfo            = "";
     @NotNull
@@ -508,6 +512,34 @@ public class Factura extends Model implements Serializable {
      */
     public void setDescuento(BigDecimal descuento) {
         this.descuento = descuento;
+    }
+
+    /**
+     * @return the facturasRelacionadas
+     */
+    public String getFacturasRelacionadas() {
+        return facturasRelacionadas;
+    }
+
+    /**
+     * @param facturasRelacionadas the facturasRelacionadas to set
+     */
+    public void setFacturasRelacionadas(String facturasRelacionadas) {
+        this.facturasRelacionadas = facturasRelacionadas;
+    }
+
+    /**
+     * @return the tipoRelacionDeFacturaRelacionada
+     */
+    public String getTipoRelacionDeFacturaRelacionada() {
+        return tipoRelacionDeFacturaRelacionada;
+    }
+
+    /**
+     * @param tipoRelacionDeFacturaRelacionada the tipoRelacionDeFacturaRelacionada to set
+     */
+    public void setTipoRelacionDeFacturaRelacionada(String tipoRelacionDeFacturaRelacionada) {
+        this.tipoRelacionDeFacturaRelacionada = tipoRelacionDeFacturaRelacionada;
     }
     
 }

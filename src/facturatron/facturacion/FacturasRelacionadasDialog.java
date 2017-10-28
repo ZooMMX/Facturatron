@@ -13,6 +13,8 @@ package facturatron.facturacion;
 
 import java.awt.Dialog;
 import java.awt.Window;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,26 +24,32 @@ public class FacturasRelacionadasDialog extends javax.swing.JDialog {
 
     boolean cancelar = false;
     /** Creates new form FacturasRelacionadasDialog**/
-    public FacturasRelacionadasDialog(java.awt.Frame parent, String defaultVal) {
+    public FacturasRelacionadasDialog(java.awt.Frame parent, String facturasRelacionadas, String tipoRelacionFacturas) {
         super(parent, true);
-        _FacturasRelacionadasDialog(defaultVal);
+        _FacturasRelacionadasDialog(facturasRelacionadas, tipoRelacionFacturas);
     }
-    public FacturasRelacionadasDialog(Dialog parent, String defaultVal) {
+    public FacturasRelacionadasDialog(Dialog parent, String facturasRelacionadas, String tipoRelacionFacturas) {
         super(parent, true);
-        _FacturasRelacionadasDialog(defaultVal);
+        _FacturasRelacionadasDialog(facturasRelacionadas, tipoRelacionFacturas);
     }
-    private void _FacturasRelacionadasDialog(String defaultVal) {
+    private void _FacturasRelacionadasDialog(String facturasRelacionadas, String tipoRelacionFacturas) {
         initComponents();
         setLocationRelativeTo(null);
-        getTxtFacturasRelacionadas().setText(defaultVal);
+        getTxtFacturasRelacionadas().setText(facturasRelacionadas);
+        getComboBoxFacturasRelacionadas().setSelectedIndex((Integer.parseInt(tipoRelacionFacturas)-1));
     }
 
-    public String lanzar() {
+    public List<String> lanzar() {
+        
         setVisible(true);
+        List<String> facturasRelacioandasYRelacion=new ArrayList<>();
         if(cancelar) {
             return null;
         } else {
-            return getTxtFacturasRelacionadas().getText();
+            facturasRelacioandasYRelacion.add(getTxtFacturasRelacionadas().getText());
+            facturasRelacioandasYRelacion.add("0"+(this.getComboBoxFacturasRelacionadas().getSelectedIndex()+1));
+            
+            return facturasRelacioandasYRelacion;
         }
     }
 
@@ -59,6 +67,9 @@ public class FacturasRelacionadasDialog extends javax.swing.JDialog {
         btnCancelar = new org.jdesktop.swingx.JXButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtObservaciones = new org.jdesktop.swingx.JXTextArea();
+        comboBoxFacturasRelacionadas = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Observaciones de la factura");
@@ -70,7 +81,7 @@ public class FacturasRelacionadasDialog extends javax.swing.JDialog {
             }
         });
 
-        jXLabel1.setText("Redactar observaciones a continuación:");
+        jXLabel1.setText("Ingresa aquí las facturas relacionadas, una por línea");
         jXLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         btnCancelar.setText("Cancelar");
@@ -84,36 +95,65 @@ public class FacturasRelacionadasDialog extends javax.swing.JDialog {
         txtObservaciones.setRows(5);
         jScrollPane1.setViewportView(txtObservaciones);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        comboBoxFacturasRelacionadas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
+            "Nota de crédito de los documentos relacionados",
+            "Nota de débito de los documentos relacionados",
+            "Devolución de mercancía sobre facturas o traslados previos",
+            "Sustitución de los CFDI previos",
+            "Traslados de mercancias facturados previamente",
+            "Factura generada por los traslados previos",
+            "CFDI por aplicación de anticipo" }));
+
+jLabel1.setText("Tipo de relación:");
+
+jLabel2.setText("Facturas relacionadas:");
+
+javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+getContentPane().setLayout(layout);
+layout.setHorizontalGroup(
+    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+        .addContainerGap()
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(comboBoxFacturasRelacionadas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jXLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jXLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 102, Short.MAX_VALUE)))
+        .addContainerGap())
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jXLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jLabel1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(comboBoxFacturasRelacionadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jLabel2)
+            .addGap(11, 11, 11)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addContainerGap())
+    );
 
-        pack();
+    pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -130,6 +170,9 @@ public class FacturasRelacionadasDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXButton btnAceptar;
     private org.jdesktop.swingx.JXButton btnCancelar;
+    private javax.swing.JComboBox<String> comboBoxFacturasRelacionadas;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private org.jdesktop.swingx.JXLabel jXLabel1;
     private org.jdesktop.swingx.JXTextArea txtObservaciones;
@@ -154,6 +197,20 @@ public class FacturasRelacionadasDialog extends javax.swing.JDialog {
      */
     public org.jdesktop.swingx.JXTextArea getTxtFacturasRelacionadas() {
         return txtObservaciones;
+    }
+
+    /**
+     * @return the comboBoxFacturasRelacionadas
+     */
+    public javax.swing.JComboBox<String> getComboBoxFacturasRelacionadas() {
+        return comboBoxFacturasRelacionadas;
+    }
+
+    /**
+     * @param comboBoxFacturasRelacionadas the comboBoxFacturasRelacionadas to set
+     */
+    public void setComboBoxFacturasRelacionadas(javax.swing.JComboBox<String> comboBoxFacturasRelacionadas) {
+        this.comboBoxFacturasRelacionadas = comboBoxFacturasRelacionadas;
     }
 
 }

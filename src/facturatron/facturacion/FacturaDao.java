@@ -67,11 +67,14 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import mx.bigdata.sat.cfdi.CFDv33;
+import mx.bigdata.sat.cfdi.examples.ExampleCFDv33Factory;
 import mx.bigdata.sat.cfdi.v33.schema.CMetodoPago;
 import mx.bigdata.sat.cfdi.v33.schema.CMoneda;
 import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
 import mx.bigdata.sat.cfdi.v33.schema.CTipoFactor;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.CfdiRelacionados;
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante.CfdiRelacionados.CfdiRelacionado;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos.Traslados;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante.Impuestos.Traslados.Traslado;
@@ -214,12 +217,24 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         ConceptosTron cTron = getConceptosTron();
         comp.setConceptos(cTron.toConceptos());
         comp.setConceptosTron(cTron);
-        comp.setImpuestos(getImpuestos());
         comp.setSubtotalGravado16(getSubtotalGravado16());
         comp.setSubtotalGravado0(getSubtotalGravado0());
         comp.setSubtotalExento(getSubtotalExento());
-        comp.setEstadoComprobante(getEstadoComprobante()==getEstadoComprobante().VIGENTE?true:false);       
-         
+        comp.setEstadoComprobante(getEstadoComprobante()==getEstadoComprobante().VIGENTE?true:false); 
+        
+        Comprobante comprobante=ExampleCFDv33Factory.createComprobante();
+        String[] facturasRelacionadasList=getFacturasRelacionadas().split("\\n");
+        CfdiRelacionados cfdiRelacionados=new CfdiRelacionados();
+        for(int i=0;i<facturasRelacionadasList.length;i++){
+            if(!facturasRelacionadasList[i].isEmpty()){
+                CfdiRelacionado cfdiRelacionado=new CfdiRelacionado();
+                cfdiRelacionado.setUUID(facturasRelacionadasList[i]);
+                cfdiRelacionados.getCfdiRelacionado().add(cfdiRelacionado);
+            }
+        }
+        cfdiRelacionados.setTipoRelacion(getTipoRelacionDeFacturaRelacionada());
+         comprobante.setCfdiRelacionados(cfdiRelacionados);
+         comp.setCfdiRelacionados(cfdiRelacionados);
         return comp;
      }
 
@@ -452,31 +467,33 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             PreparedStatement ps = bd.getCon().prepareStatement("insert into comprobante " +
                     "(version,fecha,serie,folio,sello,noCertificado," +
                     "formaDePago,subtotal,total,descuento,tipoDeComprobante,idEmisor, idReceptor," +
-                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora, folioFiscal, USO_CFDI) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    "ivaTrasladado,certificado,motivoDescuento,xml,estadoComprobante,observaciones,hora, folioFiscal, USO_CFDI, FACTURAS_RELACIONADAS, TIPO_RELACION) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-            ps.setString(1, getVersion());
-            ps.setDate(2, new java.sql.Date(getFecha().getTime()));
-            ps.setString(3, getSerie());
-            ps.setLong(4, getFolio().longValue());
-            ps.setString(5, getSello());
-            ps.setString(6, getNoCertificado());
-            ps.setString(7, getFormaDePago().name());
-            ps.setBigDecimal(8, getSubtotal());
-            ps.setBigDecimal(9, getTotal());
-            ps.setBigDecimal(10, getDescuento());
-            ps.setString(11, getTipoDeComprobante().value());
-            ps.setInt(12, getEmisor().getId());
-            ps.setInt(13, getReceptor().getId());
-            ps.setBigDecimal(14, getIvaTrasladado());
-            ps.setString(15, getCertificado());
-            ps.setString(16, getMotivoDescuento());
-            ps.setString(17, getXml());
-            ps.setString(18, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
-            ps.setString(19, getObservaciones());
-            ps.setTime  (20, getHora());
-            ps.setString(21, getFolioFiscal()); 
-            ps.setString(22, getReceptor().getUsoCFDI().getSatConstant().name());  // USO CFDI es un atributo de Receptor pero yo lo guardo a nivel de Comprobante
+            ps.setString        (1, getVersion());
+            ps.setDate          (2, new java.sql.Date(getFecha().getTime()));
+            ps.setString        (3, getSerie());
+            ps.setLong          (4, getFolio().longValue());
+            ps.setString        (5, getSello());
+            ps.setString        (6, getNoCertificado());
+            ps.setString        (7, getFormaDePago().name());
+            ps.setBigDecimal    (8, getSubtotal());
+            ps.setBigDecimal    (9, getTotal());
+            ps.setBigDecimal    (10, getDescuento());
+            ps.setString        (11, getTipoDeComprobante().value());
+            ps.setInt           (12, getEmisor().getId());
+            ps.setInt           (13, getReceptor().getId());
+            ps.setBigDecimal    (14, getIvaTrasladado());
+            ps.setString        (15, getCertificado());
+            ps.setString        (16, getMotivoDescuento());
+            ps.setString        (17, getXml());
+            ps.setString        (18, getEstadoComprobante()==Estado.VIGENTE?"VIGENTE":"CANCELADO");
+            ps.setString        (19, getObservaciones());
+            ps.setTime          (20, getHora());
+            ps.setString        (21, getFolioFiscal()); 
+            ps.setString        (22, getReceptor().getUsoCFDI().getSatConstant().name());  // USO CFDI es un atributo de Receptor pero yo lo guardo a nivel de Comprobante
+            ps.setString        (23, getFacturasRelacionadas());
+            ps.setString        (24, getTipoRelacionDeFacturaRelacionada());
             //ps.setString(24, getMetodoDePago());
 
             ps.execute();
@@ -592,6 +609,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setEstadoComprobante(rs.getString("estadoComprobante").equals("VIGENTE")?Estado.VIGENTE:Estado.CANCELADO);
             dao.setObservaciones(rs.getString("observaciones"));
             dao.setFolioFiscal(rs.getString("folioFiscal"));
+            dao.setFacturasRelacionadas(rs.getString("FACTURAS_RELACIONADAS"));
             //El USO del CFDI se guarda a nivel de comprobante y luego se aplica al receptor
             String usoCFDIString = rs.getString("USO_CFDI");
             //Por default si un registro no contiene este valor (CFDIv32) entonces se pondrá como gastos en general = D_03

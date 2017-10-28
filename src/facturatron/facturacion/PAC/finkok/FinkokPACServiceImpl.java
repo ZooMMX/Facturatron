@@ -139,7 +139,7 @@ public class FinkokPACServiceImpl implements IPACService {
         
         if (acuseCFDI.getIncidencias() != null && acuseCFDI.getIncidencias().getValue().getIncidencia().size() > 0) {
                 throw new FinkokIncidenciasException(acuseCFDI.getIncidencias().getValue());
-            }
+        }
         
         return acuseCFDI;
     }
