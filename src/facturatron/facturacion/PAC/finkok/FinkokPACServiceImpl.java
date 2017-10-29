@@ -138,7 +138,8 @@ public class FinkokPACServiceImpl implements IPACService {
         AcuseRecepcionCFDI acuseCFDI = port.stamp(xml, username, password);
         
         if (acuseCFDI.getIncidencias() != null && acuseCFDI.getIncidencias().getValue().getIncidencia().size() > 0) {
-                throw new FinkokIncidenciasException(acuseCFDI.getIncidencias().getValue());
+               
+            throw new FinkokIncidenciasException(acuseCFDI.getIncidencias().getValue());
         }
         
         return acuseCFDI;

@@ -267,13 +267,17 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       ArrayList<Renglon> renglones = ((FacturaTableModel) getView().getTabConceptos().getModel()).getData();
       //Validar cada renglon
       Integer filas = 0;
+      ArrayList<Renglon> vacio=new ArrayList<>();
+      Boolean vacios=false;
       for (Renglon renglon : renglones) {
           /** Validar cantidad; la cantidad también sirve como bandera para indicar si el renglón se toma en cuenta
            * o no
            */
           BigDecimal cantidad = renglon.getCantidad();
-          if(cantidad != null && cantidad.compareTo(new BigDecimal(0)) <= 0) {
+          if(cantidad == null || cantidad.compareTo(new BigDecimal(0)) == 0) {
               //Esta fila tiene una cantidad en cero, no es tomada en cuenta
+              vacio.add(renglon);
+              vacios=true;
               continue;
           } else {
               //Esta se toma en cuenta
@@ -305,6 +309,12 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
               return false;
           } 
       }
+      if(vacios){
+          for(Renglon renglon:vacio){
+              renglones.remove(renglon);
+          } 
+      }
+      
       
       //Validar cantidad de conceptos en la factura, de acuerdo al contador de filas tomadas en cuenta en la validación anterior
       if(filas < 1) {

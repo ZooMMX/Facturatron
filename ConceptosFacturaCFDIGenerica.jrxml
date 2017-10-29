@@ -86,7 +86,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[%IVA/%IEPS]]></text>
+				<text><![CDATA[      %IVA      %IEPS]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

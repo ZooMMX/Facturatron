@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import mx.bigdata.sat.cfdi.v33.schema.CTipoFactor;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
+import java.text.NumberFormat;
 
 /**
  *
@@ -39,6 +40,7 @@ public class Renglon extends Model implements Serializable {
     private BigDecimal tasaIEPS = new BigDecimal(0d);
     private BigDecimal ieps     = new BigDecimal(0d);
     private BigDecimal descuento= new BigDecimal(0d);
+    private Boolean iepsUpdated=false;
 
     public Renglon() {
         importe.setScale(2);
@@ -104,17 +106,21 @@ public class Renglon extends Model implements Serializable {
     public ConceptoTron toConceptoTron() {
         Concepto c1 = toConcepto();
         ConceptoTron ct1 = new ConceptoTron();
-        ct1.setCantidad(c1.getCantidad().setScale(2,RoundingMode.HALF_EVEN));
+        ct1.setCantidad(c1.getCantidad());
         ct1.setComplementoConcepto(c1.getComplementoConcepto());
         ct1.setCuentaPredial(c1.getCuentaPredial());
         ct1.setDescripcion(c1.getDescripcion());
-        ct1.setImporte(c1.getImporte().setScale(2,RoundingMode.HALF_EVEN));
+        ct1.setImporte(c1.getImporte());
         ct1.setNoIdentificacion(c1.getNoIdentificacion());
         ct1.setUnidad(c1.getUnidad());
-        ct1.setValorUnitario(c1.getValorUnitario().setScale(2,RoundingMode.HALF_EVEN));
+        ct1.setValorUnitario(c1.getValorUnitario());
         //La etiqueta de impuestos está compuesta por %_IVA + "/" + %_IEPS
         String etiquetaIVA = getTasa0()?"0":"16";
-        String etiquetaIEPS= getTasaIEPS().equals(BigDecimal.ZERO) ? "-" : getTasaIEPS().toString() ;
+        
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMinimumFractionDigits(0);
+        nf.setMaximumFractionDigits(0);
+        String etiquetaIEPS= getTasaIEPS().equals(BigDecimal.ZERO) ? "-" : nf.format((getTasaIEPS().multiply(BigDecimal.valueOf(100)))).toString();
         ct1.setEtiquetaImpuestos(etiquetaIVA+"/"+etiquetaIEPS);
         ct1.setIEPS(getIEPS());
         ct1.setClaveProdServ(c1.getClaveProdServ());
@@ -129,7 +135,7 @@ public class Renglon extends Model implements Serializable {
      * @param cantidad the cantidad to set
      */
     public void setCantidad(BigDecimal cantidad) {
-        this.cantidad = cantidad;
+        this.cantidad = cantidad.setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
     /**
@@ -215,7 +221,7 @@ public class Renglon extends Model implements Serializable {
      * @param valorUniario the valorUniario to set
      */
     public void setValorUniario(BigDecimal valorUniario) {
-        this.valorUniario = valorUniario;
+        this.valorUniario = valorUniario.setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
     /**
@@ -233,34 +239,39 @@ public class Renglon extends Model implements Serializable {
     }
 
     public BigDecimal getTasaIEPS() {
-        return tasaIEPS;
+        return tasaIEPS.setScale(6, BigDecimal.ROUND_HALF_EVEN);
     }
 
     public void setTasaIEPS(BigDecimal tasa) {
-        tasaIEPS = tasa.setScale(2, RoundingMode.HALF_EVEN);
-        updateIEPS();
+        if(!iepsUpdated){
+            MathContext mc = MathContext.DECIMAL64;
+            tasaIEPS = tasa.divide(new BigDecimal("100.00", mc),mc).setScale(2,RoundingMode.HALF_EVEN);
+            updateIEPS();
+            iepsUpdated=true;
+        }else{
+            if(tasaIEPS.compareTo(tasa)!=0){
+                iepsUpdated=false;
+                setTasaIEPS(tasa);
+            }
+        }
     }
 
     /**
      * @return the ieps
      */
     public BigDecimal getIEPS() {
-        return getIeps();
+        return ieps;
     }
 
     /**
      * @param ieps the ieps to set
      */
     public void setIEPS(BigDecimal ieps) {
-        ieps.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-        this.setIeps(ieps);
+        this.ieps=ieps.setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
     private void updateIEPS() {
-        MathContext mc = MathContext.DECIMAL64;
-       
-        BigDecimal factorIEPS = getTasaIEPS().divide( new BigDecimal("100.00", mc), mc );
-        BigDecimal ieps1 = getValorUniario().multiply(getCantidad()).multiply( factorIEPS );
+        BigDecimal ieps1 = getValorUniario().multiply(getCantidad()).multiply( tasaIEPS );
         this.setIEPS( ieps1 );
     }
     
@@ -268,9 +279,9 @@ public class Renglon extends Model implements Serializable {
     public BigDecimal getIVA() {
         MathContext mc = MathContext.DECIMAL64;
         if(getTasa0()) {
-              return new BigDecimal("0.00", mc);
+              return new BigDecimal("0.00", mc).setScale(2,RoundingMode.HALF_EVEN);
           } else {
-              return getImporte().multiply(new BigDecimal("0.16"), mc);
+              return getImporte().multiply(new BigDecimal("0.16"), mc).setScale(2,RoundingMode.HALF_EVEN);
           }               
     }
 
@@ -292,27 +303,27 @@ public class Renglon extends Model implements Serializable {
         //  número de deciimales que soporta la moneda, en pesos mexicanos eso es 2
         //Agrega IVA
         if(getTasa0()) {   
-            t1.setBase(getImporte().setScale(2, RoundingMode.HALF_EVEN));
+            t1.setBase(getImporte());
             t1.setImporte(new BigDecimal(0d).setScale(2, RoundingMode.HALF_EVEN));
             t1.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
             t1.setTipoFactor(CTipoFactor.TASA);
-            t1.setTasaOCuota(new BigDecimal("0.00").setScale(6, RoundingMode.HALF_EVEN));        
+            t1.setTasaOCuota(new BigDecimal("0.000000").setScale(6, RoundingMode.HALF_EVEN));        
             list.add(t1);
         } else {            
-            t1.setBase(getImporte().setScale(2, RoundingMode.HALF_EVEN));
-            t1.setImporte(getIVA().setScale(2, RoundingMode.HALF_EVEN));
+            t1.setBase(getImporte());
+            t1.setImporte(getIVA());
             t1.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
             t1.setTipoFactor(CTipoFactor.TASA);
-            t1.setTasaOCuota(new BigDecimal("0.1600").setScale(6, RoundingMode.HALF_EVEN));
+            t1.setTasaOCuota(new BigDecimal("0.160000").setScale(6, RoundingMode.HALF_EVEN));
             list.add(t1);
         }
         //Agrega IEPS
         if(getTasaIEPS() != null && getTasaIEPS().compareTo(BigDecimal.ZERO)!=0) {
             Concepto.Impuestos.Traslados.Traslado t2 = of.createComprobanteConceptosConceptoImpuestosTrasladosTraslado();
-            t2.setBase(getImporte().setScale(2, RoundingMode.HALF_EVEN));
+            t2.setBase(getImporte());
             t2.setImpuesto("003"); // Catálogo c_Impuesto: 003 = IEPS
-            t2.setImporte(getIEPS().setScale(2,RoundingMode.HALF_EVEN));
-            t2.setTasaOCuota(getTasaIEPS().divide(new BigDecimal("100", mc)).setScale(6,RoundingMode.HALF_EVEN)); //Lo divido entre 100 porque en CFDIv3.3 Tasa en realidad es un factor
+            t2.setImporte(getIEPS());
+            t2.setTasaOCuota(getTasaIEPS()); //Lo divido entre 100 porque en CFDIv3.3 Tasa en realidad es un factor
             t2.setTipoFactor(CTipoFactor.TASA);
             list.add(t2);
         }
@@ -346,21 +357,7 @@ public class Renglon extends Model implements Serializable {
      * @param claveProductoSat the claveProductoSat to set
      */
     public void setClaveProductoSat(String claveProductoSat) {
-        this.claveProductoSat = claveProductoSat;
-    }
-
-    /**
-     * @return the ieps
-     */
-    public BigDecimal getIeps() {
-        return ieps;
-    }
-
-    /**
-     * @param ieps the ieps to set
-     */
-    public void setIeps(BigDecimal ieps) {
-        this.ieps = ieps;
+        this.claveProductoSat = claveProductoSat.trim();
     }
 
     /**
@@ -388,7 +385,7 @@ public class Renglon extends Model implements Serializable {
      * @param subtotal the subtotal to set
      */
     public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
+        this.subtotal = subtotal.setScale(2, RoundingMode.HALF_EVEN);
     }
      
 }

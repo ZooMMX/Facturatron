@@ -307,7 +307,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
          for (Map.Entry<BigDecimal, BigDecimal> ieps : hash.entrySet()) {
              //Si el IEPS fuese cero es importante no incluirlo ya que en terminos fiscales
              //  tasa 0 podría ser distinto a no tener IEPS como pasa con el IVA
-             if(ieps.getKey().equals(BigDecimal.ZERO)) continue;
+             if(ieps.getKey().compareTo(BigDecimal.ZERO)==0) continue;
              
              Traslado t = of.createComprobanteImpuestosTrasladosTraslado();
              t.setImpuesto("003"); // Catálogo c_Impuesto: 003 = IEPS
