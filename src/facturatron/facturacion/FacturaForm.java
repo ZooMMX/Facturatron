@@ -204,9 +204,9 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         btnObservaciones = new org.jdesktop.swingx.JXButton();
         btnFacturaDia = new javax.swing.JButton();
         btnTicket = new javax.swing.JButton();
+        btnFacturasRelacionadas = new javax.swing.JButton();
         btnVistaPrevia = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        btnFacturasRelacionadas = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(640, 480));
 
@@ -327,7 +327,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jXTitledPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboMetodoDePago, 0, 389, Short.MAX_VALUE)))
+                                .addComponent(comboMetodoDePago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(7, 7, 7)))
                 .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jXTitledPanel2Layout.createSequentialGroup()
@@ -340,7 +340,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jXTitledPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTitledPanel2Layout.createSequentialGroup()
-                                .addComponent(txtIdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+                                .addComponent(txtIdCliente)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtFolio)
@@ -621,6 +621,14 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
         btnTicket.setText("Añadir ticket");
         jPanel1.add(btnTicket, new java.awt.GridBagConstraints());
 
+        btnFacturasRelacionadas.setText("Facturas Relacionadas");
+        btnFacturasRelacionadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFacturasRelacionadasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnFacturasRelacionadas, new java.awt.GridBagConstraints());
+
         btnVistaPrevia.setText("Vista previa");
         jPanel1.add(btnVistaPrevia, new java.awt.GridBagConstraints());
 
@@ -632,14 +640,6 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
             }
         });
         jPanel1.add(btnGuardar, new java.awt.GridBagConstraints());
-
-        btnFacturasRelacionadas.setText("Facturas Relacionadas");
-        btnFacturasRelacionadas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFacturasRelacionadasActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnFacturasRelacionadas, new java.awt.GridBagConstraints());
 
         javax.swing.GroupLayout jXTitledPanel3Layout = new javax.swing.GroupLayout(jXTitledPanel3.getContentContainer());
         jXTitledPanel3.getContentContainer().setLayout(jXTitledPanel3Layout);

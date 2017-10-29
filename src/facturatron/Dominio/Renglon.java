@@ -47,6 +47,7 @@ public class Renglon extends Model implements Serializable {
         tasaIEPS.setScale(2);
         ieps.setScale(2);
         subtotal.setScale(2);
+        descuento.setScale(2);
     }
 
     public static List createBeanCollection(){
@@ -119,7 +120,7 @@ public class Renglon extends Model implements Serializable {
         ct1.setClaveProdServ(c1.getClaveProdServ());
         ct1.setClaveUnidad(c1.getClaveUnidad());
         ct1.setImpuestos(c1.getImpuestos());
-        ct1.setDescuento(c1.getDescuento().setScale(2,RoundingMode.HALF_EVEN));
+        ct1.setDescuento(c1.getDescuento());
 
         return ct1;
     }
@@ -306,7 +307,7 @@ public class Renglon extends Model implements Serializable {
             list.add(t1);
         }
         //Agrega IEPS
-        if(!getTasaIEPS().equals(BigDecimal.ZERO)) {
+        if(getTasaIEPS() != null && getTasaIEPS().compareTo(BigDecimal.ZERO)!=0) {
             Concepto.Impuestos.Traslados.Traslado t2 = of.createComprobanteConceptosConceptoImpuestosTrasladosTraslado();
             t2.setBase(getImporte().setScale(2, RoundingMode.HALF_EVEN));
             t2.setImpuesto("003"); // Catálogo c_Impuesto: 003 = IEPS

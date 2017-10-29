@@ -42,6 +42,8 @@ public class CFDFactory {
         PrintStream ps = new PrintStream(baos);
         Boolean sellar = PACContext.instancePACService().getRequiereSellado();
         
+        
+        
         if(sellar)
             sellar(comprobante, ps);
         else {
@@ -53,8 +55,9 @@ public class CFDFactory {
         
         CFDv3Tron cfdtron =  new CFDv3Tron();
         cfdtron.setComprobante(comprobante);
-        
+                
         cfdtron.setXML(baos.toString());
+        System.out.println("XML Sin codificar:" + cfdtron.getXML() );
         
         cfdtron = timbrar(cfdtron);        
         CFDv33 cfdi = new CFDv33(cfdtron.getComprobante());
