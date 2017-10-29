@@ -44,6 +44,11 @@ import static org.eclipse.persistence.config.ExclusiveConnectionMode.Transaction
     @NamedQuery(name = "Articulo.findByUnidad", query = "SELECT a FROM Articulo a WHERE a.unidad = :unidad"),
     @NamedQuery(name = "Articulo.findByImpuestos", query = "SELECT a FROM Articulo a WHERE a.impuestos = :impuestos"),
     @NamedQuery(name = "Articulo.findByUModificacion", query = "SELECT a FROM Articulo a WHERE a.uModificacion = :uModificacion"),
+    
+    
+    @NamedQuery(name = "Articulo.findByClaveProductoSat", query = "SELECT a FROM Articulo a WHERE a.claveProductoSat = :claveProductoSat"),
+    @NamedQuery(name = "Articulo.findByClaveUnidadSat", query = "SELECT a FROM Articulo a WHERE a.claveUnidadSat = :claveUnidadSat"),
+    
     @NamedQuery(name = "Articulo.findByVersion", query = "SELECT a FROM Articulo a WHERE a.version = :version"),
     @NamedQuery(name = "Articulo.findByIdGrupo", query = "SELECT a FROM Articulo a WHERE a.idGrupo = :idGrupo")})
 public class Articulo implements Serializable {
@@ -76,6 +81,12 @@ public class Articulo implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_grupo")
     private int idGrupo;
+    @Basic(optional = false)
+    @Column(name = "CLAVE_PRODUCTO_SAT_CLAVE")
+    private String claveProductoSat;
+    @Basic(optional = false)
+    @Column(name = "CLAVE_UNIDAD_SAT_CLAVE")
+    private String claveUnidadSat;
     
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinTable(name = "articulos_Impuesto", joinColumns = @JoinColumn(name = "articulos_id_articulo", referencedColumnName = "id_articulo"))
@@ -206,6 +217,34 @@ public class Articulo implements Serializable {
 
     public void setEsPaquete(boolean esPaquete) {
         this.esPaquete = esPaquete;
+    }
+
+    /**
+     * @return the claveProductoSat
+     */
+    public String getClaveProductoSat() {
+        return claveProductoSat;
+    }
+
+    /**
+     * @param claveProductoSat the claveProductoSat to set
+     */
+    public void setClaveProductoSat(String claveProductoSat) {
+        this.claveProductoSat = claveProductoSat;
+    }
+
+    /**
+     * @return the claveUnidadSat
+     */
+    public String getClaveUnidadSat() {
+        return claveUnidadSat;
+    }
+
+    /**
+     * @param claveUnidadSat the claveUnidadSat to set
+     */
+    public void setClaveUnidadSat(String claveUnidadSat) {
+        this.claveUnidadSat = claveUnidadSat;
     }
 
 }

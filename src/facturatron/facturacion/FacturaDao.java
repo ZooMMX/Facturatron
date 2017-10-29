@@ -162,7 +162,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             setCertificado(cfd.getComprobante().getCertificado());
             setSello(comp.getSello());
             setXml(cfd.getXML());
-             setFolioFiscal(cfd.getComprobante().getFolioFiscal());
+            setFolioFiscal(cfd.getComprobante().getFolioFiscal());
             
             return cfd;
         } catch (URISyntaxException u) {
@@ -216,25 +216,25 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setReceptor(getReceptor().toReceptor());
         ConceptosTron cTron = getConceptosTron();
         comp.setConceptos(cTron.toConceptos());
+        comp.setImpuestos(getImpuestos());
         comp.setConceptosTron(cTron);
         comp.setSubtotalGravado16(getSubtotalGravado16());
         comp.setSubtotalGravado0(getSubtotalGravado0());
         comp.setSubtotalExento(getSubtotalExento());
         comp.setEstadoComprobante(getEstadoComprobante()==getEstadoComprobante().VIGENTE?true:false); 
-        
-        Comprobante comprobante=ExampleCFDv33Factory.createComprobante();
-        String[] facturasRelacionadasList=getFacturasRelacionadas().split("\\n");
-        CfdiRelacionados cfdiRelacionados=new CfdiRelacionados();
-        for(int i=0;i<facturasRelacionadasList.length;i++){
-            if(!facturasRelacionadasList[i].isEmpty()){
-                CfdiRelacionado cfdiRelacionado=new CfdiRelacionado();
-                cfdiRelacionado.setUUID(facturasRelacionadasList[i]);
-                cfdiRelacionados.getCfdiRelacionado().add(cfdiRelacionado);
+        if(getFacturasRelacionadas()!=null&&!getFacturasRelacionadas().isEmpty()){
+            String[] facturasRelacionadasList=getFacturasRelacionadas().split("\\n");
+            CfdiRelacionados cfdiRelacionados=new CfdiRelacionados();
+            for(int i=0;i<facturasRelacionadasList.length;i++){
+                if(!facturasRelacionadasList[i].isEmpty()){
+                    CfdiRelacionado cfdiRelacionado=new CfdiRelacionado();
+                    cfdiRelacionado.setUUID(facturasRelacionadasList[i]);
+                    cfdiRelacionados.getCfdiRelacionado().add(cfdiRelacionado);
+                }
             }
+            cfdiRelacionados.setTipoRelacion(getTipoRelacionDeFacturaRelacionada());
+            comp.setCfdiRelacionados(cfdiRelacionados);
         }
-        cfdiRelacionados.setTipoRelacion(getTipoRelacionDeFacturaRelacionada());
-         comprobante.setCfdiRelacionados(cfdiRelacionados);
-         comp.setCfdiRelacionados(cfdiRelacionados);
         return comp;
      }
 
@@ -296,10 +296,13 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
          for (Renglon renglon : getRenglones()) {
             if(hash.containsKey(renglon.getTasaIEPS())) {
                     BigDecimal ieps = hash.get(renglon.getTasaIEPS());
-                    ieps = ieps.add( renglon.getIEPS() );
-                    hash.put(renglon.getTasaIEPS(), ieps);
+                    if(renglon.getIEPS()==null||renglon.getIEPS()==BigDecimal.ZERO)
+                        ieps = ieps.add( renglon.getIEPS());
+                    else
+                        ieps = ieps.add( renglon.getIEPS().setScale(2,RoundingMode.HALF_EVEN) );
+                    hash.put(renglon.getTasaIEPS(), ieps.setScale(2,RoundingMode.HALF_EVEN));
                 } else
-                    hash.put(renglon.getTasaIEPS(), renglon.getIEPS());
+                    hash.put(renglon.getTasaIEPS(), renglon.getIEPS().setScale(2,RoundingMode.HALF_EVEN));
          }
          for (Map.Entry<BigDecimal, BigDecimal> ieps : hash.entrySet()) {
              //Si el IEPS fuese cero es importante no incluirlo ya que en terminos fiscales
@@ -308,7 +311,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
              
              Traslado t = of.createComprobanteImpuestosTrasladosTraslado();
              t.setImpuesto("003"); // Catálogo c_Impuesto: 003 = IEPS
-             t.setImporte(ieps.getValue().setScale(6,RoundingMode.HALF_EVEN));
+             t.setImporte(ieps.getValue().setScale(2,RoundingMode.HALF_EVEN));
              t.setTasaOCuota(ieps.getKey().setScale(6,RoundingMode.HALF_EVEN));
              t.setTipoFactor(CTipoFactor.TASA);
              traslados.add(t);

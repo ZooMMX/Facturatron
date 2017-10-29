@@ -357,7 +357,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         timbrado = true;
         marcarTicketsFacturados(getModel().getId());
     } catch (SAXParseException e) {
-        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "Datos erróneos.", e);
+        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "'Clave producto SAT', 'Clave unidad SAT', o 'Régimen' incorrectos.", e);
     } catch (PACException pa) {
         Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, pa.getMessage(), pa.getCause());
     } catch (DatasourceException de) {

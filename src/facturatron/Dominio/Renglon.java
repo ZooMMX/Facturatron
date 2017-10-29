@@ -30,9 +30,9 @@ public class Renglon extends Model implements Serializable {
     private String claveUnidadSat = "";
     private String noIdentificacion = "";
     private String claveProductoSat = "";
-    private BigDecimal importe  = new BigDecimal(0d);
-    private BigDecimal subtotal  = new BigDecimal(0d);
-    private BigDecimal cantidad = new BigDecimal(0d);
+    private BigDecimal importe  = new BigDecimal(0d).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    private BigDecimal subtotal  = new BigDecimal(0d).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    private BigDecimal cantidad = new BigDecimal(0d).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     private String descripcion = "";
     private BigDecimal valorUniario = new BigDecimal(0d);
     private Boolean tasa0 = true;
@@ -144,7 +144,7 @@ public class Renglon extends Model implements Serializable {
     public void setImporte(BigDecimal importe) {
         updateIEPS();
         
-        this.importe = importe;
+        this.importe = importe.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     /**
@@ -236,8 +236,7 @@ public class Renglon extends Model implements Serializable {
     }
 
     public void setTasaIEPS(BigDecimal tasa) {
-        tasa.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-        tasaIEPS = tasa;
+        tasaIEPS = tasa.setScale(2, RoundingMode.HALF_EVEN);
         updateIEPS();
     }
 
@@ -309,9 +308,9 @@ public class Renglon extends Model implements Serializable {
         //Agrega IEPS
         if(!getTasaIEPS().equals(BigDecimal.ZERO)) {
             Concepto.Impuestos.Traslados.Traslado t2 = of.createComprobanteConceptosConceptoImpuestosTrasladosTraslado();
-            t1.setBase(getImporte().setScale(2, RoundingMode.HALF_EVEN));
+            t2.setBase(getImporte().setScale(2, RoundingMode.HALF_EVEN));
             t2.setImpuesto("003"); // Catálogo c_Impuesto: 003 = IEPS
-            t2.setImporte(getIEPS().setScale(6,RoundingMode.HALF_EVEN));
+            t2.setImporte(getIEPS().setScale(2,RoundingMode.HALF_EVEN));
             t2.setTasaOCuota(getTasaIEPS().divide(new BigDecimal("100", mc)).setScale(6,RoundingMode.HALF_EVEN)); //Lo divido entre 100 porque en CFDIv3.3 Tasa en realidad es un factor
             t2.setTipoFactor(CTipoFactor.TASA);
             list.add(t2);
@@ -374,7 +373,7 @@ public class Renglon extends Model implements Serializable {
      * @param descuento the descuento to set
      */
     public void setDescuento(BigDecimal descuento) {
-        this.descuento = descuento;
+        this.descuento = descuento.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     /**

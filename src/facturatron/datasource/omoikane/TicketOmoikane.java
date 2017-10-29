@@ -115,17 +115,18 @@ public class TicketOmoikane extends Ticket<String> {
             BigDecimal pUnitario = subtotal.divide( cantidad, BigDecimal.ROUND_HALF_EVEN );
             
             Map<String, BigDecimal>  tasasImpuesto = getTiposImpuesto(producto);
-            renglon.cantidad       = cantidad;
-            renglon.codigo         = producto.getCodigo();
-            renglon.descripcion    = producto.getDescripcion();
-            
-            renglon.impuestos      = tasasImpuesto.containsKey("IVA"); //IVA al 0 es ignorado en getTiposImpuesto()
-            renglon.ieps           = tasasImpuesto.get("IEPS");
-            renglon.ieps           = renglon.ieps == null ? new BigDecimal("0") : renglon.ieps;
-            renglon.precioUnitario = pUnitario;
-            renglon.unidad         = producto.getUnidad();
-            renglon.importe        = new BigDecimal(vd.getTotal(), mc).round(mc).setScale(4, BigDecimal.ROUND_UP);
-            renglon.descuento      = descuento;
+            renglon.cantidad            = cantidad;
+            renglon.codigo              = producto.getCodigo();
+            renglon.descripcion         = producto.getDescripcion();
+            renglon.impuestos           = tasasImpuesto.containsKey("IVA"); //IVA al 0 es ignorado en getTiposImpuesto()
+            renglon.ieps                = tasasImpuesto.get("IEPS");
+            renglon.ieps                = renglon.ieps == null ? new BigDecimal("0") : renglon.ieps;
+            renglon.precioUnitario      = pUnitario;
+            renglon.unidad              = producto.getUnidad();
+            renglon.importe             = new BigDecimal(vd.getTotal(), mc).round(mc).setScale(4, BigDecimal.ROUND_UP);
+            renglon.descuento           = descuento;
+            renglon.claveProductoSAT    = producto.getClaveProductoSat();
+            renglon.claveUnidadSAT      = producto.getClaveUnidadSat().toUpperCase();
 
             ticket.add(renglon);
         }

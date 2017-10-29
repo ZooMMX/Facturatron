@@ -63,3 +63,6 @@ installer.xml.backup
 nbbuild.xml
 
 .idea/**
+
+/CasaDeLasFacturas/**
+CasaDeLasFacturas/**

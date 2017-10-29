@@ -53,6 +53,7 @@ public class CFDFactory {
         
         CFDv3Tron cfdtron =  new CFDv3Tron();
         cfdtron.setComprobante(comprobante);
+        
         cfdtron.setXML(baos.toString());
         
         cfdtron = timbrar(cfdtron);        
