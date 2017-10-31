@@ -5,10 +5,15 @@
 
 package facturatron.omoikane;
 
+import facturatron.datasource.RenglonTicket;
+import facturatron.datasource.Ticket;
+import facturatron.datasource.omoikane.TicketOmoikane;
 import facturatron.omoikane.exceptions.NonexistentEntityException;
 import facturatron.omoikane.exceptions.PreexistingEntityException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -157,36 +162,94 @@ public class VentasDetallesJpaController extends JpaController {
         }
     }
     
-    public List<Object[]> getIdsNoFacturados(String desde, String hasta) {
+    public List<Ticket> getIdsNoFacturados(String desde, String hasta) {
         EntityManager em = getEntityManager();
+        
         try {
 
             Query q = em.createNativeQuery(
                     "		SELECT \n" +
-                    "			v.id_almacen, v.id_caja, v.id_venta, v.folio, v.total\n" +
+                    "			v.id_almacen, v.id_caja, v.id_venta, v.folio, v.total, vd.id_renglon, vdi.descripcion, vdi.base, vdi.impuestoId, vdi.porcentaje, vdi.total\n" +
                     "		FROM \n" +
                     "			ventas v, \n" +
-                    "			ventas_detalles vd \n" +
+                    "			ventas_detalles vd, " +
+                    "                   ventas_detalles_impuestos vdi \n" +
                     "		WHERE \n" +
                     "				v.id_venta = vd.id_venta \n" +
+                    "                   AND \n"+ 
+                    "                           vd.id_renglon = vdi.id_renglon \n" +
                     "			AND\n" +
                     "				v.facturada = 0\n" +
                     "			AND\n" +
                     "				vd.id_linea NOT IN (SELECT id_linea FROM lineas_dual)\n" +
                     "			AND \n" +
                     "				v.fecha_hora BETWEEN ?1 AND ?2  \n" +
-                    "		GROUP BY v.id_venta \n" +
                     "           ORDER BY v.id_caja ASC \n" 
                     );
             
             q.setParameter(1, desde);
             q.setParameter(2, hasta);
             List<Object[]> ventas = q.getResultList();
-            return ventas;
+            if(ventas==null||ventas.isEmpty())
+                return new ArrayList<>();
+            return armarTickets(ventas);
         } finally {
             em.close();
         }
+    }
+    
+    public List<Ticket> armarTickets(List<Object[]> ventas){
+        TicketOmoikane ticket=new TicketOmoikane();
+        List<Ticket> tickets= new ArrayList<>();
+        BigDecimal importeImpuesto=new BigDecimal("0.00");
         
+            for (Object[] idEnGlobal : ventas) {
+            //Construyo el formato por defecto del ID de ticket de Omoikane
+            String id = ((Integer) idEnGlobal[0]).toString() + "-" +
+                        ((Integer) idEnGlobal[1]).toString() + "-" +
+                        ((Integer) idEnGlobal[2]).toString();
+            
+            //Construyo el formato por defecto del folio de ticket de Omoikane
+            String folio = ((Integer) idEnGlobal[0]).toString() + "-" +
+                           ((Integer) idEnGlobal[1]).toString() + "-" +
+                           ((BigInteger) idEnGlobal[3]).toString();
+
+            
+            BigDecimal importe = new BigDecimal((Double) idEnGlobal[4]);
+            importe.setScale(2,RoundingMode.HALF_EVEN);
+
+            /*
+            [0] v.id_almacen, 
+            [1] v.id_caja, 
+            [2] v.id_venta, 
+            [3] v.folio, 
+            [4] v.total, 
+            [5] vd.id_renglon, 
+            [6] vdi.descripcion, 
+            [7] vdi.base, 
+            [8] vdi.impuestoId, 
+            [9] vdi.porcentaje, 
+            [10] vdi.total
+            */
+            
+            if(ticket.getId()!=null&&!ticket.getId().contentEquals(id)){
+                tickets.add(ticket);
+                ticket=new TicketOmoikane();
+            }
+            
+            ticket.setId(id);
+            ticket.setFolio(folio);
+            ticket.setImporte(importe); 
+            
+            importeImpuesto = new BigDecimal(idEnGlobal[10].toString());
+            importeImpuesto.setScale(2, RoundingMode.HALF_EVEN);
+            
+            if(!ticket.getImportesImpuestos().containsKey(idEnGlobal[6].toString()))
+                    ticket.getImportesImpuestos().put(idEnGlobal[6].toString(), BigDecimal.ZERO);
+            ticket.getImportesImpuestos().put(idEnGlobal[6].toString(), ticket.getImportesImpuestos().get(idEnGlobal[6].toString()).add(importeImpuesto));
+        }
+        tickets.add(ticket);
+        return tickets;
     }
     
     public List<SumaVentas> sumaVentasDetalles(String desde, String hasta) {
@@ -260,7 +323,6 @@ public class VentasDetallesJpaController extends JpaController {
                 } catch (UnsupportedEncodingException ex) {
                     Logger.getLogger(VentasDetallesJpaController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
             }
             
             return gruposSumas;

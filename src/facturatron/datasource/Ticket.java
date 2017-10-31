@@ -20,6 +20,8 @@ package facturatron.datasource;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 /**
  *
  * @author octavioruizcastillo
@@ -37,4 +39,11 @@ public abstract class Ticket<K extends Object> extends ArrayList<RenglonTicket> 
     protected String folio;
     public String getFolio() { return folio; }
     public void setFolio(String folio) { this.folio = folio; }
+
+    protected Map<String,BigDecimal> importesImpuestos;
+    public Map<String,BigDecimal> getImportesImpuestos(){
+        if(importesImpuestos==null)
+            importesImpuestos=new HashMap<String, BigDecimal>();
+        return importesImpuestos;
+    }
 }

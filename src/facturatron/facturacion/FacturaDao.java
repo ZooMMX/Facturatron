@@ -21,6 +21,7 @@ import facturatron.Principal.Main;
 import facturatron.Principal.VisorPdf;
 import facturatron.cliente.ClienteDao;
 import facturatron.config.ConfiguracionDao;
+import facturatron.datasource.RenglonTicket;
 import facturatron.datasource.Ticket;
 import facturatron.email.EmailFacturaCliente;
 import facturatron.facturacion.PAC.IPACService;
@@ -91,7 +92,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
     /** 
      * Relación de los tickets importados en la presente factura
      */
-    private List<Ticket> tickets;
+    private List<Ticket<RenglonTicket>> tickets;
 
     public void validateConstraints() throws ValidationException {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -107,7 +108,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
     /**
      * @return the tickets
      */
-    public List<Ticket> getTickets() {
+    public List<Ticket<RenglonTicket>> getTickets() {
         return tickets;
     }
 
@@ -124,7 +125,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
 
     public FacturaDao() {
         cal.setTimeZone(tz);
-        tickets = new ArrayList<Ticket>();
+        tickets = new ArrayList<Ticket<RenglonTicket>>();
     }
 
     private Configuracion getConfig() { return Configuracion.getConfig(); }     

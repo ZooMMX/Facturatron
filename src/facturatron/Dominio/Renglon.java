@@ -39,7 +39,7 @@ public class Renglon extends Model implements Serializable {
     private Boolean tasa0 = true;
     private BigDecimal tasaIEPS = new BigDecimal(0d);
     private BigDecimal ieps     = new BigDecimal(0d);
-    private BigDecimal descuento= new BigDecimal(0d);
+    private BigDecimal descuento = new BigDecimal(0d).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     private Boolean iepsUpdated=false;
 
     public Renglon() {
@@ -357,7 +357,8 @@ public class Renglon extends Model implements Serializable {
      * @param claveProductoSat the claveProductoSat to set
      */
     public void setClaveProductoSat(String claveProductoSat) {
-        this.claveProductoSat = claveProductoSat.trim();
+        if(claveProductoSat!=null)
+            this.claveProductoSat = claveProductoSat.trim();
     }
 
     /**

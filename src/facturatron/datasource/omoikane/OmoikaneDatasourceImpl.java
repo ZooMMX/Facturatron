@@ -77,13 +77,19 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
             //Definición de los impuestos
             String descripcionImpuestos = "";
             rt.ieps = BigDecimal.ZERO;
+            rt.setImporteIva(BigDecimal.ZERO);
+            rt.setImporteIeps(BigDecimal.ZERO);
             rt.impuestos = false;
             for (Impuesto impuesto : sumaVentas.impuestos) {
                 if(!descripcionImpuestos.isEmpty()) descripcionImpuestos += ",";
                 descripcionImpuestos += " "+impuesto.getDescripcion();
-                if(impuesto.getDescripcion().contains("IVA")) rt.impuestos = true;
-                if(impuesto.getDescripcion().contains("IEPS")) {
-                    rt.ieps = rt.ieps.add(impuesto.getPorcentaje());
+                if(impuesto.getDescripcion().contains("IVA")&&impuesto.getImpuesto()!=null){
+                    rt.impuestos = true;
+                    rt.setImporteIva(impuesto.getImpuesto());
+                }
+                if(impuesto.getDescripcion().contains("IEPS")&&impuesto.getImpuesto()!=null) {
+                    rt.ieps = rt.ieps=impuesto.getPorcentaje();
+                    rt.setImporteIeps(impuesto.getImpuesto());
                 }
             }
             //Si no hay impuestos definir un mensaje genérico de impuestos
@@ -92,6 +98,8 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
             //Definición del resto de atributos
             rt.cantidad = BigDecimal.ONE;
             rt.codigo = "0";
+            rt.claveProductoSAT="01010101";
+            rt.claveUnidadSAT="ACT";
             rt.descripcion = "Venta con"+descripcionImpuestos;
             rt.precioUnitario = sumaVentas.subtotal;
             rt.descuento = BigDecimal.ZERO;
@@ -103,33 +111,13 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
         //Cargo los tickets correspondientes a éste resumen de ventas, únicamente se cargan los IDs
         List<Ticket> ticketsEnGlobal = new ArrayList();
         
-        List<Object[]> idsEnGlobal = jpaDetalles.getIdsNoFacturados((String)desde, (String)hasta);       
-        
-        for (Object[] idEnGlobal : idsEnGlobal) {
-            //Construyo el formato por defecto del ID de ticket de Omoikane
-            String id = ((Integer) idEnGlobal[0]).toString() + "-" +
-                        ((Integer) idEnGlobal[1]).toString() + "-" +
-                        ((Integer) idEnGlobal[2]).toString();
-            
-            //Construyo el formato por defecto del folio de ticket de Omoikane
-            String folio = ((Integer) idEnGlobal[0]).toString() + "-" +
-                           ((Integer) idEnGlobal[1]).toString() + "-" +
-                           ((BigInteger) idEnGlobal[3]).toString();
+        List<Ticket> idsEnGlobal = jpaDetalles.getIdsNoFacturados((String)desde, (String)hasta);       
 
-            BigDecimal importe = new BigDecimal((Double) idEnGlobal[4]);
-            
-            TicketOmoikane ticketEnGlobal = new TicketOmoikane();
-            ticketEnGlobal.setId(id);
-            ticketEnGlobal.setFolio(folio);
-            ticketEnGlobal.setImporte(importe);            
-            ticketsEnGlobal.add(ticketEnGlobal);
-        }
-        
         //Construyo el objeto que se retornará
         
         TicketGlobal tg = new TicketGlobal();
         tg.setResumenGlobal(ticket);
-        tg.setTickets(ticketsEnGlobal);
+        tg.setTickets(idsEnGlobal);
         
         return tg;
     }

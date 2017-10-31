@@ -302,7 +302,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="7"/>
+					<font fontName="Monospaced" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Información de tickets (folio:importe,): "+$F{ticketInfo}]]></textFieldExpression>
 			</textField>

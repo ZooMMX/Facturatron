@@ -58,6 +58,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.PersistenceException;
@@ -397,20 +398,29 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       nf.setMinimumFractionDigits(2);
       nf.setMaximumFractionDigits(2);
       
-      StringBuilder ticketInfo = new StringBuilder("");
-      
+      StringBuilder ticketInfo = new StringBuilder("\n");
+      StringBuilder renglonInfo = new StringBuilder("");
       Boolean first = true;
-      for(Ticket t : getModel().getTickets()) {
+      for(Ticket<RenglonTicket> t : getModel().getTickets()) {
           if(first) 
               first = false; 
           else
-              ticketInfo.append(", "); 
-          ticketInfo.append(t.getFolio());
-          ticketInfo.append(":");
-          ticketInfo.append(nf.format(t.getImporte()));
-
+          renglonInfo = new StringBuilder("");
+          renglonInfo.append(t.getFolio());
+          renglonInfo.append(":");
+          renglonInfo.append(nf.format(t.getImporte()));
+          renglonInfo.append("(");
+              
+          Boolean comma = true;
+          for(Map.Entry<String, BigDecimal> entry : t.getImportesImpuestos().entrySet()) {
+              if(comma) { comma = false; } else { renglonInfo.append("; "); }
+                String impuesto = entry.getKey();
+                BigDecimal importe = entry.getValue();
+                renglonInfo.append(impuesto+": "+importe);
+          } 
+          ticketInfo.append(String.format("%-70s", renglonInfo.toString()));
       }
-      
+      //String.format("%-124.124s", ticketInfo.toString());
       getModel().setTicketInfo(ticketInfo.toString());
   }
   
@@ -621,7 +631,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                     
                     FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();
                     
-                    Ticket<?> t = DatasourceContext.instanceDatasourceInstance().getTicket(idTicket);
+                    Ticket<RenglonTicket> t = DatasourceContext.instanceDatasourceInstance().getTicket(idTicket);
                     //Comprobación de no duplicación de tickets en factura
                     if(!esTicketApto(t))
                         throw new TicketFacturadoException("Ticket ya agregado a ésta factura");                    
@@ -769,6 +779,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                     modelo.setValueAt(renglon.descripcion       , modelo.getRowCount() - 1, 3); //3 = Descripción
                     modelo.setValueAt(renglon.unidad            , modelo.getRowCount() - 1, 4); //4 = Unidad
                     modelo.setValueAt(renglon.claveUnidadSAT    , modelo.getRowCount() - 1, 5); //5 = Clave Unidad SAT
+                  
                     modelo.setValueAt(renglon.ieps              , modelo.getRowCount() - 1, 8); //8 = % IEPS
                     modelo.setValueAt(renglon.descuento         , modelo.getRowCount() - 1, 9); //9 = Descuento
                     //Al editar el campo "precioUnitario" se agrega una nueva fila, por este
