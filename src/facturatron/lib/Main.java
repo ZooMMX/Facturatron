@@ -187,7 +187,7 @@ public class Main {
         r1.setImporte(new BigDecimal("244.00"));
         r1.setCantidad(new BigDecimal("1.0"));
         r1.setDescripcion("VIBRAMICINA 100MG 10");
-        r1.setValorUniario(new BigDecimal("244.00"));
+        r1.setValorUnitario(new BigDecimal("244.00"));
         r1.setTasaIEPS(new BigDecimal("8"));
         r1.setIEPS(new BigDecimal(19.52));
         cps.add(r1.toConceptoTron());
@@ -197,7 +197,7 @@ public class Main {
         r2.setImporte(new BigDecimal("137.93"));
         r2.setCantidad(new BigDecimal("1.0"));
         r2.setDescripcion("CLORUTO 500M");
-        r2.setValorUniario(new BigDecimal("137.93"));
+        r2.setValorUnitario(new BigDecimal("137.93"));
         r2.setTasaIEPS(new BigDecimal("25"));
         r2.setIEPS(new BigDecimal("34.48"));
         cps.add(r2.toConceptoTron());
@@ -207,7 +207,7 @@ public class Main {
         r3.setImporte(new BigDecimal("84.50"));
         r3.setCantidad(new BigDecimal("1.0"));
         r3.setDescripcion("SEDEPRON 250MG 10");
-        r3.setValorUniario(new BigDecimal("84.50"));
+        r3.setValorUnitario(new BigDecimal("84.50"));
         r3.setTasaIEPS(new BigDecimal("8"));
         r3.setIEPS(new BigDecimal("6.76"));
         cps.add(r3.toConceptoTron());

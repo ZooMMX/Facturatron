@@ -99,7 +99,7 @@ public class FacturaTableModel extends AbstractTableModel {
             case 5:
                 return fila.getClaveUnidadSat();
             case 6:
-                return fila.getValorUniario();
+                return fila.getValorUnitario();
             case 7:
                 return fila.getTasa0();
             case 8:
@@ -147,7 +147,7 @@ public class FacturaTableModel extends AbstractTableModel {
                 fila.setClaveUnidadSat((String) value);
                 break;
             case 6:
-                fila.setValorUniario((BigDecimal)value);
+                fila.setValorUnitario((BigDecimal)value);
                 updateImporte(fila);
                 break;
             case 7:
@@ -168,11 +168,11 @@ public class FacturaTableModel extends AbstractTableModel {
     }
     public void updateImporte(Renglon renglon) {
         BigDecimal cantidad  = renglon.getCantidad();
-        BigDecimal valor     = renglon.getValorUniario();
+        BigDecimal valor     = renglon.getValorUnitario();
         BigDecimal descuento = renglon.getDescuento();
-        BigDecimal subtotal  = cantidad.multiply(valor);
+        BigDecimal subtotal  = cantidad.multiply(valor).subtract(descuento).add(renglon.getIEPS()).add(renglon.getIVA());
         //BigDecimal importe   = subtotal.subtract(descuento);
-        BigDecimal importe   = subtotal; //Resulta que para el SAT el Importe en realidad es el subtotal (sin descuento).
+        BigDecimal importe   = cantidad.multiply(valor); //Resulta que para el SAT el Importe en realidad es el subtotal (sin descuento).
         renglon.setSubtotal(subtotal);
         renglon.setImporte(importe);
     }

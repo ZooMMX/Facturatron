@@ -63,7 +63,7 @@ public class RenglonTicket {
     
     public BigDecimal getSubtotal(){
        if(subtotal.compareTo(BigDecimal.ZERO)==0)
-           subtotal=cantidad.multiply(precioUnitario);
+           subtotal=cantidad.multiply(precioUnitario).subtract(descuento);
        return subtotal;
     }
     

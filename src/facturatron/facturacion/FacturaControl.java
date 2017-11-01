@@ -170,14 +170,18 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
       total      .setScale(2);
       descuento  .setScale(2);
 
+      int i=0;
       for (Renglon renglon : getModel().getRenglones()) {
+          i++;
           descuento= descuento.add ( renglon.getDescuento() );
           iva      = iva.add( renglon.getIVA() );
           ieps     = ieps.add( renglon.getIEPS() );
-          subtotal = subtotal.add(renglon.getSubtotal());
+          subtotal = subtotal.add(renglon.getImporte());
+          
       }
 
-      total      = total.add( ieps , mc ).add( iva, mc ).add( subtotal, mc ).subtract( descuento, mc );
+      total=subtotal.subtract(descuento,mc).add(ieps,mc).add(iva,mc);
+      //total      = total.add( ieps , mc ).add( iva, mc ).add( subtotal, mc ).subtract( descuento, mc );
       
       getModel().setSubtotal(subtotal);
       getModel().setIvaTrasladado(iva);
@@ -285,7 +289,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
               filas++;
           }
           //Validar valor unitario
-          BigDecimal valor = renglon.getValorUniario();
+          BigDecimal valor = renglon.getValorUnitario();
           /*
           if(valor != null) {
               JOptionPane.showMessageDialog(getView(), valor.toPlainString()+"---La columna PU (precio unitario) tiene un contenido inválido en la fila " + filas);

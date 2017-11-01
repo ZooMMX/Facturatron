@@ -76,37 +76,40 @@ public class OmoikaneDatasourceImpl implements IDatasourceService {
             
             //Definición de los impuestos
             String descripcionImpuestos = "";
+            rt.precioUnitario = sumaVentas.subtotal;
+            rt.cantidad = BigDecimal.ONE;
+            rt.descuento = sumaVentas.descuentos;
             rt.ieps = BigDecimal.ZERO;
             rt.setImporteIva(BigDecimal.ZERO);
             rt.setImporteIeps(BigDecimal.ZERO);
+
+                        
             rt.impuestos = false;
             for (Impuesto impuesto : sumaVentas.impuestos) {
                 if(!descripcionImpuestos.isEmpty()) descripcionImpuestos += ",";
                 descripcionImpuestos += " "+impuesto.getDescripcion();
-                if(impuesto.getDescripcion().contains("IVA")&&impuesto.getImpuesto()!=null){
+                if(impuesto.getDescripcion().contains("IVA")){
                     rt.impuestos = true;
-                    rt.setImporteIva(impuesto.getImpuesto());
+                    //rt.setImporteIva(impuesto.getImpuesto());
                 }
-                if(impuesto.getDescripcion().contains("IEPS")&&impuesto.getImpuesto()!=null) {
+                if(impuesto.getDescripcion().contains("IEPS")) {
                     rt.ieps = rt.ieps=impuesto.getPorcentaje();
-                    rt.setImporteIeps(impuesto.getImpuesto());
+                    //rt.setImporteIeps(impuesto.getImpuesto());
                 }
             }
             //Si no hay impuestos definir un mensaje genérico de impuestos
             if(descripcionImpuestos.isEmpty()) descripcionImpuestos = " exención de impuestos";           
             
             //Definición del resto de atributos
-            rt.cantidad = BigDecimal.ONE;
             rt.codigo = "0";
             rt.claveProductoSAT="01010101";
             rt.claveUnidadSAT="ACT";
             rt.descripcion = "Venta con"+descripcionImpuestos;
-            rt.precioUnitario = sumaVentas.subtotal;
-            rt.descuento = BigDecimal.ZERO;
             rt.unidad = "NA";
-            rt.descuento = sumaVentas.descuentos;
             ticket.add(rt);
         }
+        
+        
         
         //Cargo los tickets correspondientes a éste resumen de ventas, únicamente se cargan los IDs
         List<Ticket> ticketsEnGlobal = new ArrayList();

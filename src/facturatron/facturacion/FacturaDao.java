@@ -518,7 +518,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 ps.setBigDecimal(4, renglon.getImporte());
                 ps.setBigDecimal(5, renglon.getCantidad());
                 ps.setString(6, renglon.getDescripcion());
-                ps.setBigDecimal(7, renglon.getValorUniario());
+                ps.setBigDecimal(7, renglon.getValorUnitario());
                 ps.setInt(8, renglon.getTasa0()?1:0);
                 ps.setBigDecimal(9, renglon.getDescuento());
                 ps.setString(10, renglon.getClaveUnidadSat());
@@ -631,7 +631,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 rb.setImporte(rs.getBigDecimal("importe"));
                 rb.setCantidad(rs.getBigDecimal("cantidad"));
                 rb.setDescripcion(rs.getString("descripcion"));
-                rb.setValorUniario(rs.getBigDecimal("valorUnitario"));
+                rb.setValorUnitario(rs.getBigDecimal("valorUnitario"));
                 rb.setTasa0(rs.getInt("tasa0")==1);
                 rb.setDescuento(rs.getBigDecimal("descuento"));
                 rb.setClaveUnidadSat(rs.getString("CLAVE_UNIDAD_SAT"));
