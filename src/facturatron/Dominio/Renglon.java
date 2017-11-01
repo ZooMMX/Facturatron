@@ -31,19 +31,19 @@ public class Renglon extends Model implements Serializable {
     private String claveUnidadSat = "";
     private String noIdentificacion = "";
     private String claveProductoSat = "";
-    private BigDecimal importe  = new BigDecimal(0d).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-    private BigDecimal subtotal  = new BigDecimal(0d).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-    private BigDecimal cantidad = new BigDecimal(0d).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    private BigDecimal importe;
+    private BigDecimal subtotal;
+    private BigDecimal cantidad;
     private String descripcion = "";
-    private BigDecimal valorUnitario = new BigDecimal(0d);
+    private BigDecimal valorUnitario;
     private Boolean tasa0 = true;
-    private BigDecimal tasaIEPS = new BigDecimal(0d);
-    private BigDecimal ieps     = new BigDecimal(0d);
-    private BigDecimal descuento = new BigDecimal(0d).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-    private BigDecimal iva      =new BigDecimal(0d).setScale(2,BigDecimal.ROUND_HALF_EVEN);
+    private BigDecimal tasaIEPS;
+    private BigDecimal ieps;
+    private BigDecimal descuento;
+    private BigDecimal iva;
     private Boolean iepsUpdated=false;
     private MathContext mc = MathContext.DECIMAL64;
-    private BigDecimal total=new BigDecimal(0d).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    private BigDecimal total;
 
     public Renglon() {
         importe=new BigDecimal("0.00",mc);
@@ -55,15 +55,15 @@ public class Renglon extends Model implements Serializable {
         total=new BigDecimal("0.00",mc);
         descuento=new BigDecimal("0.00",mc);
         iva=new BigDecimal("0.00",mc);
-        importe.setScale(2);
-        cantidad.setScale(2);
-        valorUnitario.setScale(2);
-        tasaIEPS.setScale(2);
-        ieps.setScale(2);
-        subtotal.setScale(2);
-        total.setScale(2);
-        descuento.setScale(2);
-        iva.setScale(2);
+        importe.setScale(4, BigDecimal.ROUND_HALF_EVEN);
+        cantidad.setScale(4, BigDecimal.ROUND_HALF_EVEN);
+        valorUnitario.setScale(4, BigDecimal.ROUND_HALF_EVEN);
+        tasaIEPS.setScale(4, BigDecimal.ROUND_HALF_EVEN);
+        ieps.setScale(4, BigDecimal.ROUND_HALF_EVEN);
+        subtotal.setScale(4, BigDecimal.ROUND_HALF_EVEN);
+        total.setScale(4, BigDecimal.ROUND_HALF_EVEN);
+        descuento.setScale(4, BigDecimal.ROUND_HALF_EVEN);
+        iva.setScale(4, BigDecimal.ROUND_HALF_EVEN);
         tasa0=true;
     }
 
@@ -164,7 +164,7 @@ public class Renglon extends Model implements Serializable {
     public void setCantidad(BigDecimal cantidad) {
         if(cantidad==null)
             cantidad=new BigDecimal("0.00", mc);
-        this.cantidad = cantidad.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        this.cantidad = cantidad;
         updateRenglon();
     }
 
@@ -181,7 +181,7 @@ public class Renglon extends Model implements Serializable {
     public void setImporte(BigDecimal importe) {
         if(importe==null)
             importe=new BigDecimal("0.00", mc);        
-        this.importe = importe.setScale(2, RoundingMode.HALF_EVEN);
+        this.importe = importe;
         updateRenglon();
     }
 
@@ -254,7 +254,7 @@ public class Renglon extends Model implements Serializable {
     public void setValorUnitario(BigDecimal valorUniario) {
         if(valorUniario==null)
             new BigDecimal("0.00", mc);
-        this.valorUnitario = valorUniario.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        this.valorUnitario = valorUniario;
         updateRenglon();
     }
 
@@ -276,14 +276,14 @@ public class Renglon extends Model implements Serializable {
     }
 
     public BigDecimal getTasaIEPS() {
-        return tasaIEPS.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        return tasaIEPS;
     }
 
     public void setTasaIEPS(BigDecimal tasa) {
         if(tasa==null)
             tasa=new BigDecimal("0.00", mc);
         if(!iepsUpdated){
-            tasaIEPS = tasa.divide(new BigDecimal("100.00", mc),mc).setScale(2,RoundingMode.HALF_EVEN);
+            tasaIEPS = tasa.divide(new BigDecimal("100.00", mc),mc);
             iepsUpdated=true;
         }else{
             if(tasaIEPS.compareTo(tasa)!=0){
@@ -298,7 +298,7 @@ public class Renglon extends Model implements Serializable {
      * @return the ieps
      */
     public BigDecimal getIEPS() {
-        return ieps.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        return ieps;
     }
 
     /**
@@ -307,7 +307,7 @@ public class Renglon extends Model implements Serializable {
     public void setIEPS(BigDecimal ieps) {
         if(ieps==null)
             ieps=new BigDecimal("0.00", mc);
-        this.ieps=ieps.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        this.ieps=ieps;
         updateRenglon();
     }
 
@@ -410,7 +410,7 @@ public class Renglon extends Model implements Serializable {
     public void setDescuento(BigDecimal descuento) {
         if(descuento==null)
             descuento=new BigDecimal("0.00", mc);
-        this.descuento = descuento.setScale(2, RoundingMode.HALF_EVEN);
+        this.descuento = descuento;
         updateRenglon();
     }
 

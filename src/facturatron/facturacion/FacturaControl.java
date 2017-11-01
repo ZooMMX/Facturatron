@@ -338,10 +338,10 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         return;
     }
     
-    if(getModel().getReceptor().getRegimen()==null||getModel().getReceptor().getRegimen().isEmpty()||getModel().getReceptor().getRegimen().contentEquals("NA")){
+    /*if(getModel().getReceptor().getRegimen()==null||getModel().getReceptor().getRegimen().isEmpty()||getModel().getReceptor().getRegimen().contentEquals("NA")){
         Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "El régimen fiscal del receptor no debe estar vacío!");
         return;
-    }
+    }*/
         
     if(!validarForm()) return;
     notifyBusy();    

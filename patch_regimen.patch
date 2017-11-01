@@ -1,0 +1,31 @@
+diff --git a/src/db/migration/V7__update_from_1-8_0_to_1-9-0.sql b/src/db/migration/V7__update_from_1-8_0_to_1-9-0.sql
+index e2941e4..d1f23b9 100644
+--- a/src/db/migration/V7__update_from_1-8_0_to_1-9-0.sql
++++ b/src/db/migration/V7__update_from_1-8_0_to_1-9-0.sql
+@@ -15,4 +15,6 @@ ALTER TABLE concepto ADD COLUMN CLAVE_PRODUCTO_SAT varchar(15);
+ 
+ ALTER TABLE comprobante ADD COLUMN FACTURAS_RELACIONADAS text;
+ 
+-ALTER TABLE concepto ADD COLUMN USO_CFDI varchar(15);
++ALTER TABLE comprobante ADD COLUMN TIPO_RELACION varchar(32);
++
++ALTER TABLE comprobante ADD COLUMN USO_CFDI varchar(15);
+diff --git a/src/facturatron/facturacion/FacturaControl.java b/src/facturatron/facturacion/FacturaControl.java
+index f1fc669..05158d4 100644
+--- a/src/facturatron/facturacion/FacturaControl.java
++++ b/src/facturatron/facturacion/FacturaControl.java
+@@ -334,10 +334,10 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
+         return;
+     }
+     
+-    if(getModel().getReceptor().getRegimen()==null||getModel().getReceptor().getRegimen().isEmpty()||getModel().getReceptor().getRegimen().contentEquals("NA")){
+-        Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "El régimen fiscal del receptor no debe estar vacío!");
+-        return;
+-    }
++    //if(getModel().getReceptor().getRegimen()==null||getModel().getReceptor().getRegimen().isEmpty()||getModel().getReceptor().getRegimen().contentEquals("NA")){
++    //    Logger.getLogger(FacturaControl.class.getName()).log(Level.SEVERE, "El régimen fiscal del receptor no debe estar vacío!");
++    //    return;
++    //}
+         
+     if(!validarForm()) return;
+     notifyBusy();    
