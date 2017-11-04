@@ -293,7 +293,7 @@
   </wsdl:binding>
   <wsdl:service name="CancelSOAP">
     <wsdl:port name="Application" binding="tns:Application">
-      <soap:address location="https://facturacion.finkok.com/servicios/soap/cancel"/>
+      <soap:address location="https://demo-facturacion.finkok.com/servicios/soap/cancel"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -4,8 +4,8 @@
     <system systemId="file:/Users/octavioruizcastillo/Library/Application%20Support/NetBeans/8.2/config/WebServices/cancel-wsdl/catalog/cancel.wsdl" uri="xml-resources/web-service-references/cancel/wsdl/cancel.wsdl"/>
     <system systemId="file:/Users/octavioruizcastillo/Library/Application%20Support/NetBeans/8.2/config/WebServices/stamp-wsdl/catalog/stamp.wsdl" uri="xml-resources/web-service-references/stamp/wsdl/stamp.wsdl"/>
     <system systemId="file:/Users/octavioruizcastillo/Library/Application%20Support/NetBeans/8.2/config/WebServices/ConexionRemota32-asmx-wsdl/catalog/ConexionRemota32.asmx.wsdl" uri="xml-resources/web-service-references/ConexionRemota32.asmx/wsdl/ConexionRemota32.asmx.wsdl"/>
-    <system systemId="https://facturacion.finkok.com/servicios/soap/stamp.wsdl" uri="xml-resources/web-service-references/stamp/wsdl/facturacion.finkok.com/servicios/soap/stamp.wsdl"/>
-    <system systemId="http://facturacion.finkok.com/servicios/soap/cancel.wsdl" uri="xml-resources/web-service-references/cancel/wsdl/facturacion.finkok.com/servicios/soap/cancel.wsdl"/>
+    <system systemId="https://demo-facturacion.finkok.com/servicios/soap/stamp.wsdl" uri="xml-resources/web-service-references/stamp/wsdl/demo-facturacion.finkok.com/servicios/soap/stamp.wsdl"/>
+    <system systemId="http://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl" uri="xml-resources/web-service-references/cancel/wsdl/demo-facturacion.finkok.com/servicios/soap/cancel.wsdl"/>
     <system systemId="file:/Users/octavioruizcastillo/Downloads/prueba/stamp_1.wsdl" uri="xml-resources/web-service-references/stamp_1/wsdl/stamp_1.wsdl"/>
     <system systemId="file:/Users/octavioruizcastillo/Downloads/cancel/cancel_1.wsdl" uri="xml-resources/web-service-references/cancel_1/wsdl/cancel_1.wsdl"/>
 </catalog>

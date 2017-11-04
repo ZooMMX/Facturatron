@@ -231,7 +231,7 @@
   </wsdl:binding>
   <wsdl:service name="StampSOAP">
     <wsdl:port name="Application" binding="tns:Application">
-      <soap:address location="https://facturacion.finkok.com/servicios/soap/stamp"/>
+      <soap:address location="https://demo-facturacion.finkok.com/servicios/soap/stamp"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
