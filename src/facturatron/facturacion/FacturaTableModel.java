@@ -8,6 +8,7 @@ package facturatron.facturacion;
 import facturatron.Dominio.Renglon;
 import java.awt.Component;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.JTable;
@@ -46,6 +47,8 @@ public class FacturaTableModel extends AbstractTableModel {
         BigDecimal.class
     };
     private ArrayList<Renglon> data = new ArrayList<Renglon>();
+    private MathContext mc = MathContext.DECIMAL64;
+    
     public FacturaTableModel() {
         
     }
@@ -103,7 +106,7 @@ public class FacturaTableModel extends AbstractTableModel {
             case 7:
                 return fila.getTasa0();
             case 8:
-                return fila.getTasaIEPS();
+                return fila.getTasaIEPS().multiply(new BigDecimal("100.00"), mc);
             case 9:
                 return fila.getDescuento();
             case 10:
@@ -129,7 +132,7 @@ public class FacturaTableModel extends AbstractTableModel {
         switch(col) {
             case 0:
                 fila.setCantidad((BigDecimal)value);
-                updateImporte(fila);
+                //updateImporte(fila);
                 break;
             case 1:
                 fila.setNoIdentificacion((String) value);
@@ -148,7 +151,7 @@ public class FacturaTableModel extends AbstractTableModel {
                 break;
             case 6:
                 fila.setValorUnitario((BigDecimal)value);
-                updateImporte(fila);
+                //updateImporte(fila);
                 break;
             case 7:
                 fila.setTasa0((Boolean) value);
@@ -158,7 +161,7 @@ public class FacturaTableModel extends AbstractTableModel {
                 break;
             case 9:
                 fila.setDescuento((BigDecimal) value);
-                updateImporte(fila);
+                //updateImporte(fila);
                 break;
         }
         if(row == getRowCount()-1 && col == getColumnCount()-5) { //Crear nueva fila cuando se esté en la columna PU de la última fila
@@ -166,6 +169,7 @@ public class FacturaTableModel extends AbstractTableModel {
         }
         fireTableCellUpdated(row, col);
     }
+    /* Esto ya se hace en renglón 
     public void updateImporte(Renglon renglon) {
         BigDecimal cantidad  = renglon.getCantidad();
         BigDecimal valor     = renglon.getValorUnitario();
@@ -175,7 +179,7 @@ public class FacturaTableModel extends AbstractTableModel {
         BigDecimal importe   = cantidad.multiply(valor); //Resulta que para el SAT el Importe en realidad es el subtotal (sin descuento).
         renglon.setSubtotal(subtotal);
         renglon.setImporte(importe);
-    }
+    }*/
 
     /**
      * @return the data
@@ -188,6 +192,18 @@ public class FacturaTableModel extends AbstractTableModel {
      * @param data the data to set
      */
     public void setData(ArrayList<Renglon> data) {
+        Renglon demo = new Renglon();
+        demo.setCantidad(new BigDecimal("1.212121212"));
+        demo.setClaveProductoSat("01010101");
+        demo.setClaveUnidadSat("H87");
+        demo.setTasaIEPS(new BigDecimal("25.0"));
+        demo.setValorUnitario(new BigDecimal("2.323232323232"));
+        demo.setDescripcion("Prueba");
+        demo.setUnidad("Pza");
+        demo.setNoIdentificacion("1");
+        demo.setDescuento(new BigDecimal("0.2323232323"));
+        data.add(demo);
+        
         this.data = data;
     }
 
