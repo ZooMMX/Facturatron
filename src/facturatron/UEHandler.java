@@ -5,6 +5,8 @@
 
 package facturatron;
 
+import com.phesus.facturatron.presentation.mvc.view.ExceptionWindow;
+
 /**
  *
  * @author mora

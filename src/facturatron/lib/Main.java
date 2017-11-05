@@ -6,7 +6,7 @@
 package facturatron.lib;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
-import facturatron.Dominio.Renglon;
+import com.phesus.facturatron.presentation.mvc.model.RenglonModel;
 import facturatron.lib.entities.CFDv3Tron;
 import facturatron.lib.entities.ComprobanteTron;
 import facturatron.lib.entities.ConceptoTron;
@@ -182,9 +182,8 @@ public class Main {
     private static ConceptosTron createConceptos(ObjectFactory of) {
         ConceptosTron cps = new ConceptosTron();
         
-        Renglon r1 = new Renglon();
+        RenglonModel r1 = new RenglonModel();
         r1.setUnidad("CAPSULAS");
-        r1.setImporte(new BigDecimal("244.00"));
         r1.setCantidad(new BigDecimal("1.0"));
         r1.setDescripcion("VIBRAMICINA 100MG 10");
         r1.setValorUnitario(new BigDecimal("244.00"));
@@ -192,9 +191,8 @@ public class Main {
         r1.setIEPS(new BigDecimal(19.52));
         cps.add(r1.toConceptoTron());
         
-        Renglon r2 = new Renglon();
+        RenglonModel r2 = new RenglonModel();
         r2.setUnidad("BOTELLA");
-        r2.setImporte(new BigDecimal("137.93"));
         r2.setCantidad(new BigDecimal("1.0"));
         r2.setDescripcion("CLORUTO 500M");
         r2.setValorUnitario(new BigDecimal("137.93"));
@@ -202,9 +200,8 @@ public class Main {
         r2.setIEPS(new BigDecimal("34.48"));
         cps.add(r2.toConceptoTron());
         
-        Renglon r3 = new Renglon();
+        RenglonModel r3 = new RenglonModel();
         r3.setUnidad("TABLETAS");
-        r3.setImporte(new BigDecimal("84.50"));
         r3.setCantidad(new BigDecimal("1.0"));
         r3.setDescripcion("SEDEPRON 250MG 10");
         r3.setValorUnitario(new BigDecimal("84.50"));

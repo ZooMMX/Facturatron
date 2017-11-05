@@ -27,7 +27,7 @@ import facturatron.datasource.IDatasourceService;
 import facturatron.datasource.RenglonTicket;
 import facturatron.datasource.Ticket;
 import facturatron.datasource.TicketGlobal;
-import facturatron.facturacion.ListadoControl;
+import com.phesus.facturatron.presentation.mvc.controller.ListadoControl;
 import facturatron.omoikane.Impuesto;
 import facturatron.omoikane.Ventas;
 import facturatron.omoikane.VentasDetallesJpaController;

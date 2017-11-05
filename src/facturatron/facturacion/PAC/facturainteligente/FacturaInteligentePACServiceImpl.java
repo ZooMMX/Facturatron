@@ -13,7 +13,7 @@ import com.facturainteligente.GenerarCFDIv32;
 import com.google.common.base.Joiner;
 import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
-import facturatron.facturacion.FacturaDao;
+import com.phesus.facturatron.persistence.dao.FacturaDao;
 import facturatron.facturacion.IDistribucionHandler;
 import facturatron.facturacion.PAC.IPACService;
 import facturatron.facturacion.PAC.IStatusTimbre;

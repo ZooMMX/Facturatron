@@ -5,7 +5,7 @@
 package facturatron.email;
 
 import facturatron.Dominio.Configuracion;
-import facturatron.config.ConfiguracionDao;
+import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 

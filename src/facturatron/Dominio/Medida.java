@@ -5,7 +5,7 @@
  */
 
 package facturatron.Dominio;
-import facturatron.MVC.Model;
+import facturatron.mvc.Model;
 import java.io.Serializable;
 
 /**

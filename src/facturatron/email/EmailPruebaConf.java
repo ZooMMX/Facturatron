@@ -1,7 +1,7 @@
 package facturatron.email;
 
 import facturatron.Dominio.Configuracion;
-import facturatron.config.ConfiguracionDao;
+import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
 
 /**
  * Clase que se encarga de enviar un correo para probar la configuración del

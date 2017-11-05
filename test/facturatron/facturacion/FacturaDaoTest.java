@@ -6,9 +6,10 @@
 
 package facturatron.facturacion;
 
+import com.phesus.facturatron.persistence.dao.FacturaDao;
 import facturatron.Dominio.Factura;
 import facturatron.Dominio.Persona;
-import facturatron.MVC.JDBCDAOSupport;
+import facturatron.mvc.JDBCDAOSupport;
 import facturatron.lib.entities.ComprobanteTron;
 import facturatron.lib.entities.ConceptosTron;
 import java.math.BigDecimal;

@@ -6,7 +6,7 @@
 package facturatron.omoikane;
 
 import facturatron.Dominio.Configuracion;
-import facturatron.config.ConfiguracionDao;
+import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;

@@ -1,0 +1,270 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.phesus.facturatron.persistence.dao;
+
+import facturatron.DAOException;
+import facturatron.Dominio.Persona;
+import facturatron.mvc.DAO;
+import facturatron.mvc.JDBCDAOSupport;
+import com.phesus.facturatron.persistence.dao.FacturaDao;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.ArrayList;
+import mx.bigdata.sat.cfdi.v33.schema.CPais;
+
+/**
+ *
+ * @author saul
+ */
+public class ClienteDao extends Persona implements DAO<Integer,Persona> {
+     private JDBCDAOSupport bd;
+
+     public  ClienteDao( ){
+         setChanged();
+     }
+
+    @Override
+    public ArrayList<Persona> findAll() throws DAOException{
+         JDBCDAOSupport bd = getBD();
+         try{
+
+            bd.conectar();
+
+            //Sólo las personas con ID > 2 Son Clientes; La persona 1 es el contribuyente (emisor); La persona 2
+            //  es la sucursal.
+            ResultSet rs = bd.getStmt().executeQuery("SELECT * FROM persona WHERE id > 2");
+            ArrayList<Persona> ret = new ArrayList<Persona>();
+            Persona bean;
+            while (rs.next()) {
+
+                bean = new Persona();
+                bean.setId(rs.getInt("id"));
+                bean.setNombre(rs.getString("nombre"));
+                bean.setRfc(rs.getString("rfc"));
+                bean.setTelefono(rs.getString("telefono"));
+                bean.setCalle(rs.getString("calle"));
+                bean.setCodigoPostal(rs.getString("codigoPostal"));
+                bean.setColonia(rs.getString("colonia"));
+                bean.setMunicipio(rs.getString("municipio"));
+                bean.setEstado(rs.getString("estado"));
+                bean.setNoExterior(rs.getString("noExterior"));
+                bean.setNoInterior(rs.getString("noInterior"));
+                String pais = rs.getString("pais").equalsIgnoreCase("México")?"MEX":rs.getString("pais"); //Por retrocompatibilidad, antes "MEX" era "México"
+                pais = pais.equalsIgnoreCase("Mexico")?"MEX":pais; //Por retrocompatibilidad, antes "MEX" era "México"
+                pais = pais.isEmpty() ? "MEX" : pais;
+                bean.setPais(CPais.valueOf(pais));
+                bean.setRegimen(rs.getString("regimen"));
+                bean.setCorreoElectronico(rs.getString("correoelectronico"));
+                ret.add(bean);
+
+             }
+             return ret;
+        }catch(SQLException ex){
+
+             throw new DAOException("No se fue posible hacer una consulta de clientes", ex);
+
+        } finally{  //si falla o no falla se tiene que desconectar
+            bd.desconectar();
+        }
+        
+     }
+
+    public void getClientesInterval(int IdInicial, int nFilas){
+
+        
+    }
+
+    @Override
+    public void persist() throws SQLException {
+        try {
+            JDBCDAOSupport bd = getBD();
+            bd.conectar();
+            PreparedStatement ps;
+
+            if(getId()!=null) {
+                ps = bd.getCon().prepareStatement("update persona set nombre=?,rfc=?,telefono=?,calle=?,codigoPostal=?,colonia=?,municipio=?,estado=?,noExterior=?,noInterior=?,pais=?,regimen=?, correoelectronico=? WHERE id = ?");
+                ps.setInt(14, getId());
+            } else {
+                ps = bd.getCon().prepareStatement("insert into persona (nombre,rfc,telefono,calle,codigoPostal,colonia,municipio,estado,noExterior,noInterior,pais,regimen,correoelectronico) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            }
+            
+            ps.setString(1, getNombre());
+            ps.setString(2, getRfc());
+            ps.setString(3, getTelefono());
+            ps.setString(4, getCalle());
+            ps.setString(5, getCodigoPostal());
+            ps.setString(6, getColonia());
+            ps.setString(7, getMunicipio());
+            ps.setString(8, getEstado());
+            ps.setString(9, getNoExterior());
+            ps.setString(10, getNoInterior());
+            ps.setString(11, getPais().value());
+            ps.setString(12, getRegimen());
+            ps.setString(13, getCorreoElectronico());
+
+            ps.execute();
+            bd.desconectar();
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDao.class.getName()).log(Level.SEVERE, "Error al guardar cliente/persona", ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public void remove() {
+        try {
+            JDBCDAOSupport bd = getBD();
+            bd.conectar();
+            PreparedStatement ps;
+
+            if(getId()!=null) {
+                ps = bd.getCon().prepareStatement("delete from persona where id = ?");
+                ps.setInt(1, getId());
+                ps.execute();
+            }
+
+            bd.desconectar();
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDao.class.getName()).log(Level.SEVERE, "Error al eliminar cliente/persona", ex);
+        }
+        clearDataModel();
+    }
+
+
+    public void clearDataModel() {
+        setId(null);
+        setNombre(null);
+        setRfc(null);
+        setTelefono(null);
+        setCalle(null);
+        setCodigoPostal(null);
+        setColonia(null);
+        setMunicipio(null);
+        setEstado(null);
+        setNoExterior(null);
+        setNoInterior(null);
+        setPais(null);
+        setRegimen(null);
+        setCorreoElectronico(null);
+        setChanged();
+        notifyObservers();
+    }
+    @Override
+    public ClienteDao findBy(Integer id) throws SQLException {
+         JDBCDAOSupport bd = getBD();
+         try{
+
+            bd.conectar();
+
+            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM persona WHERE id = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (!rs.next()) {
+                return null;
+            }
+            this.setId(rs.getInt("id"));
+            this.setNombre(rs.getString("nombre"));
+            this.setRfc(rs.getString("rfc"));
+            this.setTelefono(rs.getString("telefono"));
+            this.setCalle(rs.getString("calle"));
+            this.setCodigoPostal(rs.getString("codigoPostal"));
+            this.setColonia(rs.getString("colonia"));
+            this.setMunicipio(rs.getString("municipio"));
+            this.setEstado(rs.getString("estado"));
+            this.setNoExterior(rs.getString("noExterior"));
+            this.setNoInterior(rs.getString("noInterior"));
+            String pais;
+            //País viene vacío?
+            pais=rs.getString("pais")==null?"MEX":rs.getString("pais");          
+            
+            //País viene como México o Mexico? (versiones viejas)
+            pais = pais.equalsIgnoreCase("México")?"MEX":pais;
+            pais = pais.equalsIgnoreCase("Mexico")?"MEX":pais; //Por retrocompatibilidad, antes "MEX" era "México"  
+             //Por retrocompatibilidad, antes "MEX" era "México"
+            
+            this.setPais(CPais.valueOf(pais));
+            this.setRegimen(rs.getString("regimen"));
+            this.setCorreoElectronico(rs.getString("correoelectronico"));
+
+            setChanged();
+            notifyObservers();
+
+            return this;
+        } catch(SQLException se) {
+            throw se;
+        } finally{
+            if(bd != null)
+                bd.desconectar();
+        }
+        
+    }
+    
+    /**
+     * Busca un cliente, devuelve un máximo de 25 resultados
+     * @param searchString
+     * @return 
+     */
+    public ArrayList<Persona> find(String searchString) {
+         JDBCDAOSupport bd = getBD();
+         try{
+
+            bd.conectar();
+
+            PreparedStatement ps = bd.getCon().prepareStatement("SELECT * FROM persona WHERE id > 2 AND (nombre like ? OR rfc like ?) LIMIT 25");
+            searchString = "%"+searchString+"%";
+            ps.setString(1, searchString);
+            ps.setString(2, searchString);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Persona> ret = new ArrayList<Persona>();
+            Persona bean;
+            while (rs.next()) {
+
+                bean = new Persona();
+                bean.setId(rs.getInt("id"));
+                bean.setNombre(rs.getString("nombre"));
+                bean.setRfc(rs.getString("rfc"));
+                bean.setTelefono(rs.getString("telefono"));
+                bean.setCalle(rs.getString("calle"));
+                bean.setCodigoPostal(rs.getString("codigoPostal"));
+                bean.setColonia(rs.getString("colonia"));
+                bean.setMunicipio(rs.getString("municipio"));
+                bean.setEstado(rs.getString("estado"));
+                bean.setNoExterior(rs.getString("noExterior"));
+                bean.setNoInterior(rs.getString("noInterior"));
+                String pais = rs.getString("pais").equalsIgnoreCase("México")?"MEX":rs.getString("pais"); //Por retrocompatibilidad, antes "MEX" era "México"
+                pais = pais.equalsIgnoreCase("Mexico")?"MEX":pais; //Por retrocompatibilidad, antes "MEX" era "México"
+                pais = pais.isEmpty() ? "MEX" : pais;
+                bean.setPais(CPais.valueOf(pais));
+                bean.setRegimen(rs.getString("regimen"));
+                bean.setCorreoElectronico(rs.getString("correoelectronico"));
+
+                ret.add(bean);
+
+             }
+             return ret;
+        }catch(Exception ex){
+
+            Logger.getLogger(FacturaDao.class.getName()).log(Level.SEVERE, "Error al consultar cliente/persona", ex);
+
+        } finally{
+            bd.desconectar();
+        }
+        return null;
+        
+    }
+
+    @Override
+    public JDBCDAOSupport getBD() {
+
+        return new JDBCDAOSupport();
+    }
+
+   
+}

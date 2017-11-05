@@ -5,6 +5,7 @@
 
 package facturatron;
 
+import com.phesus.facturatron.presentation.mvc.view.ExceptionWindow;
 import org.apache.log4j.Appender;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Priority;

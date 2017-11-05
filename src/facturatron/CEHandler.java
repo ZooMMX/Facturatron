@@ -5,6 +5,7 @@
 
 package facturatron;
 
+import com.phesus.facturatron.presentation.mvc.view.ExceptionWindow;
 import java.util.logging.Filter;
 import java.util.logging.Handler;
 import java.util.logging.Level;

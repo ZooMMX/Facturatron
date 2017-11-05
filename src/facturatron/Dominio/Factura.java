@@ -5,7 +5,8 @@
 
 package facturatron.Dominio;
 
-import facturatron.MVC.Model;
+import com.phesus.facturatron.presentation.mvc.model.RenglonModel;
+import facturatron.mvc.Model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -156,7 +157,7 @@ public class Factura extends Model implements Serializable {
     @NotNull
     private String xml;
     @NotNull
-    private ArrayList<Renglon> renglones = new ArrayList<Renglon>();
+    private ArrayList<RenglonModel> renglones = new ArrayList<RenglonModel>();
 
     public Factura() {
         subtotal.setScale(2);
@@ -190,7 +191,7 @@ public class Factura extends Model implements Serializable {
     /**
      * @return the renglones
      */
-    public ArrayList<Renglon> getRenglones() {
+    public ArrayList<RenglonModel> getRenglones() {
         return renglones;
     }
 
@@ -454,7 +455,7 @@ public class Factura extends Model implements Serializable {
     /**
      * @param renglones the renglones to set
      */
-    public void setRenglones(ArrayList<Renglon> renglones) {
+    public void setRenglones(ArrayList<RenglonModel> renglones) {
         this.renglones = renglones;
     }
 

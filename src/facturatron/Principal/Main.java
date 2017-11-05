@@ -4,18 +4,18 @@
  */
 package facturatron.Principal;
 
-import facturatron.config.ConfigFiscalControl;
-import facturatron.MVC.Controller;
-import facturatron.MVC.Model;
-import facturatron.acercade.AcercaDeControl;
-import facturatron.cliente.ClienteControl;
-import facturatron.config.ConfigDatasourceAndPACControl;
-import facturatron.config.ConfiguracionControl;
-import facturatron.facturacion.FacturaControl;
-import facturatron.facturacion.InformeMensual.InformeControl;
-import facturatron.facturacion.ListadoControl;
-import facturatron.producto.ProductoControl;
-import facturatron.unidad.UnidadControl;
+import com.phesus.facturatron.presentation.mvc.controller.ConfigFiscalControl;
+import facturatron.mvc.Controller;
+import facturatron.mvc.Model;
+import com.phesus.facturatron.presentation.mvc.controller.AcercaDeControl;
+import com.phesus.facturatron.presentation.mvc.controller.ClienteControl;
+import com.phesus.facturatron.presentation.mvc.controller.ConfigDatasourceAndPACControl;
+import com.phesus.facturatron.presentation.mvc.controller.ConfiguracionControl;
+import com.phesus.facturatron.presentation.mvc.controller.FacturaControl;
+import com.phesus.facturatron.presentation.mvc.controller.InformeControl;
+import com.phesus.facturatron.presentation.mvc.controller.ListadoControl;
+import com.phesus.facturatron.presentation.mvc.controller.ProductoControl;
+import com.phesus.facturatron.presentation.mvc.controller.UnidadControl;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

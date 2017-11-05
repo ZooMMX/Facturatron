@@ -18,10 +18,11 @@
 
 package facturatron.facturacion;
 
+import com.phesus.facturatron.persistence.dao.FacturaDao;
 import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
 import facturatron.Principal.VisorPdf;
-import facturatron.cliente.ClienteDao;
+import com.phesus.facturatron.persistence.dao.ClienteDao;
 import facturatron.email.EmailFacturaCliente;
 import facturatron.lib.entities.CFDv3Tron;
 import java.io.IOException;
