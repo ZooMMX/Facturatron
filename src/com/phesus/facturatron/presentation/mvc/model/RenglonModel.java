@@ -44,6 +44,7 @@ public class RenglonModel extends Model implements Serializable {
     private Boolean iepsUpdated=false;
     private MathContext mc = MathContext.DECIMAL64;
     private BigDecimal total;
+    private Boolean exento=false;
 
     public RenglonModel() {
         importe=new BigDecimal("0.00",mc);
@@ -65,6 +66,7 @@ public class RenglonModel extends Model implements Serializable {
         descuento.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         iva.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         tasa0=true;
+        exento=false;
     }
 
     public static List createBeanCollection(){
@@ -277,10 +279,12 @@ public class RenglonModel extends Model implements Serializable {
      * @param tasa0 the tasa0 to set
      */
     public void setTasa0(Boolean tasa0) {
-        if(tasa0==null)
+        if(!exento){
+            if(tasa0==null)
             tasa0=true;
         this.tasa0 = tasa0;
         updateRenglon();
+        }
     }
 
     public BigDecimal getTasaIEPS() {
@@ -288,15 +292,17 @@ public class RenglonModel extends Model implements Serializable {
     }
 
     public void setTasaIEPS(BigDecimal tasa) {
-        if(tasa==null)
-            tasa=new BigDecimal("0.00", mc);
-        else
-        {
-            tasa = tasa.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            tasaIEPS = tasa.divide(new BigDecimal("100.00", mc),mc);
-            tasaIEPS = tasaIEPS.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        if(!exento){
+            if(tasa==null)
+                tasa=new BigDecimal("0.00", mc);
+            else
+            {
+                tasa = tasa.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+                tasaIEPS = tasa.divide(new BigDecimal("100.00", mc),mc);
+                tasaIEPS = tasaIEPS.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            }
+            updateRenglon();    
         }
-        updateRenglon();
     }
 
     /**
@@ -337,30 +343,38 @@ public class RenglonModel extends Model implements Serializable {
         //Update Oct/2017. Las nuevas reglas indican que se debe establecer como máximo el
         //  número de deciimales que soporta la moneda, en pesos mexicanos eso es 2
         //Agrega IVA
-        if(getTasa0()) {   
+        if(!exento){
+            if(getTasa0()) {   
             t1.setBase(getBase());
             t1.setImporte(new BigDecimal(0d).setScale(2, RoundingMode.HALF_EVEN));
             t1.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
             t1.setTipoFactor(CTipoFactor.TASA);
             t1.setTasaOCuota(new BigDecimal("0.000000").setScale(6, RoundingMode.HALF_EVEN));        
             list.add(t1);
-        } else {            
-            t1.setBase(getBase());
-            t1.setImporte(getIVA().setScale(2, RoundingMode.HALF_EVEN));
-            t1.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
-            t1.setTipoFactor(CTipoFactor.TASA);
-            t1.setTasaOCuota(new BigDecimal("0.160000").setScale(6, RoundingMode.HALF_EVEN));
-            list.add(t1);
-        }
-        //Agrega IEPS
-        if(getTasaIEPS() != null && getTasaIEPS().compareTo(BigDecimal.ZERO)!=0) {
-            Concepto.Impuestos.Traslados.Traslado t2 = of.createComprobanteConceptosConceptoImpuestosTrasladosTraslado();
-            t2.setBase(getBase());
-            t2.setImpuesto("003"); // Catálogo c_Impuesto: 003 = IEPS
-            t2.setImporte(getIEPS().setScale(2, RoundingMode.HALF_EVEN));
-            t2.setTasaOCuota(getTasaIEPS().setScale(6, RoundingMode.HALF_EVEN)); //Lo divido entre 100 porque en CFDIv3.3 Tasa en realidad es un factor
-            t2.setTipoFactor(CTipoFactor.TASA);
-            list.add(t2);
+            } else {            
+                t1.setBase(getBase());
+                t1.setImporte(getIVA().setScale(2, RoundingMode.HALF_EVEN));
+                t1.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
+                t1.setTipoFactor(CTipoFactor.TASA);
+                t1.setTasaOCuota(new BigDecimal("0.160000").setScale(6, RoundingMode.HALF_EVEN));
+                list.add(t1);
+            }
+            //Agrega IEPS
+            if(getTasaIEPS() != null && getTasaIEPS().compareTo(BigDecimal.ZERO)!=0) {
+                Concepto.Impuestos.Traslados.Traslado t2 = of.createComprobanteConceptosConceptoImpuestosTrasladosTraslado();
+                t2.setBase(getBase());
+                t2.setImpuesto("003"); // Catálogo c_Impuesto: 003 = IEPS
+                t2.setImporte(getIEPS().setScale(2, RoundingMode.HALF_EVEN));
+                t2.setTasaOCuota(getTasaIEPS().setScale(6, RoundingMode.HALF_EVEN)); //Lo divido entre 100 porque en CFDIv3.3 Tasa en realidad es un factor
+                t2.setTipoFactor(CTipoFactor.TASA);
+                list.add(t2);
+            }
+        }else{
+            Concepto.Impuestos.Traslados.Traslado t0=of.createComprobanteConceptosConceptoImpuestosTrasladosTraslado();
+            t0.setBase(getBase());
+            t0.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
+            t0.setTipoFactor(CTipoFactor.EXENTO);
+            list.add(t0);
         }
        
         imps.setTraslados(trs);        
@@ -424,6 +438,25 @@ public class RenglonModel extends Model implements Serializable {
      */
     public BigDecimal getBase() {
         return base;
+    }
+
+    /**
+     * @return the exento
+     */
+    public Boolean isExento() {
+        return exento;
+    }
+
+    /**
+     * @param exento the exento to set
+     */
+    public void setExento(Boolean exento) {
+        this.exento = exento;
+        if(exento){
+            this.tasa0=exento;
+            this.tasaIEPS=new BigDecimal("0.00");
+        }
+        this.updateRenglon();   
     }
 
     /** Esto se establece en updateRenglon

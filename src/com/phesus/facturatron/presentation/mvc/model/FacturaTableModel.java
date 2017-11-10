@@ -28,6 +28,7 @@ public class FacturaTableModel extends AbstractTableModel {
                         "Unidad",
                         "Clave Unidad SAT",
                         "PU",
+                        "Exento",
                         "IVA Tasa 0%",
                         "% IEPS",
                         "Descuento",
@@ -40,6 +41,7 @@ public class FacturaTableModel extends AbstractTableModel {
         String.class,
         String.class,
         BigDecimal.class,
+        Boolean.class,
         Boolean.class,
         BigDecimal.class,
         BigDecimal.class,
@@ -103,12 +105,14 @@ public class FacturaTableModel extends AbstractTableModel {
             case 6:
                 return fila.getValorUnitario();
             case 7:
-                return fila.getTasa0();
+                return fila.isExento();
             case 8:
-                return fila.getTasaIEPS().multiply(new BigDecimal("100.00"), mc);
+                return fila.getTasa0();
             case 9:
-                return fila.getDescuento();
+                return fila.getTasaIEPS().multiply(new BigDecimal("100.00"), mc);
             case 10:
+                return fila.getDescuento();
+            case 11:
                 return fila.getImporte();
         }
         return null;
@@ -153,17 +157,20 @@ public class FacturaTableModel extends AbstractTableModel {
                 //updateImporte(fila);
                 break;
             case 7:
-                fila.setTasa0((Boolean) value);
+                fila.setExento((Boolean)value);
                 break;
             case 8:
-                fila.setTasaIEPS((BigDecimal) value);
+                fila.setTasa0((Boolean) value);
                 break;
             case 9:
+                fila.setTasaIEPS((BigDecimal) value);
+                break;
+            case 10:
                 fila.setDescuento((BigDecimal) value);
                 //updateImporte(fila);
                 break;
         }
-        if(row == getRowCount()-1 && col == getColumnCount()-5) { //Crear nueva fila cuando se esté en la columna PU de la última fila
+        if(row == getRowCount()-1 && col == getColumnCount()-6) { //Crear nueva fila cuando se esté en la columna PU de la última fila
             addRow();
         }
         fireTableCellUpdated(row, col);

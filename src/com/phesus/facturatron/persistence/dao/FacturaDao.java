@@ -246,9 +246,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         }
         return cps;
      }
-
+     //Agrega el nodo Traslados del nodo impuestos a nivel de comprobante
      public Impuestos getImpuestos() {
-        
         ObjectFactory of = new ObjectFactory();
         Impuestos imps = of.createComprobanteImpuestos();
         Traslados trs = of.createComprobanteImpuestosTraslados();
@@ -272,7 +271,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         }
         //¿Algún renglón tiene tasa 0%? entonces agregamos este concepto al listado global de impuestos
         //  Se descartan los renglones en los que la cantidad sea CERO 0.
-        if(getRenglones().stream().anyMatch(predicate->predicate.getCantidad().compareTo(BigDecimal.ZERO)>0&predicate.getTasa0())) { 
+        if(getRenglones().stream().anyMatch(predicate->predicate.getCantidad().compareTo(BigDecimal.ZERO)>0&predicate.getTasa0()&!predicate.isExento())) { 
             t2.setImporte(new BigDecimal(0d).setScale(2, RoundingMode.HALF_EVEN));
             t2.setImpuesto("002"); // Catálogo c_Impuesto: 002 = IVA
             t2.setTipoFactor(CTipoFactor.TASA);
@@ -280,8 +279,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             list.add(t2);
         }
         list.addAll(getIEPSDesglosado());
-       
-        imps.setTraslados(trs);
+        if(!trs.getTraslado().isEmpty())
+            imps.setTraslados(trs);
         imps.setTotalImpuestosTrasladados(getIvaTrasladado().add( getIEPSTrasladado() ).setScale( 2, RoundingMode.HALF_EVEN ));
         return imps;
      }

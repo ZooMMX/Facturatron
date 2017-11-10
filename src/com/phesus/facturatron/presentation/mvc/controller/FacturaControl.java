@@ -657,6 +657,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                         BigDecimal ieps     = renglon.ieps;
                         BigDecimal precioUni= renglon.precioUnitario;
                         BigDecimal descuento= renglon.descuento;
+                        Boolean isExento = renglon.exento==null?false:renglon.exento;
                         cantidad .setScale(2, RoundingMode.HALF_EVEN);
                         ieps     .setScale(2, RoundingMode.HALF_EVEN);
                         precioUni.setScale(2, RoundingMode.HALF_EVEN);
@@ -666,18 +667,21 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                         precioUni.round(MathContext.DECIMAL64);
                         descuento.round(MathContext.DECIMAL64);                        
                         
-                        modelo.setValueAt(cantidad                  , modelo.getRowCount() - 1, 0); //0 = Columna cantidad                        
-                        modelo.setValueAt(!renglon.impuestos        , modelo.getRowCount() - 1, 7); //7 = Impuestos 0%
-                        modelo.setValueAt(renglon.codigo            , modelo.getRowCount() - 1, 1); //1 = Código
-                        modelo.setValueAt(renglon.claveProductoSAT  , modelo.getRowCount() - 1, 2); //2 = Clave producto SAT
-                        modelo.setValueAt(renglon.descripcion       , modelo.getRowCount() - 1, 3); //3 = Descripción
-                        modelo.setValueAt(renglon.unidad            , modelo.getRowCount() - 1, 4); //4 = Unidad
-                        modelo.setValueAt(renglon.claveUnidadSAT    , modelo.getRowCount() - 1, 5); //5 = Clave Unidad SAT
-                        modelo.setValueAt(ieps                      , modelo.getRowCount() - 1, 8); //8 = % IEPS
-                        modelo.setValueAt(descuento                 , modelo.getRowCount() - 1, 9); //9 = Descuento
+                        modelo.setValueAt(cantidad                  , modelo.getRowCount() - 1, 0);     //0 = Columna cantidad  
+                        modelo.setValueAt(isExento                  , modelo.getRowCount() - 1, 7);     //7 = Exento
+                        modelo.setValueAt(!renglon.impuestos        , modelo.getRowCount() - 1, 8);     //8 = Impuestos 0%
+                        modelo.setValueAt(renglon.codigo            , modelo.getRowCount() - 1, 1);     //1 = Código
+                        modelo.setValueAt(renglon.claveProductoSAT  , modelo.getRowCount() - 1, 2);     //2 = Clave producto SAT
+                        modelo.setValueAt(renglon.descripcion       , modelo.getRowCount() - 1, 3);     //3 = Descripción
+                        modelo.setValueAt(renglon.unidad            , modelo.getRowCount() - 1, 4);     //4 = Unidad
+                        modelo.setValueAt(renglon.claveUnidadSAT    , modelo.getRowCount() - 1, 5);     //5 = Clave Unidad SAT
+                        modelo.setValueAt(ieps                      , modelo.getRowCount() - 1, 9);     //9 = % IEPS
+                        modelo.setValueAt(descuento                 , modelo.getRowCount() - 1, 10);    //10 = Descuento
+                        
+                        
                         //Al editar el campo "precioUnitario" se agrega una nueva fila, por este
                         //  "comportamiento sincronizado" coloco al final este SET
-                        modelo.setValueAt(precioUni                 , modelo.getRowCount() - 1, 6); //6 = Precio unitario con descuento
+                        modelo.setValueAt(precioUni                 , modelo.getRowCount() - 1, 6);     //6 = Precio unitario con descuento
                     }
                     
                     //Agrego el ticket a la relación de tickets agregados a la factura
@@ -781,26 +785,30 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
                 TicketGlobal facturaGlobalizada = DatasourceContext.instanceDatasourceInstance().getTicketGlobal(fechaIniciaTxt, fechaFinalTxt);
                 
                 FacturaTableModel modelo = (FacturaTableModel) getView().getTabConceptos().getModel();                    
-                    
+                
                 //Representa los montos de descuento sobre ventas con IVA a tasa 0%
                 BigDecimal descuentos   = new BigDecimal("0", MathContext.DECIMAL64);
                 
                 //Llenar el formulario de facturación con información del ticket
                 Ticket<String> ticket = facturaGlobalizada.getResumenGlobal();
                 for (RenglonTicket renglon : ticket) {
-                    modelo.setValueAt(renglon.cantidad          , modelo.getRowCount() - 1, 0); //0 = Columna cantidad
-                    modelo.setValueAt(!renglon.impuestos        , modelo.getRowCount() - 1, 7); //7 = Impuestos 0%
-                    modelo.setValueAt(renglon.codigo            , modelo.getRowCount() - 1, 1); //1 = Código
-                    modelo.setValueAt(renglon.claveProductoSAT  , modelo.getRowCount() - 1, 2); //2 = Clave producto SAT
-                    modelo.setValueAt(renglon.descripcion       , modelo.getRowCount() - 1, 3); //3 = Descripción
-                    modelo.setValueAt(renglon.unidad            , modelo.getRowCount() - 1, 4); //4 = Unidad
-                    modelo.setValueAt(renglon.claveUnidadSAT    , modelo.getRowCount() - 1, 5); //5 = Clave Unidad SAT
+                    
+                    Boolean isExento = renglon.exento==null?false:renglon.exento;
+                    
+                    modelo.setValueAt(renglon.cantidad          , modelo.getRowCount() - 1, 0);     //0 = Columna cantidad
+                    modelo.setValueAt(isExento                  , modelo.getRowCount() - 1, 7);     //7 = Exento
+                    modelo.setValueAt(!renglon.impuestos        , modelo.getRowCount() - 1, 8);     //8 = Impuestos 0%
+                    modelo.setValueAt(renglon.codigo            , modelo.getRowCount() - 1, 1);     //1 = Código
+                    modelo.setValueAt(renglon.claveProductoSAT  , modelo.getRowCount() - 1, 2);     //2 = Clave producto SAT
+                    modelo.setValueAt(renglon.descripcion       , modelo.getRowCount() - 1, 3);     //3 = Descripción
+                    modelo.setValueAt(renglon.unidad            , modelo.getRowCount() - 1, 4);     //4 = Unidad
+                    modelo.setValueAt(renglon.claveUnidadSAT    , modelo.getRowCount() - 1, 5);     //5 = Clave Unidad SAT
                   
-                    modelo.setValueAt(renglon.ieps              , modelo.getRowCount() - 1, 8); //8 = % IEPS
-                    modelo.setValueAt(renglon.descuento         , modelo.getRowCount() - 1, 9); //9 = Descuento
+                    modelo.setValueAt(renglon.ieps              , modelo.getRowCount() - 1, 9);     //9 = % IEPS
+                    modelo.setValueAt(renglon.descuento         , modelo.getRowCount() - 1, 10);    //10 = Descuento
                     //Al editar el campo "precioUnitario" se agrega una nueva fila, por este
                     //  "comportamiento sincronizado" coloco al final este SET
-                    modelo.setValueAt(renglon.precioUnitario    , modelo.getRowCount() - 1, 6); //6 = Precio unitario con descuento
+                    modelo.setValueAt(renglon.precioUnitario    , modelo.getRowCount() - 1, 6);     //6 = Precio unitario con descuento
                         
                 }
                 NumberFormat nf = NumberFormat.getIntegerInstance();
