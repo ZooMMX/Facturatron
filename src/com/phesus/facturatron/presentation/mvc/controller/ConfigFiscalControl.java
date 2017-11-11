@@ -8,7 +8,7 @@ package com.phesus.facturatron.presentation.mvc.controller;
 import com.phesus.facturatron.presentation.mvc.view.ConfigFiscalForm;
 import facturatron.mvc.Controller;
 import com.phesus.facturatron.persistence.dao.ClienteDao;
-import com.phesus.facturatron.persistence.dao.ConfigFiscalDao;
+import facturatron.config.ConfigFiscalDao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigInteger;

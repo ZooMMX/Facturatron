@@ -91,7 +91,7 @@ public class RenglonModel extends Model implements Serializable {
         return rb;
     }
     
-    private void updateRenglon(){        
+    public void updateRenglon(){        
         importe=cantidad.multiply(valorUnitario);
         base=importe.subtract(descuento, mc);
         ieps=base.multiply(tasaIEPS);
@@ -150,7 +150,7 @@ public class RenglonModel extends Model implements Serializable {
         ct1.setUnidad(c1.getUnidad());
         ct1.setValorUnitario(c1.getValorUnitario());
         //La etiqueta de impuestos está compuesta por %_IVA + "/" + %_IEPS
-        String etiquetaIVA = getTasa0()?"0":"16";
+        String etiquetaIVA = exento ? "E" : (getTasa0()?"0":"16");
         
         NumberFormat nf = NumberFormat.getNumberInstance();
         nf.setMinimumFractionDigits(0);
@@ -292,17 +292,15 @@ public class RenglonModel extends Model implements Serializable {
     }
 
     public void setTasaIEPS(BigDecimal tasa) {
-        if(!exento){
-            if(tasa==null)
-                tasa=new BigDecimal("0.00", mc);
-            else
-            {
-                tasa = tasa.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-                tasaIEPS = tasa.divide(new BigDecimal("100.00", mc),mc);
-                tasaIEPS = tasaIEPS.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            }
-            updateRenglon();    
+        if(tasa==null)
+            tasa=new BigDecimal("0.00", mc);
+        else
+        {
+            tasa = tasa.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            tasaIEPS = tasa.divide(new BigDecimal("100.00", mc),mc);
+            tasaIEPS = tasaIEPS.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         }
+        updateRenglon();    
     }
 
     /**
@@ -454,7 +452,6 @@ public class RenglonModel extends Model implements Serializable {
         this.exento = exento;
         if(exento){
             this.tasa0=exento;
-            this.tasaIEPS=new BigDecimal("0.00");
         }
         this.updateRenglon();   
     }

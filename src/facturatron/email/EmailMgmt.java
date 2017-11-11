@@ -1,7 +1,7 @@
 package facturatron.email;
 
 import facturatron.Dominio.Configuracion;
-import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
+import facturatron.config.ConfiguracionDao;
 import com.phesus.facturatron.presentation.mvc.view.ConfiguracionForm;
 import java.util.ArrayList;
 import java.util.logging.Level;

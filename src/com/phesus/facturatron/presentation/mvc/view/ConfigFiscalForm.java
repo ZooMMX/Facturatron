@@ -13,7 +13,7 @@ package com.phesus.facturatron.presentation.mvc.view;
 
 import facturatron.mvc.ViewInterface;
 import com.phesus.facturatron.persistence.dao.ClienteDao;
-import com.phesus.facturatron.persistence.dao.ConfigFiscalDao;
+import facturatron.config.ConfigFiscalDao;
 import java.util.Observable;
 import java.util.Observer;
 import mx.bigdata.sat.cfdi.v33.schema.CPais;

@@ -33,7 +33,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import facturatron.mvc.Controller;
 import com.phesus.facturatron.persistence.dao.ClienteDao;
-import com.phesus.facturatron.persistence.dao.ConfigFiscalDao;
+import facturatron.config.ConfigFiscalDao;
 import facturatron.datasource.DatasourceContext;
 import facturatron.datasource.DatasourceException;
 import facturatron.facturacion.PAC.PACException;
@@ -379,7 +379,6 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
 
         getView().getBtnGuardar().setEnabled(false);
         getModel().persist();
-        
         
         timbrado = true;
         marcarTicketsFacturados(getModel().getId());

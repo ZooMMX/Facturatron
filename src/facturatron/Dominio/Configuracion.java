@@ -1,7 +1,7 @@
 package facturatron.Dominio;
 
 import facturatron.mvc.Model;
-import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
+import facturatron.config.ConfiguracionDao;
 import facturatron.datasource.DatasourceContext.DATASOURCE;
 import facturatron.facturacion.PAC.PACContext.PACS;
 import java.io.Serializable;

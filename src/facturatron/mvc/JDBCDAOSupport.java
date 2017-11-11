@@ -6,7 +6,7 @@
 package facturatron.mvc;
 
 import facturatron.Dominio.Configuracion;
-import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
+import facturatron.config.ConfiguracionDao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

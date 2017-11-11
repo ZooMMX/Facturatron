@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.phesus.facturatron.persistence.dao;
+package facturatron.config;
 
 import facturatron.Dominio.Configuracion;
 import facturatron.mvc.DAO;

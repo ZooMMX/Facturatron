@@ -6,7 +6,6 @@
 
 package facturatron.config;
 
-import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
 import facturatron.mvc.ViewInterface;
 import facturatron.datasource.DatasourceContext.DATASOURCE;
 import facturatron.facturacion.PAC.PACContext.PACS;

@@ -5,7 +5,7 @@
 package com.phesus.facturatron.presentation.mvc.controller;
 
 import com.phesus.facturatron.presentation.mvc.view.ConfiguracionForm;
-import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
+import facturatron.config.ConfiguracionDao;
 import facturatron.mvc.Controller;
 import facturatron.email.EmailPruebaConf;
 import java.awt.event.ActionEvent;

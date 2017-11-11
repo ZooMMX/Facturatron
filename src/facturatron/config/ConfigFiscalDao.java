@@ -3,11 +3,13 @@
  * and open the template in the editor.
  */
 
-package com.phesus.facturatron.persistence.dao;
+package facturatron.config;
 
+import com.phesus.facturatron.persistence.dao.ClienteDao;
 import facturatron.Dominio.Serie;
 import facturatron.mvc.DAO;
 import facturatron.mvc.JDBCDAOSupport;
+import com.phesus.facturatron.persistence.dao.SerieDao;
 import com.phesus.facturatron.persistence.dao.SerieDao;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;

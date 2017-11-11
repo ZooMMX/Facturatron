@@ -6,7 +6,7 @@ package facturatron.Principal;
 
 import com.alee.utils.SystemUtils;
 import facturatron.Dominio.Configuracion;
-import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
+import facturatron.config.ConfiguracionDao;
 import com.phesus.facturatron.presentation.mvc.view.ConfiguracionForm;
 import java.io.IOException;
 import java.util.ArrayList;

@@ -14,7 +14,7 @@ import facturatron.Dominio.Factura;
 import facturatron.mvc.Controller;
 import facturatron.Principal.VisorPdf;
 import com.phesus.facturatron.persistence.dao.ClienteDao;
-import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
+import facturatron.config.ConfiguracionDao;
 import facturatron.datasource.DatasourceContext;
 import facturatron.datasource.DatasourceContext.DATASOURCE;
 import facturatron.datasource.DatasourceException;

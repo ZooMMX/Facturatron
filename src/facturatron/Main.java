@@ -23,7 +23,9 @@ import javax.swing.SwingUtilities;
  * @author saul
  */
 public class Main {
-
+    public static final String direccionFinkok="http://facturacion.finkok.com";
+    public static final String direccionFinkokTest="http://demo-facturacion.finkok.com";
+    public static final Boolean isTest=true;
     /**
      * @param args the command line arguments
      */
@@ -44,6 +46,11 @@ public class Main {
                 System.setProperty("com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe.dump", "true");
                 System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "true");
                 System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dump", "true");
+                
+                if(isTest)
+                    System.setProperty(direccionFinkok, "true");
+                else
+                    System.setProperty(direccionFinkokTest, "true");
                 
                 Logger.getLogger("").addHandler(new CEHandler());
                 facturatron.Principal.Main frame = new facturatron.Principal.Main();

@@ -10,7 +10,7 @@
  */
 package com.phesus.facturatron.presentation.mvc.view;
 
-import com.phesus.facturatron.persistence.dao.ConfiguracionDao;
+import facturatron.config.ConfiguracionDao;
 import facturatron.mvc.Model;
 import facturatron.mvc.ViewInterface;
 import java.util.Observable;

@@ -5,6 +5,7 @@
 
 package com.phesus.facturatron.persistence.dao;
 
+import facturatron.config.ConfiguracionDao;
 import facturatron.Dominio.Configuracion;
 import facturatron.Dominio.Factura;
 import facturatron.mvc.Model;

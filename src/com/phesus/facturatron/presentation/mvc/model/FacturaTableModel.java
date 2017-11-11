@@ -5,6 +5,7 @@
 
 package com.phesus.facturatron.presentation.mvc.model;
 
+import facturatron.Main;
 import java.awt.Component;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -56,7 +57,8 @@ public class FacturaTableModel extends AbstractTableModel {
 
     public void addRow() {
         getData().add(new RenglonModel());
-        fireTableRowsInserted(getData().size()-1, getData().size()-1);     
+        fireTableRowsInserted(getData().size()-1, getData().size()-1);   
+        
     }
     
     public void removeRow(int row) {
@@ -196,9 +198,13 @@ public class FacturaTableModel extends AbstractTableModel {
 
     /**
      * @param data the data to set
+     * 
      */
     public void setData(ArrayList<RenglonModel> data) {
-        RenglonModel demo = new RenglonModel();
+        
+        //This block is only used in testing environment
+        if(Main.isTest){
+            RenglonModel demo = new RenglonModel();
         demo.setCantidad(new BigDecimal("1.212121212"));
         demo.setClaveProductoSat("01010101");
         demo.setClaveUnidadSat("H87");
@@ -209,6 +215,8 @@ public class FacturaTableModel extends AbstractTableModel {
         demo.setNoIdentificacion("1");
         demo.setDescuento(new BigDecimal("0.2323232323"));
         data.add(demo);
+        demo.updateRenglon();
+        }
         
         this.data = data;
     }
