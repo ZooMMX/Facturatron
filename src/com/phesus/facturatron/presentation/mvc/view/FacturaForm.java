@@ -60,14 +60,14 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     /**
      * @return the comboUsoCFDI
      */
-    public javax.swing.JComboBox<TipoComprobante> getComboUsoCFDI() {
+    public javax.swing.JComboBox<UsoCFDIEnum> getComboUsoCFDI() {
         return comboUsoCFDI;
     }
 
     /**
      * @param comboUsoCFDI the comboUsoCFDI to set
      */
-    public void setComboUsoCFDI(javax.swing.JComboBox<TipoComprobante> comboUsoCFDI) {
+    public void setComboUsoCFDI(javax.swing.JComboBox<UsoCFDIEnum> comboUsoCFDI) {
         this.comboUsoCFDI = comboUsoCFDI;
     }
 
@@ -738,7 +738,7 @@ public class FacturaForm extends javax.swing.JPanel implements Observer {
     private javax.swing.JButton btnVistaPrevia;
     private javax.swing.JComboBox<MetodoDePagoEnum> comboMetodoDePago;
     private javax.swing.JComboBox<TipoComprobante> comboTipoComprobante;
-    private javax.swing.JComboBox<TipoComprobante> comboUsoCFDI;
+    private javax.swing.JComboBox<UsoCFDIEnum> comboUsoCFDI;
     private javax.swing.JComboBox<FormaDePago> jComboBoxFormaPago;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

@@ -140,7 +140,7 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="141">
+		<band height="155">
 			<staticText>
 				<reportElement mode="Opaque" x="468" y="55" width="104" height="15" isPrintInFirstWholeBand="true" forecolor="#FFFFFF" backcolor="#333333" uuid="5697f9b7-8ace-4490-8e88-ffc6ec027d89"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -281,6 +281,18 @@
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Tipo: "+facturatron.facturacion.TipoComprobante.fromSatConstant($F{tipoDeComprobante})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="106" width="77" height="13" uuid="1163cefc-6c1b-4fd4-a9a3-8a2a0fc4fbfc"/>
+				<textElement>
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[USO CFDI]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="17" y="125" width="200" height="14" uuid="b8278579-b53e-4d66-87f6-74acc8d04a2c"/>
+				<textFieldExpression><![CDATA[""+facturatron.Dominio.UsoCFDIEnum.getDescription($F{receptor}.getUsoCFDI().toString()).toString()]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

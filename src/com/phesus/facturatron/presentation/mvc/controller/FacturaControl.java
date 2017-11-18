@@ -459,7 +459,8 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().setMotivoDescuento(getView().getTxtMotivoDescuento().getText());
         getModel().setReceptor((new ClienteDao()).findBy(Integer.valueOf(getView().getTxtIdCliente().getText())));
         //El USO del CFDI se guarda a nivel de comprobante y luego se aplica al receptor        
-        getModel().getReceptor().setUsoCFDI( UsoCFDIEnum.D_03 );
+        //getModel().getReceptor().setUsoCFDI( UsoCFDIEnum.G_03 );
+        getModel().getReceptor().setUsoCFDI((UsoCFDIEnum)getView().getComboUsoCFDI().getSelectedItem());
         
         CTipoDeComprobante tipo = getView().getTipoComprobante().getEfectoComprobante(); 
         getModel().setTipoDeComprobante(tipo);

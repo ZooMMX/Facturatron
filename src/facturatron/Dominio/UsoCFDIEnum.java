@@ -53,6 +53,13 @@ public enum UsoCFDIEnum {
         this.descripcion = descripcion;
     }
    
+    public static UsoCFDIEnum getDescription(String text){
+        for(UsoCFDIEnum e:UsoCFDIEnum.values()){
+            if(e.name().equalsIgnoreCase(text))
+                return e;
+        }
+        return null;
+    }
     public String toString() {
         return descripcion;
     }

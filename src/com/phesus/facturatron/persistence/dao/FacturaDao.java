@@ -415,8 +415,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
                 bean.setFolioFiscal(rs.getString("folioFiscal"));
                 //El USO del CFDI se guarda a nivel de comprobante y luego se aplica al receptor
                 String usoCFDIString = rs.getString("USO_CFDI");
-                //Por default si un registro no contiene este valor (CFDIv32) entonces se pondrá como gastos en general = D_03
-                UsoCFDIEnum usoCFDI = usoCFDIString == null ? UsoCFDIEnum.D_03 : UsoCFDIEnum.valueOf(usoCFDIString);
+                //Por default si un registro no contiene este valor (CFDIv32) entonces se pondrá como gastos en general = G_03
+                UsoCFDIEnum usoCFDI = usoCFDIString == null ? UsoCFDIEnum.G_03 : UsoCFDIEnum.valueOf(usoCFDIString);
                 bean.getReceptor().setUsoCFDI( usoCFDI );
                 ret.add(bean);
 
@@ -613,8 +613,8 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
             dao.setFacturasRelacionadas(rs.getString("FACTURAS_RELACIONADAS"));
             //El USO del CFDI se guarda a nivel de comprobante y luego se aplica al receptor
             String usoCFDIString = rs.getString("USO_CFDI");
-            //Por default si un registro no contiene este valor (CFDIv32) entonces se pondrá como gastos en general = D_03
-            UsoCFDIEnum usoCFDI = usoCFDIString == null ? UsoCFDIEnum.D_03 : UsoCFDIEnum.valueOf(usoCFDIString);
+            //Por default si un registro no contiene este valor (CFDIv32) entonces se pondrá como gastos en general = G_03
+            UsoCFDIEnum usoCFDI = usoCFDIString == null ? UsoCFDIEnum.G_03 : UsoCFDIEnum.valueOf(usoCFDIString);
             dao.getReceptor().setUsoCFDI( usoCFDI );
 
             rs = bd.getStmt().executeQuery("select * from concepto where id = "+id);//
