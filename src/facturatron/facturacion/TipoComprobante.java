@@ -38,7 +38,11 @@ public enum TipoComprobante {
         this.tipoSat = tipoSat;
     }      
     
-    public CTipoDeComprobante getEfectoComprobante() throws Exception {
+    public EfectoComprobante getEfectoComprobante() throws Exception {
+        return efecto;
+    }
+    
+    public CTipoDeComprobante getTipoDeComprobante() throws Exception {
         switch(efecto) {
             case INGRESO:
                 return CTipoDeComprobante.I;

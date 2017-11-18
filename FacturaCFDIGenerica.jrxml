@@ -254,7 +254,7 @@
 				<text><![CDATA[SUCURSAL]]></text>
 			</staticText>
 			<line>
-				<reportElement x="6" y="80" width="1" height="36" uuid="7f136daf-57f2-404f-a1d9-1993f6676529"/>
+				<reportElement x="6" y="80" width="1" height="22" uuid="7f136daf-57f2-404f-a1d9-1993f6676529"/>
 			</line>
 			<line>
 				<reportElement x="6" y="80" width="23" height="1" uuid="89091c59-eaaa-4e93-ba4c-895ce64fe216"/>
@@ -280,7 +280,7 @@
 					<font fontName="Arial" size="10"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Tipo: "+facturatron.facturacion.TipoComprobante.fromSatConstant($F{tipoDeComprobante})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Tipo: "+facturatron.facturacion.TipoComprobante.fromSatConstant($F{tipoDeComprobante}).getEfectoComprobante()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="28" y="106" width="77" height="13" uuid="1163cefc-6c1b-4fd4-a9a3-8a2a0fc4fbfc"/>
@@ -294,6 +294,12 @@
 				<reportElement x="17" y="125" width="200" height="14" uuid="b8278579-b53e-4d66-87f6-74acc8d04a2c"/>
 				<textFieldExpression><![CDATA[""+facturatron.Dominio.UsoCFDIEnum.getDescription($F{receptor}.getUsoCFDI().toString()).toString()]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="6" y="110" width="23" height="1" uuid="a4264661-a7d0-4f56-b011-db9adc1c458b"/>
+			</line>
+			<line>
+				<reportElement x="6" y="110" width="1" height="22" uuid="21859228-4bac-4a76-bf20-f543f327d865"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>

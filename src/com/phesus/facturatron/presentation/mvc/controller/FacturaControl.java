@@ -373,7 +373,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         getModel().getReceptor().setUsoCFDI((UsoCFDIEnum) getView().getComboUsoCFDI().getSelectedItem());
         
         //Tomo la primera letra para hacerlo retrocompatible, antes se usaba "INGRESO" ahora "I", "EGRESO" ahora "E", etc.
-        CTipoDeComprobante tipo = getView().getTipoComprobante().getEfectoComprobante(); 
+        CTipoDeComprobante tipo = getView().getTipoComprobante().getTipoDeComprobante();
         getModel().setTipoDeComprobante(tipo);
         getModel().setVersion("3.3");
 
@@ -462,7 +462,7 @@ public class FacturaControl extends Controller<FacturaDao, FacturaForm> {  //sol
         //getModel().getReceptor().setUsoCFDI( UsoCFDIEnum.G_03 );
         getModel().getReceptor().setUsoCFDI((UsoCFDIEnum)getView().getComboUsoCFDI().getSelectedItem());
         
-        CTipoDeComprobante tipo = getView().getTipoComprobante().getEfectoComprobante(); 
+        CTipoDeComprobante tipo = getView().getTipoComprobante().getTipoDeComprobante();
         getModel().setTipoDeComprobante(tipo);
         getModel().setVersion("3.3");  
           
