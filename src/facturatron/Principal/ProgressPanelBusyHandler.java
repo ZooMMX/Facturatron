@@ -5,7 +5,7 @@
 
 package facturatron.Principal;
 
-import facturatron.mvc.BusyHandler;
+import facturatron.mvc.busyHandler.BusyHandler;
 import javax.swing.JFrame;
 import net.java.swingfx.waitwithstyle.InfiniteProgressPanel;
 

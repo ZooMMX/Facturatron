@@ -5,9 +5,9 @@
 
 package facturatron.mvc;
 
-import facturatron.mvc.BusyHandler;
-import facturatron.mvc.InterfaceListener;
-import facturatron.mvc.InterfaceNotifier;
+import facturatron.mvc.busyHandler.BusyHandler;
+import facturatron.mvc.busyHandler.InterfaceListener;
+import facturatron.mvc.busyHandler.InterfaceNotifier;
 import java.awt.Container;
 
 /**

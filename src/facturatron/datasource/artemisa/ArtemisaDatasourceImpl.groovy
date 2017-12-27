@@ -100,7 +100,8 @@ public class ArtemisaDatasourceImpl implements IDatasourceService {
             ticket.setId( id );
 
             def rows = sql.rows("""
-                    SELECT t.DTYPE as tipo,  t.cargo as cargo, t.concepto as concepto, t.cantidad as cantidad, 
+                    SELECT t.DTYPE as tipo,  t.cargo as cargo, CLAVE_PRODUCTO_SAT_CLAVE clave_sat, CLAVE_UNIDAD_SAT_CLAVE unidad_sat, 
+                        t.concepto as concepto, t.cantidad as cantidad, 
                         (t.cargo / t.cantidad) as punitario, a.codigo as codigo, a.unidad as unidad, a.id_articulo as idarticulo
                     FROM Transaccion t, articulos a
                     WHERE a.id_articulo = t.producto_id_articulo AND t.paciente_id = ? AND t.DTYPE = 'Cargo'"""
@@ -112,9 +113,12 @@ public class ArtemisaDatasourceImpl implements IDatasourceService {
                 def iva = sql.firstRow("""SELECT i.descripcion
                                 FROM Impuesto i, articulos_Impuesto ai 
                                 WHERE ai.articulos_id_articulo = ? AND ai.impuestos_id = i.id 
-                                AND i.descripcion LIKE '%IVA%' AND i.porcentaje > 0""", [renglonResultSet.idarticulo]);
+                                AND i.descripcion LIKE '%IVA%' AND i.porcentaje > 0 LIMIT 1""", [renglonResultSet.idarticulo]);
                 
                 if(mTemp[renglonResultSet.idarticulo] != null) {
+                    //Este renglón no tiene impuestos
+                    mTemp[renglonResultSet.idarticulo].impuestos = false;
+                    mTemp[renglonResultSet.idarticulo].exento    = true;
                     mTemp[renglonResultSet.idarticulo].cantidad += renglonResultSet.cantidad;
                     mTemp[renglonResultSet.idarticulo].importe  += renglonResultSet.cargo;
                 } else {
@@ -126,6 +130,8 @@ public class ArtemisaDatasourceImpl implements IDatasourceService {
                     renglonTicket.descuento      = new BigDecimal(0d);
                     renglonTicket.importe        = new BigDecimal(renglonResultSet.cargo);
                     renglonTicket.ieps           = new BigDecimal(0d);
+                    renglonTicket.claveProductoSAT = renglonResultSet.clave_sat;
+                    renglonTicket.claveUnidadSAT   = renglonResultSet.unidad_sat;
                     //println(renglonResultSet.rate);                    
                     renglonTicket.precioUnitario = new BigDecimal(renglonResultSet.punitario);
                     renglonTicket.unidad         = renglonResultSet.unidad;

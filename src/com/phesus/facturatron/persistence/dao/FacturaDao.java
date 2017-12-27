@@ -200,7 +200,12 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setFolio(String.valueOf(getFolio()));
         comp.setFormaPago(getFormaDePago().toSatConstant());
         comp.setMetodoPago(getMetodoDePago().getSatConstant());
-        comp.setLugarExpedicion(getEmisor().getCodigoPostal());
+        if(getEmisorSucursal() != null && getEmisorSucursal().getCodigoPostal() != null)
+            comp.setLugarExpedicion(getEmisorSucursal().getCodigoPostal());
+        else
+            comp.setLugarExpedicion(getEmisor().getCodigoPostal());
+            
+        
         comp.setSubTotal(getSubtotal().setScale(2,RoundingMode.HALF_EVEN));
         comp.setTotal(getTotal().setScale(2,RoundingMode.HALF_EVEN));
         comp.setDescuento(getDescuento());
@@ -326,13 +331,17 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
      }
 
      public BigDecimal getSubtotalExento() {
-         return new BigDecimal(0d);
+        BigDecimal exento = new BigDecimal(0d);
+        for (RenglonModel renglon : getRenglones()) {
+            if(renglon.isExento()) { exento = exento.add(renglon.getImporte()); }
+        }
+        return exento;
      }
 
      public BigDecimal getSubtotalGravado0() {
         BigDecimal gravado0 = new BigDecimal(0d);
         for (RenglonModel renglon : getRenglones()) {
-            if(renglon.getTasa0()) { gravado0 = gravado0.add(renglon.getImporte()); }
+            if(renglon.getTasa0() && !renglon.isExento()) { gravado0 = gravado0.add(renglon.getImporte()); }
         }
         return gravado0;
      }

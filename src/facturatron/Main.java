@@ -25,7 +25,7 @@ import javax.swing.SwingUtilities;
 public class Main {
     public static final String direccionFinkok="http://facturacion.finkok.com";
     public static final String direccionFinkokTest="http://demo-facturacion.finkok.com";
-    public static final Boolean isTest=true;
+    public static final Boolean isTest=false;
     /**
      * @param args the command line arguments
      */

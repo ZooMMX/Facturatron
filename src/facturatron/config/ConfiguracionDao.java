@@ -24,6 +24,8 @@ import java.util.logging.Logger;
  * @author Octavio
  */
 public class ConfiguracionDao extends Configuracion implements DAO<Integer, Configuracion> {
+    
+    private static final long serialVersionUID = 7985268101341494929l;
 
     String configFile = "config.dat";
     @Override
