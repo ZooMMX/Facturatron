@@ -200,7 +200,7 @@ public class FacturaDao extends Factura implements DAO<Integer,Factura>{
         comp.setFolio(String.valueOf(getFolio()));
         comp.setFormaPago(getFormaDePago().toSatConstant());
         comp.setMetodoPago(getMetodoDePago().getSatConstant());
-        if(getEmisorSucursal() != null && getEmisorSucursal().getCodigoPostal() != null)
+        if(getEmisorSucursal() != null && getEmisorSucursal().getCodigoPostal() != null && !getEmisorSucursal().getCodigoPostal().isEmpty())
             comp.setLugarExpedicion(getEmisorSucursal().getCodigoPostal());
         else
             comp.setLugarExpedicion(getEmisor().getCodigoPostal());

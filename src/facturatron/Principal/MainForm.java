@@ -11,7 +11,6 @@
 
 package facturatron.Principal;
 
-import java.awt.Color;
 import java.awt.Component;
 import org.jdesktop.swingx.JXHyperlink;
 
@@ -41,8 +40,6 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel1 = new java.awt.Panel();
-        panel2 = new java.awt.Panel();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         jXTaskPane1 = new org.jdesktop.swingx.JXTaskPane();
         linkFacturar = new org.jdesktop.swingx.JXHyperlink();
@@ -61,58 +58,20 @@ public class MainForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         panelEdicion = new com.jidesoft.swing.JideTabbedPane();
-        panel3 = new java.awt.Panel();
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-
-        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
-        panel1.setLayout(panel1Layout);
-        panel1Layout.setHorizontalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        panel1Layout.setVerticalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout panel2Layout = new javax.swing.GroupLayout(panel2);
-        panel2.setLayout(panel2Layout);
-        panel2Layout.setHorizontalGroup(
-            panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        panel2Layout.setVerticalGroup(
-            panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Facturatron");
 
         jXTaskPaneContainer1.setBackground(new java.awt.Color(41, 71, 173));
 
-        jXTaskPane1.setBackground(new java.awt.Color(238, 238, 238));
         jXTaskPane1.setTitle("Facturas");
 
-        linkFacturar.setClickedColor(new java.awt.Color(0, 0, 0));
         linkFacturar.setText("Facturar");
         linkFacturar.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkFacturar.setBackground(new java.awt.Color(245, 245, 245));
-        linkFacturar.setName(""); // NOI18N
-        linkFacturar.setOpaque(true);
-        linkFacturar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                linkFacturarActionPerformed(evt);
-            }
-        });
         jXTaskPane1.getContentPane().add(linkFacturar);
 
-        linkFacturasEmitidas.setClickedColor(new java.awt.Color(0, 0, 0));
         linkFacturasEmitidas.setText("Facturas Emitidas");
         linkFacturasEmitidas.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkFacturasEmitidas.setBackground(new java.awt.Color(245, 245, 245));
-        linkFacturasEmitidas.setName(""); // NOI18N
-        linkFacturasEmitidas.setOpaque(true);
         linkFacturasEmitidas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 linkFacturasEmitidasActionPerformed(evt);
@@ -120,12 +79,8 @@ public class MainForm extends javax.swing.JFrame {
         });
         jXTaskPane1.getContentPane().add(linkFacturasEmitidas);
 
-        linkInformeMensual.setClickedColor(new java.awt.Color(0, 0, 0));
         linkInformeMensual.setText("Informe SAT");
         linkInformeMensual.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkInformeMensual.setBackground(new java.awt.Color(245, 245, 245));
-        linkInformeMensual.setName(""); // NOI18N
-        linkInformeMensual.setOpaque(true);
         linkInformeMensual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 linkInformeMensualActionPerformed(evt);
@@ -137,12 +92,8 @@ public class MainForm extends javax.swing.JFrame {
 
         jXTaskPane2.setTitle("Catálogos");
 
-        linkCatalogo.setClickedColor(new java.awt.Color(0, 0, 0));
         linkCatalogo.setText("Clientes");
         linkCatalogo.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkCatalogo.setBackground(new java.awt.Color(245, 245, 245));
-        linkCatalogo.setName(""); // NOI18N
-        linkCatalogo.setOpaque(true);
         linkCatalogo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 linkCatalogoActionPerformed(evt);
@@ -150,12 +101,8 @@ public class MainForm extends javax.swing.JFrame {
         });
         jXTaskPane2.getContentPane().add(linkCatalogo);
 
-        linkUnidad.setClickedColor(new java.awt.Color(0, 0, 0));
         linkUnidad.setText("Unidades");
         linkUnidad.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkUnidad.setBackground(new java.awt.Color(245, 245, 245));
-        linkUnidad.setName(""); // NOI18N
-        linkUnidad.setOpaque(true);
         Boolean moduloActivo = facturatron.Dominio.Configuracion.getConfig().getModuloUnidadesActivo();
         if(moduloActivo != null)
         linkUnidad.setVisible(moduloActivo);
@@ -166,60 +113,27 @@ public class MainForm extends javax.swing.JFrame {
         });
         jXTaskPane2.getContentPane().add(linkUnidad);
 
-        linkProducto.setClickedColor(new java.awt.Color(0, 0, 0));
         linkProducto.setText("Productos");
         linkProducto.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkProducto.setBackground(new java.awt.Color(245, 245, 245));
-        linkProducto.setName(""); // NOI18N
-        linkProducto.setOpaque(true);
         Boolean moduloPActivo = facturatron.Dominio.Configuracion.getConfig().getModuloProductosActivo();
         if(moduloPActivo != null)
         linkProducto.setVisible(moduloPActivo);
-        linkProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                linkProductoActionPerformed(evt);
-            }
-        });
         jXTaskPane2.getContentPane().add(linkProducto);
 
         jXTaskPaneContainer1.add(jXTaskPane2);
 
-        jXTaskPane3.setBackground(new java.awt.Color(102, 204, 255));
         jXTaskPane3.setTitle("Sistema");
-        jXTaskPane3.setOpaque(true);
 
-        linkCfgFiscal.setClickedColor(new java.awt.Color(0, 0, 0));
         linkCfgFiscal.setText("Configuración Fiscal");
         linkCfgFiscal.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkCfgFiscal.setBackground(new java.awt.Color(245, 245, 245));
-        linkCfgFiscal.setName(""); // NOI18N
-        linkCfgFiscal.setOpaque(true);
-        linkCfgFiscal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                linkCfgFiscalActionPerformed(evt);
-            }
-        });
         jXTaskPane3.getContentPane().add(linkCfgFiscal);
 
-        linkCfgSystem.setClickedColor(new java.awt.Color(0, 0, 0));
         linkCfgSystem.setText("Configuración Sistema");
         linkCfgSystem.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkCfgSystem.setBackground(new java.awt.Color(245, 245, 245));
-        linkCfgSystem.setName(""); // NOI18N
-        linkCfgSystem.setOpaque(true);
-        linkCfgSystem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                linkCfgSystemActionPerformed(evt);
-            }
-        });
         jXTaskPane3.getContentPane().add(linkCfgSystem);
 
-        linkCfgPAC.setClickedColor(new java.awt.Color(0, 0, 0));
         linkCfgPAC.setText("Configuración Integraciones");
         linkCfgPAC.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkCfgPAC.setBackground(new java.awt.Color(245, 245, 245));
-        linkCfgPAC.setName(""); // NOI18N
-        linkCfgPAC.setOpaque(true);
         linkCfgPAC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 linkCfgPACActionPerformed(evt);
@@ -227,25 +141,12 @@ public class MainForm extends javax.swing.JFrame {
         });
         jXTaskPane3.getContentPane().add(linkCfgPAC);
 
-        linkCfgAcercaDe.setClickedColor(new java.awt.Color(0, 0, 0));
         linkCfgAcercaDe.setText("Acerca De");
         linkCfgAcercaDe.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkCfgAcercaDe.setBackground(new java.awt.Color(245, 245, 245));
-        linkCfgAcercaDe.setName(""); // NOI18N
-        linkCfgAcercaDe.setOpaque(true);
-        linkCfgAcercaDe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                linkCfgAcercaDeActionPerformed(evt);
-            }
-        });
         jXTaskPane3.getContentPane().add(linkCfgAcercaDe);
 
-        linkSalir.setClickedColor(new java.awt.Color(0, 0, 0));
         linkSalir.setText("Salir");
         linkSalir.setUnclickedColor(new java.awt.Color(0, 0, 0));
-        linkSalir.setBackground(new java.awt.Color(245, 245, 245));
-        linkSalir.setName(""); // NOI18N
-        linkSalir.setOpaque(true);
         linkSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 linkSalirActionPerformed(evt);
@@ -262,24 +163,13 @@ public class MainForm extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Facturatron 1.9 by Phesus");
+        jLabel2.setText("Facturatron 1.9 b5. Phesus.");
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jXTaskPaneContainer1.add(jLabel2);
 
         panelEdicion.setAutoscrolls(true);
         panelEdicion.setShowCloseButtonOnMouseOver(true);
         panelEdicion.setTabEditingAllowed(true);
-
-        javax.swing.GroupLayout panel3Layout = new javax.swing.GroupLayout(panel3);
-        panel3.setLayout(panel3Layout);
-        panel3Layout.setHorizontalGroup(
-            panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        panel3Layout.setVerticalGroup(
-            panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -312,158 +202,29 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private void linkFacturasEmitidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkFacturasEmitidasActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(204,204,204));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(245,245,245));
+        // TODO add your handling code here:
     }//GEN-LAST:event_linkFacturasEmitidasActionPerformed
 
     private void linkCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkCatalogoActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(204,204,204));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(245,245,245));
+        // TODO add your handling code here:
     }//GEN-LAST:event_linkCatalogoActionPerformed
 
     private void linkSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkSalirActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(204,204,204));
+        // TODO add your handling code here:
+        
     }//GEN-LAST:event_linkSalirActionPerformed
 
     private void linkInformeMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkInformeMensualActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(204,204,204));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(245,245,245));
+        // TODO add your handling code here:
     }//GEN-LAST:event_linkInformeMensualActionPerformed
 
     private void linkCfgPACActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkCfgPACActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(204,204,204));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(245,245,245));
+        // TODO add your handling code here:
     }//GEN-LAST:event_linkCfgPACActionPerformed
 
     private void linkUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkUnidadActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(204,204,204));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(245,245,245));
+        // TODO add your handling code here:
     }//GEN-LAST:event_linkUnidadActionPerformed
-
-    private void linkCfgFiscalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkCfgFiscalActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(204,204,204));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(245,245,245));
-    }//GEN-LAST:event_linkCfgFiscalActionPerformed
-
-    private void linkFacturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkFacturarActionPerformed
-        linkFacturar.setBackground(new Color(204,204,204));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(245,245,245));
-    }//GEN-LAST:event_linkFacturarActionPerformed
-
-    private void linkProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkProductoActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(204,204,204));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(245,245,245));
-    }//GEN-LAST:event_linkProductoActionPerformed
-
-    private void linkCfgSystemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkCfgSystemActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(204,204,204));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(245,245,245));
-        linkSalir.setBackground(new Color(245,245,245));
-    }//GEN-LAST:event_linkCfgSystemActionPerformed
-
-    private void linkCfgAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkCfgAcercaDeActionPerformed
-        linkFacturar.setBackground(new Color(245,245,245));
-        linkFacturasEmitidas.setBackground(new Color(245,245,245));
-        linkInformeMensual.setBackground(new Color(245,245,245));
-        linkCatalogo.setBackground(new Color(245,245,245));
-        linkUnidad.setBackground(new Color(245,245,245));
-        linkProducto.setBackground(new Color(245,245,245));
-        linkCfgFiscal.setBackground(new Color(245,245,245));
-        linkCfgSystem.setBackground(new Color(245,245,245));
-        linkCfgPAC.setBackground(new Color(245,245,245));
-        linkCfgAcercaDe.setBackground(new Color(204,204,204));
-        linkSalir.setBackground(new Color(245,245,245));
-    }//GEN-LAST:event_linkCfgAcercaDeActionPerformed
 
     /**
     * @param args the command line arguments
@@ -481,7 +242,6 @@ public class MainForm extends javax.swing.JFrame {
         this.getPanelEdicion().setSelectedComponent(comp);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.Box.Filler filler3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane1;
@@ -499,9 +259,6 @@ public class MainForm extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXHyperlink linkProducto;
     private org.jdesktop.swingx.JXHyperlink linkSalir;
     private org.jdesktop.swingx.JXHyperlink linkUnidad;
-    private java.awt.Panel panel1;
-    private java.awt.Panel panel2;
-    private java.awt.Panel panel3;
     private com.jidesoft.swing.JideTabbedPane panelEdicion;
     // End of variables declaration//GEN-END:variables
 
